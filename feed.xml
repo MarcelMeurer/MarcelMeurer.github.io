@@ -5,8 +5,8 @@
     <description>The blog site of ITProCloud</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 08 Sep 2019 16:21:56 +0200</pubDate>
-    <lastBuildDate>Sun, 08 Sep 2019 16:21:56 +0200</lastBuildDate>
+    <pubDate>Sun, 08 Sep 2019 19:35:48 +0200</pubDate>
+    <lastBuildDate>Sun, 08 Sep 2019 19:35:48 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -31,12 +31,68 @@
       </item>
     
       <item>
+        <title>CDC Germany: RDS and Windows Virtual Desktop – Desktops in the year 2019 and beyond</title>
+        <description>&lt;p&gt;From 21. to 22. April 2019 the annual Cloud and Datacenter Conference took place in Hanau/Frankfurt in Germany. It’s one of my favorite community events in Germany. This year I was allowed to contribute something to RDS in Windows Server 2019 and Windows Virtual Desktop – including Windows 10 Multi Session Host and FSLogix (an awesome combination).&lt;/p&gt;
+
+&lt;p&gt;I published my slides to slideshare.net: 
+&lt;a href=&quot;https://de.slideshare.net/MarcelMeurer/rds-windows-virtual-desktop-desktop-in-2019&quot;&gt;https://de.slideshare.net/MarcelMeurer/rds-windows-virtual-desktop-desktop-in-2019&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;the-demos-are-also-available-via-youtube&quot;&gt;The demos are also available via Youtube:&lt;/h2&gt;
+
+&lt;h3 id=&quot;windows-virtual-desktop---login-to-a-shared-windows-10-multi-session-host&quot;&gt;Windows Virtual Desktop - Login to a shared Windows 10 Multi Session Host&lt;/h3&gt;
+
+&lt;iframe width=&quot;1196&quot; height=&quot;673&quot; src=&quot;https://www.youtube.com/embed/rgsaQf3hmHw&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://youtu.be/rgsaQf3hmHw&quot;&gt;https://youtu.be/rgsaQf3hmHw&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;windows-virtual-desktop---update-the-template-vm&quot;&gt;Windows Virtual Desktop - Update the template VM&lt;/h3&gt;
+
+&lt;iframe width=&quot;1196&quot; height=&quot;673&quot; src=&quot;https://www.youtube.com/embed/YqrEm3EhbVY&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://youtu.be/YqrEm3EhbVY&quot;&gt;https://youtu.be/YqrEm3EhbVY&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;windows-virtual-desktop---build-a-new-image-from-a-template-vm&quot;&gt;Windows Virtual Desktop - Build a new Image from a template VM&lt;/h3&gt;
+
+&lt;iframe width=&quot;1196&quot; height=&quot;673&quot; src=&quot;https://www.youtube.com/embed/MOuH482A1co&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://youtu.be/MOuH482A1co&quot;&gt;https://youtu.be/MOuH482A1co&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;windows-virtual-desktop---deploy-a-vm-from-a-template-via-powershell&quot;&gt;Windows Virtual Desktop - Deploy a VM from a template via PowerShell&lt;/h3&gt;
+
+&lt;iframe width=&quot;1196&quot; height=&quot;673&quot; src=&quot;https://www.youtube.com/embed/U9zxyk_HuAM&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://youtu.be/U9zxyk_HuAM&quot;&gt;https://youtu.be/U9zxyk_HuAM&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;windows-virtual-desktop---deploy-a-scale-set-from-an-image-re-scale-azure-monitor&quot;&gt;Windows Virtual Desktop - Deploy a Scale Set from an image, re-scale, Azure Monitor&lt;/h3&gt;
+
+&lt;iframe width=&quot;1196&quot; height=&quot;673&quot; src=&quot;https://www.youtube.com/embed/_l5P_JeQANM&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://youtu.be/_l5P_JeQANM&quot;&gt;https://youtu.be/_l5P_JeQANM&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Fist published on: &lt;a href=&quot;https://www.sepago.de/blog/cdc-germany-rds-windows-virtual-desktop-desktops-in-2019/&quot;&gt;https://www.sepago.de/blog/cdc-germany-rds-windows-virtual-desktop-desktops-in-2019/&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 23 May 2019 00:00:00 +0200</pubDate>
+        <link>/CDC-Germany-RDS-&-Windows-Virtual-Desktop-Desktops-in-2019/</link>
+        <guid isPermaLink="true">/CDC-Germany-RDS-&-Windows-Virtual-Desktop-Desktops-in-2019/</guid>
+        
+        
+        <category>Azure</category>
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Events</category>
+        
+        <category>PowerShell</category>
+        
+      </item>
+    
+      <item>
         <title>Publish your solution to the Azure Marketplace</title>
-        <description>&lt;p&gt;Publishing own solutions to the Azure Marketplace seems to be very easy by using the documentation on https://docs.microsoft.com/en-us/azure/marketplace/marketplace-publishers-guide. To avoid any pitfalls I wrote down some insights about my first approach. In this blog, I will focus on “Azure Applications”&lt;/p&gt;
+        <description>&lt;p&gt;Publishing own solutions to the Azure Marketplace seems to be very easy by using the documentation on &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/marketplace/marketplace-publishers-guide&quot;&gt;https://docs.microsoft.com/en-us/azure/marketplace/marketplace-publishers-guide&lt;/a&gt;. To avoid any pitfalls I wrote down some insights about my first approach. In this blog, I will focus on “Azure Applications”&lt;/p&gt;
 
 &lt;h2 id=&quot;the-cloud-partner-dashboard&quot;&gt;The Cloud Partner Dashboard&lt;/h2&gt;
 
-&lt;p&gt;Make sure that you have access to the Cloud Partner Portal at https://cloudpartner.azure.com. In my case, I use my coopered credentials to log in.
+&lt;p&gt;Make sure that you have access to the Cloud Partner Portal at &lt;a href=&quot;https://cloudpartner.azure.com&quot;&gt;https://cloudpartner.azure.com&lt;/a&gt;. In my case, I use my coopered credentials to log in.
 Assign your Dev Center account details via Publisher Profile:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/03/PA01.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
@@ -46,7 +102,7 @@ I had some trouble doing this. My Dev Center account was not accepted. The reaso
 
 &lt;ul&gt;
   &lt;li&gt;Create a new MSA, e.g. myname.dev@outlook.com&lt;/li&gt;
-  &lt;li&gt;Create a new Dev Center account with the new MSA: https://developer.microsoft.com&lt;/li&gt;
+  &lt;li&gt;Create a new Dev Center account with the new MSA: &lt;a href=&quot;https://developer.microsoft.com&quot;&gt;https://developer.microsoft.com&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Add the new MSA into the Cloud Partner Portal
 &lt;img src=&quot;/wp-content/uploads/2019/03/PA02.png&quot; alt=&quot;img&quot; /&gt;&lt;/li&gt;
   &lt;li&gt;Assign your Dev Center account&lt;/li&gt;
@@ -58,7 +114,7 @@ I had some trouble doing this. My Dev Center account was not accepted. The reaso
 
 &lt;ul&gt;
   &lt;li&gt;mainTemplate.json&lt;/li&gt;
-  &lt;li&gt;createUiDefinition.json (https://docs.microsoft.com/en-us/azure/managed-applications/create-uidefinition-overview)&lt;/li&gt;
+  &lt;li&gt;createUiDefinition.json (&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/managed-applications/create-uidefinition-overview&quot;&gt;https://docs.microsoft.com/en-us/azure/managed-applications/create-uidefinition-overview&lt;/a&gt;)&lt;/li&gt;
   &lt;li&gt;nestedtemplates.….json (for linked templates)&lt;/li&gt;
   &lt;li&gt;and maybe some other folders&lt;/li&gt;
 &lt;/ul&gt;
@@ -109,14 +165,14 @@ Publish it for your personal test (add your subscription id to make it visible).
 
 &lt;p&gt;After you have tested your package privately, you can apply to make it public to the world. This takes some time while automatism and a (human) reviewer check your templates. If something is invalid, you get a mail with a link to a pull request where you can check what’s wrong.&lt;/p&gt;
 
-&lt;p&gt;Fist published on: https://www.sepago.de/blog/publish-your-solution-to-the-azure-marketplace/&lt;/p&gt;
+&lt;p&gt;Fist published on: &lt;a href=&quot;https://www.sepago.de/blog/publish-your-solution-to-the-azure-marketplace/&quot;&gt;https://www.sepago.de/blog/publish-your-solution-to-the-azure-marketplace/&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Mon, 25 Mar 2019 00:00:00 +0100</pubDate>
         <link>/Publish-your-solution-to-the-Azure-Marketplace/</link>
         <guid isPermaLink="true">/Publish-your-solution-to-the-Azure-Marketplace/</guid>
         
         
-        <category>Azure</category>
+        <category>Azure Marketplace</category>
         
       </item>
     
@@ -142,14 +198,16 @@ Publish it for your personal test (add your subscription id to make it visible).
 
 &lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/02/04-1024x703.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;First published on: https://www.sepago.de/blog/why-configuring-azure-ad-authentication-with-an-azure-web-app-fails/&lt;/p&gt;
+&lt;p&gt;First published on: &lt;a href=&quot;https://www.sepago.de/blog/why-configuring-azure-ad-authentication-with-an-azure-web-app-fails/&quot;&gt;https://www.sepago.de/blog/why-configuring-azure-ad-authentication-with-an-azure-web-app-fails/&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Sat, 09 Feb 2019 00:00:00 +0100</pubDate>
         <link>/Why-configuring-Azure-AD-authentication-with-an-Azure-Web-App-fails/</link>
         <guid isPermaLink="true">/Why-configuring-Azure-AD-authentication-with-an-Azure-Web-App-fails/</guid>
         
         
-        <category>Azure</category>
+        <category>Azure AD</category>
+        
+        <category>Azure WebApp</category>
         
       </item>
     
@@ -165,7 +223,7 @@ Publish it for your personal test (add your subscription id to make it visible).
   &lt;li&gt;Cloud-based&lt;/li&gt;
   &lt;li&gt;No data aggregation&lt;/li&gt;
   &lt;li&gt;Pay per upload and data retention&lt;/li&gt;
-  &lt;li&gt;Powerful query language (kql: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/kusto/&quot;&gt;https://docs.microsoft.com/en-us/azure/kusto/&lt;/a&gt;)&lt;/li&gt;
+  &lt;li&gt;Powerful query language (kql: &amp;lt;&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/kusto/&quot;&gt;https://docs.microsoft.com/en-us/azure/kusto/&lt;/a&gt;&amp;gt;)&lt;/li&gt;
   &lt;li&gt;Direct support for visualization on portal.azure.com&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -183,25 +241,21 @@ Publish it for your personal test (add your subscription id to make it visible).
 
 &lt;h2 id=&quot;with-powershell&quot;&gt;With PowerShell&lt;/h2&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
 2
 3
 4
 5
 6
 7
-8
-9
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;[sourcecode]&amp;lt;/pre&amp;gt;
-$data='{
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nv&quot;&gt;$data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'{
 &quot;localTime&quot;:&quot;2019-01-02T11:11:12.013Z&quot;,
 &quot;Humi&quot;:46.5,
 &quot;Temp&quot;:14.2
-}'
+}'&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 
-Invoke-WebRequest -Uri &quot;https://testaf01xx8.azurewebsites.net/api/Send2LogAnalytics?code=xje5aQIMzPxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==&quot; -Method POST -Body $data
-&amp;lt;pre&amp;gt;[/sourcecode]
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Invoke-WebRequest&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Uri&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://testaf01xx8.azurewebsites.net/api/Send2LogAnalytics?code=xje5aQIMzPxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Method&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;POST&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Body&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$data&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/01/PowerShell-1024x656.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
 
@@ -209,14 +263,14 @@ Invoke-WebRequest -Uri &quot;https://testaf01xx8.azurewebsites.net/api/Send2LogA
 
 &lt;p&gt;&lt;strong&gt;Query:&lt;/strong&gt;&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
 2
 3
 4
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;[sourcecode]INTO
-[To-Function]
-FROM
-[From-IoT-Hub][/sourcecode]
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;k&quot;&gt;INTO&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;To&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;Function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;From&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IoT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Hub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/01/StreamAnalytics-Query-1024x395.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
@@ -241,7 +295,7 @@ FROM
 
 &lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMarcelMeurer%2FFunctionApp-to-LogAnalytics%2Fmaster%2Ftemplate.json&quot;&gt;&lt;img src=&quot;http://azuredeploy.net/deploybutton.png&quot; alt=&quot;img&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;Github: https://github.com/MarcelMeurer/FunctionApp-to-LogAnalytics&lt;/p&gt;
+&lt;p&gt;Github: &lt;a href=&quot;https://github.com/MarcelMeurer/FunctionApp-to-LogAnalytics&quot;&gt;https://github.com/MarcelMeurer/FunctionApp-to-LogAnalytics&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
 
@@ -289,14 +343,18 @@ The Azure Function containing the code&lt;/li&gt;
 
 &lt;p&gt;This URL contains your private key.&lt;/p&gt;
 
-&lt;p&gt;First published on: https://www.sepago.de/blog/deploy-an-azure-functional-app-as-an-interface-to-log-analytics-azure-monitor/&lt;/p&gt;
+&lt;p&gt;First published on: &lt;a href=&quot;https://www.sepago.de/blog/deploy-an-azure-functional-app-as-an-interface-to-log-analytics-azure-monitor/&quot;&gt;https://www.sepago.de/blog/deploy-an-azure-functional-app-as-an-interface-to-log-analytics-azure-monitor/&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Sun, 13 Jan 2019 00:00:00 +0100</pubDate>
         <link>/Deploy-an-Azure-Functional-App-as-an-interface-to-Log-Analytics-Azure-Monitor/</link>
         <guid isPermaLink="true">/Deploy-an-Azure-Functional-App-as-an-interface-to-Log-Analytics-Azure-Monitor/</guid>
         
         
-        <category>Azure</category>
+        <category>Azure Functions</category>
+        
+        <category>Azure Monitor</category>
+        
+        <category>Log Analytics</category>
         
       </item>
     
@@ -536,24 +594,26 @@ PARAM(
 
 &lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2018/11/IOT-1024x410.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;First published on: https://www.sepago.de/blog/creating-devices-for-azure-iot-hub-with-sas-token-automatically/&lt;/p&gt;
+&lt;p&gt;First published on: &lt;a href=&quot;https://www.sepago.de/blog/creating-devices-for-azure-iot-hub-with-sas-token-automatically/&quot;&gt;https://www.sepago.de/blog/creating-devices-for-azure-iot-hub-with-sas-token-automatically/&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Fri, 23 Nov 2018 00:00:00 +0100</pubDate>
         <link>/Creating-devices-for-Azure-IoT-Hub-with-SAS-token-automatically/</link>
         <guid isPermaLink="true">/Creating-devices-for-Azure-IoT-Hub-with-SAS-token-automatically/</guid>
         
         
-        <category>Azure</category>
+        <category>Azure IoT</category>
+        
+        <category>PowerShell</category>
         
       </item>
     
       <item>
         <title>OneDrive PowerShell Module - Added support for OneDrive for Business</title>
-        <description>&lt;p&gt;More than two years ago, I created my PowerShell module to access OneDrive. This module can be installed with a one-liner from https://www.powershellgallery.com/packages/OneDrive&lt;/p&gt;
+        <description>&lt;p&gt;More than two years ago, I created my PowerShell module to access OneDrive. This module can be installed with a one-liner from &lt;a href=&quot;https://www.powershellgallery.com/packages/OneDrive&quot;&gt;https://www.powershellgallery.com/packages/OneDrive&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Again, I was asked to support OneDrive for Business and finally, I’m ready: From version 2.0.0 OneDrive for Business is supported.&lt;/p&gt;
 
-&lt;p&gt;I provide the complete documentation on GitHub, where I will maintain it: https://github.com/MarcelMeurer/PowerShellGallery-OneDrive&lt;/p&gt;
+&lt;p&gt;I provide the complete documentation on GitHub, where I will maintain it: &lt;a href=&quot;https://github.com/MarcelMeurer/PowerShellGallery-OneDrive&quot;&gt;https://github.com/MarcelMeurer/PowerShellGallery-OneDrive&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Here is the summary of version 2.0.0:&lt;/p&gt;
 
@@ -576,7 +636,7 @@ PARAM(
 &lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;Install-Module&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;OneDrive&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Scope&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CurrentUser&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-force&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;You can update the module to a newer version with the same command (-force). If you don’t use PowerShellGet currently, go to the Gallery on https://www.powershellgallery.com/packages/OneDrive and click “Get Started”.&lt;/p&gt;
+&lt;p&gt;You can update the module to a newer version with the same command (-force). If you don’t use PowerShellGet currently, go to the Gallery on &lt;a href=&quot;https://www.powershellgallery.com/packages/OneDrive&quot;&gt;https://www.powershellgallery.com/packages/OneDrive&lt;/a&gt; and click “Get Started”.&lt;/p&gt;
 
 &lt;p&gt;Check your installation with&lt;/p&gt;
 
@@ -588,8 +648,7 @@ PARAM(
 
 &lt;h3 id=&quot;onedrive-personal&quot;&gt;&lt;strong&gt;OneDrive Personal&lt;/strong&gt;&lt;/h3&gt;
 
-&lt;p&gt;Read this on my blog: https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/&lt;/p&gt;
-
+&lt;p&gt;Read this on my blog: &lt;a href=&quot;https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/&quot;&gt;https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/&lt;/a&gt;&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Go to: &lt;a href=&quot;https://apps.dev.microsoft.com/&quot;&gt;https://apps.dev.microsoft.com&lt;/a&gt; and login with your Microsoft Account (MSA) and “Add an app” in the category “converged applications”
 &lt;img src=&quot;/wp-content/uploads/2017/12/oda01.png&quot; alt=&quot;img&quot; /&gt;&lt;/li&gt;
@@ -625,10 +684,10 @@ PARAM(
 &lt;p&gt;To use OneDrive for business you have to register your script/app to in Azure Active Directory&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;Add an application in Azure Active Directory inside the Azure portal: https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps&lt;/li&gt;
+  &lt;li&gt;Add an application in Azure Active Directory inside the Azure portal: &lt;a href=&quot;https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps&quot;&gt;https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;Chose “New application registration”&lt;/li&gt;
   &lt;li&gt;
-    &lt;p&gt;Give your application a name and a unique sign-on URL. The sign-on URL has to be a valid URL but doesn’t have to exist. E.g.: http://sepago.de/1Drive4Business (make later sure that this URL is in the reply URL list of your application)
+    &lt;p&gt;Give your application a name and a unique sign-on URL. The sign-on URL has to be a valid URL but doesn’t have to exist. E.g.: &lt;a href=&quot;http://sepago.de/1Drive4Business&quot;&gt;http://sepago.de/1Drive4Business&lt;/a&gt; (make later sure that this URL is in the reply URL list of your application)
 &lt;img src=&quot;/wp-content/uploads/2018/01/od4b01.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
@@ -732,14 +791,16 @@ PARAM(
 &lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;Remove-ODItem&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-AccessToken&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$Auth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;access_token&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ResourceId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://sepagogmbh-my.sharepoint.com/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Path&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/Upload/Doings.txt&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;First published on: https://www.sepago.de/blog/onedrive-powershell-module-added-support-for-onedrive-for-business/&lt;/p&gt;
+&lt;p&gt;First published on: &lt;a href=&quot;https://www.sepago.de/blog/onedrive-powershell-module-added-support-for-onedrive-for-business/&quot;&gt;https://www.sepago.de/blog/onedrive-powershell-module-added-support-for-onedrive-for-business/&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Mon, 05 Nov 2018 00:00:00 +0100</pubDate>
         <link>/OneDrive-PowerShell-Module-Added-support-for-OneDrive-for-Business/</link>
         <guid isPermaLink="true">/OneDrive-PowerShell-Module-Added-support-for-OneDrive-for-Business/</guid>
         
         
-        <category>Azure</category>
+        <category>OneDrive</category>
+        
+        <category>PowerShell</category>
         
       </item>
     
@@ -749,7 +810,7 @@ PARAM(
 
 &lt;p&gt;Remember: The OneDrive module is for OneDrive personal and doesn’t work with OneDrive business / Sharepoint.&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;First:&lt;/strong&gt; Register an app (authentication) for OneDrive: https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;First:&lt;/strong&gt; Register an app (authentication) for OneDrive: &lt;a href=&quot;https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/&quot;&gt;https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/&lt;/a&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;authenticate-to-onedrive&quot;&gt;Authenticate to OneDrive&lt;/h3&gt;
 
@@ -806,14 +867,18 @@ Copy file from OneDrive to local disk&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2018/09/OD-00006-1024x611.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;First published on: https://www.sepago.de/blog/working-with-the-onedrive-powershell-module/&lt;/p&gt;
+&lt;p&gt;First published on: &lt;a href=&quot;https://www.sepago.de/blog/working-with-the-onedrive-powershell-module/&quot;&gt;https://www.sepago.de/blog/working-with-the-onedrive-powershell-module/&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Sat, 29 Sep 2018 00:00:00 +0200</pubDate>
         <link>/Working-with-the-OneDrive-PowerShell-Module/</link>
         <guid isPermaLink="true">/Working-with-the-OneDrive-PowerShell-Module/</guid>
         
         
-        <category>Azure</category>
+        <category>OneDrive</category>
+        
+        <category>PowerShell</category>
+        
+        <category>Azure AD</category>
         
       </item>
     
@@ -885,9 +950,7 @@ Copy file from OneDrive to local disk&lt;/p&gt;
 37
 38
 39
-40
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;sourcecode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$invocation&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Get-Variable&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;MyInvocation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Value&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nv&quot;&gt;$invocation&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Get-Variable&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;MyInvocation&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Value&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$directorypath&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Split-Path&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$invocation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;MyCommand&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Path&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$directorypath&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 
@@ -925,14 +988,14 @@ Copy file from OneDrive to local disk&lt;/p&gt;
   &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Set-AzureADUser&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ObjectId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$invitation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;InvitedUser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Id&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Department&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$Company&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Set-AzureADUser&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ObjectId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$invitation&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;InvitedUser&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Id&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Displayname&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$user&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Displayname&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$RowNum&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}[&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;/sourcecode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;If you run this script all users in the excel file will be invited to your Azure AD tenant.&lt;/p&gt;
 
 &lt;p&gt;Remark: The company field can not be written to an Azure AD user object (read-only). So I write the company to the department field.&lt;/p&gt;
 
-&lt;p&gt;First posted on: https://www.sepago.de/blog/adding-guest-users-to-azure-ad-from-excel-with-powershell/&lt;/p&gt;
+&lt;p&gt;First published on: &lt;a href=&quot;https://www.sepago.de/blog/adding-guest-users-to-azure-ad-from-excel-with-powershell/&quot;&gt;https://www.sepago.de/blog/adding-guest-users-to-azure-ad-from-excel-with-powershell/&lt;/a&gt;&lt;/p&gt;
 
 </description>
         <pubDate>Fri, 13 Jul 2018 00:00:00 +0200</pubDate>
@@ -940,7 +1003,9 @@ Copy file from OneDrive to local disk&lt;/p&gt;
         <guid isPermaLink="true">/Adding-Guest-Users-to-Azure-AD-from-Excel-with-PowerShell/</guid>
         
         
-        <category>Azure</category>
+        <category>Azure AD</category>
+        
+        <category>PowerShell</category>
         
       </item>
     
@@ -950,17 +1015,17 @@ Copy file from OneDrive to local disk&lt;/p&gt;
 
 &lt;p&gt;To login into your Azure AD tenant use:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;[sourcecode]Connect-AzureAD -TenantId xxx[/sourcecode]
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;Connect-AzureAD&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-TenantId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;xxx&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Where xxx is your tenant id. The -TenantId is optional. But if your account member of different Azure ADs you can select the right one.&lt;/p&gt;
 
 &lt;p&gt;After login in with your credential you can show the different roles with:&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;[sourcecode]Get-AzureADDirectoryRole[/sourcecode]
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;Get-AzureADDirectoryRole&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Output:&lt;/p&gt;
 
@@ -987,7 +1052,7 @@ Copy file from OneDrive to local disk&lt;/p&gt;
 17
 18
 19
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;sourcecode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$roleUsers&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;@()&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
 &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$roles&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Get-AzureADDirectoryRole&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 
@@ -1005,7 +1070,7 @@ Copy file from OneDrive to local disk&lt;/p&gt;
     &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$roleUsers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$obj&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
   &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$roleUsers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;/sourcecode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$roleUsers&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Output:&lt;/p&gt;
@@ -1014,57 +1079,16 @@ Copy file from OneDrive to local disk&lt;/p&gt;
 
 &lt;p&gt;Feel free to extend the custom object with other values form Azure AD user object.&lt;/p&gt;
 
-&lt;p&gt;First posted on: https://www.sepago.de/blog/enumerating-azure-ad-administrative-accounts-with-powershell-2/&lt;/p&gt;
+&lt;p&gt;First published on: &lt;a href=&quot;https://www.sepago.de/blog/enumerating-azure-ad-administrative-accounts-with-powershell-2/&quot;&gt;https://www.sepago.de/blog/enumerating-azure-ad-administrative-accounts-with-powershell-2/&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Fri, 22 Jun 2018 00:00:00 +0200</pubDate>
         <link>/Enumerating-Azure-AD-administrative-accounts-with-PowerShell/</link>
         <guid isPermaLink="true">/Enumerating-Azure-AD-administrative-accounts-with-PowerShell/</guid>
         
         
-        <category>Azure</category>
+        <category>Azure AD</category>
         
-      </item>
-    
-      <item>
-        <title>Deploying a custom OMS Log Analytics Workspace via GitHub – Avoid problems with ARM templates</title>
-        <description>&lt;p&gt;Azure is “my” cloud with a lot of platform services allowing users, programmers, and DevOps building powerful and scalable solutions. One of my favorite ones is Azure OMS Log Analytics – a big data platform with a great query language and professional dashboards.&lt;/p&gt;
-
-&lt;p&gt;In the past, I build a custom agent to collect data from Microsoft RDS and Citrix environment to provide a deep insight into the user experiences and resource usage http://loganalytics.sepago.com/. Additionally, I have built four dashboards and a lot of views to visualize the data:&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;img src=&quot;/wp-content/uploads/2018/05/omsdeployment01_0.png&quot; alt=&quot;omsdeployment&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;img src=&quot;/wp-content/uploads/2018/05/omsdeployment02.png&quot; alt=&quot;omsdeployment&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;To make it easier to deploy an OMS Log Analytics workspace including my tiles and views I decided to offer a “Deploy to Azure” solution via GitHub. Finally, an ARM template for an Azure deployment.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;One ARM template including all resources (doesn’t work well)&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;First, I built an ARM template including the workspace definition and four definitions of the tiles (including their views). But I got some weird effects: Sometimes I got only 2 tiles with a deployment, sometimes 3 and rarely the four I expected.&lt;/p&gt;
-
-&lt;p&gt;What happens – or what I thought what happened? The tile definition in the ARM files is independent of each other’s, so the ARM engine tried to deploy them parallel. And here is a problem: This didn’t (and don’t) work with the current API. The API didn’t wait for the full deployment and finished after the first tile is deployed.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;One ARM template for the deployment and one for each tile (works well)&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;It took days to find a reliable solution. The solution I use now works differently: I have one ARM template for each tile and one ARM template for the workspace itself. The ARM template for the workspace references all the four tile ARM templates using the resource type “Microsoft.Resources/deployments”. This deployment type allows a special trick to avoid the parallel processing of all linked templates: &lt;strong&gt;A serial mode!&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;The serial mode controls the ARM processing and avoids parallel processing. With this trick, the deployment works reliably.&lt;/p&gt;
-
-&lt;p&gt;See the ARM templates at GitHub: https://github.com/MarcelMeurer/LogAnalytics-for-Citrix-and-RDS/&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;&quot;&gt;&lt;img src=&quot;/wp-content/uploads/2018/05/omsdeployment03.png&quot; alt=&quot;omsdeployment&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;To help the community to find this workaround some keywords:&lt;/p&gt;
-
-&lt;p&gt;“Azure OMS Log Analytics Deployment with ARM some tiles are missing”&lt;/p&gt;
-
-&lt;p&gt;First posted on: https://www.sepago.de/blog/deploying-a-custom-oms-log-analytics-workspace-via-github-avoid-problems-with-arm-templates/&lt;/p&gt;
-</description>
-        <pubDate>Thu, 03 May 2018 00:00:00 +0200</pubDate>
-        <link>/Deploying-a-custom-OMS-Log-Analytics-Workspace-via-GitHub-Avoid-problems-with-ARM-templates/</link>
-        <guid isPermaLink="true">/Deploying-a-custom-OMS-Log-Analytics-Workspace-via-GitHub-Avoid-problems-with-ARM-templates/</guid>
-        
-        
-        <category>Azure Monitor</category>
+        <category>PowerShell</category>
         
       </item>
     

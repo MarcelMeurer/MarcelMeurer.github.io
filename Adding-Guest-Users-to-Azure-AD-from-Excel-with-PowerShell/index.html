@@ -21,7 +21,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2018-07-13T00:00:00+02:00" />
 <script type="application/ld+json">
-{"image":"/wp-content/uploads/2018/07/excel01-1-1024x260.png","url":"/Adding-Guest-Users-to-Azure-AD-from-Excel-with-PowerShell/","mainEntityOfPage":{"@type":"WebPage","@id":"/Adding-Guest-Users-to-Azure-AD-from-Excel-with-PowerShell/"},"author":{"@type":"Person","name":"mm"},"description":"Sharing access across different tenants in one of the key benefits of Azure AD. My customers appreciate that they can provide Azure-based solution to their cooperated users and to guest users as well. Cooperated users include users from the group and subsidiaries. They all can access resources with one identity – on-premises and in the cloud (Same-sign-on, single-sign-on).","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"@type":"BlogPosting","headline":"Adding Guest Users to Azure AD from Excel with PowerShell","dateModified":"2018-07-13T00:00:00+02:00","datePublished":"2018-07-13T00:00:00+02:00","@context":"https://schema.org"}</script>
+{"url":"/Adding-Guest-Users-to-Azure-AD-from-Excel-with-PowerShell/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"Adding Guest Users to Azure AD from Excel with PowerShell","dateModified":"2018-07-13T00:00:00+02:00","datePublished":"2018-07-13T00:00:00+02:00","author":{"@type":"Person","name":"mm"},"description":"Sharing access across different tenants in one of the key benefits of Azure AD. My customers appreciate that they can provide Azure-based solution to their cooperated users and to guest users as well. Cooperated users include users from the group and subsidiaries. They all can access resources with one identity – on-premises and in the cloud (Same-sign-on, single-sign-on).","image":"/wp-content/uploads/2018/07/excel01-1-1024x260.png","mainEntityOfPage":{"@type":"WebPage","@id":"/Adding-Guest-Users-to-Azure-AD-from-Excel-with-PowerShell/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -89,17 +89,17 @@
 				
 					
 						<li class="nav-item">
-						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (1)</a>
+						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
 						</li>
 						
 					
 						<li class="nav-item">
-						<a class="nav-link" href="/categories#Azure">Azure (12)</a>
+						<a class="nav-link" href="/categories#Azure-VM">Azure VM (1)</a>
 						</li>
 						
 					
 						<li class="nav-item">
-						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (1)</a>
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (7)</a>
 						</li>
 						
 					
@@ -325,9 +325,7 @@
 37
 38
 39
-40
-</pre></td><td class="rouge-code"><pre><span class="p">[</span><span class="kt">sourcecode</span><span class="p">]</span><span class="w">
-</span><span class="nv">$invocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nf">Get-Variable</span><span class="w"> </span><span class="nx">MyInvocation</span><span class="p">)</span><span class="o">.</span><span class="nf">Value</span><span class="w">
+</pre></td><td class="rouge-code"><pre><span class="nv">$invocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nf">Get-Variable</span><span class="w"> </span><span class="nx">MyInvocation</span><span class="p">)</span><span class="o">.</span><span class="nf">Value</span><span class="w">
 </span><span class="nv">$directorypath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">Split-Path</span><span class="w"> </span><span class="nv">$invocation</span><span class="o">.</span><span class="nf">MyCommand</span><span class="o">.</span><span class="nf">Path</span><span class="w">
 </span><span class="nv">$directorypath</span><span class="w">
 
@@ -365,14 +363,14 @@
   </span><span class="nx">Set-AzureADUser</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$invitation</span><span class="o">.</span><span class="nf">InvitedUser</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-Department</span><span class="w"> </span><span class="nv">$Company</span><span class="w">
   </span><span class="nx">Set-AzureADUser</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$invitation</span><span class="o">.</span><span class="nf">InvitedUser</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-Displayname</span><span class="w"> </span><span class="nv">$user</span><span class="o">.</span><span class="nf">Displayname</span><span class="w">
   </span><span class="nv">$RowNum</span><span class="o">++</span><span class="w">
-</span><span class="p">}[</span><span class="nf">/sourcecode</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></pre></td></tr></tbody></table></code></pre></div></div>
 
 <p>If you run this script all users in the excel file will be invited to your Azure AD tenant.</p>
 
 <p>Remark: The company field can not be written to an Azure AD user object (read-only). So I write the company to the department field.</p>
 
-<p>First posted on: https://www.sepago.de/blog/adding-guest-users-to-azure-ad-from-excel-with-powershell/</p>
+<p>First published on: <a href="https://www.sepago.de/blog/adding-guest-users-to-azure-ad-from-excel-with-powershell/">https://www.sepago.de/blog/adding-guest-users-to-azure-ad-from-excel-with-powershell/</a></p>
 
 
             </div>
@@ -394,7 +392,11 @@
                     
                     
                     <li>
-                        <a class="smoothscroll" href="/categories#Azure">Azure</a>
+                        <a class="smoothscroll" href="/categories#Azure-AD">Azure AD</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#PowerShell">PowerShell</a>
                     </li>
                     
                 </ul>
@@ -413,10 +415,10 @@
             <!-- Prev/Next -->
             <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
             
-            <a class="prev d-block col-md-6" href="//Enumerating-Azure-AD-administrative-accounts-with-PowerShell/"> &laquo; Enumerating Azure AD administrative accounts with PowerShell</a>
+            <a class="prev d-block col-md-6" href="/Enumerating-Azure-AD-administrative-accounts-with-PowerShell/"> &laquo; Enumerating Azure AD administrative accounts with PowerShell</a>
             
             
-            <a class="next d-block col-md-6 text-lg-right" href="//Working-with-the-OneDrive-PowerShell-Module/">Working with the OneDrive PowerShell Module &raquo; </a>
+            <a class="next d-block col-md-6 text-lg-right" href="/Working-with-the-OneDrive-PowerShell-Module/">Working with the OneDrive PowerShell Module &raquo; </a>
             
             <div class="clearfix"></div>
             </div>
@@ -459,13 +461,31 @@ https://search.google.com/structured-data/testing-tool/u/0/
             
             
                 
-                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (1)</a>
+                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (12)</a>
+                    <a class="mt-1 mb-1" href="/categories#Azure-VM">Azure VM (1)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (1)</a>
+                    <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (7)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Events">Events (1)</a>
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (3)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (3)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-AD">Azure AD (4)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#OneDrive">OneDrive (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-IoT">Azure IoT (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Functions">Azure Functions (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Marketplace">Azure Marketplace (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
                 
             
             
