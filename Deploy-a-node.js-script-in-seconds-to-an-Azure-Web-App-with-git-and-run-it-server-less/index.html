@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logos/icon.png">
+
+<title>Deploy a node.js script in seconds to an Azure Web App with git and run it server-less | ITProCloud Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Deploy a node.js script in seconds to an Azure Web App with git and run it server-less | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Deploy a node.js script in seconds to an Azure Web App with git and run it server-less" />
+<meta name="author" content="mm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Deploy a node.js script in seconds to an Azure Web App with git and run it server-less" />
+<meta property="og:description" content="Deploy a node.js script in seconds to an Azure Web App with git and run it server-less" />
+<meta property="og:site_name" content="ITProCloud Blog" />
+<meta property="og:image" content="/wp-content/uploads/2017/12/deploynodejsapp-10.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2017-09-04T00:00:00+02:00" />
+<script type="application/ld+json">
+{"image":"/wp-content/uploads/2017/12/deploynodejsapp-10.png","url":"/Deploy-a-node.js-script-in-seconds-to-an-Azure-Web-App-with-git-and-run-it-server-less/","mainEntityOfPage":{"@type":"WebPage","@id":"/Deploy-a-node.js-script-in-seconds-to-an-Azure-Web-App-with-git-and-run-it-server-less/"},"author":{"@type":"Person","name":"mm"},"description":"Deploy a node.js script in seconds to an Azure Web App with git and run it server-less","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"@type":"BlogPosting","headline":"Deploy a node.js script in seconds to an Azure Web App with git and run it server-less","dateModified":"2017-09-04T00:00:00+02:00","datePublished":"2017-09-04T00:00:00+02:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<!--- cookie banner --->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-post">
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logos/itpc-logo-bottom-text.png" alt="ITProCloud Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
+                </li>
+	
+				
+				
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (1)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure">Azure (12)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (1)</a>
+						</li>
+						
+					
+				
+								
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://twitter.com/MarcelMeurer"><i class="fab fa-twitter"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/marcel-meurer-15b46b98"><i class="fab fa-linkedin"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://github.com/MarcelMeurer"><i class="fab fa-github"></i></a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="mailto:marcel.meurer@sepago.de?subject=Request%20from%20ITProCloud.de"><i class="far fa-envelope"></i></a>
+                </li>
+
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">ITProCloud Blog</h1>
+    <p class="lead">
+        The blog site of ITProCloud
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <!-- Begin Article
+================================================== -->
+<div class="container">
+    <div class="row">
+
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Deploy a node.js script in seconds to an Azure Web App with git and run it server-less&url=/Deploy-a-node.js-script-in-seconds-to-an-Azure-Web-App-with-git-and-run-it-server-less/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=/Deploy-a-node.js-script-in-seconds-to-an-Azure-Web-App-with-git-and-run-it-server-less/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=/Deploy-a-node.js-script-in-seconds-to-an-Azure-Web-App-with-git-and-run-it-server-less/" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+
+    </ul>
+    
+    <div class="sep">
+    </div>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
+    
+</div>
+
+        </div>
+
+        <!-- Post -->
+        
+
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
+
+                <!-- Author Box -->
+                
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                        
+                        <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
+                        
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href="https://www.sepago.de/marcel">Marcel</a><a target="_blank" href="https://twitter.com/MarcelMeurer" class="btn follow">Follow</a>
+                        <span class="author-description">That's me: Marcel</span>
+                    </div>
+                </div>
+                
+
+                <!-- Post Title -->
+                <h1 class="posttitle">Deploy a node.js script in seconds to an Azure Web App with git and run it server-less</h1>
+
+            </div>
+
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
+
+            <!-- Post Featured Image -->
+            
+
+            
+            <img class="featured-image img-fluid" src="/wp-content/uploads/2017/12/deploynodejsapp-10.png" alt="Deploy a node.js script in seconds to an Azure Web App with git and run it server-less">
+            
+
+            
+            <!-- End Featured Image -->
+
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <p>Deploy a node.js script in seconds to an Azure Web App with git and run it server-less</p>
+
+<p>In customer projects, I sometimes develop small applications to collect and process data from different data sources or to offer a web interface. In any case, I try to avoid rolling out a VM to run these apps. I strictly prefer using Platform-as-a-Service and it works nearly 100% if I use an Azure Web App or Azure Functions.</p>
+
+<p>The advantages are obvious:</p>
+
+<ul>
+  <li>No patching of VM’s</li>
+  <li>No further infrastructure for VM’s</li>
+  <li>No monitoring of OS specific metrics</li>
+  <li>No additional monitoring solution</li>
+  <li>Not involved in release cycles for the operating system</li>
+  <li>And a lot more</li>
+</ul>
+
+<p>In this post, I will describe how easy it is to deploy a node.js application with git to an Azure Web App. To make it more comprehensible I will describe it with a node.js game called “tanks” from @darthrubens. Tanks is a multi-player game developed in node.js.</p>
+
+<h3 id="tools">Tools</h3>
+
+<p>Later in this post we will need a few tools to test the game locally and to upload it to an Azure Web App.</p>
+
+<p>Install:</p>
+
+<ul>
+  <li>Node.js:<a href="https://nodejs.org/"> https://nodejs.org</a>
+to test the node.js application locally</li>
+  <li>Git: <a href="https://git-for-windows.github.io/">https://git-for-windows.github.io</a>
+to manage the source code and in this case: to upload applications</li>
+  <li>The node.js application for this test: https://github.com/rubentd/tanks
+download the zip file and extract it to a folder</li>
+</ul>
+
+<h3 id="create-an-azure-web-app">Create an Azure Web App</h3>
+
+<p>Create an Azure Web App in the Azure Portal with an App service plan (or use an existing one):</p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-01.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-01.png" alt="deploynodejsapp-01" /></a></p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-02.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-02.png" alt="deploynodejsapp-02" /></a></p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-03.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-03.png" alt="img" /></a></p>
+
+<p>Use at least a standard pricing tier to enable apps to run permanently.</p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-04.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-04.png" alt="deploynodejsapp-04" /></a></p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-05.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-05.png" alt="img" /></a></p>
+
+<p><a href="https://www.sepago.com/files/drupal/styles/sepago_colorbox_full/public/deploynodejsapp-05.png?itok=ps3glAaS">false</a></p>
+
+<p>Configuration of the Azure Web App (save it):</p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-06.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-06.png" alt="img" /></a></p>
+
+<p>Get the publishing information (username and password) by downloading the profile:</p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-07.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-07.png" alt="deploynodejsapp-07" /></a></p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-08.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-08.png" alt="deploynodejsapp-08" /></a></p>
+
+<p>Write down the username, password and the web app url for later.</p>
+
+<h3 id="test-the-application-locally-optional">Test the application locally (optional)</h3>
+
+<p>Extract the zip file from tanks to a folder, open a command line and navigate to this folder. At the very first time, you must install the packages and dependencies for the node.js application. Type:</p>
+
+<p><em>npm install</em></p>
+
+<p>To run the node.js application type:</p>
+
+<p><em>npm start</em></p>
+
+<p>The application starts and is accessible by this url: http://localhost:8082/</p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-09.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-09.png" alt="img" /></a></p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-10.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-10.png" alt="deploynodejsapp-10" /></a></p>
+
+<h3 id="upload-the-nodejs-application-to-the-azure-web-app">Upload the node.js application to the Azure Web App</h3>
+
+<p>In this post, I use git to manage the source code and upload it to Azure. I recommend learning how to use git. It’s a very powerful tool. I only describe the necessary steps here.</p>
+
+<p>First initialize your git project by typing:</p>
+
+<p><em>git init</em></p>
+
+<p>Add the files and directories to your local repository</p>
+
+<p>*git add **</p>
+
+<p>Then commit all to git:</p>
+
+<p><em>git commit -m “Init”</em></p>
+
+<p>Add the web app as a remote repository (use your web app url and add scm after the host name):</p>
+
+<p><em>git remote add azure http://deploy-an-app.scm.azurewebsites.net</em></p>
+
+<p>And finally push your application (you will be asked for the username and password)</p>
+
+<p><em>git push azure master</em></p>
+
+<p>Hint: Git ignores node_modules folder. The modules will be installed by the Azure Web App based on the dependencies listed in packages.json</p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-11.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-11.png" alt="deploynodejsapp-11" /></a></p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-12.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-12.png" alt="deploynodejsapp-12" /></a></p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-13.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-13.png" alt="deploynodejsapp-13" /></a></p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-14.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-14.png" alt="deploynodejsapp-14" /></a></p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-15.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-15.png" alt="deploynodejsapp-15" /></a></p>
+
+<h3 id="done">Done</h3>
+
+<p>Your Azure Web App is now running your node.js application:</p>
+
+<p><a href="/wp-content/uploads/2017/12/deploynodejsapp-16_0.png"><img src="/wp-content/uploads/2017/12/deploynodejsapp-16_0.png" alt="deploynodejsapp-16_0" /></a></p>
+
+<p>First posted on: https://www.sepago.de/blog/deploy-a-node-js-script-in-seconds-to-an-azure-web-app-with-git-and-run-it-server-less/</p>
+
+            </div>
+
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2017-09-04">04 Sep 2017</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Azure-WebApp">Azure WebApp</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            
+            <a class="next d-block col-md-6 text-lg-right" href="//How-to-use-http-delete,-put,-head,-connections,-connect-with-an-Azure-Web-App/">How to use http delete, put, head, connections, connect with an Azure Web App &raquo; </a>
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
+        </div>
+        <!-- End Post -->
+
+    </div>
+</div>
+<!-- End Article
+================================================== -->
+
+<!-- Begin Comments
+================================================== -->
+
+<!--End Comments
+================================================== -->
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div id="allTags" class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore by tags <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (12)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Events">Events (1)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 text-center text-lg-left">
+                Copyright © 2019 ITProCloud Blog 
+            </div>
+            <div class="col-md-4 col-sm-4 text-center text-lg-left">
+                <a href="/Impressum">Impressum/Imprint</a> - 
+                <a href="/privacyDe">Datenschutz</a> - 
+				<a href="/privacyEn">Privacy</a>
+            </div>
+            <div class="col-md-3 col-sm-3 text-center text-lg-right">    
+                <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+<script id="dsq-count-scr" src="//.disqus.com/count.js"></script>
+
+
+<!-- Start Cookie Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#eaf7f7",
+      "text": "#5c7291"
+    },
+    "button": {
+      "background": "#56cbdb",
+      "text": "#ffffff"
+    }
+  },
+  "position": "bottom-right",
+  "content": {
+    "message": 'This website uses cookies to ensure you get the best experience on our website.<br/><a href="/privacyEn">Privacy policy</a><br/><br/>Diese Website verwendet Cookies, um dir mehr Benutzerfreundlichkeit zu bieten. Mit der Nutzung dieser Website stimmst du der Verwendung von Cookies zu.<br/><a href="/privacyDe">Datenschutzerklärung</a><br/><br/> ',
+    "href": "/privacyEn"
+  }
+});
+</script>
+<!-- End Cookie Plugin -->
+
+</body>
+</html>

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logos/icon.png">
+
+<title>Creating devices for Azure IoT Hub with SAS token automatically | ITProCloud Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Creating devices for Azure IoT Hub with SAS token automatically | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Creating devices for Azure IoT Hub with SAS token automatically" />
+<meta name="author" content="mm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A few weeks ago, I started an IoT project with a company responsible for a huge amount of different buildings around the world. We deployed several virtual and physical sensors in Azure IoT Hub. Doing this we had three challenges:" />
+<meta property="og:description" content="A few weeks ago, I started an IoT project with a company responsible for a huge amount of different buildings around the world. We deployed several virtual and physical sensors in Azure IoT Hub. Doing this we had three challenges:" />
+<meta property="og:site_name" content="ITProCloud Blog" />
+<meta property="og:image" content="/wp-content/uploads/2018/11/IOT-1024x410.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-11-23T00:00:00+01:00" />
+<script type="application/ld+json">
+{"image":"/wp-content/uploads/2018/11/IOT-1024x410.png","url":"/Creating-devices-for-Azure-IoT-Hub-with-SAS-token-automatically/","mainEntityOfPage":{"@type":"WebPage","@id":"/Creating-devices-for-Azure-IoT-Hub-with-SAS-token-automatically/"},"author":{"@type":"Person","name":"mm"},"description":"A few weeks ago, I started an IoT project with a company responsible for a huge amount of different buildings around the world. We deployed several virtual and physical sensors in Azure IoT Hub. Doing this we had three challenges:","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"@type":"BlogPosting","headline":"Creating devices for Azure IoT Hub with SAS token automatically","dateModified":"2018-11-23T00:00:00+01:00","datePublished":"2018-11-23T00:00:00+01:00","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<!--- cookie banner --->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-post">
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logos/itpc-logo-bottom-text.png" alt="ITProCloud Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
+                </li>
+	
+				
+				
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (1)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure">Azure (12)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (1)</a>
+						</li>
+						
+					
+				
+								
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://twitter.com/MarcelMeurer"><i class="fab fa-twitter"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/marcel-meurer-15b46b98"><i class="fab fa-linkedin"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://github.com/MarcelMeurer"><i class="fab fa-github"></i></a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="mailto:marcel.meurer@sepago.de?subject=Request%20from%20ITProCloud.de"><i class="far fa-envelope"></i></a>
+                </li>
+
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">ITProCloud Blog</h1>
+    <p class="lead">
+        The blog site of ITProCloud
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <!-- Begin Article
+================================================== -->
+<div class="container">
+    <div class="row">
+
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Creating devices for Azure IoT Hub with SAS token automatically&url=/Creating-devices-for-Azure-IoT-Hub-with-SAS-token-automatically/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=/Creating-devices-for-Azure-IoT-Hub-with-SAS-token-automatically/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=/Creating-devices-for-Azure-IoT-Hub-with-SAS-token-automatically/" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+
+    </ul>
+    
+    <div class="sep">
+    </div>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
+    
+</div>
+
+        </div>
+
+        <!-- Post -->
+        
+
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
+
+                <!-- Author Box -->
+                
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                        
+                        <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
+                        
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href="https://www.sepago.de/marcel">Marcel</a><a target="_blank" href="https://twitter.com/MarcelMeurer" class="btn follow">Follow</a>
+                        <span class="author-description">That's me: Marcel</span>
+                    </div>
+                </div>
+                
+
+                <!-- Post Title -->
+                <h1 class="posttitle">Creating devices for Azure IoT Hub with SAS token automatically</h1>
+
+            </div>
+
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
+
+            <!-- Post Featured Image -->
+            
+
+            
+            <img class="featured-image img-fluid" src="/wp-content/uploads/2018/11/IOT-1024x410.png" alt="Creating devices for Azure IoT Hub with SAS token automatically">
+            
+
+            
+            <!-- End Featured Image -->
+
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <p>A few weeks ago, I started an IoT project with a company responsible for a huge amount of different buildings around the world. We deployed several virtual and physical sensors in Azure IoT Hub. Doing this we had three challenges:</p>
+
+<ul>
+  <li>Deploy new IoT devices in Azure IoT hub in a batch</li>
+  <li>Generate SAS tokens for these IoT devices</li>
+  <li>Generate SAS tokens even if a device still exist in Azure IoT Hub</li>
+</ul>
+
+<p>The requirement of batch processing avoids the use of the Device Explorer to generate SAS token. Therefore, I wrote a short PowerShell script:</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+</pre></td><td class="rouge-code"><pre><span class="kr">function</span><span class="w"> </span><span class="nf">New-SASToken</span><span class="w">
+</span><span class="p">{</span><span class="w">
+</span><span class="kr">PARAM</span><span class="p">(</span><span class="w">
+</span><span class="p">[</span><span class="kt">Parameter</span><span class="p">(</span><span class="kt">Mandatory</span><span class="o">=</span><span class="nv">$True</span><span class="p">)]</span><span class="w">
+</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nv">$ResourceUri</span><span class="p">,</span><span class="w">
+</span><span class="p">[</span><span class="kt">Parameter</span><span class="p">(</span><span class="kt">Mandatory</span><span class="o">=</span><span class="nv">$True</span><span class="p">)]</span><span class="w">
+</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nv">$Key</span><span class="p">,</span><span class="w">
+</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nv">$KeyName</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span><span class="w">
+</span><span class="p">[</span><span class="kt">int</span><span class="p">]</span><span class="nv">$TokenTimeOut</span><span class="o">=</span><span class="mi">1800</span><span class="w"> </span><span class="c"># in seconds</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="p">[</span><span class="no">Reflection.</span><span class="kt">Assembly</span><span class="p">]::</span><span class="nf">LoadWithPartialName</span><span class="p">(</span><span class="s2">"System.Web"</span><span class="p">)</span><span class="o">|</span><span class="w"> </span><span class="nf">out-null</span><span class="w">
+</span><span class="nv">$Expires</span><span class="o">=</span><span class="p">([</span><span class="kt">DateTimeOffset</span><span class="p">]::</span><span class="nf">Now.ToUnixTimeSeconds</span><span class="p">())</span><span class="o">+</span><span class="nv">$TokenTimeOut</span><span class="w">
+</span><span class="c">#Building Token</span><span class="w">
+</span><span class="nv">$SignatureString</span><span class="o">=</span><span class="p">[</span><span class="no">System.Web.</span><span class="kt">HttpUtility</span><span class="p">]::</span><span class="nf">UrlEncode</span><span class="p">(</span><span class="nv">$ResourceUri</span><span class="p">)</span><span class="o">+</span><span class="w"> </span><span class="s2">"</span><span class="se">`n</span><span class="s2">"</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nv">$Expires</span><span class="w">
+</span><span class="nv">$HMAC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">New-Object</span><span class="w"> </span><span class="nx">System.Security.Cryptography.HMACSHA256</span><span class="w">
+</span><span class="nv">$HMAC</span><span class="o">.</span><span class="nf">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="kt">Convert</span><span class="p">]::</span><span class="nf">FromBase64String</span><span class="p">(</span><span class="nv">$Key</span><span class="p">)</span><span class="w">
+</span><span class="nv">$Signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$HMAC</span><span class="o">.</span><span class="nf">ComputeHash</span><span class="p">([</span><span class="no">Text.</span><span class="kt">Encoding</span><span class="p">]::</span><span class="nf">ASCII.GetBytes</span><span class="p">(</span><span class="nv">$SignatureString</span><span class="p">))</span><span class="w">
+</span><span class="nv">$Signature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="kt">Convert</span><span class="p">]::</span><span class="nf">ToBase64String</span><span class="p">(</span><span class="nv">$Signature</span><span class="p">)</span><span class="w">
+</span><span class="nv">$SASToken</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"SharedAccessSignature sr="</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">[</span><span class="no">System.Web.</span><span class="kt">HttpUtility</span><span class="p">]::</span><span class="nf">UrlEncode</span><span class="p">(</span><span class="nv">$ResourceUri</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">"&amp;sig="</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">[</span><span class="no">System.Web.</span><span class="kt">HttpUtility</span><span class="p">]::</span><span class="nf">UrlEncode</span><span class="p">(</span><span class="nv">$Signature</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s2">"&amp;se="</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">$Expires</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$KeyName</span><span class="w"> </span><span class="o">-ne</span><span class="s2">""</span><span class="p">)</span><span class="w">
+</span><span class="p">{</span><span class="w">
+</span><span class="nv">$SASToken</span><span class="o">=</span><span class="nv">$SASToken</span><span class="o">+</span><span class="s2">"&amp;skn=</span><span class="nv">$KeyName</span><span class="s2">"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="kr">return</span><span class="w"> </span><span class="nv">$SASToken</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="kr">function</span><span class="w"> </span><span class="nf">New-IoTDevice</span><span class="w">
+</span><span class="p">{</span><span class="w">
+</span><span class="kr">PARAM</span><span class="p">(</span><span class="w">
+</span><span class="p">[</span><span class="kt">Parameter</span><span class="p">(</span><span class="kt">Mandatory</span><span class="o">=</span><span class="nv">$True</span><span class="p">)]</span><span class="w">
+</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nv">$IoTHubConnectionString</span><span class="p">,</span><span class="w">
+</span><span class="p">[</span><span class="kt">Parameter</span><span class="p">(</span><span class="kt">Mandatory</span><span class="o">=</span><span class="nv">$True</span><span class="p">)]</span><span class="w">
+</span><span class="p">[</span><span class="kt">string</span><span class="p">]</span><span class="nv">$DeviceId</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="p">[</span><span class="no">Reflection.</span><span class="kt">Assembly</span><span class="p">]::</span><span class="nf">LoadWithPartialName</span><span class="p">(</span><span class="s2">"System.Web"</span><span class="p">)</span><span class="o">|</span><span class="w"> </span><span class="nf">out-null</span><span class="w">
+</span><span class="nv">$strings</span><span class="o">=</span><span class="nv">$IoTHubConnectionString</span><span class="o">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">";"</span><span class="p">)</span><span class="w">
+</span><span class="nv">$keys</span><span class="w"> </span><span class="o">=</span><span class="p">@{}</span><span class="w">
+</span><span class="kr">for</span><span class="w"> </span><span class="p">(</span><span class="nv">$i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="nv">$i</span><span class="w"> </span><span class="o">-lt</span><span class="w"> </span><span class="nv">$strings</span><span class="o">.</span><span class="nf">count</span><span class="p">;</span><span class="w"> </span><span class="nv">$i</span><span class="o">++</span><span class="p">)</span><span class="w">
+</span><span class="p">{</span><span class="w">
+</span><span class="nv">$keys</span><span class="p">[</span><span class="nv">$strings</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span><span class="o">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">)[</span><span class="mi">0</span><span class="p">]]</span><span class="o">=</span><span class="nv">$strings</span><span class="p">[</span><span class="nv">$i</span><span class="p">]</span><span class="o">.</span><span class="nf">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="nv">$keys</span><span class="p">[</span><span class="s2">"SharedAccessKey"</span><span class="p">]</span><span class="o">=</span><span class="nv">$keys</span><span class="p">[</span><span class="s2">"SharedAccessKey"</span><span class="p">]</span><span class="o">+</span><span class="s2">"="</span><span class="w">
+</span><span class="nv">$body</span><span class="o">=</span><span class="s1">'{deviceId:"'</span><span class="o">+</span><span class="nv">$DeviceId</span><span class="o">+</span><span class="s1">'"}'</span><span class="w">
+</span><span class="kr">try</span><span class="w">
+</span><span class="p">{</span><span class="w">
+</span><span class="nv">$webRequest</span><span class="o">=</span><span class="nf">Invoke-WebRequest</span><span class="w"> </span><span class="nt">-Method</span><span class="w"> </span><span class="nx">PUT</span><span class="w"> </span><span class="nt">-Uri</span><span class="w"> </span><span class="s2">"https://</span><span class="si">$(</span><span class="nv">$keys</span><span class="p">[</span><span class="s2">"HostName"</span><span class="p">]</span><span class="si">)</span><span class="s2">/devices/</span><span class="si">$(</span><span class="p">[</span><span class="no">System.Web.</span><span class="kt">HttpUtility</span><span class="p">]::</span><span class="nf">UrlEncode</span><span class="p">(</span><span class="nv">$DeviceId</span><span class="si">)</span><span class="s2">)?api-version=2018-06-30"</span><span class="w"> </span><span class="nt">-ContentType</span><span class="w"> </span><span class="s2">"application/json"</span><span class="w"> </span><span class="nt">-Header</span><span class="w"> </span><span class="p">@{</span><span class="w"> </span><span class="nx">Authorization</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">(</span><span class="nx">New</span><span class="err">-</span><span class="nx">SASToken</span><span class="w"> </span><span class="err">-</span><span class="nx">ResourceUri</span><span class="w"> </span><span class="nv">$keys</span><span class="err">[</span><span class="s2">"HostName"</span><span class="err">]</span><span class="w"> </span><span class="err">-</span><span class="nx">Key</span><span class="w"> </span><span class="nv">$keys</span><span class="err">[</span><span class="s2">"SharedAccessKey"</span><span class="err">]</span><span class="w"> </span><span class="err">-</span><span class="nx">KeyName</span><span class="w"> </span><span class="nv">$keys</span><span class="err">[</span><span class="s2">"SharedAccessKeyName"</span><span class="err">])</span><span class="p">}</span><span class="w"> </span><span class="nt">-Body</span><span class="w"> </span><span class="nv">$body</span><span class="w"> </span><span class="nt">-UseBasicParsing</span><span class="w">
+</span><span class="p">}</span><span class="w"> </span><span class="kr">catch</span><span class="w"> </span><span class="p">[</span><span class="no">System.Net.</span><span class="kt">WebException</span><span class="p">]</span><span class="w">
+</span><span class="p">{</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="bp">$_</span><span class="o">.</span><span class="nf">Exception</span><span class="o">.</span><span class="nf">Response</span><span class="o">.</span><span class="nf">StatusCode</span><span class="o">.</span><span class="nf">value__</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="nx">409</span><span class="p">)</span><span class="w">
+</span><span class="p">{</span><span class="w">
+</span><span class="nf">write-host</span><span class="w"> </span><span class="s2">"Device exists. Getting data from IoT hub"</span><span class="w">
+</span><span class="nv">$webRequest</span><span class="o">=</span><span class="nf">Invoke-WebRequest</span><span class="w"> </span><span class="nt">-Method</span><span class="w"> </span><span class="nx">GET</span><span class="w"> </span><span class="nt">-Uri</span><span class="w"> </span><span class="s2">"https://</span><span class="si">$(</span><span class="nv">$keys</span><span class="p">[</span><span class="s2">"HostName"</span><span class="p">]</span><span class="si">)</span><span class="s2">/devices/</span><span class="si">$(</span><span class="p">[</span><span class="no">System.Web.</span><span class="kt">HttpUtility</span><span class="p">]::</span><span class="nf">UrlEncode</span><span class="p">(</span><span class="nv">$DeviceId</span><span class="si">)</span><span class="s2">)?api-version=2018-06-30"</span><span class="w"> </span><span class="nt">-ContentType</span><span class="w"> </span><span class="s2">"application/json"</span><span class="w"> </span><span class="nt">-Header</span><span class="w"> </span><span class="p">@{</span><span class="w"> </span><span class="nx">Authorization</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">(</span><span class="nx">New</span><span class="err">-</span><span class="nx">SASToken</span><span class="w"> </span><span class="err">-</span><span class="nx">ResourceUri</span><span class="w"> </span><span class="nv">$keys</span><span class="err">[</span><span class="s2">"HostName"</span><span class="err">]</span><span class="w"> </span><span class="err">-</span><span class="nx">Key</span><span class="w"> </span><span class="nv">$keys</span><span class="err">[</span><span class="s2">"SharedAccessKey"</span><span class="err">]</span><span class="w"> </span><span class="err">-</span><span class="nx">KeyName</span><span class="w"> </span><span class="nv">$keys</span><span class="err">[</span><span class="s2">"SharedAccessKeyName"</span><span class="err">])</span><span class="p">}</span><span class="w"> </span><span class="nt">-UseBasicParsing</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="kr">else</span><span class="w">
+</span><span class="p">{</span><span class="w">
+</span><span class="nf">Write-Error</span><span class="w"> </span><span class="s2">"An exception was caught: </span><span class="si">$(</span><span class="bp">$_</span><span class="o">.</span><span class="nf">Exception</span><span class="o">.</span><span class="nf">Message</span><span class="p">)</span><span class="s2">"
+}
+}
+return ConvertFrom-Json </span><span class="nv">$webRequest</span><span class="s2">.Content
+}
+function Send-IoTDeviceTestString
+{
+PARAM(
+[Parameter(Mandatory=</span><span class="nv">$True</span><span class="s2">)]
+[string]</span><span class="nv">$sasToken</span><span class="s2">
+)
+[Reflection.Assembly]::LoadWithPartialName("</span><span class="nx">System.Web</span><span class="s2">")| out-null
+</span><span class="nv">$t1</span><span class="s2">=[System.Web.HttpUtility]::UrlDecode(</span><span class="nv">$sasToken</span><span class="s2">)
+</span><span class="nv">$t2</span><span class="s2">=</span><span class="nv">$t1</span><span class="s2">.Split("</span><span class="o">=</span><span class="s2">")
+</span><span class="nv">$t3</span><span class="s2">=</span><span class="nv">$t2</span><span class="s2">[1].Split("</span><span class="o">&amp;</span><span class="s2">")[0]
+</span><span class="nv">$deviceId</span><span class="s2">=</span><span class="nv">$t3</span><span class="s2">.Split("</span><span class="nf">/</span><span class="s2">")[2]
+</span><span class="nv">$iotHubDeviceHost</span><span class="s2">=</span><span class="nv">$t3</span><span class="s2">
+
+</span><span class="nv">$iotHubRestURI</span><span class="s2"> = "</span><span class="nx">https://</span><span class="err">$</span><span class="p">(</span><span class="nv">$iotHubDeviceHost</span><span class="si">)</span><span class="s2">/messages/events?api-version=2018-04-01"</span><span class="w">
+</span><span class="c">#$iotHubRestURI</span><span class="w">
+</span><span class="nv">$Headers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@{</span><span class="s2">"Authorization"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$sasToken</span><span class="err">;</span><span class="w"> </span><span class="s2">"Content-Type"</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"application/json"</span><span class="p">}</span><span class="w">
+</span><span class="c"># Message Payload</span><span class="w">
+</span><span class="nv">$datetime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">get-date</span><span class="w">
+</span><span class="nv">$body</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@{</span><span class="w">
+</span><span class="nx">datetime</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$datetime</span><span class="w">
+</span><span class="nx">deviceId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$deviceId</span><span class="w">
+</span><span class="nx">Message</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Sending data to iot hub"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span><span class="nv">$body</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$body</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nf">ConvertTo-Json</span><span class="w">
+</span><span class="kr">return</span><span class="w"> </span><span class="nf">Invoke-RestMethod</span><span class="w"> </span><span class="nt">-Uri</span><span class="w"> </span><span class="nv">$iotHubRestURI</span><span class="w"> </span><span class="nt">-Headers</span><span class="w"> </span><span class="nv">$Headers</span><span class="w"> </span><span class="nt">-Method</span><span class="w"> </span><span class="nx">Post</span><span class="w"> </span><span class="nt">-Body</span><span class="w"> </span><span class="nv">$body</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="c">#</span><span class="w">
+</span><span class="nv">$iotHubName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"Workshop-IoT"</span><span class="w"> </span><span class="c"># host name of the iot hub</span><span class="w">
+</span><span class="nv">$iotManagementConnectionString</span><span class="o">=</span><span class="s2">"HostName=Workshop-IoT.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"</span><span class="w"> </span><span class="c"># insert the connection string of your iot hub</span><span class="w">
+
+</span><span class="c"># name of the new devices</span><span class="w">
+</span><span class="nv">$array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@(</span><span class="w">
+</span><span class="s2">"TestDev1"</span><span class="p">,</span><span class="w">
+</span><span class="s2">"SEPAGO_HBS2.0_DE_Cologne_HQ_VDEV_ISP08-IO0"</span><span class="p">,</span><span class="w">
+</span><span class="s2">"SEPAGO_HBS2.0_DE_Cologne_HQ_VDEV_ISP08-RTU"</span><span class="w">
+</span><span class="p">)</span><span class="w">
+
+</span><span class="kr">foreach</span><span class="w"> </span><span class="p">(</span><span class="nv">$deviceId</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$array</span><span class="p">){</span><span class="w">
+</span><span class="nf">Write-Host</span><span class="w"> </span><span class="s2">"New device created: </span><span class="si">$(</span><span class="nv">$deviceId</span><span class="si">)</span><span class="s2">"</span><span class="w">
+</span><span class="nv">$device</span><span class="o">=</span><span class="nf">New-IoTDevice</span><span class="w"> </span><span class="nt">-IoTHubConnectionString</span><span class="w"> </span><span class="nv">$iotManagementConnectionString</span><span class="w"> </span><span class="nt">-DeviceId</span><span class="w"> </span><span class="nv">$deviceId</span><span class="w">
+</span><span class="nv">$sasToken</span><span class="o">=</span><span class="nf">New-SASToken</span><span class="w"> </span><span class="nt">-ResourceUri</span><span class="w"> </span><span class="s2">"</span><span class="si">$(</span><span class="nv">$iotHubName</span><span class="si">)</span><span class="s2">.azure-devices.net/devices/</span><span class="si">$(</span><span class="p">[</span><span class="no">System.Web.</span><span class="kt">HttpUtility</span><span class="p">]::</span><span class="nf">UrlEncode</span><span class="p">(</span><span class="nv">$device</span><span class="o">.</span><span class="nf">deviceId</span><span class="p">)</span><span class="si">)</span><span class="s2">"</span><span class="w"> </span><span class="nt">-Key</span><span class="w"> </span><span class="nv">$device</span><span class="o">.</span><span class="nf">authentication</span><span class="o">.</span><span class="nf">symmetricKey</span><span class="o">.</span><span class="nf">primaryKey</span><span class="w">
+
+</span><span class="nx">write-host</span><span class="w"> </span><span class="s2">"DeviceId:"</span><span class="p">,</span><span class="nv">$device</span><span class="o">.</span><span class="nf">deviceId</span><span class="w">
+</span><span class="nx">write-host</span><span class="w"> </span><span class="s2">"SASToken:"</span><span class="p">,</span><span class="nv">$sasToken</span><span class="w">
+</span><span class="nv">$deviceConfig</span><span class="w">
+</span><span class="nx">Send-IoTDeviceTestString</span><span class="w"> </span><span class="nt">-sasToken</span><span class="w"> </span><span class="nv">$sasToken</span><span class="w">
+</span><span class="nx">write-host</span><span class="p">(</span><span class="s2">"--------------------------"</span><span class="p">)</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Feel free to use it in your projects.</p>
+
+<p>Feedback welcome</p>
+
+<p><img src="/wp-content/uploads/2018/11/IOT-1024x410.png" alt="img" /></p>
+
+<p>First published on: https://www.sepago.de/blog/creating-devices-for-azure-iot-hub-with-sas-token-automatically/</p>
+
+            </div>
+
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2018-11-23">23 Nov 2018</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Azure">Azure</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            <a class="prev d-block col-md-6" href="//OneDrive-PowerShell-Module-Added-support-for-OneDrive-for-Business/"> &laquo; OneDrive PowerShell Module - Added support for OneDrive for Business</a>
+            
+            
+            <a class="next d-block col-md-6 text-lg-right" href="//Deploy-an-Azure-Functional-App-as-an-interface-to-Log-Analytics-Azure-Monitor/">Deploy an Azure Functional App as an interface to Log Analytics / Azure Monitor &raquo; </a>
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
+        </div>
+        <!-- End Post -->
+
+    </div>
+</div>
+<!-- End Article
+================================================== -->
+
+<!-- Begin Comments
+================================================== -->
+
+<!--End Comments
+================================================== -->
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div id="allTags" class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore by tags <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (12)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Events">Events (1)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 text-center text-lg-left">
+                Copyright © 2019 ITProCloud Blog 
+            </div>
+            <div class="col-md-4 col-sm-4 text-center text-lg-left">
+                <a href="/Impressum">Impressum/Imprint</a> - 
+                <a href="/privacyDe">Datenschutz</a> - 
+				<a href="/privacyEn">Privacy</a>
+            </div>
+            <div class="col-md-3 col-sm-3 text-center text-lg-right">    
+                <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+<script id="dsq-count-scr" src="//.disqus.com/count.js"></script>
+
+
+<!-- Start Cookie Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#eaf7f7",
+      "text": "#5c7291"
+    },
+    "button": {
+      "background": "#56cbdb",
+      "text": "#ffffff"
+    }
+  },
+  "position": "bottom-right",
+  "content": {
+    "message": 'This website uses cookies to ensure you get the best experience on our website.<br/><a href="/privacyEn">Privacy policy</a><br/><br/>Diese Website verwendet Cookies, um dir mehr Benutzerfreundlichkeit zu bieten. Mit der Nutzung dieser Website stimmst du der Verwendung von Cookies zu.<br/><a href="/privacyDe">Datenschutzerklärung</a><br/><br/> ',
+    "href": "/privacyEn"
+  }
+});
+</script>
+<!-- End Cookie Plugin -->
+
+</body>
+</html>
