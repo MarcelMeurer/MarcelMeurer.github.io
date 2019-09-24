@@ -211,17 +211,17 @@
   </li>
 </ul>
 
-<p>```powershell
-    #Get cpu consumption by process
-    (Get-Counter “\process(*)\% Processor Time”).CounterSamples</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
-</pre></td><td class="rouge-code"><pre>#Convert objects to 
-$json=$object | ConvertTo-Json
-```
-</pre></td></tr></tbody></table></code></pre></div></div>
+4
+5
+</pre></td><td class="rouge-code"><pre><span class="c">#Get cpu consumption by process</span><span class="w">
+</span><span class="p">(</span><span class="nf">Get-Counter</span><span class="w"> </span><span class="s2">"\process(*)\% Processor Time"</span><span class="p">)</span><span class="o">.</span><span class="nf">CounterSamples</span><span class="w">
+
+</span><span class="c">#Convert objects to </span><span class="w">
+</span><span class="nv">$json</span><span class="o">=</span><span class="nv">$object</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nf">ConvertTo-Json</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
 
 <h3 id="store-temperature-data-for-multiple-cities">Store temperature data for multiple cities</h3>
 
@@ -253,23 +253,23 @@ $json=$object | ConvertTo-Json
   </li>
 </ul>
 
-<p>```powershell
-    #Endless-loop
-    do {   } while ($true)</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
 3
 4
 5
 6
-</pre></td><td class="rouge-code"><pre>#Sleep $n seconds
-sleep $n
+7
+8
+</pre></td><td class="rouge-code"><pre><span class="c">#Endless-loop</span><span class="w">
+</span><span class="kr">do</span><span class="w"> </span><span class="p">{</span><span class="w">   </span><span class="p">}</span><span class="w"> </span><span class="kr">while</span><span class="w"> </span><span class="p">(</span><span class="bp">$true</span><span class="p">)</span><span class="w">
 
-#make a http request
-Invoke-WebRequest -Uri $uri -Method GET -ContentType "application/json"
-```
-</pre></td></tr></tbody></table></code></pre></div></div>
+</span><span class="c">#Sleep $n seconds</span><span class="w">
+</span><span class="nf">sleep</span><span class="w"> </span><span class="nv">$n</span><span class="w">
+
+</span><span class="c">#make a http request</span><span class="w">
+</span><span class="nf">Invoke-WebRequest</span><span class="w"> </span><span class="nt">-Uri</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="nt">-Method</span><span class="w"> </span><span class="nx">GET</span><span class="w"> </span><span class="nt">-ContentType</span><span class="w"> </span><span class="s2">"application/json"</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
 
 <h3 id="build-your-own-log-writer-function">Build your own log-writer function</h3>
 
