@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 09 Oct 2019 21:42:12 +0200</pubDate>
-    <lastBuildDate>Wed, 09 Oct 2019 21:42:12 +0200</lastBuildDate>
+    <pubDate>Wed, 09 Oct 2019 21:44:08 +0200</pubDate>
+    <lastBuildDate>Wed, 09 Oct 2019 21:44:08 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -39,7 +39,7 @@
 
 &lt;p&gt;Feel free to use it:&lt;/p&gt;
 
-&lt;p&gt;https://github.com/MarcelMeurer/Project-MySmartScale&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/MarcelMeurer/Project-MySmartScale&quot;&gt;https://github.com/MarcelMeurer/Project-MySmartScale&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Wed, 09 Oct 2019 00:00:00 +0200</pubDate>
         <link>/Anouncing-Project-MySmartScale/</link>
