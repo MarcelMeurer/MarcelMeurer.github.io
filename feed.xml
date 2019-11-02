@@ -5,9 +5,37 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 28 Oct 2019 21:55:17 +0100</pubDate>
-    <lastBuildDate>Mon, 28 Oct 2019 21:55:17 +0100</lastBuildDate>
+    <pubDate>Sat, 02 Nov 2019 21:54:33 +0100</pubDate>
+    <lastBuildDate>Sat, 02 Nov 2019 21:54:33 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>WVD Admin - A native administration Gui for Windows Virtual Desktop</title>
+        <description>&lt;p&gt;Windows Virtual Desktop is generally available and under continuous improvement. There was the time before Ignite 2019 where no administration GUI was publicly available. This changed with Ignite. The PG of Remote Desktop services releases an in-portal configuration for Windows Virtual Desktop which looks very nice and has a lot of configurable options. See &lt;a href=&quot;https://twitter.com/RDS4U/status/1189773044094361601&quot;&gt;https://twitter.com/RDS4U/status/1189773044094361601&lt;/a&gt; for a preview or check it out in the Azure portal.&lt;/p&gt;
+
+&lt;p&gt;Sometimes it helps to have a native GUI to make some configuration. Therefore I build a tool to do this. At this time you can administrate an existing WVD Tenant, add apps and desktops, send messages to users and more. The next version will have the capability to start and stop the VMs in Azure and do mass-rollout like Citrix’s machine creation service (with a template managing to build golden images).&lt;/p&gt;
+
+&lt;p&gt;To work with the GUI you need a service principal with the permission to administrate your WVD tenant or tenants. I decide to use a service principal at this time to avoid confusion if my Azure Ad user only a guest account in the WVD tenant to administrate. On the other hand: This service principal will be used in the next version to rollout new session hosts and to change their power state.&lt;/p&gt;
+
+&lt;p&gt;To give your service principal the right permission to your tenant execute the following PowerShell script first (where &lt;em&gt;Builder City&lt;/em&gt; is the tenant name and &lt;em&gt;89050a12-d7a5-49ee-97cd-000000000000&lt;/em&gt; your service principal id):&lt;/p&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;New-RdsRoleAssignment&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-TenantName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Builder City&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-RoleDefinitionName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;RDS Owner&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ApplicationId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;89050a12-d7a5-49ee-97cd-000000000000&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;And finally: Please give me feedback if something doesn’t work as expected or if you miss something.&lt;/p&gt;
+
+&lt;p&gt;Feel free to test it and download the 64-bit Windows application “WVD Admin” from here: &lt;a href=&quot;../assets/files/WVDAdmin.zip&quot;&gt;WVDAdmin.zip&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 02 Nov 2019 00:00:00 +0100</pubDate>
+        <link>/Windows-Virtual-Desktop-Admin/</link>
+        <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>PolarConf 2019 - Building own solutions whit Azure Monitor </title>
@@ -806,203 +834,6 @@ PARAM(
         
         
         <category>Azure IoT</category>
-        
-        <category>PowerShell</category>
-        
-      </item>
-    
-      <item>
-        <title>OneDrive PowerShell Module - Added support for OneDrive for Business</title>
-        <description>&lt;p&gt;More than two years ago, I created my PowerShell module to access OneDrive. This module can be installed with a one-liner from &lt;a href=&quot;https://www.powershellgallery.com/packages/OneDrive&quot;&gt;https://www.powershellgallery.com/packages/OneDrive&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Again, I was asked to support OneDrive for Business and finally, I’m ready: From version 2.0.0 OneDrive for Business is supported.&lt;/p&gt;
-
-&lt;p&gt;I provide the complete documentation on GitHub, where I will maintain it: &lt;a href=&quot;https://github.com/MarcelMeurer/PowerShellGallery-OneDrive&quot;&gt;https://github.com/MarcelMeurer/PowerShellGallery-OneDrive&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Here is the summary of version 2.0.0:&lt;/p&gt;
-
-&lt;p&gt;-———————————————&lt;/p&gt;
-
-&lt;p&gt;The OneDrive PowerShell module is available via PowerShellGallery.com. If you want to support and work with me feel free to make changes cloning this repo, change and send me and a pull request.&lt;/p&gt;
-
-&lt;p&gt;This OneDrive version (2.0.0 and higher in PowerShellGallery.com) supports:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;OneDrive personal&lt;/li&gt;
-  &lt;li&gt;OneDrive for Business&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;installation&quot;&gt;&lt;strong&gt;Installation&lt;/strong&gt;&lt;/h2&gt;
-
-&lt;p&gt;Open PowerShell and&lt;/p&gt;
-
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;Install-Module&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;OneDrive&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Scope&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CurrentUser&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-force&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;You can update the module to a newer version with the same command (-force). If you don’t use PowerShellGet currently, go to the Gallery on &lt;a href=&quot;https://www.powershellgallery.com/packages/OneDrive&quot;&gt;https://www.powershellgallery.com/packages/OneDrive&lt;/a&gt; and click “Get Started”.&lt;/p&gt;
-
-&lt;p&gt;Check your installation with&lt;/p&gt;
-
-&lt;p&gt;Get-Help -Name OneDrive&lt;/p&gt;
-
-&lt;h2 id=&quot;authentication&quot;&gt;&lt;strong&gt;Authentication&lt;/strong&gt;&lt;/h2&gt;
-
-&lt;p&gt;Before you start using the OneDrive module you have registered your script/application. This differs depending on the OneDrive version to be used.&lt;/p&gt;
-
-&lt;h3 id=&quot;onedrive-personal&quot;&gt;&lt;strong&gt;OneDrive Personal&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;Read this on my blog: &lt;a href=&quot;https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/&quot;&gt;https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/&lt;/a&gt;&lt;/p&gt;
-&lt;ul&gt;
-  &lt;li&gt;Go to: &lt;a href=&quot;https://apps.dev.microsoft.com/&quot;&gt;https://apps.dev.microsoft.com&lt;/a&gt; and login with your Microsoft Account (MSA) and “Add an app” in the category “converged applications”
-&lt;img src=&quot;/wp-content/uploads/2017/12/oda01.png&quot; alt=&quot;img&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Enter a name and press “create”
-&lt;img src=&quot;/wp-content/uploads/2017/12/oda02.png&quot; alt=&quot;img&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Press “Generate New Password” and save the password (app key)
-&lt;img src=&quot;/wp-content/uploads/2017/12/oda03.png&quot; alt=&quot;img&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Also, save the “Application id”&lt;/li&gt;
-  &lt;li&gt;Press “Add Platforms” and select “Web”
-&lt;img src=&quot;/wp-content/uploads/2017/12/oda04.png&quot; alt=&quot;img&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Check “Allow implicit Flow” and enter a “Redirect URL”. This is not a real URL. Choose a localhost address and note it. In my case, I chose: http://localhost/login
-&lt;img src=&quot;/wp-content/uploads/2017/12/oda05.png&quot; alt=&quot;img&quot; /&gt;
-&lt;img src=&quot;/wp-content/uploads/2017/12/oda06.png&quot; alt=&quot;img&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Press “Save”&lt;/li&gt;
-  &lt;li&gt;Now you have all the necessary data for your app/script:
-    &lt;ul&gt;
-      &lt;li&gt;Client Id: 5dd40b03-0ead-451b-b5e3-f704550e8cca&lt;/li&gt;
-      &lt;li&gt;AppKey: xqacs8K92MuCJKgciRHQ1Cf&lt;/li&gt;
-      &lt;li&gt;RedirectURI: http://localhost/login&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;To get an authentication token use:&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nv&quot;&gt;$Auth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Get-ODAuthentication&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ClientID&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;5dd40b03-0ead-451b-b5e3-f704550e8cca&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-AppKey&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;xqacs8K92MuCJKgciRHQ1Cf&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-RedirectURI&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;http://localhost/login&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2017/12/oda07.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;onedrive-for-business&quot;&gt;&lt;strong&gt;OneDrive for Business&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;To use OneDrive for business you have to register your script/app to in Azure Active Directory&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Add an application in Azure Active Directory inside the Azure portal: &lt;a href=&quot;https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps&quot;&gt;https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Chose “New application registration”&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Give your application a name and a unique sign-on URL. The sign-on URL has to be a valid URL but doesn’t have to exist. E.g.: &lt;a href=&quot;http://sepago.de/1Drive4Business&quot;&gt;http://sepago.de/1Drive4Business&lt;/a&gt; (make later sure that this URL is in the reply URL list of your application)
-&lt;img src=&quot;/wp-content/uploads/2018/01/od4b01.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Within the “Required permissions” add “Office 365 SharePoint Online (Microsoft.Sharepoint)”
-&lt;img src=&quot;/wp-content/uploads/2018/01/od4b02.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Select “Read and write user files” below “delegated permissions” for the Office 365 API
-&lt;img src=&quot;/wp-content/uploads/2018/01/od4b03.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Generate a secret key for this application and save it for later use. Also, save the application Id
-&lt;img src=&quot;/wp-content/uploads/2018/01/od4b04.png&quot; alt=&quot;img&quot; /&gt;
-&lt;img src=&quot;/wp-content/uploads/2018/01/od4b05_0.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;You should now have the following parameter:&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;Client Id: 2831fc52-e1b8-4493-9f3a-a3dad74b2081&lt;/li&gt;
-      &lt;li&gt;AppKey: TqoSXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=&lt;/li&gt;
-      &lt;li&gt;RedirectURI: http://sepago.de/1Drive4Business&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Additionally you need the resource URL for OneDrive for Business. Normally: https://-my.sharepoint.com/. In our company this is the URL “&lt;/p&gt;
-
-    &lt;p&gt;https://sepagogmbh-my.sharepoint.com/&lt;/p&gt;
-
-    &lt;p&gt;” (the last one / is important).&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;Resource ID: https://sepagogmbh-my.sharepoint.com/&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;To get an authentication token use:&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nv&quot;&gt;$Auth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Get-ODAuthentication&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ClientId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;2831fc52-e1b8-4493-9f3a-a3dad74b2081&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-AppKey&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;TqoSXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;nbsp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-RedirectURI&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;http://sepago.de/1Drive4Business&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ResourceId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://sepagogmbh-my.sharepoint.com/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;renew-the-authentication-with-a-refresh-token&quot;&gt;&lt;strong&gt;Renew the authentication with a refresh token&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;An access token is 1 hour valid. You can get a new access token with the refresh token provided by the last authentication. This is necessary if you are creating a script that will work for a long time without further user input. Renew your access token automatically in the program code.&lt;/p&gt;
-
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nv&quot;&gt;$Auth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Get-ODAuthentication&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ClientId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;2831fc52-e1b8-4493-9f3a-a3dad74b2081&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-AppKey&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;TqoSXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-RedirectURI&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;http://sepago.de/1Drive4Business&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ResourceId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://sepagogmbh-my.sharepoint.com/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-RefreshToken&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$LastAuth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;refresh_token&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Where $LastAuth is your last authentication result (containing the refresh token)&lt;/li&gt;
-  &lt;li&gt;For OneDrive personal leave the ResourceId empty (-ResourceId “”)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;working-with-files-and-folders&quot;&gt;&lt;strong&gt;Working with files and folders&lt;/strong&gt;&lt;/h2&gt;
-
-&lt;p&gt;Get an authentication code from above and store it in $Auth&lt;/p&gt;
-
-&lt;h3 id=&quot;list-files-and-folders&quot;&gt;&lt;strong&gt;List files and folders&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;Get-ODChildItems&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-AccessToken&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$Auth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;access_token&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ResourceId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://sepagogmbh-my.sharepoint.com/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-path&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;list-files-and-folders-1&quot;&gt;&lt;strong&gt;List files and folders&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;Remove-ODItem -AccessToken $Auth.access_token -ResourceId “https://sepagogmbh-my.sharepoint.com/” -path “/Upload”&lt;/p&gt;
-
-&lt;h3 id=&quot;creating-a-folder&quot;&gt;&lt;strong&gt;Creating a folder&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;New-ODFolder&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-AccessToken&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$Auth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;access_token&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ResourceId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://sepagogmbh-my.sharepoint.com/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-path&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-FolderName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Upload&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;upload-local-files-to-onedrive&quot;&gt;&lt;strong&gt;Upload local files to OneDrive&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;Add-ODItem&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-AccessToken&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$Auth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;access_token&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ResourceId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://sepagogmbh-my.sharepoint.com/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-LocalFile&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;D:\DEV\PowerShell\PowerShellGallery-OneDrive\Test\Uploads\IoT Workshop.pptx&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Path&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/Upload&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;list-onedrive-drives&quot;&gt;&lt;strong&gt;List OneDrive drives&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;Get-ODDrives&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-AccessToken&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$Auth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;access_token&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ResourceId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://sepagogmbh-my.sharepoint.com/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;downloading-some-files&quot;&gt;&lt;strong&gt;Downloading some files&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;Get-ODItem&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-AccessToken&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$Auth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;access_token&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ResourceId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://sepagogmbh-my.sharepoint.com/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Path&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/Upload/Doings.txt&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-LocalPath&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;D:\DEV\PowerShell\PowerShellGallery-OneDrive\Test\Downloads&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Get-ODItem&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-AccessToken&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$Auth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;access_token&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ResourceId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://sepagogmbh-my.sharepoint.com/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Path&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/Upload/Doings.txt&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-LocalPath&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;D:\DEV\PowerShell\PowerShellGallery-OneDrive\Test\Downloads&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-LocalFileName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Copy from OneDrive.Doings.txt&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;delete-a-file-in-onedrive&quot;&gt;&lt;strong&gt;Delete a file in OneDrive&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;Remove-ODItem&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-AccessToken&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$Auth&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;access_token&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ResourceId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://sepagogmbh-my.sharepoint.com/&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Path&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;/Upload/Doings.txt&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;First published on: &lt;a href=&quot;https://www.sepago.de/blog/onedrive-powershell-module-added-support-for-onedrive-for-business/&quot;&gt;https://www.sepago.de/blog/onedrive-powershell-module-added-support-for-onedrive-for-business/&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Mon, 05 Nov 2018 00:00:00 +0100</pubDate>
-        <link>/OneDrive-PowerShell-Module-Added-support-for-OneDrive-for-Business/</link>
-        <guid isPermaLink="true">/OneDrive-PowerShell-Module-Added-support-for-OneDrive-for-Business/</guid>
-        
-        
-        <category>OneDrive</category>
         
         <category>PowerShell</category>
         
