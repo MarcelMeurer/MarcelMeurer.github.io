@@ -1,0 +1,157 @@
+# This powershell script is part of WVD Admin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
+# Current Version of this script: 1.8
+
+param(
+
+	[string] $Secret='',
+
+	[Parameter(Mandatory)]
+	[ValidateNotNullOrEmpty()]
+	[ValidateSet('Generalize','JoinDomain')]
+	[string] $Mode,
+	[string] $LocalAdminName='localAdmin',
+	[string] $LocalAdminPassword='',
+	[string] $DomainJoinUserName='',
+	[string] $DomainJoinUserPassword='',
+	[string] $DomainJoinOU='',
+	[string] $DomainFqdn='',
+	[string] $WvdRegistrationKey='',
+	[string] $LogDir="$env:windir\system32\logfiles"
+)
+function LogWriter($message)
+{
+	write-host($message)
+	if ([System.IO.Directory]::Exists($LogDir)) {write-output($message) | Out-File $LogFile -Append}
+}
+
+# Define static variables
+$LocalConfig="C:\ITPC-WVD-PostCustomizing"
+
+# Define logfile
+$LogFile=$LogDir+"\"+$env:Computername+".log"
+
+# Main
+LogWriter("Starting ITPC-WVD-Image-Processing in mode ${Mode}")
+
+if ($mode -eq "Generalize")
+{
+	# Create local directory for script(s) and copy files (including the RD agent and boot loader - rename it to the specified name)
+	LogWriter("Copy files to local session host")
+	new-item $LocalConfig -ItemType Directory -ErrorAction Ignore
+	Copy-Item "${PSScriptRoot}\ITPC-WVD-Image-Processing.ps1" -Destination ($LocalConfig+"\")
+	Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgent.msi" -Destination ($LocalConfig+"\")
+	Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi" -Destination ($LocalConfig+"\")
+
+	LogWriter("Removing existing Remote Desktop Agent Boot Loader")
+	$app=Get-WmiObject -Class Win32_Product | Where-Object {$_.Name -match "Remote Desktop Agent Boot Loader"}
+	if ($app -ne $null) {$app.uninstall()}
+	LogWriter("Removing existing Remote Desktop Services Infrastructure Agent")
+	$app=Get-WmiObject -Class Win32_Product | Where-Object {$_.Name -match "Remote Desktop Services Infrastructure Agent"}
+	if ($app -ne $null) {$app.uninstall()}
+	Remove-Item -Path "HKLM:\SOFTWARE\Microsoft\RDMonitoringAgent" -Force -ErrorAction Ignore
+
+	LogWriter("Disabling ITPC-LogAnalyticAgent and MySmartScale if exist") 
+	Disable-ScheduledTask  -TaskName "ITPC-LogAnalyticAgent for RDS and Citrix" -ErrorAction Ignore
+	Disable-ScheduledTask  -TaskName "ITPC-MySmartScaleAgent" -ErrorAction Ignore
+	
+	LogWriter("Starting sysprep to generalize session host")
+	Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown /mode:vm"
+} elseif ($mode -eq "JoinDomain")
+{
+	LogWriter("Joining domain")
+	$psc = New-Object System.Management.Automation.PSCredential($DomainJoinUserName, (ConvertTo-SecureString $DomainJoinUserPassword -AsPlainText -Force))
+	if ($DomainJoinOU -eq "")
+	{
+		Add-Computer -DomainName $DomainFqdn -Credential $psc -Force
+	} 
+	else
+	{
+		Add-Computer -DomainName $DomainFqdn -OUPath $DomainJoinOU -Credential $psc -Force
+	}
+	LogWriter("Installing WVD boot loader")
+	Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgentBootLoader.msi" -ArgumentList "/q"
+	LogWriter("Installing WVD agent")
+	Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgent.msi" -ArgumentList "/q RegistrationToken=${WvdRegistrationKey}"
+
+	LogWriter("Enabling ITPC-LogAnalyticAgent and MySmartScale if exist") 
+	Enable-ScheduledTask  -TaskName "ITPC-LogAnalyticAgent for RDS and Citrix" -ErrorAction Ignore
+	Enable-ScheduledTask  -TaskName "ITPC-MySmartScaleAgent" -ErrorAction Ignore
+
+	LogWriter("Finally restarting session host")
+	Restart-Computer -Force
+}
+
+
+
+# SIG # Begin signature block
+# MIINCQYJKoZIhvcNAQcCoIIM+jCCDPYCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
+# gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUBMSa0ZhYCnAgqiLBi06bbTL1
+# 0f6gggpLMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
+# AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
+# VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
+# c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE5MTEwMjAwMDAwMFoXDTIwMTIx
+# NjEyMDAwMFowUDELMAkGA1UEBhMCREUxETAPBgNVBAcTCE9kZW50aGFsMRYwFAYD
+# VQQKEw1NYXJjZWwgTWV1cmVyMRYwFAYDVQQDEw1NYXJjZWwgTWV1cmVyMIIBIjAN
+# BgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxJ1DUj5XjI6g+ibsBGA967vdcWkq
+# 29ZK0VmTWEX1x2DY24VcGziscveMYOHk2Zox6rsV9HMO0Rp94FOUQIlQuBECjHOv
+# hAWOYM6LP1K5QXXS+F1WTeImXBZZ6CUNKEwPi5sj9yy8SVwbKABetPQQN8HjGzxr
+# q+GbAYJnOmE3loJ3crcAKhdu6a/v/ej7M0Yq2PH4wL8Ma8vlKFhfCoawOGVrstHz
+# 09ixCFGKMWCJqb+CbJtvVYjhGJBmuZdyF6fGtqWd6JVaLG2LOpsjWg73bNa8sVJZ
+# CEVlpqaO1rQ+h/7OnbDDRYrVtVifeC0hZUrzfqkOmTE34EaakWZUVNrwUQIDAQAB
+# o4IBxTCCAcEwHwYDVR0jBBgwFoAUWsS5eyoKo6XqcQPAYPkt9mV1DlgwHQYDVR0O
+# BBYEFKBaTBHA7/jzrwA1WK8speaMVurdMA4GA1UdDwEB/wQEAwIHgDATBgNVHSUE
+# DDAKBggrBgEFBQcDAzB3BgNVHR8EcDBuMDWgM6Axhi9odHRwOi8vY3JsMy5kaWdp
+# Y2VydC5jb20vc2hhMi1hc3N1cmVkLWNzLWcxLmNybDA1oDOgMYYvaHR0cDovL2Ny
+# bDQuZGlnaWNlcnQuY29tL3NoYTItYXNzdXJlZC1jcy1nMS5jcmwwTAYDVR0gBEUw
+# QzA3BglghkgBhv1sAwEwKjAoBggrBgEFBQcCARYcaHR0cHM6Ly93d3cuZGlnaWNl
+# cnQuY29tL0NQUzAIBgZngQwBBAEwgYQGCCsGAQUFBwEBBHgwdjAkBggrBgEFBQcw
+# AYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29tME4GCCsGAQUFBzAChkJodHRwOi8v
+# Y2FjZXJ0cy5kaWdpY2VydC5jb20vRGlnaUNlcnRTSEEyQXNzdXJlZElEQ29kZVNp
+# Z25pbmdDQS5jcnQwDAYDVR0TAQH/BAIwADANBgkqhkiG9w0BAQsFAAOCAQEAndPS
+# oRwriiWv4GxIAyClrMZsRQEWZyxP2+uuZpseh9Lq+DgvajL5QpwHN4QIUSM+pwMm
+# YZzn9lFCnKHvOlSoDseGHWLgW9J/kIvhLjHu7Jui+WRN7j9OpbDzTzTC8z7Ko4bQ
+# +VdIK9ZUUvA457EiWyXxAhajmNkok37FeOEVguOjRnG1+AFaiNs7HkdYjx7TNm1F
+# mON+NxoFwIsm2CHF3+99RXBFeZ3tXmGBxH+EcXhSqw+fKx3PI5xw6LkmbyfKWGox
+# 3MeRKaFYsxDmm0JAuyj46mGq2VvLo9uikLUr0f8aWKqJ/6qlU8LCHj/yzsYYcpjA
+# iZC0TcuOAbaZEI9PNzCCBTAwggQYoAMCAQICEAQJGBtf1btmdVNDtW+VUAgwDQYJ
+# KoZIhvcNAQELBQAwZTELMAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IElu
+# YzEZMBcGA1UECxMQd3d3LmRpZ2ljZXJ0LmNvbTEkMCIGA1UEAxMbRGlnaUNlcnQg
+# QXNzdXJlZCBJRCBSb290IENBMB4XDTEzMTAyMjEyMDAwMFoXDTI4MTAyMjEyMDAw
+# MFowcjELMAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UE
+# CxMQd3d3LmRpZ2ljZXJ0LmNvbTExMC8GA1UEAxMoRGlnaUNlcnQgU0hBMiBBc3N1
+# cmVkIElEIENvZGUgU2lnbmluZyBDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCC
+# AQoCggEBAPjTsxx/DhGvZ3cH0wsxSRnP0PtFmbE620T1f+Wondsy13Hqdp0FLreP
+# +pJDwKX5idQ3Gde2qvCchqXYJawOeSg6funRZ9PG+yknx9N7I5TkkSOWkHeC+aGE
+# I2YSVDNQdLEoJrskacLCUvIUZ4qJRdQtoaPpiCwgla4cSocI3wz14k1gGL6qxLKu
+# cDFmM3E+rHCiq85/6XzLkqHlOzEcz+ryCuRXu0q16XTmK/5sy350OTYNkO/ktU6k
+# qepqCquE86xnTrXE94zRICUj6whkPlKWwfIPEvTFjg/BougsUfdzvL2FsWKDc0GC
+# B+Q4i2pzINAPZHM8np+mM6n9Gd8lk9ECAwEAAaOCAc0wggHJMBIGA1UdEwEB/wQI
+# MAYBAf8CAQAwDgYDVR0PAQH/BAQDAgGGMBMGA1UdJQQMMAoGCCsGAQUFBwMDMHkG
+# CCsGAQUFBwEBBG0wazAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQu
+# Y29tMEMGCCsGAQUFBzAChjdodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vRGln
+# aUNlcnRBc3N1cmVkSURSb290Q0EuY3J0MIGBBgNVHR8EejB4MDqgOKA2hjRodHRw
+# Oi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVkSURSb290Q0EuY3Js
+# MDqgOKA2hjRodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vRGlnaUNlcnRBc3N1cmVk
+# SURSb290Q0EuY3JsME8GA1UdIARIMEYwOAYKYIZIAYb9bAACBDAqMCgGCCsGAQUF
+# BwIBFhxodHRwczovL3d3dy5kaWdpY2VydC5jb20vQ1BTMAoGCGCGSAGG/WwDMB0G
+# A1UdDgQWBBRaxLl7KgqjpepxA8Bg+S32ZXUOWDAfBgNVHSMEGDAWgBRF66Kv9JLL
+# gjEtUYunpyGd823IDzANBgkqhkiG9w0BAQsFAAOCAQEAPuwNWiSz8yLRFcgsfCUp
+# dqgdXRwtOhrE7zBh134LYP3DPQ/Er4v97yrfIFU3sOH20ZJ1D1G0bqWOWuJeJIFO
+# EKTuP3GOYw4TS63XX0R58zYUBor3nEZOXP+QsRsHDpEV+7qvtVHCjSSuJMbHJyqh
+# KSgaOnEoAjwukaPAJRHinBRHoXpoaK+bp1wgXNlxsQyPu6j4xRJon89Ay0BEpRPw
+# 5mQMJQhCMrI2iiQC/i9yfhzXSUWW6Fkd6fp0ZGuy62ZD2rOwjNXpDd32ASDOmTFj
+# PQgaGLOBm0/GkxAG/AeB+ova+YJJ92JuoVP6EpQYhS6SkepobEQysmah5xikmmRR
+# 7zGCAigwggIkAgEBMIGGMHIxCzAJBgNVBAYTAlVTMRUwEwYDVQQKEwxEaWdpQ2Vy
+# dCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xMTAvBgNVBAMTKERpZ2lD
+# ZXJ0IFNIQTIgQXNzdXJlZCBJRCBDb2RlIFNpZ25pbmcgQ0ECEAdoJu9xufTZqPrA
+# YbNnoSowCQYFKw4DAhoFAKB4MBgGCisGAQQBgjcCAQwxCjAIoAKAAKECgAAwGQYJ
+# KoZIhvcNAQkDMQwGCisGAQQBgjcCAQQwHAYKKwYBBAGCNwIBCzEOMAwGCisGAQQB
+# gjcCARUwIwYJKoZIhvcNAQkEMRYEFHlNqDFuVESg09m6NkjEEuFFh4qDMA0GCSqG
+# SIb3DQEBAQUABIIBAJ1bMEIurY8EhqeImDVMnMR/M/6QpTCurPV7Vr9nGAI8R/HG
+# taesEvgM0anPZStgeDN2AK791stISRlWn+7Ejf03l+2WpRlRBDqDWbL581ZkAtXk
+# jcyFzK2sszmBfa/ntaDHbdGdaUBDUWd/tiMX4TJLFHHCPkPxnPGvnNEJJEYL6SdD
+# qTf5GEdl/K81oxLaOY5xhhQFKzV/scsqPC7htmDfMCCY7QDVGxrEoRH0BCzRGMGe
+# CZpMWXrnfeJFuKXmWURlpLgwXgENHEsnY8vj9I/jTAEvhpSZhF1w5IszK6e4Ghkr
+# el0OJX29D8TYxmtXPCkDSTQIhuRhgzszmdypyZQ=
+# SIG # End signature block
