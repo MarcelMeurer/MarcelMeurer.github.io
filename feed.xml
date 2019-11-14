@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 14 Nov 2019 22:22:04 +0100</pubDate>
-    <lastBuildDate>Thu, 14 Nov 2019 22:22:04 +0100</lastBuildDate>
+    <pubDate>Thu, 14 Nov 2019 22:31:52 +0100</pubDate>
+    <lastBuildDate>Thu, 14 Nov 2019 22:31:52 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -139,9 +139,7 @@
 &lt;p&gt;Place the following files in this share:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;a href=&quot;https://github.com/MarcelMeurer/source-blog.itprocloud.de/blob/master/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt; (rename the download to .ps1)&lt;/p&gt;
-  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt; (rename the download to .ps1)&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv&quot;&gt;Microsoft.RDInfra.RDAgent.msi&lt;/a&gt; (rename the file)&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH&quot;&gt;Microsoft.RDInfra.RDAgentBootLoader.msi&lt;/a&gt; (rename the file)&lt;/li&gt;
 &lt;/ul&gt;
