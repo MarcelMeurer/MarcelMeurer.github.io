@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 18 Nov 2019 17:28:04 +0100</pubDate>
-    <lastBuildDate>Mon, 18 Nov 2019 17:28:04 +0100</lastBuildDate>
+    <pubDate>Mon, 18 Nov 2019 17:29:59 +0100</pubDate>
+    <lastBuildDate>Mon, 18 Nov 2019 17:29:59 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -36,10 +36,13 @@
 &lt;h1 id=&quot;demo-video&quot;&gt;Demo video&lt;/h1&gt;
 
 &lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/g9T0mO1gH9Y&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 
 &lt;p&gt;Download &lt;a href=&quot;../assets/files/WVDAdmin.zip&quot;&gt;WVDAdmin.zip&lt;/a&gt; extract the zip file and install the application on your Windows client or on a template VM for your WVD.&lt;/p&gt;
+
+&lt;h2 id=&quot;versions&quot;&gt;Versions&lt;/h2&gt;
+
+&lt;p&gt;1.0.0.19		First published version&lt;/p&gt;
 
 &lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
 
