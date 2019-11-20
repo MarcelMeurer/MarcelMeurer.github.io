@@ -209,6 +209,28 @@
 
 <p>1.0.0.22		First published version - without auto-update of WVDAdmin</p>
 
+<p>1.0.0.23		Support for ephemeral  disks</p>
+
+<h3 id="support-for-ephemeral--disks">Support for ephemeral  disks</h3>
+
+<p>You can now rollout your session hosts with  ephemeral  disks. Ephemeral  disks are running on the Azure hypervisor and not stored in the fabric. This has some advantages:</p>
+
+<ul>
+  <li>There are no storage costs (!)</li>
+  <li>A very high data throughput because the disks exist on the hypervisor</li>
+  <li>See <a href="https://twitter.com/michawets">@MichaWets</a>   blog post for more information:  <a href="https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/">https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/</a></li>
+</ul>
+
+<p>Please note:</p>
+
+<ul>
+  <li>You can not deallocate a VM with this disk type (because the disk cannot be stored) - you have to delete the VM (and to rollout a new one instead of starting a “normal” VM)</li>
+  <li>Not each VM size can be used and there are limitations of the disk size (image size for rollout) based on the VM size: Example: Max  ephemeral  disk size for  Standard_D4s_v3  is 64 GByte while a  Standard_D8s_v3 can have up to 128 GByte. See <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general">https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general</a></li>
+  <li>If the Azure hypervisor fails your session host will fail as well and can not be re-deployed automatically</li>
+</ul>
+
+<p><img src="../assets/images/WVDAdmin/documentation-014.png" alt="documentation-001" /></p>
+
 <h2 id="configuration">Configuration</h2>
 
 <h2 id="service-principal-functional-account">Service principal (functional account)</h2>

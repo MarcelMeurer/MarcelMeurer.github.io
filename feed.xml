@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 18 Nov 2019 21:51:08 +0100</pubDate>
-    <lastBuildDate>Mon, 18 Nov 2019 21:51:08 +0100</lastBuildDate>
+    <pubDate>Wed, 20 Nov 2019 14:20:23 +0100</pubDate>
+    <lastBuildDate>Wed, 20 Nov 2019 14:20:23 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -43,6 +43,28 @@
 &lt;h2 id=&quot;versions&quot;&gt;Versions&lt;/h2&gt;
 
 &lt;p&gt;1.0.0.22		First published version - without auto-update of WVDAdmin&lt;/p&gt;
+
+&lt;p&gt;1.0.0.23		Support for ephemeral  disks&lt;/p&gt;
+
+&lt;h3 id=&quot;support-for-ephemeral--disks&quot;&gt;Support for ephemeral  disks&lt;/h3&gt;
+
+&lt;p&gt;You can now rollout your session hosts with  ephemeral  disks. Ephemeral  disks are running on the Azure hypervisor and not stored in the fabric. This has some advantages:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;There are no storage costs (!)&lt;/li&gt;
+  &lt;li&gt;A very high data throughput because the disks exist on the hypervisor&lt;/li&gt;
+  &lt;li&gt;See &lt;a href=&quot;https://twitter.com/michawets&quot;&gt;@MichaWets&lt;/a&gt;   blog post for more information:  &lt;a href=&quot;https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/&quot;&gt;https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Please note:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You can not deallocate a VM with this disk type (because the disk cannot be stored) - you have to delete the VM (and to rollout a new one instead of starting a “normal” VM)&lt;/li&gt;
+  &lt;li&gt;Not each VM size can be used and there are limitations of the disk size (image size for rollout) based on the VM size: Example: Max  ephemeral  disk size for  Standard_D4s_v3  is 64 GByte while a  Standard_D8s_v3 can have up to 128 GByte. See &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;If the Azure hypervisor fails your session host will fail as well and can not be re-deployed automatically&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-014.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
 
