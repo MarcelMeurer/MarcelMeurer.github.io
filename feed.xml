@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 20 Nov 2019 14:20:23 +0100</pubDate>
-    <lastBuildDate>Wed, 20 Nov 2019 14:20:23 +0100</lastBuildDate>
+    <pubDate>Thu, 21 Nov 2019 16:45:55 +0100</pubDate>
+    <lastBuildDate>Thu, 21 Nov 2019 16:45:55 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -45,6 +45,8 @@
 &lt;p&gt;1.0.0.22		First published version - without auto-update of WVDAdmin&lt;/p&gt;
 
 &lt;p&gt;1.0.0.23		Support for ephemeral  disks&lt;/p&gt;
+
+&lt;p&gt;1.0.0.25		Fix: If you delete a VM the OS disk will deleted as well&lt;/p&gt;
 
 &lt;h3 id=&quot;support-for-ephemeral--disks&quot;&gt;Support for ephemeral  disks&lt;/h3&gt;
 
