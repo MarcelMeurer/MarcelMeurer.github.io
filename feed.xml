@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 25 Nov 2019 19:12:17 +0100</pubDate>
-    <lastBuildDate>Mon, 25 Nov 2019 19:12:17 +0100</lastBuildDate>
+    <pubDate>Thu, 28 Nov 2019 13:08:53 +0100</pubDate>
+    <lastBuildDate>Thu, 28 Nov 2019 13:08:53 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -51,6 +51,8 @@
 &lt;p&gt;1.0.0.26		Add: Template VM can now be a VM with a standard disk (non-managed)&lt;/p&gt;
 
 &lt;p&gt;1.0.0.29		Add: Supporting “special license mode” to save up to 50% on compute-cost (&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;1.0.0.30		Fix: Rollout - OU can now be empty to join the default OU&lt;/p&gt;
 
 &lt;h3 id=&quot;support-for-ephemeral--disks&quot;&gt;Support for ephemeral  disks&lt;/h3&gt;
 
