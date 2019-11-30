@@ -219,6 +219,8 @@
 
 <p>1.0.0.30		Fix: Rollout - OU can now be empty to join the default OU</p>
 
+<p>1.2.1.00		Fix: Logging of rollout parameter by Azure custom extension is removed to avoid logging passwords</p>
+
 <h3 id="support-for-ephemeral--disks">Support for ephemeral  disks</h3>
 
 <p>You can now rollout your session hosts with  ephemeral  disks. Ephemeral  disks are running on the Azure hypervisor and not stored in the fabric. This has some advantages:</p>
@@ -349,6 +351,8 @@
 <p>Make sure that you rename the files to fit the list above (without version numbers).</p>
 
 <p><img src="../assets/images/WVDAdmin/documentation-011.png" alt="documentation-011" /></p>
+
+<p><strong>Important:</strong> If you are using Windows Server <strong>2019</strong> as file share make sure that anonymous file share access is enabled. Check the following blog post: <a href="http://www.dataone.nz/?p=575">http://www.dataone.nz/?p=575</a></p>
 
 <h1 id="configure-wvdadmin">Configure WVDAdmin</h1>
 
