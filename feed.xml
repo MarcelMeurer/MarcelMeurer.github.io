@@ -5,13 +5,15 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 30 Nov 2019 18:00:31 +0100</pubDate>
-    <lastBuildDate>Sat, 30 Nov 2019 18:00:31 +0100</lastBuildDate>
+    <pubDate>Sat, 30 Nov 2019 19:14:34 +0100</pubDate>
+    <lastBuildDate>Sat, 30 Nov 2019 19:14:34 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
         <title>WVD Admin - A native administration Gui for Windows Virtual Desktop</title>
         <description>&lt;h1 id=&quot;windows-virtual-desktop-administration&quot;&gt;Windows Virtual Desktop administration&lt;/h1&gt;
+
+&lt;p&gt;&lt;strong&gt;Important for prior 1.2.1 users: Check this &lt;a href=&quot;#v121-note&quot;&gt;note&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;Windows Virtual Desktop is generally available and under continuous improvement. There was the time before Ignite 2019 where no administration GUI was publicly available. This changed with Ignite. The PG of Remote Desktop services releases an in-portal configuration for Windows Virtual Desktop which looks very nice and has a lot of configurable options. See &lt;a href=&quot;https://twitter.com/RDS4U/status/1189773044094361601&quot;&gt;https://twitter.com/RDS4U/status/1189773044094361601&lt;/a&gt; for a preview or check it out in the Azure portal.&lt;/p&gt;
 
@@ -54,7 +56,9 @@
 
 &lt;p&gt;1.0.0.30		Fix: Rollout - OU can now be empty to join the default OU&lt;/p&gt;
 
-&lt;p&gt;1.2.1.00		Fix: Logging of rollout parameter by Azure custom extension is removed to avoid logging secrets&lt;/p&gt;
+&lt;p&gt;1.2.1.00		&lt;a name=&quot;v121-note&quot;&gt;&lt;/a&gt;Fix: Logging of rollout parameter by Azure custom extension is removed to avoid logging secrets&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Important for prior 1.2.1 users:&lt;/strong&gt; I removed the logging of the Azure custom extension so that from version 1.2.1, no secrets are logged to “&lt;em&gt;c:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\*&lt;/em&gt;”. I recommend to use the new version and to remove the logs from older session hosts (or to re-deploy these hosts). I found these logs while checking what other services are running on an Azure VM.&lt;/p&gt;
 
 &lt;h3 id=&quot;support-for-ephemeral--disks&quot;&gt;Support for ephemeral  disks&lt;/h3&gt;
 
