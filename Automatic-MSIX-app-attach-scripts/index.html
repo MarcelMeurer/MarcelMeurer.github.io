@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logos/icon.png">
+
+<title>Automatic MSIX App Attach script for Windows Virtual Desktop | ITProCloud Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Automatic MSIX App Attach script for Windows Virtual Desktop | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Automatic MSIX App Attach script for Windows Virtual Desktop" />
+<meta name="author" content="mm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Automatic MSIX App Attach script for WVD" />
+<meta property="og:description" content="Automatic MSIX App Attach script for WVD" />
+<meta property="og:site_name" content="ITProCloud Blog" />
+<meta property="og:image" content="/assets/images/MSIX-AppAttach-Script/Image-04.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-12-01T00:00:00+01:00" />
+<script type="application/ld+json">
+{"url":"/Automatic-MSIX-app-attach-scripts/","headline":"Automatic MSIX App Attach script for Windows Virtual Desktop","dateModified":"2019-12-01T00:00:00+01:00","datePublished":"2019-12-01T00:00:00+01:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/assets/images/MSIX-AppAttach-Script/Image-04.png","description":"Automatic MSIX App Attach script for WVD","mainEntityOfPage":{"@type":"WebPage","@id":"/Automatic-MSIX-app-attach-scripts/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<!--- cookie banner --->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-page">
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logos/itpc-logo-bottom-text.png" alt="ITProCloud Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
+                </li>
+	
+				
+				
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-VM">Azure VM (2)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (7)</a>
+						</li>
+						
+					
+				
+								
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://twitter.com/MarcelMeurer"><i class="fab fa-twitter"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/marcel-meurer-15b46b98"><i class="fab fa-linkedin"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://github.com/MarcelMeurer"><i class="fab fa-github"></i></a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="mailto:marcel.meurer@sepago.de?subject=Request%20from%20ITProCloud.de"><i class="far fa-envelope"></i></a>
+                </li>
+
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">ITProCloud Blog</h1>
+    <p class="lead">
+        This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <section>
+    <div class="section-title">
+        <h2><span>Automatic MSIX App Attach script for Windows Virtual Desktop</span></h2>
+    </div>
+
+    <div class="article-post">
+    <h1 id="automatic-msix-app-attach-script-for-wvd">Automatic MSIX App Attach script for WVD</h1>
+
+<p>Microsoft provides a preview of MSIX app attach for Windows Virtual desktop. MSIX app attach gives you the possibility to only have a few amounts of images and connect your application to them - without installing. That sounds a little bit like App-V, and from a user perspective, this is slightly comparable:</p>
+
+<p>You cannot see the application in the file system from outside the app. If you open the app and if you browse to the application folder, you can see this folder. The attaching and links in the start menu “feels” like the use of modern apps from the marketplace. And indeed: The application links in the start menu didn’t refer to the exe-files in the program folder.</p>
+
+<h2 id="configuration-of-the-msix-packages-and-assignments">Configuration of the MSIX packages and assignments</h2>
+
+<p>If you are in the Windows Insider program, you can test MSIX app attach in a WVD environment. To do this go to the web site <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach">https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach</a> which explains the process of preparing your Windows insider image and how to stage and register MSIX apps for session hosts und users. If you convert legacy apps to MSIX I recommend the YouTube video of <a href="https://twitter.com/MSAzureAcademy">@MSAzureAcademy</a>: <a href="https://www.youtube.com/watch?v=6kkPLFgPaN8">https://www.youtube.com/watch?v=6kkPLFgPaN8</a></p>
+
+<p>Microsoft gives you example scripts to stage, un-stage, register, and un-register MSIX apps. For each app, you have to build these four scripts. While the scrips only differ in a few points, I decided to create one script which does the necessary things for all apps I want to provide.</p>
+
+<p>The result is one folder containing a single PowerShell script and a configuration file for my MSIX apps. The structure of the configuration is JSON:</p>
+
+<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+</pre></td><td class="rouge-code"><pre><span class="p">{</span><span class="w"> 
+  </span><span class="nl">"apps"</span><span class="p">:[</span><span class="w"> 
+   </span><span class="p">{</span><span class="w"> 
+</span><span class="err">​</span><span class="w">     </span><span class="nl">"vhdSrc"</span><span class="p">:</span><span class="s2">"</span><span class="se">\\\\</span><span class="s2">ads01</span><span class="se">\\</span><span class="s2">Configuration</span><span class="se">\\</span><span class="s2">WVD</span><span class="se">\\</span><span class="s2">MSIX</span><span class="se">\\</span><span class="s2">NotepadPP.vhd"</span><span class="p">,</span><span class="w">
+</span><span class="err">​</span><span class="w">     </span><span class="nl">"volumeGuid"</span><span class="p">:</span><span class="s2">"9c371391-0000-0000-0000-010000000000"</span><span class="p">,</span><span class="w">
+</span><span class="err">​</span><span class="w">     </span><span class="nl">"packageName"</span><span class="p">:</span><span class="s2">"notepadpp_7.8.1.0_x64__cqx7y23m1rjgy"</span><span class="p">,</span><span class="w">
+</span><span class="err">​</span><span class="w">     </span><span class="nl">"parentFolder"</span><span class="p">:</span><span class="s2">"MSIX-Apps"</span><span class="p">,</span><span class="w">
+</span><span class="err">​</span><span class="w">     </span><span class="nl">"sessionTarget"</span><span class="p">:{</span><span class="w"> 
+</span><span class="err">​</span><span class="w">      </span><span class="nl">"hostPools"</span><span class="p">:[</span><span class="w"> 
+</span><span class="err">​</span><span class="w">        </span><span class="s2">"MSIX-Builder"</span><span class="w">
+</span><span class="err">​</span><span class="w">      </span><span class="p">],</span><span class="w">
+</span><span class="err">​</span><span class="w">      </span><span class="nl">"userGroups"</span><span class="p">:[</span><span class="w"> 
+</span><span class="err">​</span><span class="w">        </span><span class="s2">"SW_WVD_All"</span><span class="p">,</span><span class="w">
+</span><span class="err">​</span><span class="w">        </span><span class="s2">"SW_WVD_NotePadPP"</span><span class="w">
+</span><span class="err">​</span><span class="w">      </span><span class="p">]</span><span class="w">
+</span><span class="err">​</span><span class="w">     </span><span class="p">}</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+   </span><span class="p">{</span><span class="w"> 
+</span><span class="err">​</span><span class="w">     </span><span class="nl">"vhdSrc"</span><span class="p">:</span><span class="s2">"</span><span class="se">\\\\</span><span class="s2">ads01</span><span class="se">\\</span><span class="s2">Configuration</span><span class="se">\\</span><span class="s2">WVD</span><span class="se">\\</span><span class="s2">MSIX</span><span class="se">\\</span><span class="s2">FileZilla.vhd"</span><span class="p">,</span><span class="w">
+</span><span class="err">​</span><span class="w">     </span><span class="nl">"volumeGuid"</span><span class="p">:</span><span class="s2">"2ac99dec-0000-0000-0000-010000000000"</span><span class="p">,</span><span class="w">
+</span><span class="err">​</span><span class="w">     </span><span class="nl">"packageName"</span><span class="p">:</span><span class="s2">"filezilla_3.45.1.0_x64__cqx7y23m1rjgy"</span><span class="p">,</span><span class="w">
+</span><span class="err">​</span><span class="w">     </span><span class="nl">"parentFolder"</span><span class="p">:</span><span class="s2">"MSIX-Apps"</span><span class="p">,</span><span class="w">
+</span><span class="err">​</span><span class="w">     </span><span class="nl">"sessionTarget"</span><span class="p">:{</span><span class="w"> 
+</span><span class="err">​</span><span class="w">      </span><span class="nl">"hostPools"</span><span class="p">:[</span><span class="w"> 
+</span><span class="err">​</span><span class="w">        </span><span class="s2">"MSIX-Builder"</span><span class="w">
+</span><span class="err">​</span><span class="w">      </span><span class="p">],</span><span class="w">
+</span><span class="err">​</span><span class="w">      </span><span class="nl">"userGroups"</span><span class="p">:[</span><span class="w"> 
+</span><span class="err">​</span><span class="w">        </span><span class="s2">"SW_WVD_All"</span><span class="p">,</span><span class="w">
+</span><span class="err">​</span><span class="w">        </span><span class="s2">"SW_WVD_FileZilla"</span><span class="w">
+</span><span class="err">​</span><span class="w">      </span><span class="p">]</span><span class="w">
+</span><span class="err">​</span><span class="w">     </span><span class="p">}</span><span class="w">
+   </span><span class="p">}</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>For each application, you have to define the following properties:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Note</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>vhdSrc</td>
+      <td>Path to the expanded MSIX app (as vhd)</td>
+    </tr>
+    <tr>
+      <td>volumeGuid</td>
+      <td>Guid of the vhd</td>
+    </tr>
+    <tr>
+      <td>packageName</td>
+      <td>Name of the MSIX app attach package</td>
+    </tr>
+    <tr>
+      <td>parentFolder</td>
+      <td>Root folder name in your vhd</td>
+    </tr>
+    <tr>
+      <td>hostPools</td>
+      <td>List of host pool names where the package should be applied</td>
+    </tr>
+    <tr>
+      <td>userGroups</td>
+      <td>List of AD groups: Members get the application linked in their start menu</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="providing-the-script-to-users-and-session-hosts">Providing the script to users and session hosts</h2>
+
+<p>Provide the script AppAttach with the configuration in a folder of a shared network drive. This folder must be readable for all users.</p>
+
+<p><img src="../assets/images/MSIX-AppAttach-Script/Image-01.png" alt="Image-01" /></p>
+
+<p>Refer this file by a group policy:</p>
+
+<p><strong>Computer Configuration - Policies - Windows Settings - Scripts - Startup</strong></p>
+
+<p>Name:        %windir%\System32\WindowsPowerShell\v1.0\powershell.exe</p>
+
+<p>Parameter:    -ExecutionPolicy Unrestricted -File \ads01\Configuration\WVD\MSIX\AppAttach.ps1 -ConfigFile \\ads01\Configuration\WVD\MSIX\AppAttach.json -Mode VmStart</p>
+
+<p><strong>Computer Configuration - Policies - Windows Settings - Scripts - Shutdown</strong></p>
+
+<p>Name:        %windir%\System32\WindowsPowerShell\v1.0\powershell.exe</p>
+
+<p>Parameter:    -ExecutionPolicy Unrestricted -File \ads01\Configuration\WVD\MSIX\AppAttach.ps1 -ConfigFile \\ads01\Configuration\WVD\MSIX\AppAttach.json -Mode VmShutdown</p>
+
+<p><strong>User Configuration - Policies - Windows Settings - Scripts - Logon</strong></p>
+
+<p>Name:        %windir%\System32\WindowsPowerShell\v1.0\powershell.exe</p>
+
+<p>Parameter:    -ExecutionPolicy Unrestricted -File \ads01\Configuration\WVD\MSIX\AppAttach.ps1 -ConfigFile \ads01\Configuration\WVD\MSIX\AppAttach.json -Mode UserLogon</p>
+
+<p><strong>User Configuration - Policies - Windows Settings - Scripts - Logoff</strong></p>
+
+<p>Name:        %windir%\System32\WindowsPowerShell\v1.0\powershell.exe</p>
+
+<p>Parameter:    -ExecutionPolicy Unrestricted -File \ads01\Configuration\WVD\MSIX\AppAttach.ps1 -ConfigFile \\ads01\Configuration\WVD\MSIX\AppAttach.json -Mode UserLogoff</p>
+
+<p><em>Where \\ads01\Configuration\WVD\MSIX\ is the path to the script and \\ads01\Configuration\WVD\MSIX\AppAttach.json the JSON-configuration file.</em></p>
+
+<p>Make sure that the GPO is linked to the computer and enable loopback processing:</p>
+
+<p><strong>Computer Configuration - Policies - Administrative Templates - System/Group Policy</strong></p>
+
+<p>Configure user Group Policy loopback processing mode: Enable - Mode: merge.</p>
+
+<p><img src="../assets/images/MSIX-AppAttach-Script/Image-02.png" alt="Image-02" /></p>
+
+<h2 id="preparing-the-golden-master-for-the-session-hosts">Preparing the golden master for the session hosts</h2>
+
+<p>To work with MSIX and have the script do the work you have to prepare your golden image:</p>
+
+<ul>
+  <li>
+    <p>Make sure that you have installed the right version from the insider build</p>
+  </li>
+  <li>
+    <p>Double-check that you have <strong>NOT</strong> prepared your image with the command line commands described in <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach#prepare-the-vhd-image-for-azure">https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach#prepare-the-vhd-image-for-azure</a> (Disable Store auto-update and so on). It’s only for the VM concerning the converting process.</p>
+  </li>
+  <li>
+    <p>Copy the PSTools <a href="https://docs.microsoft.com/en-us/sysinternals/downloads/psexec">https://docs.microsoft.com/en-us/sysinternals/downloads/psexec</a> to %Windir%\System32 (you need psexec later)</p>
+  </li>
+  <li>
+    <p>Give the service GPSVC the right privileges to mount images:</p>
+  </li>
+  <li>
+    <ul>
+      <li>
+        <p>Create a cmd-file with this content:</p>
+
+        <pre><code class="language-cmd">sc privs gpsvc SeManageVolumePrivilege/SeTcbPrivilege/SeTakeOwnershipPrivilege/SeIncreaseQuotaPrivilege/SeAssignPrimaryTokenPrivilege/SeSecurityPrivilege/SeChangeNotifyPrivilege/SeCreatePermanentPrivilege/SeShutdownPrivilege/SeLoadDriverPrivilege/SeRestorePrivilege/SeBackupPrivilege/SeCreatePagefilePrivilege
+</code></pre>
+      </li>
+      <li>
+        <p>Open an administrative cmd and execute:</p>
+
+        <p>psexec /s cmd</p>
+      </li>
+      <li>
+        <p>In this service cmd execute the cmd-file to give GPSVC the right  permissions</p>
+
+        <p>(This adds the SeManageVolumePrivilege which allows mounting of images)</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="../assets/images/MSIX-AppAttach-Script/Image-03.png" alt="Image-03" /></p>
+
+<p>If you have this done, you can rollout several session hosts (or start with one for testing). If you now log on with different users, each user will see its assigned applications.</p>
+
+<p><img src="../assets/images/MSIX-AppAttach-Script/Image-04.png" alt="Image-04" /></p>
+
+<p>Note: If a user logoff the application will be de-registered except if the user an administrator (this will be skipped to avoid unmounting the app package).</p>
+
+<p><strong><a href="../assets/files/AppAttach.ps1.txt">Download</a> the script and rename it to AppAttach.ps1</strong></p>
+
+
+    </div>
+
+    
+</section>
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div id="allTags" class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore by tags <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-VM">Azure VM (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (7)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (5)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (5)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-AD">Azure AD (4)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#OneDrive">OneDrive (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-IoT">Azure IoT (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Functions">Azure Functions (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Marketplace">Azure Marketplace (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (4)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 text-center text-lg-left">
+                Copyright © 2019 ITProCloud Blog 
+            </div>
+            <div class="col-md-4 col-sm-4 text-center text-lg-left">
+                <a href="/Impressum">Impressum/Imprint</a> - 
+                <a href="/privacyDe">Datenschutz</a> - 
+				<a href="/privacyEn">Privacy</a>
+            </div>
+            <div class="col-md-3 col-sm-3 text-center text-lg-right">    
+                <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+
+<!-- Start Cookie Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#eaf7f7",
+      "text": "#5c7291"
+    },
+    "button": {
+      "background": "#56cbdb",
+      "text": "#ffffff"
+    }
+  },
+  "position": "bottom-right",
+  "content": {
+    "message": 'This website uses cookies to ensure you get the best experience on our website.<br/><a href="/privacyEn">Privacy policy</a><br/><br/>Diese Website verwendet Cookies, um dir mehr Benutzerfreundlichkeit zu bieten. Mit der Nutzung dieser Website stimmst du der Verwendung von Cookies zu.<br/><a href="/privacyDe">Datenschutzerklärung</a><br/><br/> ',
+    "href": "/privacyEn"
+  }
+});
+</script>
+<!-- End Cookie Plugin -->
+
+</body>
+</html>
