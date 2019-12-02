@@ -1,3 +1,5 @@
+# This script is part of the blog post: https://blog.itprocloud.de/Automatic-MSIX-app-attach-scripts/
+
 param(
 	[Parameter(Mandatory)]
 	[string] $ConfigFile='AppAttach.json',
@@ -7,7 +9,11 @@ param(
 	[ValidateSet('VmStart','VmShutdown','UserLogon','UserLogoff','ShowDemoJson')]
 	[string] $Mode
 )
+
 #Has to aply on the master image (in system context, with a batch):   sc privs gpsvc SeManageVolumePrivilege/SeTcbPrivilege/SeTakeOwnershipPrivilege/SeIncreaseQuotaPrivilege/SeAssignPrimaryTokenPrivilege/SeSecurityPrivilege/SeChangeNotifyPrivilege/SeCreatePermanentPrivilege/SeShutdownPrivilege/SeLoadDriverPrivilege/SeRestorePrivilege/SeBackupPrivilege/SeCreatePagefilePrivilege
+
+[Windows.Management.Deployment.PackageManager,Windows.Management.Deployment,ContentType=WindowsRuntime] | Out-Null
+Add-Type -AssemblyName System.Runtime.WindowsRuntime
 Add-Type -AssemblyName System.DirectoryServices.AccountManagement
 
 function LogWriter($message)
@@ -68,20 +74,20 @@ if ($mode -eq "ShowDemoJson")
 {
 	LogWriter("----------------------------------------------------------------")
     LogWriter("Working with application assignment: "+$mode)
-	$n=10
+	$n=20
 	$localHostPool=(Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\RDMonitoringAgent" -Name SessionHostPool -ErrorAction Ignore).SessionHostPool 
 	$localTenant=(Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\RDMonitoringAgent" -Name Tenant -ErrorAction Ignore).Tenant 
 	while ($n -gt 0 -and $localHostPool -eq $null) {
 		# re-try multiple times if session host not registered to WVD backend
 		$localHostPool=(Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\RDMonitoringAgent" -Name SessionHostPool -ErrorAction Ignore).SessionHostPool 
 		$localTenant=(Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\RDMonitoringAgent" -Name Tenant -ErrorAction Ignore).Tenant 
-		start-sleep -Seconds 20
+		start-sleep -Seconds 30
 		LogWriter("Retrying to get host pool name")
 		$n--
 	}
 	$localHostPool=(Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\RDMonitoringAgent" -Name SessionHostPool -ErrorAction Ignore).SessionHostPool 
 	$localTenant=(Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\RDMonitoringAgent" -Name Tenant -ErrorAction Ignore).Tenant 
-#$localHostPool="MSIX-Builder"
+
 	if ($localHostPool -eq $null) {
 		LogWriter("Cannot get name of host pool - exiting")
 		break
@@ -166,19 +172,17 @@ if ($mode -eq "ShowDemoJson")
 						cd \
 						$linkPath=$msixJunction + $packageName
 						cmd.exe /c mklink /J "$linkPath" "$msixDest"
-						[Windows.Management.Deployment.PackageManager,Windows.Management.Deployment,ContentType=WindowsRuntime] | Out-Null
-						Add-Type -AssemblyName System.Runtime.WindowsRuntime
 						$asTask = ([System.WindowsRuntimeSystemExtensions].GetMethods() | Where { $_.ToString() -eq 'System.Threading.Tasks.Task`1[TResult] AsTask[TResult,TProgress](Windows.Foundation.IAsyncOperationWithProgress`2[TResult,TProgress])'})[0]
 						$asTaskAsyncOperation = $asTask.MakeGenericMethod([Windows.Management.Deployment.DeploymentResult], [Windows.Management.Deployment.DeploymentProgress])
 						$packageManager = [Windows.Management.Deployment.PackageManager]::new()
-						$path = $msixJunction + $packageName + $parentFolder + $packageName # needed if we do the pbisigned.vhd
+						$path = $msixJunction + $packageName + $parentFolder + $packageName
 						$path = ([System.Uri]$path).AbsoluteUri
 						$asyncOperation = $packageManager.StagePackageAsync($path, $null, "StageInPlace")
 						$task = $asTaskAsyncOperation.Invoke($null, @($asyncOperation))
 						$task
-						# workaround: system registers apps to prevent removing by an administrator logoff
-						$path = $packageStorePath + "\" + $packageName + "\AppxManifest.xml"
-						Add-AppxPackage -Path $path -DisableDevelopmentMode -Register -ErrorAction Stop
+						## workaround: system registers apps to prevent removing by an administrator logoff -> removed: local admins skips de-registration
+						#$path = $packageStorePath + "\" + $packageName + "\AppxManifest.xml"
+						#Add-AppxPackage -Path $path -DisableDevelopmentMode -Register -ErrorAction Stop
 					} catch {
 						LogWriter("We got an error: $_")
 					}
@@ -201,7 +205,7 @@ if ($mode -eq "ShowDemoJson")
 						$packageName = $app.packageName 
 						$path = $packageStorePath + "\" + $packageName + "\AppxManifest.xml"
 						if (Test-Path $path) {
-							Add-AppxPackage -Path $path -DisableDevelopmentMode -Register
+							Add-AppxPackage -Path $path -DisableDevelopmentMode -Register -ErrorAction Stop
 						} else {
 							LogWriter("Warning. Path to application doesn't exist!")
 						}
@@ -213,10 +217,3 @@ if ($mode -eq "ShowDemoJson")
 		}
 	}	
 }
-
-
-
-
-
-
-
