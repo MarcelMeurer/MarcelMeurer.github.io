@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 02 Dec 2019 21:45:12 +0100</pubDate>
-    <lastBuildDate>Mon, 02 Dec 2019 21:45:12 +0100</lastBuildDate>
+    <pubDate>Thu, 12 Dec 2019 23:18:35 +0100</pubDate>
+    <lastBuildDate>Thu, 12 Dec 2019 23:18:35 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -281,6 +281,8 @@
 &lt;p&gt;1.0.0.30		Fix: Rollout - OU can now be empty to join the default OU&lt;/p&gt;
 
 &lt;p&gt;1.2.1.00		&lt;a name=&quot;v121-note&quot;&gt;&lt;/a&gt;Fix: Logging of rollout parameter by Azure custom extension is removed to avoid logging secrets&lt;/p&gt;
+
+&lt;p&gt;1.2.3.00		Add: Support for automatic and static assigned host pools&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Important for prior 1.2.1 users:&lt;/strong&gt; I removed the logging of the Azure custom extension so that from version 1.2.1, no secrets are logged to “&lt;em&gt;c:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\*&lt;/em&gt;”. I recommend to use the new version and to remove the logs from older session hosts (or to re-deploy these hosts). I found these logs while checking what other services are running on an Azure VM.&lt;/p&gt;
 
