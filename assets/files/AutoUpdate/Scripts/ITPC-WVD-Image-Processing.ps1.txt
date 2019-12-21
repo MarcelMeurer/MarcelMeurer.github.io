@@ -68,10 +68,10 @@ if ($mode -eq "Generalize")
 	{
 		Add-Computer -DomainName $DomainFqdn -OUPath $DomainJoinOU -Credential $psc -Force
 	}
-	LogWriter("Installing WVD boot loader")
-	Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgentBootLoader.msi" -ArgumentList "/q"
+	LogWriter("Installing WVD boot loader - current path is ${PSScriptRoot}")
+	Start-Process -wait -FilePath "${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi" -ArgumentList "/q"
 	LogWriter("Installing WVD agent")
-	Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgent.msi" -ArgumentList "/q RegistrationToken=${WvdRegistrationKey}"
+	Start-Process -wait -FilePath "${PSScriptRoot}\Microsoft.RDInfra.RDAgent.msi" -ArgumentList "/q RegistrationToken=${WvdRegistrationKey}"
 
 	LogWriter("Enabling ITPC-LogAnalyticAgent and MySmartScale if exist") 
 	Enable-ScheduledTask  -TaskName "ITPC-LogAnalyticAgent for RDS and Citrix" -ErrorAction Ignore
@@ -81,13 +81,11 @@ if ($mode -eq "Generalize")
 	Restart-Computer -Force
 }
 
-
-
 # SIG # Begin signature block
 # MIIcWwYJKoZIhvcNAQcCoIIcTDCCHEgCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUBMSa0ZhYCnAgqiLBi06bbTL1
-# 0f6ggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUE9AU/I/RzVHosDB1bFQ3VuoV
+# wqeggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE5MTEwMjAwMDAwMFoXDTIwMTIx
@@ -218,22 +216,22 @@ if ($mode -eq "Generalize")
 # SUQgQ29kZSBTaWduaW5nIENBAhAHaCbvcbn02aj6wGGzZ6EqMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBR5TagxblREoNPZujZIxBLhRYeKgzANBgkqhkiG9w0BAQEFAASCAQCdWzBC
-# Lq2PBIaniJg1TJzEfzP+kKUwrqz1e1a/ZxgCPEfxxrWnrBL4DNGpz2UrYHgzdgCu
-# /dbLSEkZVp/uxI39N5ftlqUZUQQ6g1my+fNWZALV5I3MhcytrLM5gX2v57Wgx23R
-# nWlAQ1Fnf7YjF+EySxRxwj5D8Zzxr5zRCSRGC+knQ6k3+RhHZfyvNaMS2jmOcYYU
-# BSs1f7HLKjwu4bZg3zAgmO0A1RsaxKER9AQs0RjBngmaTFl6533iRbil5llEZaS4
-# MF4BDRxLJ2PL4/SP40wBL4aUmYRdcOSLMyunuBoZK3pdDiV9vQ/E2MZrVzwpA0k0
-# CIbkYYM7M5ncqcmUoYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
+# BDEWBBTBgA2aDAnQUL8gNdu+Mw9AHWocaTANBgkqhkiG9w0BAQEFAASCAQB00oYU
+# b9riYKfDMsYsLXyFlKSfbVGvzOYYB2SeU36YGHehZA1H1FXg3uWb/L0MYiAdO/Zg
+# ngRNCBb1E7PirPQyJUKZRFI0ejoMotpckS6SGszcsJdHghVbIaQD0TMvZaO09Q7l
+# kQNPTiJZ+g9GlSyPrQQqzuXRX/RXzONfSy96DxLD1VYugKbVsMZ1t2BRt+GcRryC
+# mIoni1+4ffP5GSeZ3GuB7We70EpiYC/Acw2N0VghUcv/KPrbLQJg0BxxIl/OUOU7
+# zwc0DP6MOtHTP3hVjSXwCfFvFGJFJ/dTu6fDRbk/Q6povvr3PoG/4H7xxq2Id3KX
+# Tj7NVeORxw+GMtqIoYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
 # MAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3
 # LmRpZ2ljZXJ0LmNvbTEhMB8GA1UEAxMYRGlnaUNlcnQgQXNzdXJlZCBJRCBDQS0x
 # AhADAZoCOv9YsWvW1ermF/BmMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJ
-# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xOTEyMTIyMjE2NDZaMCMGCSqGSIb3
-# DQEJBDEWBBQSwFHVjZtsFtj+yUfdtKVFgoApMjANBgkqhkiG9w0BAQEFAASCAQCg
-# OQOtDnpfVWtIbKkB0N4nsTQ2J6neHKtHLeuGfVJe7h9FM2UPz5VeDx/nFx0+kEG7
-# 26B87oZkxZGDCQH5iOXGZwxVkiKX7LjpOYn3v2mo2AeN6dcU7lUCLSK1Xa36KTMH
-# 060rrUfB+J7/70L+lwYmeF6igVChOmeRckMpXfdSRJ2QMQt3l0N/aXv1wVhL4oRZ
-# r9rQwVOXArkeFc8l83QX0SaIy6RYe9ZzGuvYgt7d4tbim2os8fII5Lup+z+A2yTV
-# l/Ox5+5HL2ZAM0nCVGP451jN/+qOo6ASPiSbxBRtPoWWLBsMLYftAaJayPK10egS
-# 81oJb+8KHsHP0zlXLedQ
+# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xOTEyMjExNjM5MzhaMCMGCSqGSIb3
+# DQEJBDEWBBRM5grY9QGDTj5N1Yiz2sXRDu7FJjANBgkqhkiG9w0BAQEFAASCAQBU
+# oA+ghn+Q6TgiW61EO30WxXJvuPBqweXoL4OmW1Z+6BkHp/mAbW8Iaj/1+jb5+3Q6
+# pjzBiiJQSPaQxvBK/Y9dILdzMS/FgOInoUSssb7DnAFK1wYtpmAKjYZV/m/+74Ea
+# 3hE9qSI4BDbGLpAkIUG8gHEvrpgH56KZeaOpDKb31pAt9wnqw3xBSf8T51bV4o2t
+# HrhzayG5ilJk46p+v00wDD/AacrUDtK2wZvuxhkFOibYfqqAwiOWQ1/45bEimLHZ
+# tOEGuNP4VKWeemxDqDv+7jv/onmaGYnIr58hGQ/Bi2qY7H/Oli5t6xQO8agR1iyq
+# nfskTxECBWnNaAJXAPi6
 # SIG # End signature block
