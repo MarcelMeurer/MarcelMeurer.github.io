@@ -194,9 +194,13 @@
   <li>Send messages to a single user and users on a specific session host</li>
   <li>Logoff single users or all users of a specific session host</li>
   <li>Start and deallocate session hosts (the Azure VM behind)</li>
-  <li>Delete session hosts and the VMsin Azure including disk and nic</li>
+  <li>Delete session hosts and the VMs in Azure including disks and nics</li>
   <li>Create an image of a template VM without destroying the template</li>
   <li>Rollout a number of new session hosts based on a template image - including domain join and WVD installation and registration (comparable to Citrix MCS)</li>
+  <li>Rollout VM Scale Sets</li>
+  <li>Start and deallocate Scale Set instances</li>
+  <li>Re-image Scale Set instances</li>
+  <li>Add or remove Scale Set instances</li>
   <li>and some more things</li>
 </ul>
 
@@ -227,7 +231,33 @@
 
 <p>1.2.4.00		Add: Support for availability sets</p>
 
+<p>1.2.5.00		Add: Support for Scale Sets (with normal and ephemeral disks) -&gt; see below</p>
+
 <p><strong>Important for prior 1.2.1 users:</strong> I removed the logging of the Azure custom extension so that from version 1.2.1, no secrets are logged to “<em>c:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\*</em>”. I recommend to use the new version and to remove the logs from older session hosts (or to re-deploy these hosts). I found these logs while checking what other services are running on an Azure VM.</p>
+
+<h3 id="support-for-vm-scale-sets">Support for VM Scale Sets</h3>
+
+<p>From version 1.2.5, I support working with VM Scale Sets. A Scale Set can have several instances, which are the VMs / session hosts. There are some essential things you have to know if you use VM Scale Set with WVDAdmin and WVD itself:</p>
+
+<ul>
+  <li>Build a Scale Set with WVDAdmin. Select an image, right-click and select “Create session host from image”. Check “Rollout as VM Scale Set”</li>
+  <li>You can use regular disks and ephemeral disks. If you use ephemeral disks, you cannot deallocate the instances of your Scale Set. You have to delete the instances</li>
+  <li>Today you can not use ultra disks</li>
+  <li>You can add and remove instances with WVDAdmin or in the Azure Portal. New instances will join the domain and WVD</li>
+  <li>A new instance can only join WVD if the session host with the new name doesn’t exist. If you delete instances, the session host entry will also be removed</li>
+  <li>You can re-image single instances or all instances of a Scale Set. After that, the instances are “clean” as at the first rollout</li>
+  <li>Adding instances or re-imaging assumes that the Scale Set configuration (which is a custom script extension) has a valid WVD token to join new instances to WVD. While WVD provides only one token per host pool and that the token can be expiring, you can update the token with a right-click on the Scale Set and select “Update WVD token”. The max. lifetime of a token is 59 days</li>
+  <li>Unfortunately, change the source image for a VM Scale Set. So if you want to update the image for a host pool, take these steps:
+    <ul>
+      <li>Rollout a new Scale Set based on the new image</li>
+      <li>Disable new logons for the old session host from the previous Scale Set</li>
+      <li>Test the host pool based on the new Scale Set</li>
+      <li>If no user logged on to the ancient Scale Set, remove all instances from the Scale Set (this deletes the session hosts in WVD as well)</li>
+      <li>Remove the Scale Set</li>
+    </ul>
+  </li>
+  <li>Please feel free to give feedback</li>
+</ul>
 
 <h3 id="support-for-ephemeral--disks">Support for ephemeral  disks</h3>
 
@@ -360,7 +390,17 @@
 
 <p><img src="../assets/images/WVDAdmin/documentation-011.png" alt="documentation-011" /></p>
 
-<p><strong>Important:</strong> If you are using Windows Server <strong>2019</strong> as file share make sure that anonymous file share access is enabled. Check the following blog post: <a href="http://www.dataone.nz/?p=575">http://www.dataone.nz/?p=575</a></p>
+<p><strong>Important:</strong> If you are using Windows Server <strong>2019</strong> as file share make sure that anonymous file share access is enabled. Create a GPO for the session hosts containing the following configurations:</p>
+
+<ul>
+  <li>Security Options:
+    <ul>
+      <li>Accounts: Guest Account Status: Enabled</li>
+      <li>Network access: Let Everyone permissions apply to anonymous users: Enabled</li>
+      <li>Network access: Do not allow anonymous enumeration of SAM accounts and shares: Disabled</li>
+    </ul>
+  </li>
+</ul>
 
 <h1 id="configure-wvdadmin">Configure WVDAdmin</h1>
 
@@ -375,6 +415,49 @@
 <p>Local Admin and local pw. are the local administrator account credentials which you can enter at this time.</p>
 
 <p><img src="../assets/images/WVDAdmin/documentation-013.png" alt="documentation-013" /></p>
+
+<h1 id="building-an-image">Building an image</h1>
+
+<p>You can rollout VMs and VM Scale Set with images created by WVDAdmin. These images contain the logic to join the AD domain and WVD.</p>
+
+<p>You can simple create an image from a template VM. The template VM must part of your AD like a normal client. You have not to sysprep or to normalize this template VM. Use the same template VM for Windows and application updates.</p>
+
+<p>Following these steps to build your template:</p>
+
+<ul>
+  <li>Install a VM in the Azure portal. Select the right OS (like Windows 10 Enterprise for Virtual Desktops)</li>
+  <li>Make all Windows updates</li>
+  <li>Join the VM to your AD</li>
+  <li>Install your application</li>
+  <li>Make your customizing (like installing language packages)</li>
+  <li>Shutdown the template VM</li>
+</ul>
+
+<p>To create the image open WVDAdmin and</p>
+
+<ul>
+  <li>Navigate to the Azure template VM (Azure -&gt; Virtual Machines -&gt; RG -&gt; VM)</li>
+  <li>Right-click -&gt; “Create a template image”</li>
+  <li>Select the resource group to store the image</li>
+  <li>Correct the script-path if necessary</li>
+  <li>Press “Capture”</li>
+</ul>
+
+<p>You can and should reuse the template VM for new updates and applications. After these changes shut down the template VM and create a new image .</p>
+
+<h1 id="troubleshooting">Troubleshooting</h1>
+
+<p>The image is not created. An error message occurs:</p>
+
+<ul>
+  <li>Check if your template VM part of the AD</li>
+  <li>If your file server Windows Server 2019, read above</li>
+  <li>Check if you have set the NTFS and share permission correctly</li>
+  <li>Azure portal: Go to the temp VM (next to the template VM) and check the state of the extension installation. There should be an error message like script not found; access denied, etc.</li>
+  <li>Have you renamed the RD agent and bootloader?</li>
+  <li>Is the script saved correctly: ITPC-WVD-Image-Processing.ps1 not ITPC-WVD-Image-Processing.ps1.txt</li>
+  <li>Don’t forget to delete the temp VM and temp disk to avoid costs</li>
+</ul>
 
 <p>Feel free to use it and download the 64-bit Windows application “WVD Admin” from here: <a href="../assets/files/WVDAdmin.zip">WVDAdmin.zip</a> or  <a href="../assets/files/WVDAdmin.msi">WVDAdmin.msi</a> (msi is preferred)</p>
 
@@ -440,7 +523,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-5 col-sm-5 text-center text-lg-left">
-                Copyright © 2019 ITProCloud Blog 
+                Copyright © 2020 ITProCloud Blog 
             </div>
             <div class="col-md-4 col-sm-4 text-center text-lg-left">
                 <a href="/Impressum">Impressum/Imprint</a> - 

@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 21 Dec 2019 17:52:36 +0100</pubDate>
-    <lastBuildDate>Sat, 21 Dec 2019 17:52:36 +0100</lastBuildDate>
+    <pubDate>Mon, 06 Jan 2020 20:10:18 +0100</pubDate>
+    <lastBuildDate>Mon, 06 Jan 2020 20:10:18 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -253,9 +253,13 @@
   &lt;li&gt;Send messages to a single user and users on a specific session host&lt;/li&gt;
   &lt;li&gt;Logoff single users or all users of a specific session host&lt;/li&gt;
   &lt;li&gt;Start and deallocate session hosts (the Azure VM behind)&lt;/li&gt;
-  &lt;li&gt;Delete session hosts and the VMsin Azure including disk and nic&lt;/li&gt;
+  &lt;li&gt;Delete session hosts and the VMs in Azure including disks and nics&lt;/li&gt;
   &lt;li&gt;Create an image of a template VM without destroying the template&lt;/li&gt;
   &lt;li&gt;Rollout a number of new session hosts based on a template image - including domain join and WVD installation and registration (comparable to Citrix MCS)&lt;/li&gt;
+  &lt;li&gt;Rollout VM Scale Sets&lt;/li&gt;
+  &lt;li&gt;Start and deallocate Scale Set instances&lt;/li&gt;
+  &lt;li&gt;Re-image Scale Set instances&lt;/li&gt;
+  &lt;li&gt;Add or remove Scale Set instances&lt;/li&gt;
   &lt;li&gt;and some more things&lt;/li&gt;
 &lt;/ul&gt;
 
@@ -286,7 +290,33 @@
 
 &lt;p&gt;1.2.4.00		Add: Support for availability sets&lt;/p&gt;
 
+&lt;p&gt;1.2.5.00		Add: Support for Scale Sets (with normal and ephemeral disks) -&amp;gt; see below&lt;/p&gt;
+
 &lt;p&gt;&lt;strong&gt;Important for prior 1.2.1 users:&lt;/strong&gt; I removed the logging of the Azure custom extension so that from version 1.2.1, no secrets are logged to “&lt;em&gt;c:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\*&lt;/em&gt;”. I recommend to use the new version and to remove the logs from older session hosts (or to re-deploy these hosts). I found these logs while checking what other services are running on an Azure VM.&lt;/p&gt;
+
+&lt;h3 id=&quot;support-for-vm-scale-sets&quot;&gt;Support for VM Scale Sets&lt;/h3&gt;
+
+&lt;p&gt;From version 1.2.5, I support working with VM Scale Sets. A Scale Set can have several instances, which are the VMs / session hosts. There are some essential things you have to know if you use VM Scale Set with WVDAdmin and WVD itself:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Build a Scale Set with WVDAdmin. Select an image, right-click and select “Create session host from image”. Check “Rollout as VM Scale Set”&lt;/li&gt;
+  &lt;li&gt;You can use regular disks and ephemeral disks. If you use ephemeral disks, you cannot deallocate the instances of your Scale Set. You have to delete the instances&lt;/li&gt;
+  &lt;li&gt;Today you can not use ultra disks&lt;/li&gt;
+  &lt;li&gt;You can add and remove instances with WVDAdmin or in the Azure Portal. New instances will join the domain and WVD&lt;/li&gt;
+  &lt;li&gt;A new instance can only join WVD if the session host with the new name doesn’t exist. If you delete instances, the session host entry will also be removed&lt;/li&gt;
+  &lt;li&gt;You can re-image single instances or all instances of a Scale Set. After that, the instances are “clean” as at the first rollout&lt;/li&gt;
+  &lt;li&gt;Adding instances or re-imaging assumes that the Scale Set configuration (which is a custom script extension) has a valid WVD token to join new instances to WVD. While WVD provides only one token per host pool and that the token can be expiring, you can update the token with a right-click on the Scale Set and select “Update WVD token”. The max. lifetime of a token is 59 days&lt;/li&gt;
+  &lt;li&gt;Unfortunately, change the source image for a VM Scale Set. So if you want to update the image for a host pool, take these steps:
+    &lt;ul&gt;
+      &lt;li&gt;Rollout a new Scale Set based on the new image&lt;/li&gt;
+      &lt;li&gt;Disable new logons for the old session host from the previous Scale Set&lt;/li&gt;
+      &lt;li&gt;Test the host pool based on the new Scale Set&lt;/li&gt;
+      &lt;li&gt;If no user logged on to the ancient Scale Set, remove all instances from the Scale Set (this deletes the session hosts in WVD as well)&lt;/li&gt;
+      &lt;li&gt;Remove the Scale Set&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Please feel free to give feedback&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h3 id=&quot;support-for-ephemeral--disks&quot;&gt;Support for ephemeral  disks&lt;/h3&gt;
 
@@ -419,7 +449,17 @@
 
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-011.png&quot; alt=&quot;documentation-011&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt; If you are using Windows Server &lt;strong&gt;2019&lt;/strong&gt; as file share make sure that anonymous file share access is enabled. Check the following blog post: &lt;a href=&quot;http://www.dataone.nz/?p=575&quot;&gt;http://www.dataone.nz/?p=575&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt; If you are using Windows Server &lt;strong&gt;2019&lt;/strong&gt; as file share make sure that anonymous file share access is enabled. Create a GPO for the session hosts containing the following configurations:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Security Options:
+    &lt;ul&gt;
+      &lt;li&gt;Accounts: Guest Account Status: Enabled&lt;/li&gt;
+      &lt;li&gt;Network access: Let Everyone permissions apply to anonymous users: Enabled&lt;/li&gt;
+      &lt;li&gt;Network access: Do not allow anonymous enumeration of SAM accounts and shares: Disabled&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h1 id=&quot;configure-wvdadmin&quot;&gt;Configure WVDAdmin&lt;/h1&gt;
 
@@ -434,6 +474,49 @@
 &lt;p&gt;Local Admin and local pw. are the local administrator account credentials which you can enter at this time.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-013.png&quot; alt=&quot;documentation-013&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;building-an-image&quot;&gt;Building an image&lt;/h1&gt;
+
+&lt;p&gt;You can rollout VMs and VM Scale Set with images created by WVDAdmin. These images contain the logic to join the AD domain and WVD.&lt;/p&gt;
+
+&lt;p&gt;You can simple create an image from a template VM. The template VM must part of your AD like a normal client. You have not to sysprep or to normalize this template VM. Use the same template VM for Windows and application updates.&lt;/p&gt;
+
+&lt;p&gt;Following these steps to build your template:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Install a VM in the Azure portal. Select the right OS (like Windows 10 Enterprise for Virtual Desktops)&lt;/li&gt;
+  &lt;li&gt;Make all Windows updates&lt;/li&gt;
+  &lt;li&gt;Join the VM to your AD&lt;/li&gt;
+  &lt;li&gt;Install your application&lt;/li&gt;
+  &lt;li&gt;Make your customizing (like installing language packages)&lt;/li&gt;
+  &lt;li&gt;Shutdown the template VM&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To create the image open WVDAdmin and&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Navigate to the Azure template VM (Azure -&amp;gt; Virtual Machines -&amp;gt; RG -&amp;gt; VM)&lt;/li&gt;
+  &lt;li&gt;Right-click -&amp;gt; “Create a template image”&lt;/li&gt;
+  &lt;li&gt;Select the resource group to store the image&lt;/li&gt;
+  &lt;li&gt;Correct the script-path if necessary&lt;/li&gt;
+  &lt;li&gt;Press “Capture”&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can and should reuse the template VM for new updates and applications. After these changes shut down the template VM and create a new image .&lt;/p&gt;
+
+&lt;h1 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h1&gt;
+
+&lt;p&gt;The image is not created. An error message occurs:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Check if your template VM part of the AD&lt;/li&gt;
+  &lt;li&gt;If your file server Windows Server 2019, read above&lt;/li&gt;
+  &lt;li&gt;Check if you have set the NTFS and share permission correctly&lt;/li&gt;
+  &lt;li&gt;Azure portal: Go to the temp VM (next to the template VM) and check the state of the extension installation. There should be an error message like script not found; access denied, etc.&lt;/li&gt;
+  &lt;li&gt;Have you renamed the RD agent and bootloader?&lt;/li&gt;
+  &lt;li&gt;Is the script saved correctly: ITPC-WVD-Image-Processing.ps1 not ITPC-WVD-Image-Processing.ps1.txt&lt;/li&gt;
+  &lt;li&gt;Don’t forget to delete the temp VM and temp disk to avoid costs&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVD Admin” from here: &lt;a href=&quot;../assets/files/WVDAdmin.zip&quot;&gt;WVDAdmin.zip&lt;/a&gt; or  &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin.msi&lt;/a&gt; (msi is preferred)&lt;/p&gt;
 
