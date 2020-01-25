@@ -5,9 +5,34 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 25 Jan 2020 20:04:27 +0100</pubDate>
-    <lastBuildDate>Sat, 25 Jan 2020 20:04:27 +0100</lastBuildDate>
+    <pubDate>Sat, 25 Jan 2020 20:33:10 +0100</pubDate>
+    <lastBuildDate>Sat, 25 Jan 2020 20:33:10 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Windows virtual desktop   administration for multe aad</title>
+        <description>
+&lt;hr /&gt;
+&lt;p&gt;layout: page
+title:  “WVD Admin - A native administration Gui for Windows Virtual Desktop for Multi-AAD”
+author: mm
+categories: [Windows Virtual Desktop]
+image: assets/images/WVDAdmin-01.png
+featured: true
+hidden: true
+—&lt;/p&gt;
+
+&lt;h1 id=&quot;windows-virtual-desktop-administration-for-multi-aad&quot;&gt;Windows Virtual Desktop administration for Multi AAD&lt;/h1&gt;
+
+&lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVD Admin” from here: &lt;a href=&quot;../assets/files/WVDAdmin-V1.2.9.msi&quot;&gt;WVDAdmin Preview&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 25 Jan 2020 00:00:00 +0100</pubDate>
+        <link>/Windows-Virtual-Desktop-Administration-for-Multe-AAD/</link>
+        <guid isPermaLink="true">/Windows-Virtual-Desktop-Administration-for-Multe-AAD/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Automatic MSIX App Attach script for Windows Virtual Desktop</title>
@@ -937,153 +962,6 @@ Publish it for your personal test (add your subscription id to make it visible).
         <category>Azure AD</category>
         
         <category>Azure WebApp</category>
-        
-      </item>
-    
-      <item>
-        <title>Deploy an Azure Functional App as an interface to Log Analytics / Azure Monitor</title>
-        <description>&lt;h1 id=&quot;introduction&quot;&gt;Introduction&lt;/h1&gt;
-
-&lt;p&gt;Microsoft offers with Log Analytics a cloud-based big data service. Log Analytics is used by several services (including Azure itself) to log and analyze data. It’s a core component of Azure Monitor and Application Insights.&lt;/p&gt;
-
-&lt;p&gt;Log Analytics key facts:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Cloud-based&lt;/li&gt;
-  &lt;li&gt;No data aggregation&lt;/li&gt;
-  &lt;li&gt;Pay per upload and data retention&lt;/li&gt;
-  &lt;li&gt;Powerful query language (kql: &amp;lt;&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/kusto/&quot;&gt;https://docs.microsoft.com/en-us/azure/kusto/&lt;/a&gt;&amp;gt;)&lt;/li&gt;
-  &lt;li&gt;Direct support for visualization on portal.azure.com&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I use Log Analytics for several projects where data aggregation and analyzation are main tasks. If I write code, I push data directly to Log Analytics – including generating a SAS signature for every single upload.&lt;/p&gt;
-
-&lt;p&gt;The mandatory SAS signature avoids a simple upload via http-post to Log Analytics. But in some cases, it could be very helpful to work with a simple http-post command. For example: If you use Azure Stream Analytics, you cannot push data directly to Log Analytics.&lt;/p&gt;
-
-&lt;p&gt;To allow pushing data via http-post I built this project. This project deploys an Azure function to your subscription. This function offers a simple http(s) interface (webhook) you can use to post JSON data to it. This data will be processed by the Azure Function and will be posted to your Log Analytics workspace.&lt;/p&gt;
-
-&lt;h1 id=&quot;examples&quot;&gt;Examples:&lt;/h1&gt;
-
-&lt;h2 id=&quot;with-postman&quot;&gt;With Postman&lt;/h2&gt;
-
-&lt;h1&gt;&lt;img src=&quot;/wp-content/uploads/2019/01/Postman-1024x377.png&quot; alt=&quot;img&quot; /&gt;&lt;/h1&gt;
-
-&lt;h2 id=&quot;with-powershell&quot;&gt;With PowerShell&lt;/h2&gt;
-
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nv&quot;&gt;$data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'{
-&quot;localTime&quot;:&quot;2019-01-02T11:11:12.013Z&quot;,
-&quot;Humi&quot;:46.5,
-&quot;Temp&quot;:14.2
-}'&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Invoke-WebRequest&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Uri&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://testaf01xx8.azurewebsites.net/api/Send2LogAnalytics?code=xje5aQIMzPxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Method&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;POST&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Body&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$data&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/01/PowerShell-1024x656.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;with-stream-analytics&quot;&gt;With Stream Analytics&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Query:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;k&quot;&gt;INTO&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;To&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;Function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;FROM&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;From&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IoT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Hub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/01/StreamAnalytics-Query-1024x395.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Output:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Enter your Azure Function parameters&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/01/StreamAnalytics-Output-1024x377.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;results-in-log-analytics&quot;&gt;Results in Log Analytics&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/01/LA1-1024x697.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;For another data series&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/01/LA2-1024x665.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;h1 id=&quot;deploying-and-configuration&quot;&gt;Deploying and configuration&lt;/h1&gt;
-
-&lt;p&gt;Deploy your Azure Function using the deploy to Azure button.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMarcelMeurer%2FFunctionApp-to-LogAnalytics%2Fmaster%2Ftemplate.json&quot;&gt;&lt;img src=&quot;http://azuredeploy.net/deploybutton.png&quot; alt=&quot;img&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Github: &lt;a href=&quot;https://github.com/MarcelMeurer/FunctionApp-to-LogAnalytics&quot;&gt;https://github.com/MarcelMeurer/FunctionApp-to-LogAnalytics&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
-
-&lt;p&gt;In the next step enter the following parameters:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Resource Group:
-Select an existing or create a new resource group in a location of your choice (the function will be deployed in the Azure region of the resource group)&lt;/li&gt;
-  &lt;li&gt;Site name:
-A unique name of your function (unique means a worldwide unique hostname; the fqdn is: &lt;hostname&gt;.azurewebsites.com)&lt;/hostname&gt;&lt;/li&gt;
-  &lt;li&gt;Workspace_Id:
-The workspace id of your Log Analytics workspace (Log Analytics resource -&amp;gt; Advanced settings -&amp;gt; Workspace id)&lt;/li&gt;
-  &lt;li&gt;Workspace_Key:
-The workspace id of your Log Analytics workspace (Log Analytics resource -&amp;gt; Advanced settings -&amp;gt; Primary or secondary key)&lt;/li&gt;
-  &lt;li&gt;LogType:
-Name of your type (“table” name). You will see this name with an appended _CL (custom log) later in your workspace with your data&lt;/li&gt;
-  &lt;li&gt;Time Field:
-Optional. All data sets you send get a new field called “TimeGenerated”. TimeGenerated contains the time the data arrived at the workspace. If you set Time field to a custom field (like localTime from the example above), the time in this field is used as TimeGenerated.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Hint:&lt;/strong&gt; Workspace_Id, Workspace_Key, LogType, Time Field can be changed later in the function app:&lt;/p&gt;
-
-&lt;p&gt;Your Function app -&amp;gt; Platform features -&amp;gt; Application settings&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/01/AppSettings-1024x264.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;resources&quot;&gt;Resources&lt;/h2&gt;
-
-&lt;p&gt;After the deployment three resources are deployed and configured:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;ServerFarmPlan:
-A consumption-based pricing plan for the Azure Functional App. See &lt;a href=&quot;https://azure.microsoft.com/en-us/pricing/details/functions/&quot;&gt;https://azure.microsoft.com/en-us/pricing/details/functions/&lt;/a&gt; check the estimated costs billed to your subscription&lt;/li&gt;
-  &lt;li&gt;Site name - Application Insights:
-Application Insights to monitor the Azure Function itself&lt;/li&gt;
-  &lt;li&gt;Site name - Azure Functional App:
-The Azure Function containing the code&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;get-the-resource-url-of-the-azure-function&quot;&gt;Get the resource URL of the Azure Function&lt;/h2&gt;
-
-&lt;p&gt;Open your Azure Function and navigate to Functions -&amp;gt; Send2LogAnalytics -&amp;gt; &amp;lt;/&amp;gt; Get function URL&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/01/FunctionURL-1024x377.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This URL contains your private key.&lt;/p&gt;
-
-&lt;p&gt;First published on: &lt;a href=&quot;https://www.sepago.de/blog/deploy-an-azure-functional-app-as-an-interface-to-log-analytics-azure-monitor/&quot;&gt;https://www.sepago.de/blog/deploy-an-azure-functional-app-as-an-interface-to-log-analytics-azure-monitor/&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sun, 13 Jan 2019 00:00:00 +0100</pubDate>
-        <link>/Deploy-an-Azure-Functional-App-as-an-interface-to-Log-Analytics-Azure-Monitor/</link>
-        <guid isPermaLink="true">/Deploy-an-Azure-Functional-App-as-an-interface-to-Log-Analytics-Azure-Monitor/</guid>
-        
-        
-        <category>Azure Functions</category>
-        
-        <category>Azure Monitor</category>
-        
-        <category>Log Analytics</category>
         
       </item>
     
