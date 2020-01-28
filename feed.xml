@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 28 Jan 2020 22:09:44 +0100</pubDate>
-    <lastBuildDate>Tue, 28 Jan 2020 22:09:44 +0100</lastBuildDate>
+    <pubDate>Tue, 28 Jan 2020 22:11:17 +0100</pubDate>
+    <lastBuildDate>Tue, 28 Jan 2020 22:11:17 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -566,6 +566,7 @@ If you had already used WVDAdmin in the “normal” mode, you could copy the se
   &lt;li&gt;Have you renamed the RD agent and bootloader?&lt;/li&gt;
   &lt;li&gt;Is the script saved correctly: ITPC-WVD-Image-Processing.ps1 not ITPC-WVD-Image-Processing.ps1.txt&lt;/li&gt;
   &lt;li&gt;Don’t forget to delete the temp VM and temp disk to avoid costs&lt;/li&gt;
+  &lt;li&gt;Make sure that your template VM uses managed disk&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVD Admin” from here: &lt;a href=&quot;../assets/files/WVDAdmin.zip&quot;&gt;WVDAdmin.zip&lt;/a&gt; or  &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin.msi&lt;/a&gt; (msi is preferred)&lt;/p&gt;
