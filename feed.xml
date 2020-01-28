@@ -5,24 +5,13 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 28 Jan 2020 21:59:11 +0100</pubDate>
-    <lastBuildDate>Tue, 28 Jan 2020 21:59:11 +0100</lastBuildDate>
+    <pubDate>Tue, 28 Jan 2020 22:03:10 +0100</pubDate>
+    <lastBuildDate>Tue, 28 Jan 2020 22:03:10 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
-        <title>Windows virtual desktop   administration for multi aad tenants</title>
-        <description>
-&lt;hr /&gt;
-&lt;p&gt;layout: page
-title:  “WVD Admin - Windows Virtual Desktop Administration for CSP and Consulting Partners”
-author: mm
-categories: [Windows Virtual Desktop]
-image: assets/images/WVDAdmin.MultiTenancy/WVDAdmin.Welcome.png
-featured: false&lt;/p&gt;
-
-&lt;h2 id=&quot;hidden-false&quot;&gt;hidden: false&lt;/h2&gt;
-
-&lt;h1 id=&quot;windows-virtual-desktop-administration-for-csp-and-consulting-partners&quot;&gt;Windows Virtual Desktop Administration for CSP and Consulting Partners&lt;/h1&gt;
+        <title>WVD Admin - Windows Virtual Desktop Administration for CSP and Consulting Partners</title>
+        <description>&lt;h1 id=&quot;windows-virtual-desktop-administration-for-csp-and-consulting-partners&quot;&gt;Windows Virtual Desktop Administration for CSP and Consulting Partners&lt;/h1&gt;
 
 &lt;p&gt;Last year I released my windows-based GUI for administrating WVD to the community called WVDAdmin. I had a bunch of updates to share more features. This week I will release version 1.3.0 with will add another feature, especially for providers and consulting companies. From version 1.3.0 WVDAdmin will support a multi-AAD-tenancy mode allowing to switch the Azure AD tenant very easily.&lt;/p&gt;
 
@@ -56,9 +45,11 @@ If you had already used WVDAdmin in the “normal” mode, you could copy the se
 
 </description>
         <pubDate>Tue, 28 Jan 2020 00:00:00 +0100</pubDate>
-        <link>/Windows-Virtual-Desktop-Administration-for-Multi-AAD-Tenants/</link>
-        <guid isPermaLink="true">/Windows-Virtual-Desktop-Administration-for-Multi-AAD-Tenants/</guid>
+        <link>/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners/</link>
+        <guid isPermaLink="true">/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners/</guid>
         
+        
+        <category>Windows Virtual Desktop</category>
         
       </item>
     
