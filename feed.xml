@@ -5,31 +5,59 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 26 Jan 2020 20:36:29 +0100</pubDate>
-    <lastBuildDate>Sun, 26 Jan 2020 20:36:29 +0100</lastBuildDate>
+    <pubDate>Tue, 28 Jan 2020 21:59:11 +0100</pubDate>
+    <lastBuildDate>Tue, 28 Jan 2020 21:59:11 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
-        <title>Windows virtual desktop   administration for multe aad</title>
+        <title>Windows virtual desktop   administration for multi aad tenants</title>
         <description>
 &lt;hr /&gt;
 &lt;p&gt;layout: page
-title:  “WVD Admin - A native administration Gui for Windows Virtual Desktop for Multi-AAD”
+title:  “WVD Admin - Windows Virtual Desktop Administration for CSP and Consulting Partners”
 author: mm
 categories: [Windows Virtual Desktop]
-image: assets/images/WVDAdmin-01.png
-featured: true
-hidden: true
-—&lt;/p&gt;
+image: assets/images/WVDAdmin.MultiTenancy/WVDAdmin.Welcome.png
+featured: false&lt;/p&gt;
 
-&lt;h1 id=&quot;windows-virtual-desktop-administration-for-multi-aad&quot;&gt;Windows Virtual Desktop administration for Multi AAD&lt;/h1&gt;
+&lt;h2 id=&quot;hidden-false&quot;&gt;hidden: false&lt;/h2&gt;
 
-&lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVD Admin” from here: &lt;a href=&quot;../assets/files/WVDAdmin-V1.2.9.msi&quot;&gt;WVDAdmin Preview&lt;/a&gt;&lt;/p&gt;
+&lt;h1 id=&quot;windows-virtual-desktop-administration-for-csp-and-consulting-partners&quot;&gt;Windows Virtual Desktop Administration for CSP and Consulting Partners&lt;/h1&gt;
+
+&lt;p&gt;Last year I released my windows-based GUI for administrating WVD to the community called WVDAdmin. I had a bunch of updates to share more features. This week I will release version 1.3.0 with will add another feature, especially for providers and consulting companies. From version 1.3.0 WVDAdmin will support a multi-AAD-tenancy mode allowing to switch the Azure AD tenant very easily.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin.MultiTenancy/WVDAdmin.Welcome.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To enable the multi-AAD-tenancy mode, you must set a registry key. Add the following dword32 to your registry:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-registry&quot;&gt;HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin
+Name:	AadMultiTenant
+Type:	DWORD32
+Value:	1 (or 0 to disable this mode)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin.MultiTenancy/Registry1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you start WVDAdmin with this setting, a drop-down list will be visible at the welcome screen (see above). If you save a new service principal configuration, it happens to the drop-down list with the friendly name.
+All other settings for the image creation or rollout of new session hosts are saved to the context of the selected AAD tenant.&lt;/p&gt;
+
+&lt;p&gt;The authentication settings and other settings are saved in different trees in the registry starting from &lt;em&gt;HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin\AadMultiTenant&lt;/em&gt;
+If you had already used WVDAdmin in the “normal” mode, you could copy the settings from the root of the registry path to the new path for your AAD tenant. To delete a no longer needed AAD-tenant in WVDAdmin, remove the registry key of this one.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin.MultiTenancy/Registry2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Don’t change&lt;/strong&gt; the AAD tenant while an operation is in progress. This could result in an error. If you change the AAD tenant, click “Reload all” to read the configuration for the new tenant.&lt;/p&gt;
+
+&lt;p&gt;The AAD multi-tenancy mode helps a lot if you have (like me) multiple clients you are working with.&lt;/p&gt;
+
+&lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVD Admin” from here: &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin Preview&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Read the original blog post about WVDAdmin here: https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&lt;/p&gt;
 
 </description>
-        <pubDate>Sat, 25 Jan 2020 00:00:00 +0100</pubDate>
-        <link>/Windows-Virtual-Desktop-Administration-for-Multe-AAD/</link>
-        <guid isPermaLink="true">/Windows-Virtual-Desktop-Administration-for-Multe-AAD/</guid>
+        <pubDate>Tue, 28 Jan 2020 00:00:00 +0100</pubDate>
+        <link>/Windows-Virtual-Desktop-Administration-for-Multi-AAD-Tenants/</link>
+        <guid isPermaLink="true">/Windows-Virtual-Desktop-Administration-for-Multi-AAD-Tenants/</guid>
         
         
       </item>
@@ -320,6 +348,8 @@ hidden: true
 &lt;p&gt;1.2.7.00		Add: The main window of the application is now resizeable&lt;/p&gt;
 
 &lt;p&gt;1.2.8.00		Add: If you click a tenant a tenant wide list of sessions is listed.  Logoff or send messages to multiple sessions&lt;/p&gt;
+
+&lt;p&gt;1.3.0.00		Add: AAD multi-tenancy mode (drop down list to handle different AADs) - xxxxx&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Important for prior 1.2.1 users:&lt;/strong&gt; I removed the logging of the Azure custom extension so that from version 1.2.1, no secrets are logged to “&lt;em&gt;c:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\*&lt;/em&gt;”. I recommend to use the new version and to remove the logs from older session hosts (or to re-deploy these hosts). I found these logs while checking what other services are running on an Azure VM.&lt;/p&gt;
 
