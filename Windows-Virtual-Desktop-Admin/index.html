@@ -239,6 +239,8 @@
 
 <p>1.3.0.00		Add: AAD multi-tenancy mode (drop down list to handle different AADs) - <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners/">https://blog.itprocloud.de/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners</a></p>
 
+<p>1.3.1.00		Fix: WVDAdmin crashed if 1.3.0 is your first version of WVDAdmin (HKEY_CURRENT_USER\Software\ITProCloud doesn’t exist while checking for multi-tenancy mode)</p>
+
 <p><strong>Important for prior 1.2.1 users:</strong> I removed the logging of the Azure custom extension so that from version 1.2.1, no secrets are logged to “<em>c:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\*</em>”. I recommend to use the new version and to remove the logs from older session hosts (or to re-deploy these hosts). I found these logs while checking what other services are running on an Azure VM.</p>
 
 <h3 id="support-for-vm-scale-sets">Support for VM Scale Sets</h3>
