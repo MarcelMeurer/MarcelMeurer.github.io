@@ -6,22 +6,22 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>WVD Admin - Windows Virtual Desktop Administration for CSP and Consulting Partners | ITProCloud Blog</title>
+<title>Using WVDAdmin for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case) | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>WVD Admin - Windows Virtual Desktop Administration for CSP and Consulting Partners | ITProCloud Blog</title>
+<title>Using WVDAdmin for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case) | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="WVD Admin - Windows Virtual Desktop Administration for CSP and Consulting Partners" />
+<meta property="og:title" content="Using WVDAdmin for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Windows Virtual Desktop Administration for CSP and Consulting Partners" />
-<meta property="og:description" content="Windows Virtual Desktop Administration for CSP and Consulting Partners" />
+<meta name="description" content="Using Azure Starter for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)" />
+<meta property="og:description" content="Using Azure Starter for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="/assets/images/WVDAdmin.MultiTenancy/WVDAdmin.Welcome.png" />
+<meta property="og:image" content="/assets/images/WVDAdmin/Split-AAD-02.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2020-01-28T00:00:00+01:00" />
+<meta property="article:published_time" content="2020-02-07T00:00:00+01:00" />
 <script type="application/ld+json">
-{"url":"/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners/","headline":"WVD Admin - Windows Virtual Desktop Administration for CSP and Consulting Partners","dateModified":"2020-01-28T00:00:00+01:00","datePublished":"2020-01-28T00:00:00+01:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/assets/images/WVDAdmin.MultiTenancy/WVDAdmin.Welcome.png","description":"Windows Virtual Desktop Administration for CSP and Consulting Partners","mainEntityOfPage":{"@type":"WebPage","@id":"/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"/Windows-Virtual-Desktop-Admin-for-2-tenant-mode/","headline":"Using WVDAdmin for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)","dateModified":"2020-02-07T00:00:00+01:00","datePublished":"2020-02-07T00:00:00+01:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/assets/images/WVDAdmin/Split-AAD-02.png","description":"Using Azure Starter for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)","mainEntityOfPage":{"@type":"WebPage","@id":"/Windows-Virtual-Desktop-Admin-for-2-tenant-mode/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -41,7 +41,7 @@
 
 
 
-<body class="layout-page">
+<body class="layout-post">
 	<!-- defer loading of font and font awesome -->
 	<noscript id="deferred-styles">
 		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
@@ -170,49 +170,197 @@
 <!-- Content
 ================================================== -->
 <div class="main-content">
-    <section>
-    <div class="section-title">
-        <h2><span>WVD Admin - Windows Virtual Desktop Administration for CSP and Consulting Partners</span></h2>
-    </div>
+    <!-- Begin Article
+================================================== -->
+<div class="container">
+    <div class="row">
 
-    <div class="article-post">
-    <h1 id="windows-virtual-desktop-administration-for-csp-and-consulting-partners">Windows Virtual Desktop Administration for CSP and Consulting Partners</h1>
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Using WVDAdmin for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)&url=https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin-for-2-tenant-mode/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
 
-<p>Last year I released my windows-based GUI for administrating WVD to the community called WVDAdmin. I had a bunch of updates to share more features. This week I will release version 1.3.0 with will add another feature, especially for providers and consulting companies. From version 1.3.0 WVDAdmin will support a multi-AAD-tenancy mode allowing to switch the Azure AD tenant very easily.</p>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin-for-2-tenant-mode/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
 
-<p><img src="../assets/images/WVDAdmin.MultiTenancy/WVDAdmin.Welcome.png" alt="" /></p>
-
-<p>To enable the multi-AAD-tenancy mode, you must set a registry key. Add the following dword32 to your registry:</p>
-
-<pre><code class="language-registry">HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin
-Name:	AadMultiTenant
-Type:	DWORD32
-Value:	1 (or 0 to disable this mode)
-</code></pre>
-
-<p><img src="../assets/images/WVDAdmin.MultiTenancy/Registry1.png" alt="" /></p>
-
-<p>If you start WVDAdmin with this setting, a drop-down list will be visible at the welcome screen (see above). If you save a new service principal configuration, it happens to the drop-down list with the friendly name.
-All other settings for the image creation or rollout of new session hosts are saved to the context of the selected AAD tenant.</p>
-
-<p>The authentication settings and other settings are saved in different trees in the registry starting from <em>HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin\AadMultiTenant</em>
-If you had already used WVDAdmin in the “normal” mode, you could copy the settings from the root of the registry path to the new path for your AAD tenant. To delete a no longer needed AAD-tenant in WVDAdmin, remove the registry key of this one.</p>
-
-<p><img src="../assets/images/WVDAdmin.MultiTenancy/Registry2.png" alt="" /></p>
-
-<p><strong>Don’t change</strong> the AAD tenant while an operation is in progress. This could result in an error. If you change the AAD tenant, click “Reload all” to read the configuration for the new tenant.</p>
-
-<p>The AAD multi-tenancy mode helps a lot if you have (like me) multiple clients you are working with.</p>
-
-<p>Feel free to use it and download the 64-bit Windows application “WVD Admin” from here: <a href="../assets/files/WVDAdmin.msi">WVDAdmin Preview</a></p>
-
-<p>Read the original blog post about WVDAdmin here: <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin</a></p>
-
-
-    </div>
-
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin-for-2-tenant-mode/&title=Using WVDAdmin for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+    </ul>
     
-</section>
+    <div class="sep">
+    </div>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
+    
+</div>
+
+        </div>
+
+        <!-- Post -->
+        
+
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
+
+                <!-- Author Box -->
+                
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                        
+                        <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
+                        
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href="https://blog.itprocloud.de">Marcel</a><a target="_blank" href="https://twitter.com/MarcelMeurer" class="btn follow">Follow</a>
+                        <span class="author-description">That's me: Marcel</span>
+                    </div>
+                </div>
+                
+
+                <!-- Post Title -->
+                <h1 class="posttitle">Using WVDAdmin for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)</h1>
+
+            </div>
+
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
+
+            <!-- Post Featured Image -->
+            
+
+            
+            <img class="featured-image img-fluid" src="/assets/images/WVDAdmin/Split-AAD-02.png" alt="Using WVDAdmin for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)">
+            
+
+            
+            <!-- End Featured Image -->
+
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <h1 id="using-azure-starter-for-windows-virtual-desktop-in-2-aad-environment-microsoft-demo-case">Using Azure Starter for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)</h1>
+
+<p>Usually, the WVD tenant and the resources (sessions hosts) are in the same AAD tenant. If you have two Azure AD tenant, you can use WVDAdmin with a second service principal to access the session hosts.</p>
+
+<p>Example:</p>
+
+<ul>
+  <li><strong>Azure AD 1 - “<em>my-msft.onMicrosoft.com</em>“</strong>
+    <ul>
+      <li>Your personal AAD where you have your users, an AD-Controller, AD-Connect (or AD domain services), and other resources. In this AAD you have deployed your WVD tenant.</li>
+      <li></li>
+    </ul>
+  </li>
+  <li><strong>Azure AD 2 - “<em>microsoft.onMicrosoft.com</em>“</strong>
+    <ul>
+      <li>You have no high-level permission to the AAD because it’s own by your company and shared with many other users/professionals. In this AAD, you have a subscription (AIR) containing your session hosts.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="../assets/images/WVDAdmin/Split-AAD-02.png" alt="Split-AAD-02.png" /></p>
+
+<p>Create the <strong>first service principal</strong> in “my-msft.onMicrosoft.com”. Configure this service principal as described in the primary guide - except permitting to the resource group containing the session hosts and the vnet (these are in the other tenant). Use the data of this service principal in the welcom dialog of WVDAdmin.</p>
+
+<p>Create the <strong>second service principal</strong> in “microsoft.onMicrosoft.com”. Give the service principal contributor permission to the resource group containing the session hosts and to the vnet for the session host. Open the registry and navigate to <em>HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin</em>. Add three string value to configure the service principal to access the resource groups</p>
+
+<ul>
+  <li>AzResAlternativeTenantId</li>
+  <li>AzResAlternativeAppId</li>
+  <li>AzResAlternativeAppSecret</li>
+</ul>
+
+<p><img src="../assets/images/WVDAdmin/Split-AAD-03.png" alt="Split-AAD-03.png" /></p>
+
+<p>If you use another tenant group name as “Default Tenant Group” add another string “TenantGroupName” and set your tenant group name.</p>
+
+<p>This solution is supported from the current version 1.3.3</p>
+
+<p>Read more and download WVDAdmin on <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">the main page</a></p>
+
+            </div>
+
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2020-02-07">07 Feb 2020</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            <a class="prev d-block col-md-6" href="/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners/"> &laquo; WVD Admin - Windows Virtual Desktop Administration for CSP and Consulting Partners</a>
+            
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
+        </div>
+        <!-- End Post -->
+
+    </div>
+</div>
+<!-- End Article
+================================================== -->
+
+<!-- Begin Comments
+================================================== -->
+
+<!--End Comments
+================================================== -->
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
 </div>
 
 
@@ -301,6 +449,8 @@ If you had already used WVDAdmin in the “normal” mode, you could copy the se
 
 <script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
 
+
+<script id="dsq-count-scr" src="//.disqus.com/count.js"></script>
 
 
 <!-- Start Cookie Plugin -->

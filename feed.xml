@@ -5,9 +5,60 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 07 Feb 2020 18:25:00 +0100</pubDate>
-    <lastBuildDate>Fri, 07 Feb 2020 18:25:00 +0100</lastBuildDate>
+    <pubDate>Fri, 07 Feb 2020 18:25:37 +0100</pubDate>
+    <lastBuildDate>Fri, 07 Feb 2020 18:25:37 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Using WVDAdmin for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)</title>
+        <description>&lt;h1 id=&quot;using-azure-starter-for-windows-virtual-desktop-in-2-aad-environment-microsoft-demo-case&quot;&gt;Using Azure Starter for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)&lt;/h1&gt;
+
+&lt;p&gt;Usually, the WVD tenant and the resources (sessions hosts) are in the same AAD tenant. If you have two Azure AD tenant, you can use WVDAdmin with a second service principal to access the session hosts.&lt;/p&gt;
+
+&lt;p&gt;Example:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Azure AD 1 - “&lt;em&gt;my-msft.onMicrosoft.com&lt;/em&gt;“&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Your personal AAD where you have your users, an AD-Controller, AD-Connect (or AD domain services), and other resources. In this AAD you have deployed your WVD tenant.&lt;/li&gt;
+      &lt;li&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Azure AD 2 - “&lt;em&gt;microsoft.onMicrosoft.com&lt;/em&gt;“&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;You have no high-level permission to the AAD because it’s own by your company and shared with many other users/professionals. In this AAD, you have a subscription (AIR) containing your session hosts.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/Split-AAD-02.png&quot; alt=&quot;Split-AAD-02.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Create the &lt;strong&gt;first service principal&lt;/strong&gt; in “my-msft.onMicrosoft.com”. Configure this service principal as described in the primary guide - except permitting to the resource group containing the session hosts and the vnet (these are in the other tenant). Use the data of this service principal in the welcom dialog of WVDAdmin.&lt;/p&gt;
+
+&lt;p&gt;Create the &lt;strong&gt;second service principal&lt;/strong&gt; in “microsoft.onMicrosoft.com”. Give the service principal contributor permission to the resource group containing the session hosts and to the vnet for the session host. Open the registry and navigate to &lt;em&gt;HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin&lt;/em&gt;. Add three string value to configure the service principal to access the resource groups&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;AzResAlternativeTenantId&lt;/li&gt;
+  &lt;li&gt;AzResAlternativeAppId&lt;/li&gt;
+  &lt;li&gt;AzResAlternativeAppSecret&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/Split-AAD-03.png&quot; alt=&quot;Split-AAD-03.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you use another tenant group name as “Default Tenant Group” add another string “TenantGroupName” and set your tenant group name.&lt;/p&gt;
+
+&lt;p&gt;This solution is supported from the current version 1.3.3&lt;/p&gt;
+
+&lt;p&gt;Read more and download WVDAdmin on &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;the main page&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 07 Feb 2020 00:00:00 +0100</pubDate>
+        <link>/Windows-Virtual-Desktop-Admin-for-2-tenant-mode/</link>
+        <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin-for-2-tenant-mode/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVD Admin - Windows Virtual Desktop Administration for CSP and Consulting Partners</title>
@@ -956,41 +1007,6 @@ Publish it for your personal test (add your subscription id to make it visible).
         
         
         <category>Azure Marketplace</category>
-        
-      </item>
-    
-      <item>
-        <title>Why configuring Azure AD authentication with an Azure Web App fails</title>
-        <description>&lt;p&gt;I spent hours today adding Azure AD authentication to an Azure MVC web application with Visual Studio. I always got the same error while adding the preconfigured AD application:&lt;/p&gt;
-
-&lt;p&gt;“Error: Unable to query for Azure AD applications: An error occurred while processing this request.”&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/02/01-1024x703.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;My account has the right permission in Azure AD – I thought. After a while I found out: Visual Studio was connected to my Azure AD with three different accounts:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/02/02-1024x764.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Normally, that’s what I want, even if I have to publish some apps in other tenants/subscriptions. But in this special case two accounts are part of the Azure tenant where my Azure applications should be deployed:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/02/03-1024x364.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Visual Studio uses the first account (marked in red), which does not have the appropriate permissions.&lt;/p&gt;
-
-&lt;p&gt;My “fast” resolution: I gave this account the right Azure AD role (Application Administrator) for 5 minutes and tried again with success:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/02/04-1024x703.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;First published on: &lt;a href=&quot;https://www.sepago.de/blog/why-configuring-azure-ad-authentication-with-an-azure-web-app-fails/&quot;&gt;https://www.sepago.de/blog/why-configuring-azure-ad-authentication-with-an-azure-web-app-fails/&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sat, 09 Feb 2019 00:00:00 +0100</pubDate>
-        <link>/Why-configuring-Azure-AD-authentication-with-an-Azure-Web-App-fails/</link>
-        <guid isPermaLink="true">/Why-configuring-Azure-AD-authentication-with-an-Azure-Web-App-fails/</guid>
-        
-        
-        <category>Azure AD</category>
-        
-        <category>Azure WebApp</category>
         
       </item>
     
