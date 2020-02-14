@@ -1,5 +1,5 @@
 # This powershell script is part of WVD Admin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
-# Current Version of this script: 1.8
+# Current Version of this script: 1.9
 
 param(
 
@@ -28,7 +28,7 @@ function LogWriter($message)
 $LocalConfig="C:\ITPC-WVD-PostCustomizing"
 
 # Define logfile
-$LogFile=$LogDir+"\"+$env:Computername+".log"
+$LogFile=$LogDir+"\WVD.Customizing.log"
 
 # Main
 LogWriter("Starting ITPC-WVD-Image-Processing in mode ${Mode}")
@@ -61,28 +61,9 @@ if ($mode -eq "Generalize")
 	Remove-ItemProperty -Path $key -Name "LastAliveStamp" -ErrorAction Ignore
 	Remove-ItemProperty -Path $key -Name "TimeStampInterval" -ErrorAction Ignore
 	
-	LogWriter("Removing user profiles")
-	$key="HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\*"
-	$regProfile=Get-Item -Path $key
-	foreach ($item in $regProfile){
-	   if ($item.PSChildName.Length -gt 12) {
-		LogWriter("Removing registry key: "+$item.Name)
-		Remove-Item "Registry::$item" -Recurse -Force -ErrorAction Ignore
-	   } 
-	}
-	$files=Get-ChildItem -Path "C:\Users" -Force
-	foreach ($file in $files){
-	   $attris=$file.Attributes.ToString().tolower()
-	   $name=$file.Name.ToLower()
-	   if ($attris.contains("directory") -and -not $attris.contains("reparsepoint") -and $name -ne "public" -and $name -ne "default") {
-		try {
-			LogWriter("Removing folder: "+$file.FullName)
-			Remove-Item -Path $file.FullName -Force -Recurse -ErrorAction Ignore
-		} catch {
-			LogWriter("Error while removing folder: "+$file.FullName)
-		}
-	   } 
-	}
+	LogWriter("Removing folder AppXPackages")
+	LogWriter(Get-AppxPackage -AllUsers | where{$_.NonRemovable -ne $true -and $_.PackageUserInformation -match "pending removal"}|ft)
+	Get-AppxPackage -AllUsers | where{$_.NonRemovable -ne $true -and $_.PackageUserInformation -match "pending removal"}| Remove-AppxPackage -AllUsers
 	
 	LogWriter("Starting sysprep to generalize session host")
 	Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown /mode:vm"
@@ -114,8 +95,8 @@ if ($mode -eq "Generalize")
 # SIG # Begin signature block
 # MIIcWwYJKoZIhvcNAQcCoIIcTDCCHEgCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUo3phgtpgfJJYTwXZ7djRokh5
-# ukuggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU3ieYlGex3nqH0B9509SHIMha
+# aRCggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE5MTEwMjAwMDAwMFoXDTIwMTIx
@@ -246,22 +227,22 @@ if ($mode -eq "Generalize")
 # SUQgQ29kZSBTaWduaW5nIENBAhAHaCbvcbn02aj6wGGzZ6EqMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQvJEdz0TTDZAyXaDvUuv7HMDB2rDANBgkqhkiG9w0BAQEFAASCAQAN8bit
-# /rmRU9iNrQbGdgx/jOShZ3cDYLXWnpHYgI9jMYwy+0B59JPCuvlIAYXq3s/9WmRX
-# 56XtvLuJrD8KMsopFMsoaRMmqlfGNTC47JpGkbKxrguEzjaVyYkoTwkPEA4wwyQ7
-# L4H1ryPY7VE/5oAImQqSZfbobZ8vF8qVJgzYxCgGVqcvLy9MiP3TXfso7WBk2tvt
-# eZ1fT9cvolKt3JWkuwskBrj202XbCk28ObsPoxfsLjSuRFKplXf1MSsTftz0ol9e
-# 6cYzquA5GnO76JNM0UMGhnb9NTslrUpzLxRvcCcbAe7IjX+mryxhu+RQtJFYopBT
-# KDt66NfG0BLk0/WYoYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
+# BDEWBBTJrOyeR5ygrACJBNfRjqk0qZC9RDANBgkqhkiG9w0BAQEFAASCAQBe+H8l
+# A59stOZomN8iGMr+xXyzD4aRM5jU4rvAXa1v4ZpHXFfCQskN63ykQhG/yA8sOm0c
+# F5bFlhLlL9gvbwZ+HX2xOrJTTrBukb3Vnav3611wN+GytNWFkOas0ZTdS5jYo4/p
+# QvVoZa1Epd3dIxbedwNdwolz95Zc2yIJMiOUCjjf51ZDcC9EWwa5mT5i0M3nGYLQ
+# be+QAZaa/X6BH2d0zRmliM3dSbOQw6yZaSoKzPdDqNasuKk3cd1ewlUWrqNej7Uu
+# nEv8GVc1luJNPlrG2O29XqlDWK1QN69OhZJyW9lYcQ6cKbTepAuV+AnUVP/IwLG4
+# Lpatzf1jfTa4R6mYoYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
 # MAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3
 # LmRpZ2ljZXJ0LmNvbTEhMB8GA1UEAxMYRGlnaUNlcnQgQXNzdXJlZCBJRCBDQS0x
 # AhADAZoCOv9YsWvW1ermF/BmMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJ
-# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDAyMTQxOTEwNTRaMCMGCSqGSIb3
-# DQEJBDEWBBSGDBEtjSePjLYYCAKqpYEp2o6VajANBgkqhkiG9w0BAQEFAASCAQAP
-# w04SQv3zzYSBICy3LOSpHpzSRhIqY+2nOHgSfv0cv8eYRL+blH6u6SxfwDZfcHL4
-# AaqwQAWe10nKLBKdKKYrwZ+dNqDtrvgGvgKoln+xz6p/T27r/4Npl5cOeGD+KdzX
-# zH53gujz3emx231MuxdsWSahjdzWPEl0/ZwO/VToUIT1vUUUyH0Z90Z1D9VBlo4A
-# 6rnd6esJnADeQF66YKjzYjbBjCzPPtSkE9ebfzTuUQdYusvULVq0LNn4V1p2Ku2Z
-# VX4tHmVwShuX0p+bS1+FzgX44zCjKJKv95eoBT+D4E0bsGPZTNoQaHRwm+MwG8YT
-# GyrTryH7YHUK1kuwHGj7
+# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDAyMTQyMTA4NDlaMCMGCSqGSIb3
+# DQEJBDEWBBRtbE7Qs5sGuacWVJxipknthCaO+DANBgkqhkiG9w0BAQEFAASCAQAW
+# u8lr+N6ZV49MitOROwBxrj5bLLFN+jNnmcgmb8V+rU7vyJbs6dF+PGbv+1lZS5/F
+# zln9BAvTkdOF+YmqRtMRfKj4GJtObxqp/OuVXaIMmb9BzfghqWZgq0YrBpe7W2W5
+# CUJJK6SbOzAyUcbHIUYBCel84sTl1VrgEZwLC0+eISh/h5I9kPL6RfBSigpd63K0
+# ASbPykaHVB4Um8U6v6IOIvwhORnxbAcNxukbsJEzQsRjtg/YaM6oUGMR88rDeZR8
+# 98p14HApE9oBuQbqaF4SgaSomhoYH1S4TjJA9y7A4tzP63WT82KI2G/1W1S0McR6
+# uhJmUeGMpcNO0DSowU5n
 # SIG # End signature block

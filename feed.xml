@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 14 Feb 2020 20:12:34 +0100</pubDate>
-    <lastBuildDate>Fri, 14 Feb 2020 20:12:34 +0100</lastBuildDate>
+    <pubDate>Fri, 14 Feb 2020 22:23:43 +0100</pubDate>
+    <lastBuildDate>Fri, 14 Feb 2020 22:23:43 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -627,6 +627,7 @@ If you had already used WVDAdmin in the “normal” mode, you could copy the se
   &lt;li&gt;An endless loop of “Waiting for the temporary vm (power off)” which results in an error after 30 minutes: Something goes wrong with sysprep. You can check the sysprep log in %WinDir%\system32\Sysprep\Panther on the temporary VM. 
 This is often caused by Sysprep and installed language packs.&lt;br /&gt;
 Workaround: Delete all user profiles except the logged in user and default users: Press Win+R, type “SystemPropertiesAdvanced”, Advanced -&amp;gt; Settings&lt;/li&gt;
+  &lt;li&gt;NEW: An endless loop of “Waiting for the temporary vm (power off)” : Update to the newest PowerShell script for generalizing: &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVD Admin” from here: &lt;a href=&quot;../assets/files/WVDAdmin.zip&quot;&gt;WVDAdmin.zip&lt;/a&gt; or  &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin.msi&lt;/a&gt; (msi is preferred)&lt;/p&gt;
