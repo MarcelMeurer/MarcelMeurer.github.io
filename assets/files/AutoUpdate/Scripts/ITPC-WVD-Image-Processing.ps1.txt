@@ -54,6 +54,36 @@ if ($mode -eq "Generalize")
 	Disable-ScheduledTask  -TaskName "ITPC-LogAnalyticAgent for RDS and Citrix" -ErrorAction Ignore
 	Disable-ScheduledTask  -TaskName "ITPC-MySmartScaleAgent" -ErrorAction Ignore
 	
+	LogWriter("Cleaning up reliability messages")
+	$key="HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Reliability"
+	Remove-ItemProperty -Path $key -Name "DirtyShutdown" -ErrorAction Ignore
+	Remove-ItemProperty -Path $key -Name "DirtyShutdownTime" -ErrorAction Ignore
+	Remove-ItemProperty -Path $key -Name "LastAliveStamp" -ErrorAction Ignore
+	Remove-ItemProperty -Path $key -Name "TimeStampInterval" -ErrorAction Ignore
+	
+	LogWriter("Removing user profiles")
+	$key="HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\*"
+	$regProfile=Get-Item -Path $key
+	foreach ($item in $regProfile){
+	   if ($item.PSChildName.Length -gt 12) {
+		LogWriter("Removing registry key: "+$item.Name)
+		Remove-Item "Registry::$item" -Recurse -Force -ErrorAction Ignore
+	   } 
+	}
+	$files=Get-ChildItem -Path "C:\Users" -Force
+	foreach ($file in $files){
+	   $attris=$file.Attributes.ToString().tolower()
+	   $name=$file.Name.ToLower()
+	   if ($attris.contains("directory") -and -not $attris.contains("reparsepoint") -and $name -ne "public" -and $name -ne "default") {
+		try {
+			LogWriter("Removing folder: "+$file.FullName)
+			Remove-Item -Path $file.FullName -Force -Recurse -ErrorAction Ignore
+		} catch {
+			LogWriter("Error while removing folder: "+$file.FullName)
+		}
+	   } 
+	}
+	
 	LogWriter("Starting sysprep to generalize session host")
 	Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown /mode:vm"
 } elseif ($mode -eq "JoinDomain")
@@ -84,8 +114,8 @@ if ($mode -eq "Generalize")
 # SIG # Begin signature block
 # MIIcWwYJKoZIhvcNAQcCoIIcTDCCHEgCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUE9AU/I/RzVHosDB1bFQ3VuoV
-# wqeggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUo3phgtpgfJJYTwXZ7djRokh5
+# ukuggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE5MTEwMjAwMDAwMFoXDTIwMTIx
@@ -216,22 +246,22 @@ if ($mode -eq "Generalize")
 # SUQgQ29kZSBTaWduaW5nIENBAhAHaCbvcbn02aj6wGGzZ6EqMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTBgA2aDAnQUL8gNdu+Mw9AHWocaTANBgkqhkiG9w0BAQEFAASCAQB00oYU
-# b9riYKfDMsYsLXyFlKSfbVGvzOYYB2SeU36YGHehZA1H1FXg3uWb/L0MYiAdO/Zg
-# ngRNCBb1E7PirPQyJUKZRFI0ejoMotpckS6SGszcsJdHghVbIaQD0TMvZaO09Q7l
-# kQNPTiJZ+g9GlSyPrQQqzuXRX/RXzONfSy96DxLD1VYugKbVsMZ1t2BRt+GcRryC
-# mIoni1+4ffP5GSeZ3GuB7We70EpiYC/Acw2N0VghUcv/KPrbLQJg0BxxIl/OUOU7
-# zwc0DP6MOtHTP3hVjSXwCfFvFGJFJ/dTu6fDRbk/Q6povvr3PoG/4H7xxq2Id3KX
-# Tj7NVeORxw+GMtqIoYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
+# BDEWBBQvJEdz0TTDZAyXaDvUuv7HMDB2rDANBgkqhkiG9w0BAQEFAASCAQAN8bit
+# /rmRU9iNrQbGdgx/jOShZ3cDYLXWnpHYgI9jMYwy+0B59JPCuvlIAYXq3s/9WmRX
+# 56XtvLuJrD8KMsopFMsoaRMmqlfGNTC47JpGkbKxrguEzjaVyYkoTwkPEA4wwyQ7
+# L4H1ryPY7VE/5oAImQqSZfbobZ8vF8qVJgzYxCgGVqcvLy9MiP3TXfso7WBk2tvt
+# eZ1fT9cvolKt3JWkuwskBrj202XbCk28ObsPoxfsLjSuRFKplXf1MSsTftz0ol9e
+# 6cYzquA5GnO76JNM0UMGhnb9NTslrUpzLxRvcCcbAe7IjX+mryxhu+RQtJFYopBT
+# KDt66NfG0BLk0/WYoYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
 # MAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3
 # LmRpZ2ljZXJ0LmNvbTEhMB8GA1UEAxMYRGlnaUNlcnQgQXNzdXJlZCBJRCBDQS0x
 # AhADAZoCOv9YsWvW1ermF/BmMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJ
-# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDAyMDcxNzIzMzBaMCMGCSqGSIb3
-# DQEJBDEWBBRM5grY9QGDTj5N1Yiz2sXRDu7FJjANBgkqhkiG9w0BAQEFAASCAQCN
-# XbdHxZ7v2EUihGLiqsyBnQJ6keO3n0GgTeu1d6JYb/TECcCVM4BtTdRk5afRKpzC
-# k8ubm31yma/6/DS9UmxCur/vhc/gSTtivM/VQzZMq82i9r0L6p0TtpRh9elxY6gH
-# V+ESQSa72ksJdYvudLmIjomkJMilypTBECTAldiKO6e0VccD/+LtRR/nDjp4lLt1
-# 6Fb7l6YPhihWa91bGK71CoXT3LZnGguztJ/7/CHdLFMlf7yBDUc2LBOuDmPC+ItT
-# OfAZ7/LLaks9yVaTPVqVjWz5jDSvXSH9IArngpm89s6yeOZdr5pEXB3ILAUwF/CI
-# mOgL67EIZRydKqvASKj4
+# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDAyMTQxOTEwNTRaMCMGCSqGSIb3
+# DQEJBDEWBBSGDBEtjSePjLYYCAKqpYEp2o6VajANBgkqhkiG9w0BAQEFAASCAQAP
+# w04SQv3zzYSBICy3LOSpHpzSRhIqY+2nOHgSfv0cv8eYRL+blH6u6SxfwDZfcHL4
+# AaqwQAWe10nKLBKdKKYrwZ+dNqDtrvgGvgKoln+xz6p/T27r/4Npl5cOeGD+KdzX
+# zH53gujz3emx231MuxdsWSahjdzWPEl0/ZwO/VToUIT1vUUUyH0Z90Z1D9VBlo4A
+# 6rnd6esJnADeQF66YKjzYjbBjCzPPtSkE9ebfzTuUQdYusvULVq0LNn4V1p2Ku2Z
+# VX4tHmVwShuX0p+bS1+FzgX44zCjKJKv95eoBT+D4E0bsGPZTNoQaHRwm+MwG8YT
+# GyrTryH7YHUK1kuwHGj7
 # SIG # End signature block
