@@ -5,9 +5,34 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 16 Feb 2020 15:56:36 +0100</pubDate>
-    <lastBuildDate>Sun, 16 Feb 2020 15:56:36 +0100</lastBuildDate>
+    <pubDate>Sun, 16 Feb 2020 16:06:36 +0100</pubDate>
+    <lastBuildDate>Sun, 16 Feb 2020 16:06:36 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Windows Virtual Desktop - Azure Starter for WVD</title>
+        <description>&lt;p&gt;This month I started to build my fourth tool around Microsoft Windows Virtual Desktop. This new one, called “Azure Starter for WVD” is a self-service portal for users using WVD. In this portal, which is a web app with Azure AD authentication, users can start and stop (deallocate) their personal assigned session host - which in this case are VDIs.&lt;/p&gt;
+
+&lt;p&gt;The user doesn’t need access nor permission to the Azure portal or the virtual machines. The authentication of the web app handles the action itself.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;..\assets\images\WVDStarter-AssignedUser.png&quot; alt=&quot;MySmartScale-01&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The newest implementation adds a new feature: You can configure that running VMs are deallocated if no user is logged in. That handles in combination with a group policy that personally assigned session hosts to go down after a specific time of idling.&lt;/p&gt;
+
+&lt;p&gt;A session host can be assigned to a specific user using my admin GUI for WVD: &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Go to the documentation and deploy this free solution to Azure:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/MarcelMeurer/Azure-Starter-for-WVD&quot;&gt;https://github.com/MarcelMeurer/Azure-Starter-for-WVD&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 09 Feb 2020 00:00:00 +0100</pubDate>
+        <link>/Windows-Virtual-Desktop-Azure-Starter-for-WVD/</link>
+        <guid isPermaLink="true">/Windows-Virtual-Desktop-Azure-Starter-for-WVD/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>Using WVDAdmin for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)</title>
@@ -920,96 +945,6 @@ Workaround: Delete all user profiles except the logged in user and default users
         <category>Events</category>
         
         <category>PowerShell</category>
-        
-      </item>
-    
-      <item>
-        <title>Publish your solution to the Azure Marketplace</title>
-        <description>&lt;p&gt;Publishing own solutions to the Azure Marketplace seems to be very easy by using the documentation on &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/marketplace/marketplace-publishers-guide&quot;&gt;https://docs.microsoft.com/en-us/azure/marketplace/marketplace-publishers-guide&lt;/a&gt;. To avoid any pitfalls I wrote down some insights about my first approach. In this blog, I will focus on “Azure Applications”&lt;/p&gt;
-
-&lt;h2 id=&quot;the-cloud-partner-dashboard&quot;&gt;The Cloud Partner Dashboard&lt;/h2&gt;
-
-&lt;p&gt;Make sure that you have access to the Cloud Partner Portal at &lt;a href=&quot;https://cloudpartner.azure.com&quot;&gt;https://cloudpartner.azure.com&lt;/a&gt;. In my case, I use my coopered credentials to log in.
-Assign your Dev Center account details via Publisher Profile:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/03/PA01.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Hint:&lt;/strong&gt;
-I had some trouble doing this. My Dev Center account was not accepted. The reason was that my Dev Center account and my cooperated account names are/aren’t similar. A Dev Center account is always an MSA (former live id). So, I couldn’t invite this account into the Cloud Partner portal. My workaround:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Create a new MSA, e.g. myname.dev@outlook.com&lt;/li&gt;
-  &lt;li&gt;Create a new Dev Center account with the new MSA: &lt;a href=&quot;https://developer.microsoft.com&quot;&gt;https://developer.microsoft.com&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;Add the new MSA into the Cloud Partner Portal
-&lt;img src=&quot;/wp-content/uploads/2019/03/PA02.png&quot; alt=&quot;img&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Assign your Dev Center account&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;prepare-your-publishing-package&quot;&gt;Prepare your publishing package&lt;/h2&gt;
-
-&lt;p&gt;Publishing (-) Azure Applications means that you provide an ARM template and other resources, like:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;mainTemplate.json&lt;/li&gt;
-  &lt;li&gt;createUiDefinition.json (&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/managed-applications/create-uidefinition-overview&quot;&gt;https://docs.microsoft.com/en-us/azure/managed-applications/create-uidefinition-overview&lt;/a&gt;)&lt;/li&gt;
-  &lt;li&gt;nestedtemplates.….json (for linked templates)&lt;/li&gt;
-  &lt;li&gt;and maybe some other folders&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;All the files must be in a zip archive for (-) further upload. The folder structure is important and createUiDefinition.json and mainTemplate.json are mandatory.
-The ARM templates and the create UI are checked by Microsoft before your offer is available to the public. To avoid some iterations, make sure that you have observed the following things:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;ARM Templates
-    &lt;ul&gt;
-      &lt;li&gt;Do not reference external sources like nested templates on GitHub – everything must be in the package&lt;/li&gt;
-      &lt;li&gt;maintemplate.json must have a “parameters” property&lt;/li&gt;
-      &lt;li&gt;Parameters without defaultValue s. They must have a corresponding output in createUiDefinition.json&lt;/li&gt;
-      &lt;li&gt;A parameter named “location” must exist and it must have a defaultValue of resourceGroup().location&lt;/li&gt;
-      &lt;li&gt;Use the correct API versions#VM Image ref must not contain “-preview”&lt;/li&gt;
-      &lt;li&gt;Do not concat Ids like:
-&lt;em&gt;“[Concat(‘/subscriptions/’, parameters(‘subscriptionId’), ‘/resourceGroups/’, parameters(‘resourcegroup’), ‘/providers/Microsoft.OperationalInsights/workspaces/’, parameters(‘workspace’))]”&lt;/em&gt;
-use resourceId:
-&lt;em&gt;“[resourceId(‘Microsoft.OperationalInsights/workspaces’, parameters(‘workspace’))]&lt;/em&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;createUiDefinition.json
-    &lt;ul&gt;
-      &lt;li&gt;Must have a schema property&lt;/li&gt;
-      &lt;li&gt;Handler property value should be ‘Microsoft.Compute.MultiVm’&lt;/li&gt;
-      &lt;li&gt;Version property value must match schema version&lt;/li&gt;
-      &lt;li&gt;Must have parameters and output(-) properties&lt;/li&gt;
-      &lt;li&gt;Output location must be present in mainTemplate parameters&lt;/li&gt;
-      &lt;li&gt;Output workspace must be present in mainTemplate parameters&lt;/li&gt;
-      &lt;li&gt;Parameters should have basics and steps properties&lt;/li&gt;
-      &lt;li&gt;Location must be in outputs and should match [location()]&lt;/li&gt;
-      &lt;li&gt;Do not say that a user has to enter a unique name (e.g. for a web app) – generate a unique name with an appendix (use uniqueString()), e.g.:
-&lt;em&gt;“[concat(parameters(‘resourcename’),’-‘, uniqueString(resourceGroup().id,subscription().subscriptionId))]”&lt;/em&gt;&lt;/li&gt;
-      &lt;li&gt;Text boxes (for names) must have a regex constraint&lt;/li&gt;
-      &lt;li&gt;Text boxes (for names) must have a validationMessage&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;publish-your-package-for-a-private-test&quot;&gt;Publish your package for a private test&lt;/h2&gt;
-
-&lt;p&gt;After you have zipped your package, you can create a new “Azure Application” offer in the Cloud Partner portal. Select a new offer, Azure application and fill out the fields.
-Publish it for your personal test (add your subscription id to make it visible).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/wp-content/uploads/2019/03/PA03.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;publish-your-package-to-the-public&quot;&gt;Publish your package to the public&lt;/h2&gt;
-
-&lt;p&gt;After you have tested your package privately, you can apply to make it public to the world. This takes some time while automatism and a (human) reviewer check your templates. If something is invalid, you get a mail with a link to a pull request where you can check what’s wrong.&lt;/p&gt;
-
-&lt;p&gt;Fist published on: &lt;a href=&quot;https://www.sepago.de/blog/publish-your-solution-to-the-azure-marketplace/&quot;&gt;https://www.sepago.de/blog/publish-your-solution-to-the-azure-marketplace/&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Mon, 25 Mar 2019 00:00:00 +0100</pubDate>
-        <link>/Publish-your-solution-to-the-Azure-Marketplace/</link>
-        <guid isPermaLink="true">/Publish-your-solution-to-the-Azure-Marketplace/</guid>
-        
-        
-        <category>Azure Marketplace</category>
         
       </item>
     
