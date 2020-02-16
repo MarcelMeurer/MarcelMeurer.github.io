@@ -45,6 +45,10 @@
 <lastmod>2019-01-13T00:00:00+01:00</lastmod>
 </url>
 <url>
+<loc>/Windows-Virtual-Desktop-Azure-Starter-for-WVD/</loc>
+<lastmod>2019-02-09T00:00:00+01:00</lastmod>
+</url>
+<url>
 <loc>/Why-configuring-Azure-AD-authentication-with-an-Azure-Web-App-fails/</loc>
 <lastmod>2019-02-09T00:00:00+01:00</lastmod>
 </url>
@@ -137,13 +141,13 @@
 <loc>/category/azure-functions/</loc>
 </url>
 <url>
+<loc>/category/windows-virtual-desktop/</loc>
+</url>
+<url>
 <loc>/category/azure-marketplace/</loc>
 </url>
 <url>
 <loc>/category/azure/</loc>
-</url>
-<url>
-<loc>/category/windows-virtual-desktop/</loc>
 </url>
 <url>
 <loc>/category/events/</loc>
