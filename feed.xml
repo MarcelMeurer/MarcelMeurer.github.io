@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 17 Feb 2020 19:06:51 +0100</pubDate>
-    <lastBuildDate>Mon, 17 Feb 2020 19:06:51 +0100</lastBuildDate>
+    <pubDate>Mon, 17 Feb 2020 19:08:11 +0100</pubDate>
+    <lastBuildDate>Mon, 17 Feb 2020 19:08:11 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -388,7 +388,7 @@ If you had already used WVDAdmin in the “normal” mode, you could copy the se
 &lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/g9T0mO1gH9Y&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 
-&lt;p&gt;Download  &lt;a href=&quot;../assets/files/WVDAdmin.zip&quot;&gt;WVDAdmin.zip&lt;/a&gt; or  &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin.msi&lt;/a&gt; (msi is preferred) extract the zip file and install the application on your Windows client or on a template VM for your WVD.&lt;/p&gt;
+&lt;p&gt;Download  &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin.msi&lt;/a&gt; and install the application on your Windows client or on a template VM for your WVD.&lt;/p&gt;
 
 &lt;h2 id=&quot;versions&quot;&gt;Versions&lt;/h2&gt;
 
@@ -657,7 +657,7 @@ Workaround: Delete all user profiles except the logged in user and default users
   &lt;li&gt;NEW: An endless loop of “Waiting for the temporary vm (power off)” : Update to the newest PowerShell script for generalizing: &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVD Admin” from here: &lt;a href=&quot;../assets/files/WVDAdmin.zip&quot;&gt;WVDAdmin.zip&lt;/a&gt; or  &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin.msi&lt;/a&gt; (msi is preferred)&lt;/p&gt;
+&lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVD Admin” from here: &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin.msi&lt;/a&gt;&lt;/p&gt;
 
 </description>
         <pubDate>Sat, 02 Nov 2019 00:00:00 +0100</pubDate>
