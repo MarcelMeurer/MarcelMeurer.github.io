@@ -61,10 +61,17 @@ if ($mode -eq "Generalize")
 	Remove-ItemProperty -Path $key -Name "LastAliveStamp" -ErrorAction Ignore
 	Remove-ItemProperty -Path $key -Name "TimeStampInterval" -ErrorAction Ignore
 	
-	LogWriter("Removing folder AppXPackages")
+	LogWriter("Removing pending AppXPackages")
 	LogWriter(Get-AppxPackage -AllUsers | where{$_.NonRemovable -ne $true -and $_.PackageUserInformation -match "pending removal"}|ft)
 	Get-AppxPackage -AllUsers | where{$_.NonRemovable -ne $true -and $_.PackageUserInformation -match "pending removal"}| Remove-AppxPackage -AllUsers
 	
+	LogWriter("Removing assignments to language packs - AppXPackages")
+	$Packages = Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('Microsoft.LanguageExperiencePack')}
+	foreach($package in $packages){
+		write-host("Removing package: "+$package.packagefullname)
+		Remove-AppxPackage -AllUsers -Package $package.packagefullname
+	}
+
 	LogWriter("Starting sysprep to generalize session host")
 	Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown /mode:vm"
 } elseif ($mode -eq "JoinDomain")
@@ -95,8 +102,8 @@ if ($mode -eq "Generalize")
 # SIG # Begin signature block
 # MIIcWwYJKoZIhvcNAQcCoIIcTDCCHEgCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU3ieYlGex3nqH0B9509SHIMha
-# aRCggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU9ftJog6AvwEEWhagy24UER2t
+# 986ggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE5MTEwMjAwMDAwMFoXDTIwMTIx
@@ -227,22 +234,22 @@ if ($mode -eq "Generalize")
 # SUQgQ29kZSBTaWduaW5nIENBAhAHaCbvcbn02aj6wGGzZ6EqMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTJrOyeR5ygrACJBNfRjqk0qZC9RDANBgkqhkiG9w0BAQEFAASCAQBe+H8l
-# A59stOZomN8iGMr+xXyzD4aRM5jU4rvAXa1v4ZpHXFfCQskN63ykQhG/yA8sOm0c
-# F5bFlhLlL9gvbwZ+HX2xOrJTTrBukb3Vnav3611wN+GytNWFkOas0ZTdS5jYo4/p
-# QvVoZa1Epd3dIxbedwNdwolz95Zc2yIJMiOUCjjf51ZDcC9EWwa5mT5i0M3nGYLQ
-# be+QAZaa/X6BH2d0zRmliM3dSbOQw6yZaSoKzPdDqNasuKk3cd1ewlUWrqNej7Uu
-# nEv8GVc1luJNPlrG2O29XqlDWK1QN69OhZJyW9lYcQ6cKbTepAuV+AnUVP/IwLG4
-# Lpatzf1jfTa4R6mYoYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
+# BDEWBBT5VQSYsEHZkpuVxbwyfIIprl5kgDANBgkqhkiG9w0BAQEFAASCAQCCzOFk
+# afX6qfstv7RKAKXRrSbXxgQSvlHGMq3hdnqgOewBP4+IIPjt7wR3YsS2tNxJwC8m
+# 2TChCeYcveBhLYlxLp+oEC0HAhHQKXEGEUR1RahfELKCW6LQi2nEV/kcW1PLOQVp
+# /LATwAW2OLldaLVqT73o5Xw6HVZ1RgMQvsxUtqhpnQ/M7MSCppMMpaKFqYgfCAup
+# x/wOmTq7cZU50GYqliM5r1n5T9V61JsYcPgXQCd4DKHmyR6c5uh78YCq2O2i56ep
+# l5h69lYxiYQGJxoq88sPuKSzGMxzAMsn2xXU9/KeSSNCTKx+WSu2UYKEqX7iO2UO
+# ssXQfZbD3bmqvxVsoYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
 # MAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3
 # LmRpZ2ljZXJ0LmNvbTEhMB8GA1UEAxMYRGlnaUNlcnQgQXNzdXJlZCBJRCBDQS0x
 # AhADAZoCOv9YsWvW1ermF/BmMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJ
-# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDAyMTcxNzQyMTZaMCMGCSqGSIb3
-# DQEJBDEWBBRtbE7Qs5sGuacWVJxipknthCaO+DANBgkqhkiG9w0BAQEFAASCAQCN
-# 5qzj8K5r3deJk55ulzzp/SG7LSjJ8aQrt/zj9zygg3E7xFHe93GWTtpzSkdLXlto
-# 3t2cZPIR5+G8BBeGGKFFPXlNjPAbCYNG2y6YfyG1QdPgnW5KTul5DPude8UEFQpm
-# 5LQZ9J42E4Z17vyhDGm5xWPiyG6ZlXFRuFk5UUpLz89T+e5mvb+5s5Bor2mxg1rj
-# SJQJ6rgIW1motlqCO0LIUL0KPqp98Cv8kQ+vxHtRUMcHw8ENNRGyZmY63DjOQU/U
-# QsYa01Q+rAPvwjw38EuZ6Q+38QVgqCl0XnJh+r1wifGC76o6k9vXm14X4jqQmE4t
-# 2lQzkoza3MPZXyxNL9dZ
+# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDAyMTgxMDI2MDFaMCMGCSqGSIb3
+# DQEJBDEWBBQGb7OCZ4LZJ9BlmKjK6yLP5ET+MzANBgkqhkiG9w0BAQEFAASCAQAv
+# xVlK1QT6CgXyo/2jjDQpe3kHQlkAcQzyMLadYs3MFw9UxzdVl4VA9q/9xtOiL56K
+# YBNmSK7t5rmFymauqD4xrOxb+Uo1h6XZG4mPlVYWC1JhGiG4eKGJ2BfEWcslHd98
+# jO+KIsMgjM+GmGcX6f/DGQq6pILVADaz+65pRD6ggNZe0mQMzJ+ggKunkiIge/bu
+# 1hptqIaNljpMtc0deXvjCsv82aCrauP1h1wepxf6D0ZwKaTBWcuK17k7Ikp0H9QJ
+# 0kHQKn28+X+NLECcAMAMOOZdH4wDq5NHK9IVvcNN58RXaZccKzgWRut/uWmvE/Cs
+# Zik5S9EYhIFRQMm5WznF
 # SIG # End signature block
