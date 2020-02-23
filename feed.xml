@@ -5,9 +5,53 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 18 Feb 2020 11:27:01 +0100</pubDate>
-    <lastBuildDate>Tue, 18 Feb 2020 11:27:01 +0100</lastBuildDate>
+    <pubDate>Sun, 23 Feb 2020 16:33:41 +0100</pubDate>
+    <lastBuildDate>Sun, 23 Feb 2020 16:33:41 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Windows Virtual Desktop and Language Packs - Detecting Host Pool and Tenant Name issue</title>
+        <description>&lt;p&gt;Language packs on Windows sometimes cause some issues or strange behaviors to some applications. One problem I can reproduce is the impact of the RDAgent from Microsoft - the agent running on a WVD session host, which makes the connection to the WVD backend.
+If no language pack is installed (or not set as the system language), the RDAgent writes some information to the registry naming the Host Pool, Tenant, and more. You can find this data in &lt;strong&gt;HKLM:\SOFTWARE\Microsoft\RDMonitoringAgent&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;The RDAgent writes this data at least if the session host at the start:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;..\assets\images\WVD.LanguagePack.RDMonitoringAgent.01.png&quot; alt=&quot;Registry with values&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you have a clean Windows Virtual Machine with an &lt;strong&gt;installed&lt;/strong&gt; and for the whole system activated &lt;strong&gt;language pack&lt;/strong&gt; and if you then install the RDAgent, this information is never written to the registry (the WVD function itself is working as expected).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;..\assets\images\WVD.LanguagePack.RDMonitoringAgent.02.png&quot; alt=&quot;Registry with values&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you use this Virtual Machine - or session hosts you built based on this VM - you can no longer detect the WVD-tenant, host pool name from the registry. These also affect my tools using this information:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://loganalytics.sepago.com/&quot;&gt;Azure Monitor for WVD&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/MarcelMeurer/Project-MySmartScale&quot;&gt;Azure Autoscale for WVD&lt;/a&gt; (aka “Project MySmartScale”, WorkerAgent)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;They reference the data to an “unknown” or “staging” host pool path (host pool path is “tenant.hostpool” name). This behavior can lead to misinterpretations.&lt;/p&gt;
+
+&lt;p&gt;To work-around this peculiar behavior with language packs, I added a new function to both solutions. If the tenant and host pool name can not be discovered by using the registry keys, the agents read the tag “WVD.Path” to get the names. The value in WVD.Path must be in the format: TenantName\TenantGroupName\HostPoolName:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;..\assets\images\WVD.LanguagePack.RDMonitoringAgent.03.png&quot; alt=&quot;Tags&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The new agents are ready to download:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://loganalytics.sepago.com/download.html&quot;&gt;Azure Monitor for WVD&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/MarcelMeurer/Project-MySmartScale/tree/master/bin&quot;&gt;Azure Autoscale for WVD&lt;/a&gt; (aka “Project MySmartScale”, WorkerAgent)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Additionally,  &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt; (from version 1.3.6) will tag new distributed session hosts automatically.&lt;/p&gt;
+</description>
+        <pubDate>Sun, 23 Feb 2020 00:00:00 +0100</pubDate>
+        <link>/Windows-Virtual-Desktop-Language-Packs-Detecting-Host-Pool-and-Tenant-Name/</link>
+        <guid isPermaLink="true">/Windows-Virtual-Desktop-Language-Packs-Detecting-Host-Pool-and-Tenant-Name/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>Windows Virtual Desktop - Azure Starter for WVD</title>
@@ -425,6 +469,8 @@ If you had already used WVDAdmin in the “normal” mode, you could copy the se
 &lt;p&gt;1.3.4.00		Add: Networks are now listed as VNET/SUBNET in the rollout tab&lt;/p&gt;
 
 &lt;p&gt;1.3.5.00		Add: Allow an local admin to mirror a user session (WVDAdmin needs direct access to the session host via RDP)&lt;/p&gt;
+
+&lt;p&gt;1.3.6.00		Add: New tag for session hosts: WVD.Path - used by &lt;a href=&quot;http://loganalytics.sepago.com/&quot;&gt;Azure Monitor for WVD&lt;/a&gt; and &lt;a href=&quot;https://github.com/MarcelMeurer/Project-MySmartScale&quot;&gt;Azure Autoscale for WVD - aka Project MySmartScale&lt;/a&gt; if an installed language pack conflicts with the Microsoft RDAgent (read this post to learn more)&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Important for prior 1.2.1 users:&lt;/strong&gt; I removed the logging of the Azure custom extension so that from version 1.2.1, no secrets are logged to “&lt;em&gt;c:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\*&lt;/em&gt;”. I recommend to use the new version and to remove the logs from older session hosts (or to re-deploy these hosts). I found these logs while checking what other services are running on an Azure VM.&lt;/p&gt;
 
@@ -891,62 +937,6 @@ Workaround: Delete all user profiles except the logged in user and default users
         <category>Events</category>
         
         <category>Azure</category>
-        
-      </item>
-    
-      <item>
-        <title>CDC Germany: RDS and Windows Virtual Desktop – Desktops in the year 2019 and beyond</title>
-        <description>&lt;p&gt;From 21. to 22. April 2019 the annual Cloud and Datacenter Conference took place in Hanau/Frankfurt in Germany. It’s one of my favorite community events in Germany. This year I was allowed to contribute something to RDS in Windows Server 2019 and Windows Virtual Desktop – including Windows 10 Multi Session Host and FSLogix (an awesome combination).&lt;/p&gt;
-
-&lt;p&gt;I published my slides to slideshare.net: 
-&lt;a href=&quot;https://de.slideshare.net/MarcelMeurer/rds-windows-virtual-desktop-desktop-in-2019&quot;&gt;https://de.slideshare.net/MarcelMeurer/rds-windows-virtual-desktop-desktop-in-2019&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;the-demos-are-also-available-via-youtube&quot;&gt;The demos are also available via Youtube:&lt;/h2&gt;
-
-&lt;h3 id=&quot;windows-virtual-desktop---login-to-a-shared-windows-10-multi-session-host&quot;&gt;Windows Virtual Desktop - Login to a shared Windows 10 Multi Session Host&lt;/h3&gt;
-
-&lt;iframe width=&quot;1196&quot; height=&quot;673&quot; src=&quot;https://www.youtube.com/embed/rgsaQf3hmHw&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://youtu.be/rgsaQf3hmHw&quot;&gt;https://youtu.be/rgsaQf3hmHw&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;windows-virtual-desktop---update-the-template-vm&quot;&gt;Windows Virtual Desktop - Update the template VM&lt;/h3&gt;
-
-&lt;iframe width=&quot;1196&quot; height=&quot;673&quot; src=&quot;https://www.youtube.com/embed/YqrEm3EhbVY&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://youtu.be/YqrEm3EhbVY&quot;&gt;https://youtu.be/YqrEm3EhbVY&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;windows-virtual-desktop---build-a-new-image-from-a-template-vm&quot;&gt;Windows Virtual Desktop - Build a new Image from a template VM&lt;/h3&gt;
-
-&lt;iframe width=&quot;1196&quot; height=&quot;673&quot; src=&quot;https://www.youtube.com/embed/MOuH482A1co&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://youtu.be/MOuH482A1co&quot;&gt;https://youtu.be/MOuH482A1co&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;windows-virtual-desktop---deploy-a-vm-from-a-template-via-powershell&quot;&gt;Windows Virtual Desktop - Deploy a VM from a template via PowerShell&lt;/h3&gt;
-
-&lt;iframe width=&quot;1196&quot; height=&quot;673&quot; src=&quot;https://www.youtube.com/embed/U9zxyk_HuAM&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://youtu.be/U9zxyk_HuAM&quot;&gt;https://youtu.be/U9zxyk_HuAM&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;windows-virtual-desktop---deploy-a-scale-set-from-an-image-re-scale-azure-monitor&quot;&gt;Windows Virtual Desktop - Deploy a Scale Set from an image, re-scale, Azure Monitor&lt;/h3&gt;
-
-&lt;iframe width=&quot;1196&quot; height=&quot;673&quot; src=&quot;https://www.youtube.com/embed/_l5P_JeQANM&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://youtu.be/_l5P_JeQANM&quot;&gt;https://youtu.be/_l5P_JeQANM&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Fist published on: &lt;a href=&quot;https://www.sepago.de/blog/cdc-germany-rds-windows-virtual-desktop-desktops-in-2019/&quot;&gt;https://www.sepago.de/blog/cdc-germany-rds-windows-virtual-desktop-desktops-in-2019/&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Thu, 23 May 2019 00:00:00 +0200</pubDate>
-        <link>/CDC-Germany-RDS-&-Windows-Virtual-Desktop-Desktops-in-2019/</link>
-        <guid isPermaLink="true">/CDC-Germany-RDS-&-Windows-Virtual-Desktop-Desktops-in-2019/</guid>
-        
-        
-        <category>Azure</category>
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Events</category>
-        
-        <category>PowerShell</category>
         
       </item>
     

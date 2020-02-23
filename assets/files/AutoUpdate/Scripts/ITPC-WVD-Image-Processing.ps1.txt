@@ -1,5 +1,5 @@
 # This powershell script is part of WVD Admin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
-# Current Version of this script: 1.9
+# Current Version of this script: 2.0
 
 param(
 
@@ -38,6 +38,7 @@ if ($mode -eq "Generalize")
 	# Create local directory for script(s) and copy files (including the RD agent and boot loader - rename it to the specified name)
 	LogWriter("Copy files to local session host")
 	new-item $LocalConfig -ItemType Directory -ErrorAction Ignore
+	(Get-Item $LocalConfig).attributes="Hidden"
 	Copy-Item "${PSScriptRoot}\ITPC-WVD-Image-Processing.ps1" -Destination ($LocalConfig+"\")
 	Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgent.msi" -Destination ($LocalConfig+"\")
 	Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi" -Destination ($LocalConfig+"\")
@@ -71,11 +72,28 @@ if ($mode -eq "Generalize")
 		write-host("Removing package: "+$package.packagefullname)
 		Remove-AppxPackage -AllUsers -Package $package.packagefullname
 	}
-
+	
+	LogWriter("Saving time zone info for re-deploy")
+	$timeZone=(Get-TimeZone).Id
+	LogWriter("Current time zone is: "+$timeZone)
+	New-Item -Path "HKLM:\SOFTWARE" -Name "ITProCloud" -Force
+	New-Item -Path "HKLM:\SOFTWARE\ITProCloud" -Name "WVD.Runtime" -force	
+	New-ItemProperty -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Runtime" -Name "TimeZone.Origin" -Value $timeZone -force
+	
 	LogWriter("Starting sysprep to generalize session host")
 	Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown /mode:vm"
 } elseif ($mode -eq "JoinDomain")
 {
+	# Checking for a saved time zone information
+	if (Test-Path -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Runtime") {
+		$timeZone=(Get-ItemProperty -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Runtime")."TimeZone.Origin"
+		if ($timeZone -ne "" -and $timeZone -ne $null) {
+			LogWriter("Setting time zone to: "+$timeZone)
+			Set-TimeZone -Id $timeZone
+		}
+	}
+	
+	
 	LogWriter("Joining domain")
 	$psc = New-Object System.Management.Automation.PSCredential($DomainJoinUserName, (ConvertTo-SecureString $DomainJoinUserPassword -AsPlainText -Force))
 	if ($DomainJoinOU -eq "")
@@ -84,8 +102,10 @@ if ($mode -eq "Generalize")
 	} 
 	else
 	{
+	{
 		Add-Computer -DomainName $DomainFqdn -OUPath $DomainJoinOU -Credential $psc -Force
 	}
+
 	LogWriter("Installing WVD boot loader - current path is ${PSScriptRoot}")
 	Start-Process -wait -FilePath "${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi" -ArgumentList "/q"
 	LogWriter("Installing WVD agent")
@@ -102,8 +122,8 @@ if ($mode -eq "Generalize")
 # SIG # Begin signature block
 # MIIcWwYJKoZIhvcNAQcCoIIcTDCCHEgCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU9ftJog6AvwEEWhagy24UER2t
-# 986ggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUG757rgTlMPhnstyEAt+Fexx2
+# fxOggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE5MTEwMjAwMDAwMFoXDTIwMTIx
@@ -234,22 +254,22 @@ if ($mode -eq "Generalize")
 # SUQgQ29kZSBTaWduaW5nIENBAhAHaCbvcbn02aj6wGGzZ6EqMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBT5VQSYsEHZkpuVxbwyfIIprl5kgDANBgkqhkiG9w0BAQEFAASCAQCCzOFk
-# afX6qfstv7RKAKXRrSbXxgQSvlHGMq3hdnqgOewBP4+IIPjt7wR3YsS2tNxJwC8m
-# 2TChCeYcveBhLYlxLp+oEC0HAhHQKXEGEUR1RahfELKCW6LQi2nEV/kcW1PLOQVp
-# /LATwAW2OLldaLVqT73o5Xw6HVZ1RgMQvsxUtqhpnQ/M7MSCppMMpaKFqYgfCAup
-# x/wOmTq7cZU50GYqliM5r1n5T9V61JsYcPgXQCd4DKHmyR6c5uh78YCq2O2i56ep
-# l5h69lYxiYQGJxoq88sPuKSzGMxzAMsn2xXU9/KeSSNCTKx+WSu2UYKEqX7iO2UO
-# ssXQfZbD3bmqvxVsoYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
+# BDEWBBSK5KVZVZrhucStg5CO4kXkWRweZjANBgkqhkiG9w0BAQEFAASCAQBSPnXl
+# kWWMNvSrbDrkS9oEKcevTUAYbJKqCAXNPUAAjRvsp593fvVXPkvQbBIAvnIFqVHw
+# qzaalmOY+8S0Pe8oL4NblfJnqVeOhz+g5zKhXq8NjzYVIXNWK+eetQ9aereCApBA
+# CPr8U+Qj+RWa/icSWt0dNiCWNzWUw86quMcm1zDT0wwZk6LdYPxA14X8sgcdJQze
+# ckPXwUPUjZCaCi1FYBV9LqHYZayU18Y1K7EGP7D8ghki0e1vPyq4hipjAOW8vMZw
+# DaFrr2a0rKpCF2un6swy6nd3ToSXxXX9GiIhHIwqJD2Yp+GbH2UhEdp4C5/tDmjj
+# 4NOcRwCSjT1O9mDioYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
 # MAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3
 # LmRpZ2ljZXJ0LmNvbTEhMB8GA1UEAxMYRGlnaUNlcnQgQXNzdXJlZCBJRCBDQS0x
 # AhADAZoCOv9YsWvW1ermF/BmMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJ
-# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDAyMTgxMDI2MDFaMCMGCSqGSIb3
-# DQEJBDEWBBQGb7OCZ4LZJ9BlmKjK6yLP5ET+MzANBgkqhkiG9w0BAQEFAASCAQAv
-# xVlK1QT6CgXyo/2jjDQpe3kHQlkAcQzyMLadYs3MFw9UxzdVl4VA9q/9xtOiL56K
-# YBNmSK7t5rmFymauqD4xrOxb+Uo1h6XZG4mPlVYWC1JhGiG4eKGJ2BfEWcslHd98
-# jO+KIsMgjM+GmGcX6f/DGQq6pILVADaz+65pRD6ggNZe0mQMzJ+ggKunkiIge/bu
-# 1hptqIaNljpMtc0deXvjCsv82aCrauP1h1wepxf6D0ZwKaTBWcuK17k7Ikp0H9QJ
-# 0kHQKn28+X+NLECcAMAMOOZdH4wDq5NHK9IVvcNN58RXaZccKzgWRut/uWmvE/Cs
-# Zik5S9EYhIFRQMm5WznF
+# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDAyMjMxNTE1NDVaMCMGCSqGSIb3
+# DQEJBDEWBBQa/myESv6nQMzJKCCzKH+W8Big4DANBgkqhkiG9w0BAQEFAASCAQBk
+# 2+xUPwy67gfaP2gBo10+Ojklfb7rhFo9fO/dBPKtBrlr96y1thlbyOavCYPCmV73
+# aSIdvw2KltjwhijIxQVWk3Vq5fOWRnT0wH5iQA8tH8XALOaSl7C6z3CxLs7OutUa
+# 8XsdNom5u8hGQ1zh3yVkOsT7NO/BxzghZPSRnUP/3EoKAsEOLZB5Kn0eXlIamRrZ
+# ZCoWDrgZMwFgA3D+Akgj49Hir/kv/bGYGsvOyBHdydzBOAizr1HsA9rJb4hOhZKN
+# gD4cAYelcL+GbchbXOEq4uCMBdOtG5fBLOOD2mAjutIbIZtRU6dJFEJzFkDJskms
+# YDiEClHqlgIrgqML3yEZ
 # SIG # End signature block
