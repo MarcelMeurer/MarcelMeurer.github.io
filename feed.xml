@@ -5,30 +5,21 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 26 Feb 2020 22:15:14 +0100</pubDate>
-    <lastBuildDate>Wed, 26 Feb 2020 22:15:14 +0100</lastBuildDate>
+    <pubDate>Wed, 26 Feb 2020 22:18:06 +0100</pubDate>
+    <lastBuildDate>Wed, 26 Feb 2020 22:18:06 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
-        <title>Windows virtual desktop   admin preview</title>
-        <description>
-&lt;hr /&gt;
-&lt;p&gt;layout: page
-title:  “WVD Admin - A native administration Gui for Windows Virtual Desktop - Preview Version”
-author: mm
-categories: [Windows Virtual Desktop]
-image: assets/images/WVDAdmin-01.png
-featured: false
-hidden: true
-—&lt;/p&gt;
-
-&lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVD Admin Preview” from here: &lt;a href=&quot;../assets/files/WVDAdmin-Preview.msi&quot;&gt;WVDAdmin-Preview.msi&lt;/a&gt;&lt;/p&gt;
+        <title>WVD Admin - A native administration Gui for Windows Virtual Desktop - Preview Version</title>
+        <description>&lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVD Admin Preview” from here: &lt;a href=&quot;../assets/files/WVDAdmin-Preview.msi&quot;&gt;WVDAdmin-Preview.msi&lt;/a&gt;&lt;/p&gt;
 
 </description>
         <pubDate>Wed, 26 Feb 2020 00:00:00 +0100</pubDate>
         <link>/Windows-Virtual-Desktop-Admin-Preview/</link>
         <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin-Preview/</guid>
         
+        
+        <category>Windows Virtual Desktop</category>
         
       </item>
     
