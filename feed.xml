@@ -5,9 +5,32 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 26 Feb 2020 22:11:37 +0100</pubDate>
-    <lastBuildDate>Wed, 26 Feb 2020 22:11:37 +0100</lastBuildDate>
+    <pubDate>Wed, 26 Feb 2020 22:15:14 +0100</pubDate>
+    <lastBuildDate>Wed, 26 Feb 2020 22:15:14 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Windows virtual desktop   admin preview</title>
+        <description>
+&lt;hr /&gt;
+&lt;p&gt;layout: page
+title:  “WVD Admin - A native administration Gui for Windows Virtual Desktop - Preview Version”
+author: mm
+categories: [Windows Virtual Desktop]
+image: assets/images/WVDAdmin-01.png
+featured: false
+hidden: true
+—&lt;/p&gt;
+
+&lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVD Admin Preview” from here: &lt;a href=&quot;../assets/files/WVDAdmin-Preview.msi&quot;&gt;WVDAdmin-Preview.msi&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 26 Feb 2020 00:00:00 +0100</pubDate>
+        <link>/Windows-Virtual-Desktop-Admin-Preview/</link>
+        <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin-Preview/</guid>
+        
+        
+      </item>
     
       <item>
         <title>Windows Virtual Desktop and Language Packs - Detecting Host Pool and Tenant Name issue</title>
@@ -916,27 +939,6 @@ Workaround: Delete all user profiles except the logged in user and default users
         <category>Azure Monitor</category>
         
         <category>Log Analytics</category>
-        
-      </item>
-    
-      <item>
-        <title>On the road - My next speaking engagements</title>
-        <description>&lt;p&gt;I’m happy to be a part of a great community.  On my journey, I have the possibility to speak at some conferences, meetups and other events. And I loved it. Especially, if I can talk about Azure, IoT, Machine Learning, AI, Azure Monitor, etc.&lt;/p&gt;
-
-&lt;p&gt;Maybe we will meet personally at one of the next events:&lt;/p&gt;
-
-&lt;script type=&quot;text/javascript&quot; src=&quot;https://sessionize.com/api/speaker/events/9c778515-935a-46b1-ad39-3740c5b0afcf/0x0x3fb393x&quot;&gt;&lt;/script&gt;
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 07 Sep 2019 00:00:00 +0200</pubDate>
-        <link>/Speaking-update/</link>
-        <guid isPermaLink="true">/Speaking-update/</guid>
-        
-        
-        <category>Events</category>
-        
-        <category>Azure</category>
         
       </item>
     
