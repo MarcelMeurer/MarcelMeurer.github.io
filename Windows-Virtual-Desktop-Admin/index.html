@@ -249,6 +249,8 @@
 
 <p>1.3.6.00		Add: New tag for session hosts: WVD.Path - used by <a href="http://loganalytics.sepago.com/">Azure Monitor for WVD</a> and <a href="https://github.com/MarcelMeurer/Project-MySmartScale">Azure Autoscale for WVD - aka Project MySmartScale</a> if an installed language pack conflicts with the Microsoft RDAgent (read this <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Language-Packs-Detecting-Host-Pool-and-Tenant-Name/">post</a> to learn more)</p>
 
+<p>1.4.0.00		PENDING / NOT AVAILABLE NOW    Fix: From an older version, disks are deployed as standard-hdd even if premium-disk was selected; Change: Connection views are now located parallel to the logging list on the bottom (tenant-view); Add: Function to check for an updated version via <a href="https://blog.itprocloud.de/assets/files/WVDAdmin.xml">https://blog.itprocloud.de/assets/files/WVDAdmin.xml</a></p>
+
 <p><strong>Important for prior 1.2.1 users:</strong> I removed the logging of the Azure custom extension so that from version 1.2.1, no secrets are logged to “<em>c:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\*</em>”. I recommend to use the new version and to remove the logs from older session hosts (or to re-deploy these hosts). I found these logs while checking what other services are running on an Azure VM.</p>
 
 <h3 id="support-for-vm-scale-sets">Support for VM Scale Sets</h3>
