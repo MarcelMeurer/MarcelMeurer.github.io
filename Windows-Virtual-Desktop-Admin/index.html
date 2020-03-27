@@ -341,9 +341,15 @@
 4
 5
 6
+7
+8
+9
 </pre></td><td class="rouge-code"><pre><span class="nf">Import-Module</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">Microsoft.RDInfra.RDPowerShell</span><span class="w">
 </span><span class="c"># log on with an administrative user account to your </span><span class="w">
 </span><span class="nf">Add-RdsAccount</span><span class="w"> </span><span class="nt">-DeploymentUrl</span><span class="w"> </span><span class="s2">"https://rdbroker.wvd.microsoft.com"</span><span class="w">  
+
+</span><span class="c"># list rds tenants</span><span class="w">
+</span><span class="nf">Get-RdsTenant</span><span class="w">
 
 </span><span class="c"># give your service principal the right permission</span><span class="w">
 </span><span class="nf">New-RdsRoleAssignment</span><span class="w"> </span><span class="nt">-TenantName</span><span class="w"> </span><span class="s2">"Builder City"</span><span class="w"> </span><span class="nt">-RoleDefinitionName</span><span class="w"> </span><span class="s2">"RDS Owner"</span><span class="w"> </span><span class="nt">-ApplicationId</span><span class="w"> </span><span class="nx">89050a12-xxxx-xxxx-xxxx-000000000000</span><span class="w">
