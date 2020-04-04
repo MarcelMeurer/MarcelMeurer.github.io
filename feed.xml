@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 01 Apr 2020 12:03:23 +0200</pubDate>
-    <lastBuildDate>Wed, 01 Apr 2020 12:03:23 +0200</lastBuildDate>
+    <pubDate>Sat, 04 Apr 2020 17:23:28 +0200</pubDate>
+    <lastBuildDate>Sat, 04 Apr 2020 17:23:28 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -446,51 +446,53 @@ If you had already used WVDAdmin in the “normal” mode, you could copy the se
 &lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/g9T0mO1gH9Y&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 
-&lt;p&gt;Download  &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin.msi&lt;/a&gt; and install the application on your Windows client or on a template VM for your WVD.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Download  &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin.msi&lt;/a&gt; and install the application on your Windows client or on a template VM for your WVD.&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;versions&quot;&gt;Versions&lt;/h2&gt;
 
-&lt;p&gt;1.0.0.22		First published version - without auto-update of WVD Admin&lt;/p&gt;
+&lt;p&gt;1.4.6.00		Add: New VM sizes; all new scale sets are deployed as really scalable version (up to 600 instances each)&lt;/p&gt;
 
-&lt;p&gt;1.0.0.23		Support for ephemeral  disks&lt;/p&gt;
-
-&lt;p&gt;1.0.0.25		Fix: If you delete a VM the OS disk will deleted as well&lt;/p&gt;
-
-&lt;p&gt;1.0.0.26		Add: Template VM can now be a VM with a standard disk (non-managed)&lt;/p&gt;
-
-&lt;p&gt;1.0.0.29		Add: Supporting “special license mode” to save up to 50% on compute-cost (&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license&lt;/a&gt;)&lt;/p&gt;
-
-&lt;p&gt;1.0.0.30		Fix: Rollout - OU can now be empty to join the default OU&lt;/p&gt;
-
-&lt;p&gt;1.2.1.00		&lt;a name=&quot;v121-note&quot;&gt;&lt;/a&gt;Fix: Logging of rollout parameter by Azure custom extension is removed to avoid logging secrets&lt;/p&gt;
-
-&lt;p&gt;1.2.3.00		Add: Support for automatic and static assigned host pools&lt;/p&gt;
-
-&lt;p&gt;1.2.4.00		Add: Support for availability sets&lt;/p&gt;
-
-&lt;p&gt;1.2.5.00		Add: Support for Scale Sets (with normal and ephemeral disks) -&amp;gt; see below&lt;/p&gt;
-
-&lt;p&gt;1.2.7.00		Add: The main window of the application is now resizeable&lt;/p&gt;
-
-&lt;p&gt;1.2.8.00		Add: If you click a tenant a tenant wide list of sessions is listed.  Logoff or send messages to multiple sessions&lt;/p&gt;
-
-&lt;p&gt;1.3.0.00		Add: AAD multi-tenancy mode (drop down list to handle different AADs) - &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners/&quot;&gt;https://blog.itprocloud.de/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;1.3.1.00		Fix: WVDAdmin crashed if 1.3.0 is your first version of WVDAdmin (HKEY_CURRENT_USER\Software\ITProCloud doesn’t exist while checking for multi-tenancy mode)&lt;/p&gt;
-
-&lt;p&gt;1.3.3.00		Add: Support for a special mode if your WVD tenant and the session hosts in two different Azure Active Directory tenants&lt;/p&gt;
-
-&lt;p&gt;1.3.4.00		Add: Networks are now listed as VNET/SUBNET in the rollout tab&lt;/p&gt;
-
-&lt;p&gt;1.3.5.00		Add: Allow an local admin to mirror a user session (WVDAdmin needs direct access to the session host via RDP)&lt;/p&gt;
-
-&lt;p&gt;1.3.6.00		Add: New tag for session hosts: WVD.Path - used by &lt;a href=&quot;http://loganalytics.sepago.com/&quot;&gt;Azure Monitor for WVD&lt;/a&gt; and &lt;a href=&quot;https://github.com/MarcelMeurer/Project-MySmartScale&quot;&gt;Azure Autoscale for WVD - aka Project MySmartScale&lt;/a&gt; if an installed language pack conflicts with the Microsoft RDAgent (read this &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Language-Packs-Detecting-Host-Pool-and-Tenant-Name/&quot;&gt;post&lt;/a&gt; to learn more)&lt;/p&gt;
-
-&lt;p&gt;1.4.0.00		Fix: From an older version, disks are deployed as standard-hdd even if premium-disk was selected; Change: Connection views are now located parallel to the logging list on the bottom (tenant-view); Add: Function to check for an updated version via &lt;a href=&quot;../assets/files/WVDAdmin.xml&quot;&gt;https://blog.itprocloud.de/assets/files/WVDAdmin.xml&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;1.4.4.00		Fix: Service Principal Keys with some special characters are working now; Add: Faster loading of resources from WVD and Azure backend&lt;/p&gt;
 
 &lt;p&gt;1.4.2.00		Add: Support for NVv4 VM sizes (based on AMD Radeon Instinct  MI25-GPU); support to set custom Azure tags for resources while deploying resources&lt;/p&gt;
 
-&lt;p&gt;1.4.4.00		Fix: Service Principal Keys with some special characters are working now; Add: Faster loading of resources from WVD and Azure backend&lt;/p&gt;
+&lt;p&gt;1.4.0.00		Fix: From an older version, disks are deployed as standard-hdd even if premium-disk was selected; Change: Connection views are now located parallel to the logging list on the bottom (tenant-view); Add: Function to check for an updated version via &lt;a href=&quot;../assets/files/WVDAdmin.xml&quot;&gt;https://blog.itprocloud.de/assets/files/WVDAdmin.xml&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;1.3.6.00		Add: New tag for session hosts: WVD.Path - used by &lt;a href=&quot;http://loganalytics.sepago.com/&quot;&gt;Azure Monitor for WVD&lt;/a&gt; and &lt;a href=&quot;https://github.com/MarcelMeurer/Project-MySmartScale&quot;&gt;Azure Autoscale for WVD - aka Project MySmartScale&lt;/a&gt; if an installed language pack conflicts with the Microsoft RDAgent (read this &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Language-Packs-Detecting-Host-Pool-and-Tenant-Name/&quot;&gt;post&lt;/a&gt; to learn more)&lt;/p&gt;
+
+&lt;p&gt;1.3.5.00		Add: Allow an local admin to mirror a user session (WVDAdmin needs direct access to the session host via RDP)&lt;/p&gt;
+
+&lt;p&gt;1.3.4.00		Add: Networks are now listed as VNET/SUBNET in the rollout tab&lt;/p&gt;
+
+&lt;p&gt;1.3.3.00		Add: Support for a special mode if your WVD tenant and the session hosts in two different Azure Active Directory tenants&lt;/p&gt;
+
+&lt;p&gt;1.3.1.00		Fix: WVDAdmin crashed if 1.3.0 is your first version of WVDAdmin (HKEY_CURRENT_USER\Software\ITProCloud doesn’t exist while checking for multi-tenancy mode)&lt;/p&gt;
+
+&lt;p&gt;1.3.0.00		Add: AAD multi-tenancy mode (drop down list to handle different AADs) - &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners/&quot;&gt;https://blog.itprocloud.de/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;1.2.8.00		Add: If you click a tenant a tenant wide list of sessions is listed.  Logoff or send messages to multiple sessions&lt;/p&gt;
+
+&lt;p&gt;1.2.7.00		Add: The main window of the application is now resizeable&lt;/p&gt;
+
+&lt;p&gt;1.2.5.00		Add: Support for Scale Sets (with normal and ephemeral disks) -&amp;gt; see below&lt;/p&gt;
+
+&lt;p&gt;1.2.4.00		Add: Support for availability sets&lt;/p&gt;
+
+&lt;p&gt;1.2.3.00		Add: Support for automatic and static assigned host pools&lt;/p&gt;
+
+&lt;p&gt;1.2.1.00		&lt;a name=&quot;v121-note&quot;&gt;&lt;/a&gt;Fix: Logging of rollout parameter by Azure custom extension is removed to avoid logging secrets&lt;/p&gt;
+
+&lt;p&gt;1.0.0.30		Fix: Rollout - OU can now be empty to join the default OU&lt;/p&gt;
+
+&lt;p&gt;1.0.0.29		Add: Supporting “special license mode” to save up to 50% on compute-cost (&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;1.0.0.26		Add: Template VM can now be a VM with a standard disk (non-managed)&lt;/p&gt;
+
+&lt;p&gt;1.0.0.25		Fix: If you delete a VM the OS disk will deleted as well&lt;/p&gt;
+
+&lt;p&gt;1.0.0.23		Support for ephemeral  disks&lt;/p&gt;
+
+&lt;p&gt;1.0.0.22		First published version - without auto-update of WVD Admin&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Important for prior 1.2.1 users:&lt;/strong&gt; I removed the logging of the Azure custom extension so that from version 1.2.1, no secrets are logged to “&lt;em&gt;c:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\*&lt;/em&gt;”. I recommend to use the new version and to remove the logs from older session hosts (or to re-deploy these hosts). I found these logs while checking what other services are running on an Azure VM.&lt;/p&gt;
 
