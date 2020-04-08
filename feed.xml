@@ -5,9 +5,39 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 07 Apr 2020 09:03:37 +0200</pubDate>
-    <lastBuildDate>Tue, 07 Apr 2020 09:03:37 +0200</lastBuildDate>
+    <pubDate>Wed, 08 Apr 2020 17:32:49 +0200</pubDate>
+    <lastBuildDate>Wed, 08 Apr 2020 17:32:49 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Using Azure AD groups to assign users to Windows Virtual Desktop (WVD)</title>
+        <description>&lt;p&gt;Today (early April), it’s not possible to join groups to application groups or desktop in Windows Virtual Desktop. Users have to be assigned directly with their user principal name (UPN). With &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt;, you can do this by entering or copying the UPN’s into a text field.&lt;/p&gt;
+
+&lt;p&gt;From Version 1.4.7 you have another option: You can now browse the Azure AD for users AND groups to add them.
+&lt;img src=&quot;..\assets\images\WVDAdmin\AadBrowser-01.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;If you have added users and groups with the new function, &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt; will fill out the text field with the UPN’s of the selected users and group members (only members, no external accounts).
+&lt;img src=&quot;..\assets\images\WVDAdmin\AadBrowser-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;This function doesn’t resolve the missing function in the WVD but can give you an easier way to handle this until the function is integrated into WVD itself.&lt;/p&gt;
+
+&lt;p&gt;Requirement: The service principal needs permission to browse the Azure Active directory. To do this go to the Azure Portal -&amp;gt; Active Directory -&amp;gt; App Registration -&amp;gt; Select your Service Principal -&amp;gt; API Permissions
+Add the permission “Azure Active Directory Graph” -&amp;gt; Application Permission -&amp;gt; Directory.ReadAll
+&lt;img src=&quot;..\assets\images\WVDAdmin\SP-PermissionToReadDirectoryObjects-01.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To consent the permission and administrator of Azure AD have to grant this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;..\assets\images\WVDAdmin\SP-PermissionToReadDirectoryObjects-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 07 Apr 2020 00:00:00 +0200</pubDate>
+        <link>/Windows-Virtual-Desktop-Add-Users-and-Groups-to-WVD/</link>
+        <guid isPermaLink="true">/Windows-Virtual-Desktop-Add-Users-and-Groups-to-WVD/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVD Admin - A native administration Gui for Windows Virtual Desktop - Preview Version</title>
@@ -450,6 +480,8 @@ If you had already used WVDAdmin in the “normal” mode, you could copy the se
 
 &lt;h2 id=&quot;versions&quot;&gt;Versions&lt;/h2&gt;
 
+&lt;p&gt;1.4.8.00		Add: Support to add users by groups from Azure Active Directory, including an AAD browser (check my blog post and configure the service principal to use this feature)&lt;/p&gt;
+
 &lt;p&gt;1.4.6.00		Add: New VM sizes; all new scale sets are deployed as really scalable version (up to 600 instances each)&lt;/p&gt;
 
 &lt;p&gt;1.4.4.00		Fix: Service Principal Keys with some special characters are working now; Add: Faster loading of resources from WVD and Azure backend&lt;/p&gt;
@@ -808,142 +840,6 @@ Workaround: Delete all user profiles except the logged in user and default users
         <category>Windows Virtual Desktop</category>
         
         <category>Azure VM</category>
-        
-      </item>
-    
-      <item>
-        <title>Workshop Azure Monitor - Lessons</title>
-        <description>&lt;p&gt;To get practice in using Azure Monitor, I have prepared some examples. These examples can be recreated with a little PowerShell. I have prepared more complex program parts. These can be found in the “Tools” folder. Finished solutions are stored in the folder “Samples”.&lt;/p&gt;
-
-&lt;p&gt;GitHub: &lt;a href=&quot;https://github.com/MarcelMeurer/Workshop-AzureMonitor&quot;&gt;https://github.com/MarcelMeurer/Workshop-AzureMonitor&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;in-the-tools-folder-there-are-the-following-scripts&quot;&gt;In the Tools folder there are the following scripts:&lt;/h3&gt;
-
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;/Add-AzureMonitorData.ps1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-WorpspaceId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;WorkSpaceId&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-WorpspaceKey&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;WorpspaceKey&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-LogTypeName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;LogTypeName&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-TimeStampField&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;TimeStampField&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-JsonData&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;JsonData&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Send jsonData to the Log Analytics workspace into the given LogTyeName. TimeStampField is not mandatory. If given, it must be the name of the field containing the timestamp of each data set.&lt;/p&gt;
-
-&lt;h2 id=&quot;missions&quot;&gt;Missions&lt;/h2&gt;
-
-&lt;h3 id=&quot;store-information-about-the-running-processes-from-your-computer&quot;&gt;Store information about the running processes from your computer&lt;/h3&gt;
-
-&lt;p&gt;Collect the process information from your computer each 30 seconds and send these data to your Log Analytics workspace. Use PowerShell to automate this mission.&lt;/p&gt;
-
-&lt;p&gt;Select an app and use this app  to “overload” your CPU.&lt;/p&gt;
-
-&lt;p&gt;If data are visible in Log Analytics, build a custom dashboard by using “Log” to query the data.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Find out:&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;Count of distinct processes&lt;/li&gt;
-      &lt;li&gt;Average CPU load over time (all processes). Render a time chart&lt;/li&gt;
-      &lt;li&gt;Render a time chart for the app you used to overload the CPU&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Some useful PowerShell commands:&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;c&quot;&gt;#Get cpu consumption by process&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Get-Counter&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;\process(*)\% Processor Time&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;CounterSamples&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#Convert objects to &lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$json&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$object&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;ConvertTo-Json&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;store-temperature-data-for-multiple-cities&quot;&gt;Store temperature data for multiple cities&lt;/h3&gt;
-
-&lt;p&gt;Collect data from OpenWeatherMap for three different cities each 30 seconds. Send the data to your Log Analytics workspace using Add-AzureMonitorData.ps1. Use PowerShell to automate this mission.&lt;/p&gt;
-
-&lt;p&gt;If data are visible in Log Analytics, build a custom dashboard using the View Designer within Log Analytics. Build:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;One overview tile showing the number of the different cities&lt;/li&gt;
-  &lt;li&gt;Two dashboards showing the temperature and humidity as a chart and as a list per city&lt;/li&gt;
-  &lt;li&gt;Connect PowerBi Dekstop to your data: Display Line Charts and use a selector/filter for the cities (drop down field)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Hints:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Collect data from OpenWeatherMap&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;https://openweathermap.org/&lt;/li&gt;
-      &lt;li&gt;Create an account and api key&lt;/li&gt;
-      &lt;li&gt;Test your key (it can take some minutes):
- https://api.openweathermap.org/data/2.5/weather?q=Bonn&amp;amp;APIKEY=xxxxxxx&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Some useful PowerShell commands:&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;c&quot;&gt;#Endless-loop&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;do&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;   &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;while&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;$true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#Sleep $n seconds&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sleep&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$n&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#make a http request&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Invoke-WebRequest&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Uri&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$uri&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Method&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;GET&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ContentType&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;application/json&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;build-your-own-log-writer-function&quot;&gt;Build your own log-writer function&lt;/h3&gt;
-
-&lt;p&gt;Build a log-writer function for your own PowerShell scripts using Log Analytics. There are some request to your solution:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Have the following columns:
-    &lt;ul&gt;
-      &lt;li&gt;TimeStamp (as TimeGeneratedField)&lt;/li&gt;
-      &lt;li&gt;
-        &lt;table&gt;
-          &lt;tbody&gt;
-            &lt;tr&gt;
-              &lt;td&gt;Serverity (Debug&lt;/td&gt;
-              &lt;td&gt;Information&lt;/td&gt;
-              &lt;td&gt;Warning&lt;/td&gt;
-              &lt;td&gt;Error)&lt;/td&gt;
-            &lt;/tr&gt;
-          &lt;/tbody&gt;
-        &lt;/table&gt;
-      &lt;/li&gt;
-      &lt;li&gt;Message (Text)&lt;/li&gt;
-      &lt;li&gt;ScriptName (Name of the script using your function)&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Sat, 21 Sep 2019 00:00:00 +0200</pubDate>
-        <link>/Workshop-Azure-Monitor-Examples/</link>
-        <guid isPermaLink="true">/Workshop-Azure-Monitor-Examples/</guid>
-        
-        
-        <category>Azure Monitor</category>
-        
-        <category>Log Analytics</category>
         
       </item>
     
