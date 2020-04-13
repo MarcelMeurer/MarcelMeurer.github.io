@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 08 Apr 2020 19:04:51 +0200</pubDate>
-    <lastBuildDate>Wed, 08 Apr 2020 19:04:51 +0200</lastBuildDate>
+    <pubDate>Mon, 13 Apr 2020 20:38:26 +0200</pubDate>
+    <lastBuildDate>Mon, 13 Apr 2020 20:38:26 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -479,6 +479,8 @@ If you had already used WVDAdmin in the “normal” mode, you could copy the se
 &lt;p&gt;&lt;strong&gt;Download  &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin.msi&lt;/a&gt; and install the application on your Windows client or on a template VM for your WVD.&lt;/strong&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;versions&quot;&gt;Versions&lt;/h2&gt;
+
+&lt;p&gt;1.4.9.00		Add: Filter users, session hosts and host pools in the overview of sessions&lt;/p&gt;
 
 &lt;p&gt;1.4.8.00		Add: Support to add users by groups from Azure Active Directory, including an AAD browser (check my blog post and configure the service principal to use this feature)&lt;/p&gt;
 
