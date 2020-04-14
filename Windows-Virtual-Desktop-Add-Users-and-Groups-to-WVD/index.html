@@ -260,17 +260,20 @@
                 <!-- End Toc -->
                 <p>Today (early April), it’s not possible to join groups to application groups or desktop in Windows Virtual Desktop. Users have to be assigned directly with their user principal name (UPN). With <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">WVDAdmin</a>, you can do this by entering or copying the UPN’s into a text field.</p>
 
-<p>From Version 1.4.7 you have another option: You can now browse the Azure AD for users AND groups to add them.
-<img src="..\assets\images\WVDAdmin\AadBrowser-01.png" alt="AADBrowser" /></p>
+<p>From Version 1.4.7 you have another option: You can now browse the Azure AD for users AND groups to add them.</p>
 
-<p>If you have added users and groups with the new function, <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">WVDAdmin</a> will fill out the text field with the UPN’s of the selected users and group members (only members, no external accounts).
-<img src="..\assets\images\WVDAdmin\AadBrowser-02.png" alt="AADBrowser" /></p>
+<p><img src="..\assets\images\WVDAdmin\AadBrowser-01.png" alt="AADBrowser" /></p>
+
+<p>If you have added users and groups with the new function, <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">WVDAdmin</a> will fill out the text field with the UPN’s of the selected users and group members (only members, no external accounts).</p>
+
+<p><img src="..\assets\images\WVDAdmin\AadBrowser-02.png" alt="AADBrowser" /></p>
 
 <p>This function doesn’t resolve the missing function in the WVD but can give you an easier way to handle this until the function is integrated into WVD itself.</p>
 
 <p>Requirement: The service principal needs permission to browse the Azure Active directory. To do this go to the Azure Portal -&gt; Active Directory -&gt; App Registration -&gt; Select your Service Principal -&gt; API Permissions
-Add the permission “Azure Active Directory Graph” -&gt; Application Permission -&gt; Directory.Read.All
-<img src="..\assets\images\WVDAdmin\SP-PermissionToReadDirectoryObjects-01.png" alt="AADBrowser" /></p>
+Add the permission “Azure Active Directory Graph” -&gt; Application Permission -&gt; Directory.Read.All</p>
+
+<p><img src="..\assets\images\WVDAdmin\SP-PermissionToReadDirectoryObjects-01.png" alt="AADBrowser" /></p>
 
 <p>To be read for the <em>WVD Spring Update</em> you have to give the service principal access to the Graph API: Add the permission “Microsoft Graph” -&gt; Application Permission -&gt; Directory.Read.All</p>
 
