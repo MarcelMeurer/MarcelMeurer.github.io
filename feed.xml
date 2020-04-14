@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 13 Apr 2020 20:38:26 +0200</pubDate>
-    <lastBuildDate>Mon, 13 Apr 2020 20:38:26 +0200</lastBuildDate>
+    <pubDate>Tue, 14 Apr 2020 09:59:36 +0200</pubDate>
+    <lastBuildDate>Tue, 14 Apr 2020 09:59:36 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -22,8 +22,12 @@
 &lt;p&gt;This function doesn’t resolve the missing function in the WVD but can give you an easier way to handle this until the function is integrated into WVD itself.&lt;/p&gt;
 
 &lt;p&gt;Requirement: The service principal needs permission to browse the Azure Active directory. To do this go to the Azure Portal -&amp;gt; Active Directory -&amp;gt; App Registration -&amp;gt; Select your Service Principal -&amp;gt; API Permissions
-Add the permission “Azure Active Directory Graph” -&amp;gt; Application Permission -&amp;gt; Directory.ReadAll
+Add the permission “Azure Active Directory Graph” -&amp;gt; Application Permission -&amp;gt; Directory.Read.All
 &lt;img src=&quot;..\assets\images\WVDAdmin\SP-PermissionToReadDirectoryObjects-01.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To be read for the &lt;em&gt;WVD Spring Update&lt;/em&gt; you have to give the service principal access to the Graph API: Add the permission “Microsoft Graph” -&amp;gt; Application Permission -&amp;gt; Directory.Read.All&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;..\assets\images\WVDAdmin\SP-PermissionToReadDirectoryObjects-01b.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;To consent the permission and administrator of Azure AD have to grant this:&lt;/p&gt;
 
@@ -480,6 +484,8 @@ If you had already used WVDAdmin in the “normal” mode, you could copy the se
 
 &lt;h2 id=&quot;versions&quot;&gt;Versions&lt;/h2&gt;
 
+&lt;p&gt;1.5.0.00		Add: Some user operations from the session grid are now async; Fix: Spontaneous resize of the windows if data are reloaded&lt;/p&gt;
+
 &lt;p&gt;1.4.9.00		Add: Filter users, session hosts and host pools in the overview of sessions&lt;/p&gt;
 
 &lt;p&gt;1.4.8.00		Add: Support to add users by groups from Azure Active Directory, including an AAD browser (check my blog post and configure the service principal to use this feature)&lt;/p&gt;
@@ -592,6 +598,19 @@ If you had already used WVDAdmin in the “normal” mode, you could copy the se
 
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-003.png&quot; alt=&quot;documentation-003&quot; /&gt;&lt;/p&gt;
 
+&lt;p&gt;To use WVDAdmin with the AAD-Browser feature to select users and groups and to be prepared for the  &lt;em&gt;WVD Spring Update&lt;/em&gt; (expected in H1/2020) the service principal need two API permissions:&lt;/p&gt;
+
+&lt;p&gt;API Permissions: Add the permission “Azure Active Directory Graph” -&amp;gt; Application Permission -&amp;gt; Directory.Read.All
+&lt;img src=&quot;D:/DEV/GitHub/source-blog.itprocloud.de/assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Add the permission “Microsoft Graph” -&amp;gt; Application Permission -&amp;gt; Directory.Read.All&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;D:/DEV/GitHub/source-blog.itprocloud.de/assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To consent the permission and administrator of Azure AD have to grant this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;D:/DEV/GitHub/source-blog.itprocloud.de/assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+
 &lt;p&gt;Go to “Overview”. Note the “Application (client) ID” and the “Directory (tenant) ID” as well.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-004.png&quot; alt=&quot;documentation-004&quot; /&gt;&lt;/p&gt;
@@ -637,6 +656,8 @@ If you had already used WVDAdmin in the “normal” mode, you could copy the se
 &lt;p&gt;To image template VMs and to rollout new session hosts the service principal needs permission to the resource groups containing your session hosts (or are the target for these).&lt;/p&gt;
 
 &lt;p&gt;Open the Azure portal and go to the resource groups. Go into each resource group, click “Access control (IAM)” -&amp;gt; select “Add” -&amp;gt; Add role assignment. Select “contributor” and search in “select” for your service principal name. Click the principal and save the settings.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt;To use WVDAdmin with the &lt;em&gt;WVD Spring Update&lt;/em&gt; (expected in H1/2020) the service principal needs the “&lt;strong&gt;Owner&lt;/strong&gt;” Role to give users permissions to access the desktops and apps.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-006.png&quot; alt=&quot;documentation-006&quot; /&gt;&lt;/p&gt;
 
