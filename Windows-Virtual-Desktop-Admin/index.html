@@ -21,7 +21,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-11-02T00:00:00+01:00" />
 <script type="application/ld+json">
-{"url":"/Windows-Virtual-Desktop-Admin/","headline":"WVD Admin - A native administration Gui for Windows Virtual Desktop","dateModified":"2019-11-02T00:00:00+01:00","datePublished":"2019-11-02T00:00:00+01:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/assets/images/WVDAdmin-01.png","description":"Windows Virtual Desktop administration","mainEntityOfPage":{"@type":"WebPage","@id":"/Windows-Virtual-Desktop-Admin/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"/Windows-Virtual-Desktop-Admin/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"WVD Admin - A native administration Gui for Windows Virtual Desktop","dateModified":"2019-11-02T00:00:00+01:00","datePublished":"2019-11-02T00:00:00+01:00","author":{"@type":"Person","name":"mm"},"description":"Windows Virtual Desktop administration","image":"/assets/images/WVDAdmin-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"/Windows-Virtual-Desktop-Admin/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -213,7 +213,9 @@
 
 <h2 id="versions">Versions</h2>
 
-<p>1.5.0.00		Add: Some user operations from the session grid are now async; Fix: Spontaneous resize of the windows if data are reloaded</p>
+<p>1.5.3.00		Fix: Improvement updating the treeview</p>
+
+<p>1.5.0.00		Add:  <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Spring-Update,-Spring-Release">Supporting the WVD Spring Release / Spring Update</a> ; Some user operations from the session grid are now async; Fix: Spontaneous resize of the windows if data are reloaded</p>
 
 <p>1.4.9.00		Add: Filter users, session hosts and host pools in the overview of sessions</p>
 
@@ -330,15 +332,15 @@
 <p>To use WVDAdmin with the AAD-Browser feature to select users and groups and to be prepared for the  <em>WVD Spring Update</em> (expected in H1/2020) the service principal need two API permissions:</p>
 
 <p>API Permissions: Add the permission “Azure Active Directory Graph” -&gt; Application Permission -&gt; Directory.Read.All
-<img src="D:/DEV/GitHub/source-blog.itprocloud.de/assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01.png" alt="AADBrowser" /></p>
+<img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01.png" alt="AADBrowser" /></p>
 
 <p>Add the permission “Microsoft Graph” -&gt; Application Permission -&gt; Directory.Read.All</p>
 
-<p><img src="D:/DEV/GitHub/source-blog.itprocloud.de/assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png" alt="AADBrowser" /></p>
+<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png" alt="AADBrowser" /></p>
 
 <p>To consent the permission and administrator of Azure AD have to grant this:</p>
 
-<p><img src="D:/DEV/GitHub/source-blog.itprocloud.de/assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png" alt="AADBrowser" /></p>
+<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png" alt="AADBrowser" /></p>
 
 <p>Go to “Overview”. Note the “Application (client) ID” and the “Directory (tenant) ID” as well.</p>
 
@@ -352,7 +354,7 @@
   <li>Service principal key</li>
 </ul>
 
-<h2 id="wdv-permissions">WDV permissions</h2>
+<h2 id="wdv-permissions-pre-spring-release">WDV permissions (pre-Spring release)</h2>
 
 <p>To  use WVDAdmin you need at least an existing WVD tenant. If you new to WVD follow this article to create a WVD tenant:  <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/tenant-setup-azure-active-directory">https://docs.microsoft.com/en-us/azure/virtual-desktop/tenant-setup-azure-active-directory</a></p>
 
@@ -384,9 +386,9 @@
 
 <p>To image template VMs and to rollout new session hosts the service principal needs permission to the resource groups containing your session hosts (or are the target for these).</p>
 
-<p>Open the Azure portal and go to the resource groups. Go into each resource group, click “Access control (IAM)” -&gt; select “Add” -&gt; Add role assignment. Select “contributor” and search in “select” for your service principal name. Click the principal and save the settings.</p>
+<p>Open the Azure portal and go to the resource groups. Go into each resource group, click “Access control (IAM)” -&gt; select “Add” -&gt; Add role assignment. Select “contributor” (“owner” for resource groups you want to use for the <strong>Spring Release</strong> to allow adding users and groups) and search in “select” for your service principal name. Click the principal and save the settings.</p>
 
-<p><strong>Note:</strong>To use WVDAdmin with the <em>WVD Spring Update</em> (expected in H1/2020) the service principal needs the “<strong>Owner</strong>” Role to give users permissions to access the desktops and apps.</p>
+<p><strong>Note:</strong>To use WVDAdmin with the <em>WVD Spring Release</em>(expected in H1/2020) the service principal needs the “<strong>Owner</strong>” Role to give users permissions to access the desktops and apps.</p>
 
 <p><img src="../assets/images/WVDAdmin/documentation-006.png" alt="documentation-006" /></p>
 
@@ -422,6 +424,8 @@
 <p>Please note the OU canonical name. In my case: “OU=WVD,OU=Azure,OU=Site,OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test”</p>
 
 <h2 id="create-a-file-share">Create a file share</h2>
+
+<p><em>Hint: Alternatively, you can use Azure blob storage to store the script. Make the blob storage read-only and use the URL as rollout script-path. E.g.: https://sharedservices01.blob.core.windows.net/wvd</em></p>
 
 <p>Create a file share for the configuration script (which adds new session hosts to the domain and install the WVD agent). Give everyone at least read permissions. Set the NTFS permissions to everyone and read. This is necessary while during the first startup the VM extension tries to execute the script. In this process, the file share is accessed anonymously.</p>
 
@@ -512,6 +516,7 @@
   <li>An endless loop of “Waiting for the temporary vm (power off)” which results in an error after 30 minutes: Something goes wrong with sysprep. You can check the sysprep log in %WinDir%\system32\Sysprep\Panther on the temporary VM. 
 This is often caused by Sysprep and installed language packs.<br />
 Workaround: Delete all user profiles except the logged in user and default users: Press Win+R, type “SystemPropertiesAdvanced”, Advanced -&gt; Settings</li>
+  <li>The script generates additional log files in %WinDir%\System32\LogFiles</li>
   <li>NEW: An endless loop of “Waiting for the temporary vm (power off)” : Update to the newest PowerShell script for generalizing: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a></li>
 </ul>
 
@@ -563,7 +568,7 @@ Workaround: Delete all user profiles except the logged in user and default users
                 
                     <a class="mt-1 mb-1" href="/categories#Azure">Azure (2)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (10)</a>
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (11)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
                 
