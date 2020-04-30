@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Apr 2020 15:30:57 +0200</pubDate>
-    <lastBuildDate>Thu, 30 Apr 2020 15:30:57 +0200</lastBuildDate>
+    <pubDate>Thu, 30 Apr 2020 15:33:22 +0200</pubDate>
+    <lastBuildDate>Thu, 30 Apr 2020 15:33:22 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -76,6 +76,9 @@
 &lt;p&gt;More details and download: &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;And get additional information from &lt;a href=&quot;https://www.linkedin.com/pulse/next-big-innovation-windows-virtual-desktop-here-freek-berson/&quot;&gt;Freek Berson&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Official announcement: &lt;a href=&quot;https://www.microsoft.com/en-us/microsoft-365/blog/2020/04/30/enable-remote-work-faster-new-windows-virtual-desktop-capabilities/&quot;&gt;https://www.microsoft.com/en-us/microsoft-365/blog/2020/04/30/enable-remote-work-faster-new-windows-virtual-desktop-capabilities/&lt;/a&gt;&lt;/p&gt;
+
 </description>
         <pubDate>Thu, 30 Apr 2020 00:00:00 +0200</pubDate>
         <link>/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/</link>
