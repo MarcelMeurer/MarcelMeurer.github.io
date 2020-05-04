@@ -5,9 +5,150 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 04 May 2020 13:08:50 +0200</pubDate>
-    <lastBuildDate>Mon, 04 May 2020 13:08:50 +0200</lastBuildDate>
+    <pubDate>Mon, 04 May 2020 22:51:30 +0200</pubDate>
+    <lastBuildDate>Mon, 04 May 2020 22:51:30 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Migrate Windows Virtual Desktop Host Pools from Fall to Spring Release - WVD</title>
+        <description>&lt;p&gt;The long await update from WVD is public. It comes with a full ARM integration and is natively useable in the Azure Portal. The change from Fall to Spring (the name of both releases) cames without a build-in migration solution right now. You can rebuild your host pools and app groups and manually join your existing session hosts into the new once.&lt;/p&gt;
+
+&lt;p&gt;With WVDAdmin I added two features to do that directly from the GUI:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Migrate a host pool to the Spring update: Creates a new host pool with the same properties as an existing host pool in the Fall update&lt;/li&gt;
+  &lt;li&gt;Move session hosts to another host pool*: Works in each direction and from host pool to host poll in the same version (you can use this additionally to remove an assigned user from a session host).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Note: You can only move session hosts from host pool to host pool if you built the session host with WVDAdmin. If not, and you want to use this function with your other deployed session create a folder “ITPC-WVD-PostCustomizing” in C:\ and copy the RDAgent files into this folder and rename the files:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv&quot;&gt;Microsoft.RDInfra.RDAgent.msi&lt;/a&gt; (rename the file)&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH&quot;&gt;Microsoft.RDInfra.RDAgentBootLoader.msi&lt;/a&gt; (rename the file)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Make sure that you rename the files to fit the list above (without version numbers).&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;..\assets\images\WVDAdmin\Migrate-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;But first: If you are new to WVD Spring update and have never used it before in your subscription, you have to register the service provider Microsoft.DesktopVirtualization (one-time process). You must be the owner of this subscription to do this. Go to your subscription -&amp;gt; Resource providers -&amp;gt; search for “Microsoft.DesktopVirtualization” and click register:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;..\assets\images\WVDAdmin\ResourceProvider.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;the-migration-process&quot;&gt;The migration process&lt;/h2&gt;
+
+&lt;p&gt;The easiest way to migrate a Host Pool from Fall to Spring is by using WVDAdmin. If you have not WVDAdmin before, check out this &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;post&lt;/a&gt; .&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Right-click your existing host pool and click: Migrate Host Pool settings to WVD Spring Update&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Select a target subscription and resource group (note: be sure not to mix different host pools in one resource group with app groups having the same name. If you do this, you will see that the migration process cannot migrate this app groups)&lt;/li&gt;
+      &lt;li&gt;Select a region: The region saved the meta-data and is independent of the region of your session hosts. There are only limited regions today&lt;/li&gt;
+      &lt;li&gt;Enter a name for your new Spring host pool&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Right-click a session host and click “Change host pool” (read my note above, if this host was not created with WVDAdmin)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Select the target host pool. Spring update host pools are tagged with a ²&lt;/li&gt;
+      &lt;li&gt;Check “Keep user assignment” if you migrate aa assigned session hosts and want to keep the assignment. If you uncheck this, the user assignment will be repealed&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Repeat the step “Right-click your existing host pool and click: Migrate Host Pool settings to WVD Spring Update” to re-create the icons for your applications. This can only be done if one session host is online&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Give the right user groups permission to the app groups: Click the app group(s) and click the button “Users and groups assignments” and start typing the name of the group(s). Note: I don’t migrate the user permission from the fall update believing that you won’t to add groups instead of single users&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Create a Workspace&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Create a Workspace right-clicking the workspace note. Create a workspace in the same region as your new host pool&lt;/li&gt;
+      &lt;li&gt;Right-click the workspace and add/link the app groups you have created&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Move more session hosts to the new host pool&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Right-click the session host note and select “Change host pool”&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;After that, you should see your resources in the native RD client and in the HTML web site which has a new URL: https://rdweb.wvd.microsoft.com/arm/webclient&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;debuggingnotes&quot;&gt;Debugging/notes:&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Moving session host works with host created with WVDAdmin or if you create a folder “ITPC-WVD-PostCustomizing”. Copy the files into it:&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv&quot;&gt;Microsoft.RDInfra.RDAgent.msi&lt;/a&gt; (rename the file)&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH&quot;&gt;Microsoft.RDInfra.RDAgentBootLoader.msi&lt;/a&gt; (rename the file)&lt;/p&gt;
+
+        &lt;p&gt;&lt;img src=&quot;..\assets\images\WVDAdmin\Migrate-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;You cannot have app groups with from different host pools with the same name in one resource group&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Register Microsoft.DesktopVirtualization service provider
+&lt;img src=&quot;..\assets\images\WVDAdmin\ResourceProvider.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The service principal of WVDAdmin needs owner permission to the resource groups containing the app groups to add/remove users&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;The HTML5 client has a new URL: https://rdweb.wvd.microsoft.com/arm/webclient&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If you “lost” a session host you can add them manually to a host pool by doing:&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Login to the VM&lt;/li&gt;
+      &lt;li&gt;Uninstall the RD agent and bootloader&lt;/li&gt;
+      &lt;li&gt;Install the bootloader&lt;/li&gt;
+      &lt;li&gt;install the agent and copy the registration key for the target host pool into the installation screen&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I record a short video showing the migration process:&lt;/p&gt;
+
+&lt;iframe width=&quot;800&quot; height=&quot;815&quot; src=&quot;https://www.youtube-nocookie.com/embed/pqGsIdFxTs4&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
+
+&lt;p&gt;More details and download: &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;And get additional information from &lt;a href=&quot;https://www.linkedin.com/pulse/next-big-innovation-windows-virtual-desktop-here-freek-berson/&quot;&gt;Freek Berson&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Official announcement: &lt;a href=&quot;https://www.microsoft.com/en-us/microsoft-365/blog/2020/04/30/enable-remote-work-faster-new-windows-virtual-desktop-capabilities/&quot;&gt;https://www.microsoft.com/en-us/microsoft-365/blog/2020/04/30/enable-remote-work-faster-new-windows-virtual-desktop-capabilities/&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 04 May 2020 00:00:00 +0200</pubDate>
+        <link>/Windows-Virtual-Desktop-Migrate-from-Fall-to-Spring/</link>
+        <guid isPermaLink="true">/Windows-Virtual-Desktop-Migrate-from-Fall-to-Spring/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin</title>
@@ -889,31 +1030,6 @@ Workaround: Delete all user profiles except the logged in user and default users
         
         
         <category>Windows Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>PolarConf 2019 - Building own solutions whit Azure Monitor </title>
-        <description>&lt;p&gt;In October I visited Finland the very first time to speak at PolarConf and I have to say: It was amazing. A great single track event over two days. It was the first conference where I had a speak with only one track. And I have to say: It’s a really good concept. No half-full tracks and missing the feeling you miss a parallel track (or simple: you have not to decide between two or more tracks).&lt;/p&gt;
-
-&lt;p&gt;What to say about Finland: It an amazing country in the north of Europe with some touch from the Swedish and Russian cultures. It looks very clear, focused and with a sustainable mindset on the subject of environmental protection. And finally: I love the sauna culture.&lt;/p&gt;
-
-&lt;p&gt;But back to the conference: I had the chance to talk about building own solutions with Azure Monitor. Finalize the session I put the presentation I held here:  &lt;a href=&quot;../assets/files/PolarConf 2019 - Build your own Azure Monitor solution.pdf&quot;&gt;PolarConf 2019 - Build your own Azure Monitor solution.pdf&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Site information: One part of my presentation was to show the Tweet count with #PolarConf with Azure Monitor. Thanks to @techmike2kx&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/PolarConf Tweets.png&quot; alt=&quot;PolarConf Tweets&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://polarconf.fi/&quot;&gt;https://polarconf.fi/&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Wed, 16 Oct 2019 00:00:00 +0200</pubDate>
-        <link>/PolarConf-2019/</link>
-        <guid isPermaLink="true">/PolarConf-2019/</guid>
-        
-        
-        <category>Azure Monitor</category>
-        
-        <category>Log Analytics</category>
         
       </item>
     
