@@ -21,7 +21,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-04-30T00:00:00+02:00" />
 <script type="application/ld+json">
-{"url":"/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin","dateModified":"2020-04-30T00:00:00+02:00","datePublished":"2020-04-30T00:00:00+02:00","author":{"@type":"Person","name":"mm"},"description":"Windows Virtual Desktop - Spring Release / Spring Update goes public today. I’m tremendously happy about that while this is the next big step that we have eagerly awaited.","image":"/assets/images/WVDAdmin/WVDAdminSpringRelease.png","mainEntityOfPage":{"@type":"WebPage","@id":"/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/","headline":"Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin","dateModified":"2020-04-30T00:00:00+02:00","datePublished":"2020-04-30T00:00:00+02:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/assets/images/WVDAdmin/WVDAdminSpringRelease.png","description":"Windows Virtual Desktop - Spring Release / Spring Update goes public today. I’m tremendously happy about that while this is the next big step that we have eagerly awaited.","mainEntityOfPage":{"@type":"WebPage","@id":"/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -272,7 +272,7 @@
 
 <p>Even the administration of WVD was missing before. This was one reason to build WVDAdmin. I was often asked in the past if WVDAdmin will be unnecessary after the spring release of WVD. My answer: Sure, for the administration, WVDAdmin will not be that important anymore, but some features still add value. That’s why I decided months ago to develop WVDAdmin further and also prepare it for the “Spring Release”. So I am proud to announce that WVDAdmin is ready for the Spring Release starting with the already available version 1.5.</p>
 
-<p>To enable the Spring Release feature set a registry key (the next version will have this enabled by default):</p>
+<p>To enable the Spring Release feature set a registry key (the current version will have this enabled by default):</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
 2
@@ -283,6 +283,10 @@
 </pre></td></tr></tbody></table></code></pre></div></div>
 
 <p><img src="..\assets\images\WVDAdmin\SpringReleaseRegistry.png" alt="AADBrowser" /></p>
+
+<p>First, register the new service provide Microsoft.DesktopVirtualization on your Azure subscription (one-time process). You must be owner of this subscription to do this. Go to your subscription -&gt; Resource providers -&gt;  search for “Microsoft.DesktopVirtualization” and click register:</p>
+
+<p><img src="..\assets\images\WVDAdmin\ResourceProvider.png" alt="AADBrowser" /></p>
 
 <p>If you restart WVDAdmin you will see the new note “WVD V2” which displays your resources in the Spring Release. Please make sure that your service principal has the right permission to create and administrate your resources (the sp needs owner permission to the resource group containing your host pool, app groups, … to assign users and groups).</p>
 

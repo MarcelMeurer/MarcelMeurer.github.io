@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 03 May 2020 12:53:14 +0200</pubDate>
-    <lastBuildDate>Sun, 03 May 2020 12:53:14 +0200</lastBuildDate>
+    <pubDate>Mon, 04 May 2020 13:08:50 +0200</pubDate>
+    <lastBuildDate>Mon, 04 May 2020 13:08:50 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -25,7 +25,7 @@
 
 &lt;p&gt;Even the administration of WVD was missing before. This was one reason to build WVDAdmin. I was often asked in the past if WVDAdmin will be unnecessary after the spring release of WVD. My answer: Sure, for the administration, WVDAdmin will not be that important anymore, but some features still add value. That’s why I decided months ago to develop WVDAdmin further and also prepare it for the “Spring Release”. So I am proud to announce that WVDAdmin is ready for the Spring Release starting with the already available version 1.5.&lt;/p&gt;
 
-&lt;p&gt;To enable the Spring Release feature set a registry key (the next version will have this enabled by default):&lt;/p&gt;
+&lt;p&gt;To enable the Spring Release feature set a registry key (the current version will have this enabled by default):&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
 2
@@ -36,6 +36,10 @@
 &lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;img src=&quot;..\assets\images\WVDAdmin\SpringReleaseRegistry.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;First, register the new service provide Microsoft.DesktopVirtualization on your Azure subscription (one-time process). You must be owner of this subscription to do this. Go to your subscription -&amp;gt; Resource providers -&amp;gt;  search for “Microsoft.DesktopVirtualization” and click register:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;..\assets\images\WVDAdmin\ResourceProvider.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;If you restart WVDAdmin you will see the new note “WVD V2” which displays your resources in the Spring Release. Please make sure that your service principal has the right permission to create and administrate your resources (the sp needs owner permission to the resource group containing your host pool, app groups, … to assign users and groups).&lt;/p&gt;
 
