@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 05 May 2020 15:40:30 +0200</pubDate>
-    <lastBuildDate>Tue, 05 May 2020 15:40:30 +0200</lastBuildDate>
+    <pubDate>Tue, 05 May 2020 18:29:44 +0200</pubDate>
+    <lastBuildDate>Tue, 05 May 2020 18:29:44 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -38,46 +38,16 @@
 &lt;p&gt;You can see the following logs (tables):&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;WVDCheckpoints&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Intermediate steps while establishing and running a connection&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;WVDConnections&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Start/End of connections&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;WVDErrors&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Errors while establishing a connection, failures during the administration, failures getting feed informations&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;WVDHostRegistrations&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;ul&gt;
-      &lt;li&gt;About session host registration to host pools&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;WVDManagement&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Administration log&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+  &lt;li&gt;WVDCheckpoints&lt;/li&gt;
+  &lt;li&gt;Intermediate steps while establishing and running a connection&lt;/li&gt;
+  &lt;li&gt;WVDConnections&lt;/li&gt;
+  &lt;li&gt;Start/End of connections&lt;/li&gt;
+  &lt;li&gt;WVDErrors&lt;/li&gt;
+  &lt;li&gt;Errors while establishing a connection, failures during the administration, failures getting feed informations&lt;/li&gt;
+  &lt;li&gt;WVDHostRegistrations&lt;/li&gt;
+  &lt;li&gt;About session host registration to host pools&lt;/li&gt;
+  &lt;li&gt;WVDManagement&lt;/li&gt;
+  &lt;li&gt;Administration log&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;The logs are internally connectable with their correlation id you have in each log.&lt;/p&gt;
