@@ -267,7 +267,7 @@
   <li>Move session hosts to another host pool*: Works in each direction and from host pool to host poll in the same version (you can use this additionally to remove an assigned user from a session host).</li>
 </ul>
 
-<p>Note: You can only move session hosts from host pool to host pool if you built the session host with WVDAdmin. If not, and you want to use this function with your other deployed session create a folder “ITPC-WVD-PostCustomizing” in C:\ and copy the RDAgent files into this folder and rename the files:</p>
+<p>Note: If you are using WVDAdmin V1.5.5 or lower (v1.5.6 and higher downloads the files from Microsoft if internet access is not blogged): You can only move session hosts from host pool to host pool if you built the session host with WVDAdmin. If not, and you want to use this function with your other deployed session create a folder “ITPC-WVD-PostCustomizing” in C:\ and copy the RDAgent files into this folder and rename the files:</p>
 
 <ul>
   <li><a href="https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv">Microsoft.RDInfra.RDAgent.msi</a> (rename the file)</li>
@@ -287,9 +287,7 @@
 <p>The easiest way to migrate a Host Pool from Fall to Spring is by using WVDAdmin. If you have not WVDAdmin before, check out this <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">post</a> .</p>
 
 <ul>
-  <li>
-    <p>Right-click your existing host pool and click: Migrate Host Pool settings to WVD Spring Update</p>
-  </li>
+  <li>Right-click your existing host pool and click: Migrate Host Pool settings to WVD Spring Update</li>
   <li>
     <ul>
       <li>Select a target subscription and resource group (note: be sure not to mix different host pools in one resource group with app groups having the same name. If you do this, you will see that the migration process cannot migrate this app groups)</li>
@@ -297,33 +295,24 @@
       <li>Enter a name for your new Spring host pool</li>
     </ul>
   </li>
-  <li>
-    <p>Right-click a session host and click “Change host pool” (read my note above, if this host was not created with WVDAdmin)</p>
-  </li>
+  <li>Logoff all users</li>
+  <li>Right-click a session host and click “Change host pool” (read my note above, if this host was not created with WVDAdmin)</li>
   <li>
     <ul>
       <li>Select the target host pool. Spring update host pools are tagged with a ²</li>
       <li>Check “Keep user assignment” if you migrate aa assigned session hosts and want to keep the assignment. If you uncheck this, the user assignment will be repealed</li>
     </ul>
   </li>
-  <li>
-    <p>Repeat the step “Right-click your existing host pool and click: Migrate Host Pool settings to WVD Spring Update” to re-create the icons for your applications. This can only be done if one session host is online</p>
-  </li>
-  <li>
-    <p>Give the right user groups permission to the app groups: Click the app group(s) and click the button “Users and groups assignments” and start typing the name of the group(s). Note: I don’t migrate the user permission from the fall update believing that you won’t to add groups instead of single users</p>
-  </li>
-  <li>
-    <p>Create a Workspace</p>
-  </li>
+  <li>Repeat the step “Right-click your existing host pool and click: Migrate Host Pool settings to WVD Spring Update” to re-create the icons for your applications. This can only be done if one session host is online</li>
+  <li>Give the right user groups permission to the app groups: Click the app group(s) and click the button “Users and groups assignments” and start typing the name of the group(s). Note: I don’t migrate the user permission from the fall update believing that you won’t to add groups instead of single users</li>
+  <li>Create a Workspace</li>
   <li>
     <ul>
       <li>Create a Workspace right-clicking the workspace note. Create a workspace in the same region as your new host pool</li>
       <li>Right-click the workspace and add/link the app groups you have created</li>
     </ul>
   </li>
-  <li>
-    <p>Move more session hosts to the new host pool</p>
-  </li>
+  <li>Move more session hosts to the new host pool</li>
   <li>
     <ul>
       <li>Right-click the session host note and select “Change host pool”</li>
@@ -337,7 +326,7 @@
 
 <ul>
   <li>
-    <p>Moving session host works with host created with WVDAdmin or if you create a folder “ITPC-WVD-PostCustomizing”. Copy the files into it:</p>
+    <p>If you are using WVDAdmin V1.5.5 or lower (v1.5.6 and higher downloads the files from Microsoft if internet access is not blogged): Moving session host works with host created with WVDAdmin or if you create a folder “ITPC-WVD-PostCustomizing”. Copy the files into it:</p>
   </li>
   <li>
     <ul>
