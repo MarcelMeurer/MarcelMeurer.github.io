@@ -5,9 +5,73 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 26 Jun 2020 22:22:25 +0200</pubDate>
-    <lastBuildDate>Fri, 26 Jun 2020 22:22:25 +0200</lastBuildDate>
+    <pubDate>Tue, 28 Jul 2020 19:37:16 +0200</pubDate>
+    <lastBuildDate>Tue, 28 Jul 2020 19:37:16 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>What's wrong with Windows 10 and UWP and Sysprep?</title>
+        <description>&lt;p&gt;I’m working in the WVD area and often create golden images to deploy session hosts for WVD - mainly based on Windows 10 Enterprise multi-session.
+To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep.
+One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;sysprep.exe /generalize /oobe /shutdown /mode:vm
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Sometimes I run into an issue, and Sysprep stops work with an error message:
+&lt;img src=&quot;../assets/images/Sysprep-01.png&quot; alt=&quot;Sysprep&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Digging into the log file show the issue:
+&lt;img src=&quot;../assets/images/Sysprep-02.png&quot; alt=&quot;Sysprep&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Error: Package XXXXXXX was installed for a user, but not provisioned for all users.&lt;/p&gt;
+
+&lt;p&gt;The package various. Sometimes I got a part of a language pack or other internal app packages. To run into the problem with certainty, install an app from the Windows Store.&lt;/p&gt;
+
+&lt;p&gt;Let’s find out what happens, for doing that I installed different applications from the Windows Store into the VM and tried to Sysprep the VM. The first package blocking Sysprep was in this test “5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm”&lt;/p&gt;
+
+&lt;p&gt;To get details of the package run the following PowerShell script with administrative privileges:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm')}
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The returned object shows that this package is only installed for the local administrator (installing the apps from the Windows Store). The user querying this data (mm-admin) doesn’t have this package installed.
+&lt;img src=&quot;../assets/images/Sysprep-03.png&quot; alt=&quot;Sysprep&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Okay. Appx packages from the store are personnel and not shared with all users on a VM (to install appx packages for all users, you have to sideload the packages with DISM.exe). So I tried to remove this app from all users:_&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm')} | Remove-AppxPackage -AllUsers
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Ok. Sysprep again. The next issue occurs: Sysprep has the same problem with NetFlix - installed only for one user of the VM. Instead of removing the packages by trial and error, I found another way: Teach Sysprep to ignore this behavior. I guess it’s not a problem having an appx package assigned to only one user - even if it and administrative user.&lt;/p&gt;
+
+&lt;p&gt;I figured out that Sysprep uses an XML file with a set of rules preparing a VM. The rule-set for generalizing an image is stored in &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;C:\windows\System32\sysprep\ActionFiles\Generalize.xml&quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;To ignore the installed or update AppX package remove the following lines and save Generalize.xml (you have to take ownership of the file and give yourself permission to do that):&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&amp;lt;sysprepOrder order=&quot;0x1A00&quot;&amp;gt;&amp;lt;/sysprepOrder&amp;gt;
+&amp;lt;sysprepValidate methodName=&quot;SysprepGeneralizeValidate&quot; moduleName=&quot;$(runtime.system32)\AppxSysprep.dll&quot;&amp;gt;&amp;lt;/sysprepValidate&amp;gt;
+&amp;lt;sysprepModule methodName=&quot;SysprepGeneralize&quot; moduleName=&quot;$(runtime.system32)\AppxSysprep.dll&quot;&amp;gt;&amp;lt;/sysprepModule&amp;gt;&amp;lt;/imaging&amp;gt;&amp;lt;imaging exclude=&quot;&quot;&amp;gt;&amp;lt;assemblyIdentity name=&quot;Microsoft-Windows-SecureBoot-FirmwareUpdate&quot; version=&quot;10.0.19041.1&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; processorArchitecture=&quot;amd64&quot; versionScope=&quot;NonSxS&quot;&amp;gt;&amp;lt;/assemblyIdentity&amp;gt;
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Sysprep-04.png&quot; alt=&quot;Sysprep&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After that Sysprep runs without an issue. Rolling out a session host based on the new image works, and even the user could logon without a problem (and yes: they don’t have the Store apps from the local admin - as expected).&lt;/p&gt;
+
+&lt;p&gt;Maybe there are some smarter ways to handle UWP and Sysprep (if you know one - let me know it, too). But this solves an issue creating or updating an image for WVD based on a template VM (golden image approach).&lt;/p&gt;
+</description>
+        <pubDate>Tue, 28 Jul 2020 00:00:00 +0200</pubDate>
+        <link>/Sysprep-and-WVD-and-UWP/</link>
+        <guid isPermaLink="true">/Sysprep-and-WVD-and-UWP/</guid>
+        
+        
+      </item>
     
       <item>
         <title>PolarConf 2019 - Building own solutions whit Azure Monitor </title>
@@ -587,50 +651,6 @@ If no language pack is installed (or not set as the system language), the RDAgen
         <pubDate>Fri, 07 Feb 2020 00:00:00 +0100</pubDate>
         <link>/Windows-Virtual-Desktop-Admin-for-2-tenant-mode/</link>
         <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin-for-2-tenant-mode/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>WVD Admin - Windows Virtual Desktop Administration for CSP and Consulting Partners</title>
-        <description>&lt;h1 id=&quot;windows-virtual-desktop-administration-for-csp-and-consulting-partners&quot;&gt;Windows Virtual Desktop Administration for CSP and Consulting Partners&lt;/h1&gt;
-
-&lt;p&gt;Last year I released my windows-based GUI for administrating WVD to the community called WVDAdmin. I had a bunch of updates to share more features. This week I will release version 1.3.0 with will add another feature, especially for providers and consulting companies. From version 1.3.0 WVDAdmin will support a multi-AAD-tenancy mode allowing to switch the Azure AD tenant very easily.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin.MultiTenancy/WVDAdmin.Welcome.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;To enable the multi-AAD-tenancy mode, you must set a registry key. Add the following dword32 to your registry:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-registry&quot;&gt;HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin
-Name:	AadMultiTenant
-Type:	DWORD32
-Value:	1 (or 0 to disable this mode)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin.MultiTenancy/Registry1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If you start WVDAdmin with this setting, a drop-down list will be visible at the welcome screen (see above). If you save a new service principal configuration, it happens to the drop-down list with the friendly name.
-All other settings for the image creation or rollout of new session hosts are saved to the context of the selected AAD tenant.&lt;/p&gt;
-
-&lt;p&gt;The authentication settings and other settings are saved in different trees in the registry starting from &lt;em&gt;HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin\AadMultiTenant&lt;/em&gt;
-If you had already used WVDAdmin in the “normal” mode, you could copy the settings from the root of the registry path to the new path for your AAD tenant. To delete a no longer needed AAD-tenant in WVDAdmin, remove the registry key of this one.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin.MultiTenancy/Registry2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Don’t change&lt;/strong&gt; the AAD tenant while an operation is in progress. This could result in an error. If you change the AAD tenant, click “Reload all” to read the configuration for the new tenant.&lt;/p&gt;
-
-&lt;p&gt;The AAD multi-tenancy mode helps a lot if you have (like me) multiple clients you are working with.&lt;/p&gt;
-
-&lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVD Admin” from here: &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin Preview&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Read the original blog post about WVDAdmin here: &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&lt;/a&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 28 Jan 2020 00:00:00 +0100</pubDate>
-        <link>/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners/</link>
-        <guid isPermaLink="true">/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners/</guid>
         
         
         <category>Windows Virtual Desktop</category>
