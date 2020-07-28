@@ -41,7 +41,7 @@
 
 
 
-<body class="layout-page">
+<body class="layout-post">
 	<!-- defer loading of font and font awesome -->
 	<noscript id="deferred-styles">
 		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
@@ -170,13 +170,95 @@
 <!-- Content
 ================================================== -->
 <div class="main-content">
-    <section>
-    <div class="section-title">
-        <h2><span>What's wrong with Windows 10 and UWP and Sysprep?</span></h2>
-    </div>
+    <!-- Begin Article
+================================================== -->
+<div class="container">
+    <div class="row">
 
-    <div class="article-post">
-    <p>I’m working in the WVD area and often create golden images to deploy session hosts for WVD - mainly based on Windows 10 Enterprise multi-session.
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=What's wrong with Windows 10 and UWP and Sysprep?&url=https://blog.itprocloud.de/Sysprep-and-WVD-and-UWP/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Sysprep-and-WVD-and-UWP/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Sysprep-and-WVD-and-UWP/&title=What's wrong with Windows 10 and UWP and Sysprep?" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+    </ul>
+    
+    <div class="sep">
+    </div>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
+    
+</div>
+
+        </div>
+
+        <!-- Post -->
+        
+
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
+
+                <!-- Author Box -->
+                
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                        
+                        <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
+                        
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href="https://blog.itprocloud.de">Marcel</a><a target="_blank" href="https://twitter.com/MarcelMeurer" class="btn follow">Follow</a>
+                        <span class="author-description">That's me: Marcel</span>
+                    </div>
+                </div>
+                
+
+                <!-- Post Title -->
+                <h1 class="posttitle">What's wrong with Windows 10 and UWP and Sysprep?</h1>
+
+            </div>
+
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
+
+            <!-- Post Featured Image -->
+            
+
+            
+            <img class="featured-image img-fluid" src="/assets/images/Sysprep-01.png" alt="What's wrong with Windows 10 and UWP and Sysprep?">
+            
+
+            
+            <!-- End Featured Image -->
+
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <p>I’m working in the WVD area and often create golden images to deploy session hosts for WVD - mainly based on Windows 10 Enterprise multi-session.
 To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep.
 One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:</p>
 
@@ -231,10 +313,65 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
 
 <p>Maybe there are some smarter ways to handle UWP and Sysprep (if you know one - let me know it, too). But this solves an issue creating or updating an image for WVD based on a template VM (golden image approach).</p>
 
-    </div>
+            </div>
 
-    
-</section>
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2020-07-28">28 Jul 2020</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            <a class="prev d-block col-md-6" href="/Azure-Global-Bootcamp-2020/"> &laquo; PolarConf 2019 - Building own solutions whit Azure Monitor </a>
+            
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
+        </div>
+        <!-- End Post -->
+
+    </div>
+</div>
+<!-- End Article
+================================================== -->
+
+<!-- Begin Comments
+================================================== -->
+
+<!--End Comments
+================================================== -->
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
 </div>
 
 
@@ -323,6 +460,8 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
 
 <script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
 
+
+<script id="dsq-count-scr" src="//.disqus.com/count.js"></script>
 
 
 <!-- Start Cookie Plugin -->
