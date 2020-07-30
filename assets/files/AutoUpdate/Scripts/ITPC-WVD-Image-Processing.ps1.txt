@@ -1,5 +1,5 @@
 # This powershell script is part of WVD Admin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
-# Current Version of this script: 2.0
+# Current Version of this script: 2.1
 
 param(
 
@@ -62,17 +62,39 @@ if ($mode -eq "Generalize")
 	Remove-ItemProperty -Path $key -Name "LastAliveStamp" -ErrorAction Ignore
 	Remove-ItemProperty -Path $key -Name "TimeStampInterval" -ErrorAction Ignore
 	
-	LogWriter("Removing pending AppXPackages")
-	LogWriter(Get-AppxPackage -AllUsers | where{$_.NonRemovable -ne $true -and $_.PackageUserInformation -match "pending removal"}|ft)
-	Get-AppxPackage -AllUsers | where{$_.NonRemovable -ne $true -and $_.PackageUserInformation -match "pending removal"}| Remove-AppxPackage -AllUsers
-	
-	LogWriter("Removing assignments to language packs - AppXPackages")
-	$Packages = Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('Microsoft.LanguageExperiencePack')}
-	foreach($package in $packages){
-		write-host("Removing package: "+$package.packagefullname)
-		Remove-AppxPackage -AllUsers -Package $package.packagefullname
+#	LogWriter("Removing pending AppXPackages")
+#	LogWriter(Get-AppxPackage -AllUsers | where{$_.NonRemovable -ne $true -and $_.PackageUserInformation -match "pending removal"}|ft)
+#	Get-AppxPackage -AllUsers | where{$_.NonRemovable -ne $true -and $_.PackageUserInformation -match "pending removal"}| Remove-AppxPackage -AllUsers
+#	
+#	LogWriter("Removing assignments to language packs - AppXPackages")
+#	$Packages = Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('Microsoft.LanguageExperiencePack')}
+#	foreach($package in $packages){
+#		write-host("Removing package: "+$package.packagefullname)
+#		Remove-AppxPackage -AllUsers -Package $package.packagefullname
+#	}
+
+	LogWriter("Modifying sysprep to avoid issues with AppXPackages")
+	$sysPrepActionPath="$env:windir\System32\Sysprep\ActionFiles"
+	$sysPrepActionFile="Generalize.xml"
+	$sysPrepActionPathItem = Get-Item $sysPrepActionPath.Replace("C:\","\\localhost\\c$\")
+	$acl = $sysPrepActionPathItem.GetAccessControl()
+	$acl.SetOwner((New-Object System.Security.Principal.NTAccount("SYSTEM")))
+	$sysPrepActionPathItem.SetAccessControl($acl)
+	$aclSystemFull = New-Object System.Security.AccessControl.FileSystemAccessRule("SYSTEM","FullControl","Allow")
+	$acl.AddAccessRule($aclSystemFull)
+	$sysPrepActionPathItem.SetAccessControl($acl)
+	[xml]$xml = Get-Content -Path "$sysPrepActionPath\$sysPrepActionFile"
+	$xmlNode=$xml.sysprepInformation.imaging | where {$_.sysprepModule.moduleName -match "AppxSysprep.dll"}
+	if ($xmlNode -ne $null) {
+		$xmlNode.ParentNode.RemoveChild($xmlNode)
+		$xml.sysprepInformation.imaging.Count
+		$xml.Save("$sysPrepActionPath\$sysPrepActionFile.new")
+		Remove-Item "$sysPrepActionPath\$sysPrepActionFile.old" -Force -ErrorAction Ignore
+		Move-Item "$sysPrepActionPath\$sysPrepActionFile" "$sysPrepActionPath\$sysPrepActionFile.old"
+		Move-Item "$sysPrepActionPath\$sysPrepActionFile.new" "$sysPrepActionPath\$sysPrepActionFile"
+		LogWriter("Modifying sysprep to avoid issues with AppXPackages - Done")
 	}
-	
+
 	LogWriter("Saving time zone info for re-deploy")
 	$timeZone=(Get-TimeZone).Id
 	LogWriter("Current time zone is: "+$timeZone)
@@ -121,8 +143,8 @@ if ($mode -eq "Generalize")
 # SIG # Begin signature block
 # MIIcWwYJKoZIhvcNAQcCoIIcTDCCHEgCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUtgKqP/28kTXyPRdqOsrNIr3K
-# zWeggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUnzqPeh/m0Z6hRSe8+xvqfrTD
+# gLqggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE5MTEwMjAwMDAwMFoXDTIwMTIx
@@ -253,22 +275,22 @@ if ($mode -eq "Generalize")
 # SUQgQ29kZSBTaWduaW5nIENBAhAHaCbvcbn02aj6wGGzZ6EqMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBS8iDO9BsvoRrpCNAkCj+cYV2XLdzANBgkqhkiG9w0BAQEFAASCAQClH4JE
-# 2auBFbBbi62qS4stg7mca/vbvFJ490Bqyk9WErUdAzR5ek4Wm2cQC/8V7UFFLRz3
-# SpNUM4ASyFDIbvhRgubKztf9FN3HCjTwvtVvc2fS9/e+4cqCxAyCQk5w4pLUCymY
-# MgMAa52dh2cX9OsKxBQ1mrhHOxHYLxFrqRPEPFvcyO0Sq+wvPyrv3LfeCAhg8brY
-# 9G7FxJuuGyztj1wznIMPuJkxo2jmTT+i3dZ9EYCR5ym7XggoWZh/XOKe1dqTgw/V
-# FEZaSkH5Mtx8dxvUS+f2cZHuVoIyEE2VKTaNbgMc/Ricfiw7Y3RoXiu/RXyHVrUo
-# LG2KfDcdnLH2XnhToYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
+# BDEWBBRmFH4iaZc0eLNN44WGpKR2foSAMDANBgkqhkiG9w0BAQEFAASCAQC3zUnd
+# UR2jYzCViPdpcEvnWnG8klaIE3fhQdgZbjhhhAyYEDXGDHwqaKYGaxku2M4w8c9r
+# GyDS176Fwk0pHuzxAfS2CM8jDE6HicFm1J29TtbPYW2TxtyKkyeQoxqt6PPJjMkY
+# TpTMn2N0IBpYSUrvPvXjupBkTCTlvKzcca4Zaiipwz9w2mYtI0ubO30ds6WuM43J
+# AhHTcJdxyfpe6Dqb0pdjY8TR6bBUmNqza2YvuY1cNARLTL40IKQxBNHOV5yFqc7f
+# EHWf8pkakIat+WkwsdoOkfaoCRMRPolTphP3S8i+tR2G0c9rqN9H9Hn46DQlBJ5M
+# EZXDVGk9q9GlMxz1oYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
 # MAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3
 # LmRpZ2ljZXJ0LmNvbTEhMB8GA1UEAxMYRGlnaUNlcnQgQXNzdXJlZCBJRCBDQS0x
 # AhADAZoCOv9YsWvW1ermF/BmMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJ
-# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDA2MjYyMDIwMThaMCMGCSqGSIb3
-# DQEJBDEWBBQnfnGNKRYnh0X1XdF4eOP6haeHITANBgkqhkiG9w0BAQEFAASCAQB+
-# eMEquDDA3bGwmZbtFUVLf1+IVK41xjb9HttkI05zWyFn9gnxWCBlWEf4EGpF3NPZ
-# 99UDw4gSZl1jxHdRndTtiTALhnEvfnnM2+VdWddxgx8r7Bhr3Z9/UpzWGGHeGVsX
-# BXjmKhkWh4s8vkt6NV7Kn9wB5vwtVtYZ5Lkj0k1vTvVdNrZoTCBnhHPu3Gsee7hr
-# Ex9L92wCAd1+n7bcrFePjT6b8F3G34msmH54ghAJUtKJQAecMtZMUGloFs3AiNdk
-# Tm/KHhN8VwAGt1bV78G9QoGUKjq2e3Fw9obVcZxLZTFwBNg4qQK+VVFyz603z717
-# Ohe/RTe0tRXJDu6s9w6v
+# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDA3MzAxNjE5MjNaMCMGCSqGSIb3
+# DQEJBDEWBBRh3NGNVAqprUAZFP0DaFiqAz123jANBgkqhkiG9w0BAQEFAASCAQBF
+# RIvAwoo5RlWZHB5m2T4fg6HqcxbX0OG+XcOsXJzZKc9iNvniQq96sSyRZU+LNjVr
+# fWgLAaWsnSqH6BnR8QlClRVT6rtD1HjULHEdbO4j7ms29rinZ+f1hGDw6A7uZGGZ
+# YX8rQ/RQAfqgP1xLHYj2AUxWtQrZWLnIGa8H5/X+dwGKUFFZZ2A9KsmKxzqBh0wf
+# GLA/xCGA6Po1zvVFGRleiRsOahVaLgR4btyG9l8nQ9DpYdTZbdkq0d5SBUASSs87
+# SxSuY4B8yQIazbTnb+x6Ab+CauV1rzuNMSwfGFOAOmdDG9ho23zx/dKP6qwzCxLK
+# aYKUa5xGyyRD78eW45OW
 # SIG # End signature block
