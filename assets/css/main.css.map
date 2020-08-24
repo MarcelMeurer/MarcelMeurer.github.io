@@ -3,8 +3,8 @@
 	"file": "main.css",
 	"sources": [
 		"main.scss",
-		"../../../DEV/GitHub/source-blog.itprocloud.de/_sass/_syntax.scss",
-		"../../../DEV/GitHub/source-blog.itprocloud.de/_sass/_starsnonscss.scss"
+		"_sass/_syntax.scss",
+		"_sass/_starsnonscss.scss"
 	],
 	"sourcesContent": [
 		"/* We need to add display:inline in order to align the '>>' of the 'read more' link */\n.post-excerpt p {\n\tdisplay:inline;\n}\n\n// Import partials from `sass_dir` (defaults to `_sass`)\n@import\n\t\"syntax\",\n    \"starsnonscss\"\n;\n",

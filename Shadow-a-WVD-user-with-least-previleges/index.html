@@ -6,18 +6,22 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>OneDrive | ITProCloud Blog</title>
+<title>Shadow a WVD user with least privileges | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>OneDrive | ITProCloud Blog</title>
+<title>Shadow a WVD user with least privileges | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="OneDrive" />
+<meta property="og:title" content="Shadow a WVD user with least privileges" />
+<meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense." />
-<meta property="og:description" content="This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense." />
+<meta name="description" content="WVD allows local administrators to shadow user sessions. You can do this easily with WVDAdmin or using the command-line like this:" />
+<meta property="og:description" content="WVD allows local administrators to shadow user sessions. You can do this easily with WVDAdmin or using the command-line like this:" />
 <meta property="og:site_name" content="ITProCloud Blog" />
+<meta property="og:image" content="/assets/images/WVD%20request%20shadowing.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-08-24T00:00:00+02:00" />
 <script type="application/ld+json">
-{"url":"/category/onedrive/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"}},"headline":"OneDrive","description":"This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.","@type":"WebPage","@context":"https://schema.org"}</script>
+{"url":"/Shadow-a-WVD-user-with-least-previleges/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"Shadow a WVD user with least privileges","dateModified":"2020-08-24T00:00:00+02:00","datePublished":"2020-08-24T00:00:00+02:00","author":{"@type":"Person","name":"mm"},"description":"WVD allows local administrators to shadow user sessions. You can do this easily with WVDAdmin or using the command-line like this:","image":"/assets/images/WVD%20request%20shadowing.png","mainEntityOfPage":{"@type":"WebPage","@id":"/Shadow-a-WVD-user-with-least-previleges/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -37,7 +41,7 @@
 
 
 
-<body class="layout-archive">
+<body class="layout-post">
 	<!-- defer loading of font and font awesome -->
 	<noscript id="deferred-styles">
 		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
@@ -166,112 +170,178 @@
 <!-- Content
 ================================================== -->
 <div class="main-content">
-    <!-- Begin List Posts
+    <!-- Begin Article
 ================================================== -->
-<section class="recent-posts">
-<div class="section-title">
-    <h2>Archive of posts with <span>category 'OneDrive'</span></h2>
-</div>
-<div class="row listrecent">
+<div class="container">
+    <div class="row">
 
-
-
-    <!-- begin post -->
-
-
-<div class="col-lg-4 col-md-6 mb-30px card-group">
-    <div class="card h-100">
-        <div class="maxthumb">
-            <a href="/OneDrive-PowerShell-Module-Added-support-for-OneDrive-for-Business/">
-                
-
-                    
-                        <img class="img-fluid" src="/wp-content/uploads/2017/12/oda07.png" alt="OneDrive PowerShell Module - Added support for OneDrive for Business"> 
-                    
-
-                
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Shadow a WVD user with least privileges&url=https://blog.itprocloud.de/Shadow-a-WVD-user-with-least-previleges/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
             </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Shadow-a-WVD-user-with-least-previleges/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Shadow-a-WVD-user-with-least-previleges/&title=Shadow a WVD user with least privileges" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+    </ul>
+    
+    <div class="sep">
+    </div>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
+    
+</div>
+
         </div>
-        <div class="card-body">
-            <h2 class="card-title">
-                <a class="text-dark" href="/OneDrive-PowerShell-Module-Added-support-for-OneDrive-for-Business/">OneDrive PowerShell Module - Added support for OneDrive for Business</a>
+
+        <!-- Post -->
+        
+
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
+
+                <!-- Author Box -->
                 
-            </h2>
-            <h4 class="card-text">More than two years ago, I created my PowerShell module to access OneDrive. This module can be installed with a one-liner from https://www.powershellgallery.com/packages/OneDrive
-</h4>
-        </div>
-        <div class="card-footer bg-white">
-            <div class="wrapfooter">
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                        
+                        <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
+                        
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href="https://blog.itprocloud.de">Marcel</a><a target="_blank" href="https://twitter.com/MarcelMeurer" class="btn follow">Follow</a>
+                        <span class="author-description">That's me: Marcel</span>
+                    </div>
+                </div>
                 
-                <span class="meta-footer-thumb">
-                
-                <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
-                
-                </span>
-                <span class="author-meta">
-                <span class="post-name"><a target="_blank" href="https://blog.itprocloud.de">Marcel</a></span><br/>
-                
-                <span class="post-date">05 Nov 2018</span>
-                </span>
-                <span class="post-read-more"><a href="/OneDrive-PowerShell-Module-Added-support-for-OneDrive-for-Business/" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
-                <div class="clearfix"></div>
+
+                <!-- Post Title -->
+                <h1 class="posttitle">Shadow a WVD user with least privileges</h1>
+
             </div>
+
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
+
+            <!-- Post Featured Image -->
+            
+
+            
+            <img class="featured-image img-fluid" src="/assets/images/WVD request shadowing.png" alt="Shadow a WVD user with least privileges">
+            
+
+            
+            <!-- End Featured Image -->
+
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <p>WVD allows local administrators to shadow user sessions. You can do this  easily with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> or using the command-line like this:</p>
+
+<pre><code class="language-cmd">mstsc /v:WVD-DESIGN-404 /control /shadow:2 /prompt
+</code></pre>
+
+<p>In most companies, a help desk agent supports users using applications. For that, local admin privileges are not necessary and not recommended. To allow help desk agents shadowing users in WVD, you have to give these users (or better: a user group) only the needed permission. To do this, execute the following command in an administrative cmd:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL AddAccount 'ITPROCLOUD\ADM_WVD-Shadowing',2
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>This gives the users of the group <strong>ITPROCLOUD\ADM_WVD-Shadowing</strong> the needed permission directly on the RDP-SXS stack (you need to reboot the session host).
+I would run this command on the template VM / golden Image to have this permission configured for each session host. Alternatively, you can run this in a computer-logon script for existing session hosts.</p>
+
+<p>Hint: You can reset this setting with:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL RestoreDefaults
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>Take a look how shadowing a user session with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> looks like: <a href="https://twitter.com/i/status/1229472041423732736">https://twitter.com/i/status/1229472041423732736</a></p>
+
+            </div>
+
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2020-08-24">24 Aug 2020</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            <a class="prev d-block col-md-6" href="/Sysprep-and-WVD-and-UWP/"> &laquo; What's wrong with Windows 10 and UWP and Sysprep?</a>
+            
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
         </div>
+        <!-- End Post -->
+
     </div>
 </div>
-<!-- end post -->
+<!-- End Article
+================================================== -->
 
+<!-- Begin Comments
+================================================== -->
 
+<!--End Comments
+================================================== -->
 
-    <!-- begin post -->
-
-
-<div class="col-lg-4 col-md-6 mb-30px card-group">
-    <div class="card h-100">
-        <div class="maxthumb">
-            <a href="/Working-with-the-OneDrive-PowerShell-Module/">
-                
-
-                    
-                        <img class="img-fluid" src="/wp-content/uploads/2018/09/OD-00001.png" alt="Working with the OneDrive PowerShell Module"> 
-                    
-
-                
-            </a>
-        </div>
-        <div class="card-body">
-            <h2 class="card-title">
-                <a class="text-dark" href="/Working-with-the-OneDrive-PowerShell-Module/">Working with the OneDrive PowerShell Module</a>
-                
-            </h2>
-            <h4 class="card-text">Recently I got some questions on how to work with my PowerShell module for OneDrive. Therefore, I put together some examples.
-</h4>
-        </div>
-        <div class="card-footer bg-white">
-            <div class="wrapfooter">
-                
-                <span class="meta-footer-thumb">
-                
-                <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
-                
-                </span>
-                <span class="author-meta">
-                <span class="post-name"><a target="_blank" href="https://blog.itprocloud.de">Marcel</a></span><br/>
-                
-                <span class="post-date">29 Sep 2018</span>
-                </span>
-                <span class="post-read-more"><a href="/Working-with-the-OneDrive-PowerShell-Module/" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
-                <div class="clearfix"></div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end post -->
-
-
-
-</div>
-</section>
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
 
 </div>
 
@@ -361,6 +431,8 @@
 
 <script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
 
+
+<script id="dsq-count-scr" src="//.disqus.com/count.js"></script>
 
 
 <!-- Start Cookie Plugin -->

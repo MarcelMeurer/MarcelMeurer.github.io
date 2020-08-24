@@ -5,9 +5,42 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Jul 2020 18:23:30 +0200</pubDate>
-    <lastBuildDate>Thu, 30 Jul 2020 18:23:30 +0200</lastBuildDate>
+    <pubDate>Mon, 24 Aug 2020 19:25:24 +0200</pubDate>
+    <lastBuildDate>Mon, 24 Aug 2020 19:25:24 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Shadow a WVD user with least privileges</title>
+        <description>&lt;p&gt;WVD allows local administrators to shadow user sessions. You can do this  easily with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; or using the command-line like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;mstsc /v:WVD-DESIGN-404 /control /shadow:2 /prompt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;In most companies, a help desk agent supports users using applications. For that, local admin privileges are not necessary and not recommended. To allow help desk agents shadowing users in WVD, you have to give these users (or better: a user group) only the needed permission. To do this, execute the following command in an administrative cmd:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL AddAccount 'ITPROCLOUD\ADM_WVD-Shadowing',2
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This gives the users of the group &lt;strong&gt;ITPROCLOUD\ADM_WVD-Shadowing&lt;/strong&gt; the needed permission directly on the RDP-SXS stack (you need to reboot the session host).
+I would run this command on the template VM / golden Image to have this permission configured for each session host. Alternatively, you can run this in a computer-logon script for existing session hosts.&lt;/p&gt;
+
+&lt;p&gt;Hint: You can reset this setting with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL RestoreDefaults
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Take a look how shadowing a user session with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; looks like: &lt;a href=&quot;https://twitter.com/i/status/1229472041423732736&quot;&gt;https://twitter.com/i/status/1229472041423732736&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 24 Aug 2020 00:00:00 +0200</pubDate>
+        <link>/Shadow-a-WVD-user-with-least-previleges/</link>
+        <guid isPermaLink="true">/Shadow-a-WVD-user-with-least-previleges/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>What's wrong with Windows 10 and UWP and Sysprep?</title>
@@ -602,57 +635,6 @@ If no language pack is installed (or not set as the system language), the RDAgen
         <pubDate>Sun, 09 Feb 2020 00:00:00 +0100</pubDate>
         <link>/Windows-Virtual-Desktop-Azure-Starter-for-WVD/</link>
         <guid isPermaLink="true">/Windows-Virtual-Desktop-Azure-Starter-for-WVD/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Using WVDAdmin for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)</title>
-        <description>&lt;h1 id=&quot;using-azure-starter-for-windows-virtual-desktop-in-2-aad-environment-microsoft-demo-case&quot;&gt;Using Azure Starter for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)&lt;/h1&gt;
-
-&lt;p&gt;Usually, the WVD tenant and the resources (sessions hosts) are in the same AAD tenant. If you have two Azure AD tenant, you can use WVDAdmin with a second service principal to access the session hosts.&lt;/p&gt;
-
-&lt;p&gt;Example:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Azure AD 1 - “&lt;em&gt;my-msft.onMicrosoft.com&lt;/em&gt;“&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Your personal AAD where you have your users, an AD-Controller, AD-Connect (or AD domain services), and other resources. In this AAD you have deployed your WVD tenant.&lt;/li&gt;
-      &lt;li&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Azure AD 2 - “&lt;em&gt;microsoft.onMicrosoft.com&lt;/em&gt;“&lt;/strong&gt;
-    &lt;ul&gt;
-      &lt;li&gt;You have no high-level permission to the AAD because it’s own by your company and shared with many other users/professionals. In this AAD, you have a subscription (AIR) containing your session hosts.&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/Split-AAD-02.png&quot; alt=&quot;Split-AAD-02.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Create the &lt;strong&gt;first service principal&lt;/strong&gt; in “my-msft.onMicrosoft.com”. Configure this service principal as described in the primary guide - except permitting to the resource group containing the session hosts and the vnet (these are in the other tenant). Use the data of this service principal in the welcom dialog of WVDAdmin.&lt;/p&gt;
-
-&lt;p&gt;Create the &lt;strong&gt;second service principal&lt;/strong&gt; in “microsoft.onMicrosoft.com”. Give the service principal contributor permission to the resource group containing the session hosts and to the vnet for the session host. Open the registry and navigate to &lt;em&gt;HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin&lt;/em&gt;. Add three string value to configure the service principal to access the resource groups&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;AzResAlternativeTenantId&lt;/li&gt;
-  &lt;li&gt;AzResAlternativeAppId&lt;/li&gt;
-  &lt;li&gt;AzResAlternativeAppSecret&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/Split-AAD-03.png&quot; alt=&quot;Split-AAD-03.png&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If you use another tenant group name as “Default Tenant Group” add another string “TenantGroupName” and set your tenant group name.&lt;/p&gt;
-
-&lt;p&gt;This solution is supported from the current version 1.3.3&lt;/p&gt;
-
-&lt;p&gt;Read more and download WVDAdmin on &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;the main page&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Fri, 07 Feb 2020 00:00:00 +0100</pubDate>
-        <link>/Windows-Virtual-Desktop-Admin-for-2-tenant-mode/</link>
-        <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin-for-2-tenant-mode/</guid>
         
         
         <category>Windows Virtual Desktop</category>
