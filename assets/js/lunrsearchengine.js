@@ -51,7 +51,7 @@ var documents = [{
     "body": "      Sitemap: {{ &#8220;sitemap. xml&#8221;   absolute_url }}   "
     }, {
     "id": 10,
-    "url": "/Shadow-a-WVD-user-with-least-previleges/",
+    "url": "/Shadow-a-WVD-user-with-least-privileges/",
     "title": "Shadow a WVD user with least privileges",
     "body": "2020/08/24 - WVD allows local administrators to shadow user sessions. You can do this easily with WVDAdmin or using the command-line like this: mstsc /v:WVD-DESIGN-404 /control /shadow:2 /promptIn most companies, a help desk agent supports users using applications. For that, local admin privileges are not necessary and not recommended. To allow help desk agents shadowing users in WVD, you have to give these users (or better: a user group) only the needed permission. To do this, execute the following command in an administrative cmd: 1wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL AddAccount 'ITPROCLOUD\ADM_WVD-Shadowing',2This gives the users of the group ITPROCLOUD\ADM_WVD-Shadowing the needed permission directly on the RDP-SXS stack (you need to reboot the session host). I would run this command on the template VM / golden Image to have this permission configured for each session host. Alternatively, you can run this in a computer-logon script for existing session hosts. Hint: You can reset this setting with: 1wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL RestoreDefaultsTake a look how shadowing a user session with WVDAdmin looks like: https://twitter. com/i/status/1229472041423732736 "
     }, {

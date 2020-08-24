@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 24 Aug 2020 19:25:24 +0200</pubDate>
-    <lastBuildDate>Mon, 24 Aug 2020 19:25:24 +0200</lastBuildDate>
+    <pubDate>Mon, 24 Aug 2020 19:31:43 +0200</pubDate>
+    <lastBuildDate>Mon, 24 Aug 2020 19:31:43 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -34,8 +34,8 @@ I would run this command on the template VM / golden Image to have this permissi
 &lt;p&gt;Take a look how shadowing a user session with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; looks like: &lt;a href=&quot;https://twitter.com/i/status/1229472041423732736&quot;&gt;https://twitter.com/i/status/1229472041423732736&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Mon, 24 Aug 2020 00:00:00 +0200</pubDate>
-        <link>/Shadow-a-WVD-user-with-least-previleges/</link>
-        <guid isPermaLink="true">/Shadow-a-WVD-user-with-least-previleges/</guid>
+        <link>/Shadow-a-WVD-user-with-least-privileges/</link>
+        <guid isPermaLink="true">/Shadow-a-WVD-user-with-least-privileges/</guid>
         
         
         <category>Windows Virtual Desktop</category>
