@@ -21,7 +21,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-11-02T00:00:00+01:00" />
 <script type="application/ld+json">
-{"url":"/Windows-Virtual-Desktop-Admin/","headline":"WVD Admin - A native administration Gui for Windows Virtual Desktop","dateModified":"2019-11-02T00:00:00+01:00","datePublished":"2019-11-02T00:00:00+01:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/assets/images/WVDAdmin-01.png","description":"Windows Virtual Desktop administration","mainEntityOfPage":{"@type":"WebPage","@id":"/Windows-Virtual-Desktop-Admin/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"/Windows-Virtual-Desktop-Admin/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"WVD Admin - A native administration Gui for Windows Virtual Desktop","dateModified":"2019-11-02T00:00:00+01:00","datePublished":"2019-11-02T00:00:00+01:00","author":{"@type":"Person","name":"mm"},"description":"Windows Virtual Desktop administration","image":"/assets/images/WVDAdmin-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"/Windows-Virtual-Desktop-Admin/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -526,20 +526,18 @@
 
 <p>The image is not created. An error message occurs:</p>
 
-<ul>
-  <li>Check if your template VM part of the AD</li>
-  <li>If your file server Windows Server 2019, read above</li>
-  <li>Check if you have set the NTFS and share permission correctly</li>
-  <li>Azure portal: Go to the temp VM (next to the template VM) and check the state of the extension installation. There should be an error message like script not found; access denied, etc.</li>
-  <li>Have you renamed the RD agent and bootloader?</li>
-  <li>Is the script saved correctly: ITPC-WVD-Image-Processing.ps1 not ITPC-WVD-Image-Processing.ps1.txt</li>
-  <li>Don’t forget to delete the temp VM and temp disk to avoid costs</li>
-  <li>Make sure that your template VM uses managed disk</li>
-  <li>An endless loop of “Waiting for the temporary vm (power off)” which results in an error after 30 minutes: Something goes wrong with sysprep. You can check the sysprep log in %WinDir%\system32\Sysprep\Panther on the temporary VM. 
-This is often caused by Sysprep and installed language packs.<br />
-Workaround: Delete all user profiles except the logged in user and default users: Press Win+R, type “SystemPropertiesAdvanced”, Advanced -&gt; Settings</li>
-  <li>The script generates additional log files in %WinDir%\System32\LogFiles</li>
-  <li>NEW: An endless loop of “Waiting for the temporary vm (power off)” : Update to the newest PowerShell script for generalizing: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a></li>
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Check if your template VM part of the AD</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />If your file server Windows Server 2019, read above</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Check if you have set the NTFS and share permission correctly</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Azure portal: Go to the temp VM (next to the template VM) and check the state of the extension installation. There should be an error message like script not found; access denied, etc.</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Have you renamed the RD agent and bootloader?</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Is the script saved correctly: ITPC-WVD-Image-Processing.ps1 not ITPC-WVD-Image-Processing.ps1.txt</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Don’t forget to delete the temp VM and temp disk to avoid costs</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Make sure that your template VM uses managed disk</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />The script generates additional log files in %WinDir%\System32\LogFiles</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Windows 7: Make sure to install PowerShell 5.1 to the template VM and restart the VM to take effect: <a href="https://www.microsoft.com/en-us/download/details.aspx?id=54616">https://www.microsoft.com/en-us/download/details.aspx?id=54616</a></li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />NEW: An endless loop of “Waiting for the temporary vm (power off)” : Update to the newest PowerShell script for generalizing: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a></li>
 </ul>
 
 <p>Feel free to use it and download the 64-bit Windows application “WVD Admin” from here: <a href="../assets/files/WVDAdmin.msi">WVDAdmin.msi</a></p>

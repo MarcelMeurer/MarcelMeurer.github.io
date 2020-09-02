@@ -1,5 +1,5 @@
 # This powershell script is part of WVD Admin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
-# Current Version of this script: 2.1
+# Current Version of this script: 2.2
 
 param(
 
@@ -62,17 +62,6 @@ if ($mode -eq "Generalize")
 	Remove-ItemProperty -Path $key -Name "LastAliveStamp" -ErrorAction Ignore
 	Remove-ItemProperty -Path $key -Name "TimeStampInterval" -ErrorAction Ignore
 	
-#	LogWriter("Removing pending AppXPackages")
-#	LogWriter(Get-AppxPackage -AllUsers | where{$_.NonRemovable -ne $true -and $_.PackageUserInformation -match "pending removal"}|ft)
-#	Get-AppxPackage -AllUsers | where{$_.NonRemovable -ne $true -and $_.PackageUserInformation -match "pending removal"}| Remove-AppxPackage -AllUsers
-#	
-#	LogWriter("Removing assignments to language packs - AppXPackages")
-#	$Packages = Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('Microsoft.LanguageExperiencePack')}
-#	foreach($package in $packages){
-#		write-host("Removing package: "+$package.packagefullname)
-#		Remove-AppxPackage -AllUsers -Package $package.packagefullname
-#	}
-
 	LogWriter("Modifying sysprep to avoid issues with AppXPackages")
 	$sysPrepActionPath="$env:windir\System32\Sysprep\ActionFiles"
 	$sysPrepActionFile="Generalize.xml"
@@ -103,7 +92,13 @@ if ($mode -eq "Generalize")
 	New-ItemProperty -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Runtime" -Name "TimeZone.Origin" -Value $timeZone -force
 	
 	LogWriter("Starting sysprep to generalize session host")
-	Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown /mode:vm"
+	if ([System.Environment]::OSVersion.Version.Major -le 6) {
+		#Windows 7
+		Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown"
+	} else {
+		Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown /mode:vm"
+	}
+
 } elseif ($mode -eq "JoinDomain")
 {
 	# Checking for a saved time zone information
@@ -143,8 +138,8 @@ if ($mode -eq "Generalize")
 # SIG # Begin signature block
 # MIIcWwYJKoZIhvcNAQcCoIIcTDCCHEgCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUnzqPeh/m0Z6hRSe8+xvqfrTD
-# gLqggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUm1hEk1TwW+phS1dyxxama3NZ
+# v3+ggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE5MTEwMjAwMDAwMFoXDTIwMTIx
@@ -275,22 +270,22 @@ if ($mode -eq "Generalize")
 # SUQgQ29kZSBTaWduaW5nIENBAhAHaCbvcbn02aj6wGGzZ6EqMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRmFH4iaZc0eLNN44WGpKR2foSAMDANBgkqhkiG9w0BAQEFAASCAQC3zUnd
-# UR2jYzCViPdpcEvnWnG8klaIE3fhQdgZbjhhhAyYEDXGDHwqaKYGaxku2M4w8c9r
-# GyDS176Fwk0pHuzxAfS2CM8jDE6HicFm1J29TtbPYW2TxtyKkyeQoxqt6PPJjMkY
-# TpTMn2N0IBpYSUrvPvXjupBkTCTlvKzcca4Zaiipwz9w2mYtI0ubO30ds6WuM43J
-# AhHTcJdxyfpe6Dqb0pdjY8TR6bBUmNqza2YvuY1cNARLTL40IKQxBNHOV5yFqc7f
-# EHWf8pkakIat+WkwsdoOkfaoCRMRPolTphP3S8i+tR2G0c9rqN9H9Hn46DQlBJ5M
-# EZXDVGk9q9GlMxz1oYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
+# BDEWBBTH+wuY0wPfVw/f6tD+bvwisp9OXjANBgkqhkiG9w0BAQEFAASCAQBBdQvX
+# /t73tADDIBg5YrctNpmLZt+Nx+JPqcz5cu8GpuXM5t1EkAcSDgqh7QsLoWa2t9Ug
+# 5IgckLvEQJISEKeGhDpR7hldTyE89CRWET9s8CiPZDNxNbgkOOg2gAgRyVxNQ2Wd
+# lgk7XEfOiEEFsx9Wv6VuB8CEMqqLhd/hF/S+vNo9SkJbBTUMGq7QW+kwGarx4pbZ
+# p3N/1QuV34KoPgCmQEAEnsbmMv9q4k78ky6oLwOU/fn9qmPEFQwWEQLsYF+QVx+r
+# OhNVYkbyHX6nbWkI6Zw7/vdNykHLNcvJB0FvoNInLo6w+HD/t+AueN1Vxn8aragG
+# CWv9jmfDi3Y8FzEOoYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
 # MAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3
 # LmRpZ2ljZXJ0LmNvbTEhMB8GA1UEAxMYRGlnaUNlcnQgQXNzdXJlZCBJRCBDQS0x
 # AhADAZoCOv9YsWvW1ermF/BmMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJ
-# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDA5MDIxNTM4NDhaMCMGCSqGSIb3
-# DQEJBDEWBBRh3NGNVAqprUAZFP0DaFiqAz123jANBgkqhkiG9w0BAQEFAASCAQAQ
-# rRUQavKer92yD3h4JV3i9PNmZri+cov6245AEXUsHq0Bae7RR1SW4IwqixaYEiB7
-# uduSU8eV2HDXXWBN998PvZ0Gk3JP+gj/xn0s0bl9kIrwVQCnlTKwfEgrT+rio3Sf
-# 8ADbet6otR2f/fzcP6+y6i480nAJnFWG29rMRQirgH7TIwsMe10TcvkQjYf9qpjk
-# cM2GecdlQwjIZ7VUOIoc6Z1puBJFBjlkP5OuQ7xGYUNstVWzstKHkVdrNbJo/v1S
-# lGTp3rXkeBpJaOBuuaE9ZNqKEeEdSzO5t5UIJtAg/Q/P9ViwBHpeowmi1QxrLjn9
-# RPJBV6LwSbJIEpjUTZtz
+# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDA5MDIxNjU4NTJaMCMGCSqGSIb3
+# DQEJBDEWBBRtrC/QbfUzT24PQrAuEzvXTwB/jDANBgkqhkiG9w0BAQEFAASCAQCf
+# aY24ozEBopZotA0DuomIioaILd1xd1RBCd27gdMBpQXQynjh9fz+0FvXLpXaPdon
+# slF0U2d/Ec+nkhMKC2+ga9Acn+GoZNew4UPLT3Y6X2QdQZLtV0BLiUQgVDd+Phgs
+# VXukeZPGQQwUAiP6TM3jcX9OVlUD0Kf2wVYU3m7mcruomfWeHTE85Q7c/3tm84AT
+# jdFGJ/GsLBc4M0AVvoMIcMuWe4QpTF7mk5e/IqeRzAhUjmt1Iko0B/5sNmYdhvTb
+# ish9Na4kgIrsA4cZpjsFDNektlmbDG+VcaVtiELCWjcgGc3ryDqxkieygC7q+SRF
+# bBp+DactlPvFyzOSQjjz
 # SIG # End signature block
