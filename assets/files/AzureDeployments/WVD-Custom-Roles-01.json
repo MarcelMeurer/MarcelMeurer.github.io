@@ -1,0 +1,326 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+  },
+  "variables":{
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2018-07-01",
+      "name": "[guid(subscription().id, 'WVD - User Session Reader')]",
+      "properties": {
+        "roleName": "WVD - User Session Reader",
+        "description": "Allows to read the user session and host pool properties of Windows Virtual Desktop.",
+        "type": "customRole",
+        "isCustom": true,
+        "permissions": [
+          {
+            "actions": [
+				"Microsoft.DesktopVirtualization/hostpools/read",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/read"
+				],
+            "notActions": ""
+          }
+        ],
+        "assignableScopes": [
+          "[subscription().id]"
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2018-07-01",
+      "name": "[guid(subscription().id, 'WVD - User Session Contributor')]",
+      "properties": {
+        "roleName": "WVD - User Session Contributor",
+        "description": "Allows to work with the user session and read host pool properties of Windows Virtual Desktop host pools, including to send messages to users and logoff/disconnect user sessions.",
+        "type": "customRole",
+        "isCustom": true,
+        "permissions": [
+          {
+            "actions": [
+				"Microsoft.DesktopVirtualization/hostpools/read",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/*"
+				],
+            "notActions": ""
+          }
+        ],
+        "assignableScopes": [
+          "[subscription().id]"
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2018-07-01",
+      "name": "[guid(subscription().id, 'WVD - Infrastructure Reader')]",
+      "properties": {
+        "roleName": "WVD - Infrastructure Reader",
+        "description": "Allows to read all properties of a WVD infrastructure: Host pools, session hosts, workspaces, app groups, and user sessions.",
+        "type": "customRole",
+        "isCustom": true,
+        "permissions": [
+          {
+            "actions": [
+				"Microsoft.DesktopVirtualization/*/read",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/read",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/read",
+				"Microsoft.DesktopVirtualization/applicationgroups/providers/Microsoft.Insights/logDefinitions/read",
+				"Microsoft.DesktopVirtualization/applicationgroups/startmenuitems/read",
+				"Microsoft.DesktopVirtualization/hostpools/providers/Microsoft.Insights/logDefinitions/read",
+				
+				"Microsoft.Authorization/permissions/read"
+
+				],
+            "notActions": ""
+          }
+        ],
+        "assignableScopes": [
+          "[subscription().id]"
+        ]
+      }
+    },
+	    {
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2018-07-01",
+      "name": "[guid(subscription().id, 'WVD - Infrastructure Contributor')]",
+      "properties": {
+        "roleName": "WVD - Infrastructure Contributor",
+        "description": "Allows to read and write all properties of a WVD infrastructure but doesn't allow to delete resources: Host pools, session hosts, workspaces, app groups, and user sessions.",
+        "type": "customRole",
+        "isCustom": true,
+        "permissions": [
+          {
+            "actions": [
+				"Microsoft.DesktopVirtualization/*/read",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/read",
+				
+				"Microsoft.DesktopVirtualization/*/write",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/write",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/*",
+				
+				"Microsoft.DesktopVirtualization/applicationgroups/providers/Microsoft.Insights/logDefinitions/read",
+				"Microsoft.DesktopVirtualization/applicationgroups/startmenuitems/read",
+				"Microsoft.DesktopVirtualization/hostpools/providers/Microsoft.Insights/logDefinitions/read",
+				
+
+				"Microsoft.Authorization/permissions/read"
+
+				],
+            "notActions": ""
+          }
+        ],
+        "assignableScopes": [
+		  "[concat(subscription().id)]"
+        ]
+      }
+    },
+	{
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2018-07-01",
+      "name": "[guid(subscription().id, 'WVD - Infrastructure Administrator')]",
+      "properties": {
+        "roleName": "WVD - Infrastructure Administrator",
+        "description": "Allows to read and write all properties of a WVD infrastructure and allows to delete resources: Host pools, session hosts, workspaces, app groups, and user sessions.",
+        "type": "customRole",
+        "isCustom": true,
+        "permissions": [
+          {
+            "actions": [
+				"Microsoft.DesktopVirtualization/*/read",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/read",
+				
+				"Microsoft.DesktopVirtualization/*/write",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/write",
+				
+				"Microsoft.DesktopVirtualization/*/delete",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/delete",
+				
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/*",
+				
+				"Microsoft.DesktopVirtualization/applicationgroups/providers/Microsoft.Insights/logDefinitions/read",
+				"Microsoft.DesktopVirtualization/applicationgroups/startmenuitems/read",
+				"Microsoft.DesktopVirtualization/hostpools/providers/Microsoft.Insights/logDefinitions/read",
+				
+				
+				"Microsoft.Authorization/permissions/read"
+
+				],
+            "notActions": ""
+          }
+        ],
+        "assignableScopes": [
+          "[subscription().id]"
+        ]
+      }
+    },
+	{
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2018-07-01",
+      "name": "[guid(subscription().id, 'WVD - Infrastructure Administrator & VM Manager')]",
+      "properties": {
+        "roleName": "WVD - Infrastructure Administrator & VM Manager",
+        "description": "Allows to read and write all properties of a WVD infrastructure and allows to delete resources: Host pools, session hosts, workspaces, app groups, and user sessions. Additionally, the power state of all hosts and VMs can be changed.",
+        "type": "customRole",
+        "isCustom": true,
+        "permissions": [
+          {
+            "actions": [
+				"Microsoft.DesktopVirtualization/*/read",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/read",
+				
+				"Microsoft.DesktopVirtualization/*/write",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/write",
+				
+				"Microsoft.DesktopVirtualization/*/delete",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/delete",
+				
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/*",
+				
+				"Microsoft.DesktopVirtualization/applicationgroups/providers/Microsoft.Insights/logDefinitions/read",
+				"Microsoft.DesktopVirtualization/applicationgroups/startmenuitems/read",
+				"Microsoft.DesktopVirtualization/hostpools/providers/Microsoft.Insights/logDefinitions/read",
+				
+				"Microsoft.Compute/virtualMachines/read",
+				"Microsoft.Compute/virtualMachines/start/action",
+				"Microsoft.Compute/virtualMachines/restart/action",
+				"Microsoft.Compute/virtualMachines/deallocate/action",
+				
+				"Microsoft.Compute/virtualMachineScaleSets/virtualMachines/read",
+				"Microsoft.Compute/virtualMachineScaleSets/virtualMachines/deallocate/action",
+				"Microsoft.Compute/virtualMachineScaleSets/virtualMachines/restart/action",
+				"Microsoft.Compute/virtualMachineScaleSets/virtualMachines/start/action",
+				
+				
+				"Microsoft.Authorization/permissions/read",
+				
+				
+				"Microsoft.Resources/subscriptions/resourceGroups/read"
+				
+				],
+            "notActions": ""
+          }
+        ],
+        "assignableScopes": [
+          "[subscription().id]"
+        ]
+      }
+    },
+	{
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2018-07-01",
+      "name": "[guid(subscription().id, 'WVD - Template and Session Host Administrator')]",
+      "properties": {
+        "roleName": "WVD - Template and Session Host Administrator",
+        "description": "Allows to create/modify/delete Virtual Machines, images, rollout new session hosts into host pools, and attach them to a vnet.",
+        "type": "customRole",
+        "isCustom": true,
+        "permissions": [
+          {
+            "actions": [
+				"Microsoft.Compute/availabilitySets/*",
+				"Microsoft.Compute/locations/*",
+				"Microsoft.Compute/virtualMachines/*",
+				"Microsoft.Compute/virtualMachineScaleSets/*",
+				"Microsoft.Compute/disks/write",
+				"Microsoft.Compute/disks/read",
+				"Microsoft.Compute/disks/delete",
+				"Microsoft.Network/locations/*",
+				"Microsoft.Network/networkInterfaces/*",
+				"Microsoft.Network/networkSecurityGroups/join/action",
+				"Microsoft.Network/virtualNetworks/read",
+				"Microsoft.Network/virtualNetworks/subnets/join/action",
+				"Microsoft.ResourceHealth/availabilityStatuses/read",
+				"Microsoft.Compute/snapshots/*",
+				"Microsoft.Compute/images/*",
+				"Microsoft.Compute/disks/beginGetAccess/action",
+				"Microsoft.Resources/deployments/*",
+				
+				"Microsoft.DesktopVirtualization/hostpools/*",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/*",
+				
+				"Microsoft.Resources/subscriptions/resourceGroups/read"
+				],
+            "notActions": ""
+          }
+        ],
+        "assignableScopes": [
+          "[subscription().id]"
+        ]
+      }
+    },
+	{
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2018-07-01",
+      "name": "[guid(subscription().id, 'WVD - Full Administrator')]",
+      "properties": {
+        "roleName": "WVD - Full Administrator",
+        "description": "Allows to create/modify/delete Virtual Machines, images, rollout new session hosts into host pools, attach them to a vnet, and all permissions from the role 'WVD - Infrastructure Administrator & VM Manager'.",
+        "type": "customRole",
+        "isCustom": true,
+        "permissions": [
+          {
+            "actions": [
+				"Microsoft.Compute/availabilitySets/*",
+				"Microsoft.Compute/locations/*",
+				"Microsoft.Compute/virtualMachines/*",
+				"Microsoft.Compute/virtualMachineScaleSets/*",
+				"Microsoft.Compute/disks/write",
+				"Microsoft.Compute/disks/read",
+				"Microsoft.Compute/disks/delete",
+				"Microsoft.Network/locations/*",
+				"Microsoft.Network/networkInterfaces/*",
+				"Microsoft.Network/networkSecurityGroups/join/action",
+				"Microsoft.Network/virtualNetworks/read",
+				"Microsoft.Network/virtualNetworks/subnets/join/action",
+				"Microsoft.ResourceHealth/availabilityStatuses/read",
+				"Microsoft.Compute/snapshots/*",
+				"Microsoft.Compute/images/*",
+				"Microsoft.Compute/disks/beginGetAccess/action",
+				"Microsoft.Resources/deployments/*",
+				
+				
+				"Microsoft.DesktopVirtualization/*/read",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/read",
+				
+				"Microsoft.DesktopVirtualization/*/write",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/write",
+				
+				"Microsoft.DesktopVirtualization/*/delete",
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/delete",
+				
+				"Microsoft.DesktopVirtualization/hostpools/sessionhosts/usersessions/*",
+				
+				"Microsoft.DesktopVirtualization/applicationgroups/providers/Microsoft.Insights/logDefinitions/read",
+				"Microsoft.DesktopVirtualization/applicationgroups/startmenuitems/read",
+				"Microsoft.DesktopVirtualization/hostpools/providers/Microsoft.Insights/logDefinitions/read",
+				
+				"Microsoft.Compute/virtualMachines/read",
+				"Microsoft.Compute/virtualMachines/start/action",
+				"Microsoft.Compute/virtualMachines/restart/action",
+				"Microsoft.Compute/virtualMachines/deallocate/action",
+				
+				"Microsoft.Compute/virtualMachineScaleSets/virtualMachines/read",
+				"Microsoft.Compute/virtualMachineScaleSets/virtualMachines/deallocate/action",
+				"Microsoft.Compute/virtualMachineScaleSets/virtualMachines/restart/action",
+				"Microsoft.Compute/virtualMachineScaleSets/virtualMachines/start/action",				
+
+
+				"Microsoft.Authorization/permissions/read",
+
+				
+				"Microsoft.Resources/subscriptions/resourceGroups/read"
+				],
+            "notActions": ""
+          }
+        ],
+        "assignableScopes": [
+          "[subscription().id]"
+        ]
+      }
+    }
+
+  ]
+}
