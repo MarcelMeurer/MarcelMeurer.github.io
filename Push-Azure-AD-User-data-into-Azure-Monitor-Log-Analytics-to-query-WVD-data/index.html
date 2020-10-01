@@ -6,22 +6,22 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>Windows Virtual Desktop - Azure Starter for WVD | ITProCloud Blog</title>
+<title>Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Windows Virtual Desktop - Azure Starter for WVD | ITProCloud Blog</title>
+<title>Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Windows Virtual Desktop - Azure Starter for WVD" />
+<meta property="og:title" content="Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="This month I started to build my fourth tool around Microsoft Windows Virtual Desktop. This new one, called “Azure Starter for WVD” is a self-service portal for users using WVD. In this portal, which is a web app with Azure AD authentication, users can start and stop (deallocate) their personal assigned session host - which in this case are VDIs." />
-<meta property="og:description" content="This month I started to build my fourth tool around Microsoft Windows Virtual Desktop. This new one, called “Azure Starter for WVD” is a self-service portal for users using WVD. In this portal, which is a web app with Azure AD authentication, users can start and stop (deallocate) their personal assigned session host - which in this case are VDIs." />
+<meta name="description" content="Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Windows Virtual Desktop (WVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance." />
+<meta property="og:description" content="Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Windows Virtual Desktop (WVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance." />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="/assets/images/WVDStarter.png" />
+<meta property="og:image" content="/assets/images/LogicApp-AAD-AzureMonitor-008.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2020-02-09T00:00:00+01:00" />
+<meta property="article:published_time" content="2020-10-01T00:00:00+02:00" />
 <script type="application/ld+json">
-{"url":"/Windows-Virtual-Desktop-Azure-Starter-for-WVD/","headline":"Windows Virtual Desktop - Azure Starter for WVD","dateModified":"2020-02-09T00:00:00+01:00","datePublished":"2020-02-09T00:00:00+01:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/assets/images/WVDStarter.png","description":"This month I started to build my fourth tool around Microsoft Windows Virtual Desktop. This new one, called “Azure Starter for WVD” is a self-service portal for users using WVD. In this portal, which is a web app with Azure AD authentication, users can start and stop (deallocate) their personal assigned session host - which in this case are VDIs.","mainEntityOfPage":{"@type":"WebPage","@id":"/Windows-Virtual-Desktop-Azure-Starter-for-WVD/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/","headline":"Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these","dateModified":"2020-10-01T00:00:00+02:00","datePublished":"2020-10-01T00:00:00+02:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/assets/images/LogicApp-AAD-AzureMonitor-008.png","description":"Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Windows Virtual Desktop (WVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance.","mainEntityOfPage":{"@type":"WebPage","@id":"/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -183,19 +183,19 @@
     </p>
     <ul>
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://twitter.com/intent/tweet?text=Windows Virtual Desktop - Azure Starter for WVD&url=https://blog.itprocloud.de/Windows-Virtual-Desktop-Azure-Starter-for-WVD/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these&url=https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                 <i class="fab fa-twitter"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Windows-Virtual-Desktop-Azure-Starter-for-WVD/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
                 <i class="fab fa-facebook-f"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Windows-Virtual-Desktop-Azure-Starter-for-WVD/&title=Windows Virtual Desktop - Azure Starter for WVD" onclick="window.open(this.href, 'width=550,height=435');return false;">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/&title=Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these" onclick="window.open(this.href, 'width=550,height=435');return false;">
                 <i class="fab fa-linkedin-in"></i>
             </a>
         </li>
@@ -235,7 +235,7 @@
                 
 
                 <!-- Post Title -->
-                <h1 class="posttitle">Windows Virtual Desktop - Azure Starter for WVD</h1>
+                <h1 class="posttitle">Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these</h1>
 
             </div>
 
@@ -247,7 +247,7 @@
             
 
             
-            <img class="featured-image img-fluid" src="/assets/images/WVDStarter.png" alt="Windows Virtual Desktop - Azure Starter for WVD">
+            <img class="featured-image img-fluid" src="/assets/images/LogicApp-AAD-AzureMonitor-008.png" alt="Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these">
             
 
             
@@ -258,19 +258,87 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>This month I started to build my fourth tool around Microsoft Windows Virtual Desktop. This new one, called “Azure Starter for WVD” is a self-service portal for users using WVD. In this portal, which is a web app with Azure AD authentication, users can start and stop (deallocate) their personal assigned session host - which in this case are VDIs.</p>
+                <p>Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Windows Virtual Desktop (WVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance.</p>
 
-<p>The user doesn’t need access nor permission to the Azure portal or the virtual machines. The authentication of the web app handles the action itself.</p>
+<p>I do that using Azure Monitor for WVD (<a href="https://www.sepago.de/en/azure-monitor-en/">https://www.sepago.de/en/azure-monitor-en/</a>) from sepago, which is also included in Nerdio Manager for WVD (<a href="https://getnerdio.com/nerdio-manager-for-wvd/">https://getnerdio.com/nerdio-manager-for-wvd/</a>).</p>
 
-<p><img src="..\assets\images\WVDStarter-AssignedUser.png" alt="MySmartScale-01" /></p>
+<p>The solution gives you insight into the performance of the apps and hosts and allows you to build a cost calculation on a per-user base. If you want to query and analyze data by other properties - like the department - you have to include these properties from Azure AD into your log analytics workspace.</p>
 
-<p>The newest implementation adds a new feature: You can configure that running VMs are deallocated if no user is logged in. That handles in combination with a group policy that personally assigned session hosts to go down after a specific time of idling.</p>
+<p>I found an easy solution doing that with an Azure logic app. The logic app access the Azure AD tenant and queries the users and some defined properties and send it to log analytics. A challenge was to handle the challenge that you have to query multiple times to get all users from Azure AD (a single query gives you only a specific amount of users -&gt; Paging). I solved this using an “Until-loop” to get all users. The logic app pushed the users and their properties to the defined log analytics workspace. After this, the users and properties can be used in a KUSTO query. For example: To query the over-all session runtime by the department.</p>
 
-<p>A session host can be assigned to a specific user using my admin GUI for WVD: <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">WVDAdmin</a></p>
+<h2 id="installation-and-configuration">Installation and configuration</h2>
 
-<p>Go to the documentation and deploy this free solution to Azure:</p>
+<p>Deploy the prepared logic app into your subscription using the “Deploy to Azure” button.</p>
 
-<p><a href="https://github.com/MarcelMeurer/Azure-Starter-for-WVD">https://github.com/MarcelMeurer/Azure-Starter-for-WVD</a></p>
+<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FLA-AADUsersToLogAnalytics.json"><img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" /></a></p>
+
+<p>To query the Azure AD unattended, you need a service principal (a function account) with the right permission. Create the service principal in the Azure Portal:</p>
+
+<ul>
+  <li>Azure Active Directory -&gt; App registrations -&gt; New registration and give it a name (e.g. svc_AzureAdUserReader4AzureMonitor) and press register
+<img src="../assets/images/LogicApp-AAD-AzureMonitor-001.png" alt="" /></li>
+  <li>Go to Certificates and secrets -&gt; Add new client secret and type in a name (e.g. Key1) and expiration date (make a note into your calendar) and press add
+<img src="../assets/images/LogicApp-AAD-AzureMonitor-002.png" alt="" /></li>
+  <li>Copy the generated secret for later use</li>
+  <li>Go to Api permissions -&gt; Add a permission -&gt; select Microsoft Graph -&gt; Application permissions -&gt; select User.Read.All -&gt; click Add permissions
+<img src="../assets/images/LogicApp-AAD-AzureMonitor-003.png" alt="" /></li>
+  <li>Click Grant admin consent to allow this setting (you have to be in the right role to do that)
+<img src="../assets/images/LogicApp-AAD-AzureMonitor-004.png" alt="" /></li>
+  <li>Go to overview and copy the application id and directory id for later use</li>
+</ul>
+
+<p>To upload the data to your Azure Monitor / log analytics workspace, you need the workspace id and key.</p>
+
+<ul>
+  <li>Go to your log analytics workspace -&gt; select Advanced settings -&gt; Agents management -&gt; copy the workspace id and primary key for later use
+<img src="../assets/images/LogicApp-AAD-AzureMonitor-005.png" alt="" /></li>
+</ul>
+
+<p>Go to your deployed logic app and click edit.</p>
+
+<ul>
+  <li>
+    <p>Expand “Until 2”</p>
+  </li>
+  <li>
+    <p>Click on http. Enter the data from your service principal into the fields Tenant (Directory id), client id, and secret
+<img src="../assets/images/LogicApp-AAD-AzureMonitor-006.png" alt="" /></p>
+  </li>
+  <li>
+    <p>Click on Connections and add a new one (Add new)</p>
+  </li>
+  <li>
+    <ul>
+      <li>Give a name (e.g. ToLogAnalytics), the primary key and workspace id from log analytics and press create
+<img src="../assets/images/LogicApp-AAD-AzureMonitor-007.png" alt="" /></li>
+    </ul>
+  </li>
+</ul>
+
+<p>Save the logic app and press run to test it.</p>
+
+<p>If everything looks good, our logic app will write the user data to log analytics once a day.</p>
+
+<p><img src="../assets/images/LogicApp-AAD-AzureMonitor-008.png" alt="" /></p>
+
+<p>You can query the data from log analytics with “ITPC_CTX_ADUsers_CL”. Keep in mind that it takes a while (30 minutes) to build the first upload schema.</p>
+
+<p><img src="../assets/images/LogicApp-AAD-AzureMonitor-009.png" alt="" /></p>
+
+<p><strong>Hint:</strong></p>
+
+<p>You can modify the filter and the properties you get back, modifying the query URL. The URL can be modified in “Initialize variable” in the logic app.</p>
+
+<p><img src="../assets/images/LogicApp-AAD-AzureMonitor-010.png" alt="" /></p>
+
+<p>The default is:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre></td><td class="rouge-code"><pre>https://graph.microsoft.com/v1.0/users?$filter=accountEnabled eq true  and userType eq 'Member'&amp;$select=userPrincipalName,onPremisesSamAccountName,employeeId,officeLocation,department
+</pre></td></tr></tbody></table></code></pre></div></div>
+
+<p>A list of valid properties is here: <a href="https://docs.microsoft.com/de-de/graph/api/resources/user?view=graph-rest-1.0">https://docs.microsoft.com/de-de/graph/api/resources/user?view=graph-rest-1.0</a></p>
+
 
             </div>
 
@@ -280,7 +348,7 @@
             <!-- Post Date -->
             <p>
             <small>
-                <span class="post-date"><time class="post-date" datetime="2020-02-09">09 Feb 2020</time></span>           
+                <span class="post-date"><time class="post-date" datetime="2020-10-01">01 Oct 2020</time></span>           
                 
                 </small>
             </p>
@@ -289,6 +357,10 @@
             <div class="after-post-cats">
                 <ul class="tags mb-4">
                     
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Azure-Monitor">Azure Monitor</a>
+                    </li>
                     
                     <li>
                         <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
@@ -310,10 +382,8 @@
             <!-- Prev/Next -->
             <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
             
-            <a class="prev d-block col-md-6" href="/Windows-Virtual-Desktop-Admin-for-2-tenant-mode/"> &laquo; Using WVDAdmin for Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)</a>
+            <a class="prev d-block col-md-6" href="/Least-privileges-with-custom-roles-for-Windows-Virtual-Desktop-(WVD)/"> &laquo; Least privileges with custom roles for Windows Virtual Desktop (WVD)</a>
             
-            
-            <a class="next d-block col-md-6 text-lg-right" href="/Windows-Virtual-Desktop-Language-Packs-Detecting-Host-Pool-and-Tenant-Name/">Windows Virtual Desktop and Language Packs - Detecting Host Pool and Tenant Name issue &raquo; </a>
             
             <div class="clearfix"></div>
             </div>

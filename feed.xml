@@ -5,9 +5,104 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 23 Sep 2020 22:14:40 +0200</pubDate>
-    <lastBuildDate>Wed, 23 Sep 2020 22:14:40 +0200</lastBuildDate>
+    <pubDate>Thu, 01 Oct 2020 12:21:33 +0200</pubDate>
+    <lastBuildDate>Thu, 01 Oct 2020 12:21:33 +0200</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these</title>
+        <description>&lt;p&gt;Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Windows Virtual Desktop (WVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance.&lt;/p&gt;
+
+&lt;p&gt;I do that using Azure Monitor for WVD (&lt;a href=&quot;https://www.sepago.de/en/azure-monitor-en/&quot;&gt;https://www.sepago.de/en/azure-monitor-en/&lt;/a&gt;) from sepago, which is also included in Nerdio Manager for WVD (&lt;a href=&quot;https://getnerdio.com/nerdio-manager-for-wvd/&quot;&gt;https://getnerdio.com/nerdio-manager-for-wvd/&lt;/a&gt;).&lt;/p&gt;
+
+&lt;p&gt;The solution gives you insight into the performance of the apps and hosts and allows you to build a cost calculation on a per-user base. If you want to query and analyze data by other properties - like the department - you have to include these properties from Azure AD into your log analytics workspace.&lt;/p&gt;
+
+&lt;p&gt;I found an easy solution doing that with an Azure logic app. The logic app access the Azure AD tenant and queries the users and some defined properties and send it to log analytics. A challenge was to handle the challenge that you have to query multiple times to get all users from Azure AD (a single query gives you only a specific amount of users -&amp;gt; Paging). I solved this using an “Until-loop” to get all users. The logic app pushed the users and their properties to the defined log analytics workspace. After this, the users and properties can be used in a KUSTO query. For example: To query the over-all session runtime by the department.&lt;/p&gt;
+
+&lt;h2 id=&quot;installation-and-configuration&quot;&gt;Installation and configuration&lt;/h2&gt;
+
+&lt;p&gt;Deploy the prepared logic app into your subscription using the “Deploy to Azure” button.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FLA-AADUsersToLogAnalytics.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;To query the Azure AD unattended, you need a service principal (a function account) with the right permission. Create the service principal in the Azure Portal:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Azure Active Directory -&amp;gt; App registrations -&amp;gt; New registration and give it a name (e.g. svc_AzureAdUserReader4AzureMonitor) and press register
+&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-001.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;Go to Certificates and secrets -&amp;gt; Add new client secret and type in a name (e.g. Key1) and expiration date (make a note into your calendar) and press add
+&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-002.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;Copy the generated secret for later use&lt;/li&gt;
+  &lt;li&gt;Go to Api permissions -&amp;gt; Add a permission -&amp;gt; select Microsoft Graph -&amp;gt; Application permissions -&amp;gt; select User.Read.All -&amp;gt; click Add permissions
+&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-003.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;Click Grant admin consent to allow this setting (you have to be in the right role to do that)
+&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-004.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+  &lt;li&gt;Go to overview and copy the application id and directory id for later use&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To upload the data to your Azure Monitor / log analytics workspace, you need the workspace id and key.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Go to your log analytics workspace -&amp;gt; select Advanced settings -&amp;gt; Agents management -&amp;gt; copy the workspace id and primary key for later use
+&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-005.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Go to your deployed logic app and click edit.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;Expand “Until 2”&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Click on http. Enter the data from your service principal into the fields Tenant (Directory id), client id, and secret
+&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-006.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Click on Connections and add a new one (Add new)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Give a name (e.g. ToLogAnalytics), the primary key and workspace id from log analytics and press create
+&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-007.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Save the logic app and press run to test it.&lt;/p&gt;
+
+&lt;p&gt;If everything looks good, our logic app will write the user data to log analytics once a day.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-008.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You can query the data from log analytics with “ITPC_CTX_ADUsers_CL”. Keep in mind that it takes a while (30 minutes) to build the first upload schema.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-009.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Hint:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;You can modify the filter and the properties you get back, modifying the query URL. The URL can be modified in “Initialize variable” in the logic app.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-010.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The default is:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;https://graph.microsoft.com/v1.0/users?$filter=accountEnabled eq true  and userType eq 'Member'&amp;amp;$select=userPrincipalName,onPremisesSamAccountName,employeeId,officeLocation,department
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A list of valid properties is here: &lt;a href=&quot;https://docs.microsoft.com/de-de/graph/api/resources/user?view=graph-rest-1.0&quot;&gt;https://docs.microsoft.com/de-de/graph/api/resources/user?view=graph-rest-1.0&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 01 Oct 2020 00:00:00 +0200</pubDate>
+        <link>/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/</link>
+        <guid isPermaLink="true">/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Monitor</category>
+        
+      </item>
     
       <item>
         <title>Least privileges with custom roles for Windows Virtual Desktop (WVD)</title>
@@ -628,50 +723,6 @@ Add the permission “Azure Active Directory Graph” -&amp;gt; Application Perm
         <pubDate>Wed, 26 Feb 2020 00:00:00 +0100</pubDate>
         <link>/Windows-Virtual-Desktop-Admin-Preview/</link>
         <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin-Preview/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Windows Virtual Desktop and Language Packs - Detecting Host Pool and Tenant Name issue</title>
-        <description>&lt;p&gt;Language packs on Windows sometimes cause some issues or strange behaviors to some applications. One problem I can reproduce is the impact of the RDAgent from Microsoft - the agent running on a WVD session host, which makes the connection to the WVD backend.
-If no language pack is installed (or not set as the system language), the RDAgent writes some information to the registry naming the Host Pool, Tenant, and more. You can find this data in &lt;strong&gt;HKLM:\SOFTWARE\Microsoft\RDMonitoringAgent&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;The RDAgent writes this data at least if the session host at the start:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\WVD.LanguagePack.RDMonitoringAgent.01.png&quot; alt=&quot;Registry with values&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If you have a clean Windows Virtual Machine with an &lt;strong&gt;installed&lt;/strong&gt; and for the whole system activated &lt;strong&gt;language pack&lt;/strong&gt; and if you then install the RDAgent, this information is never written to the registry (the WVD function itself is working as expected).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\WVD.LanguagePack.RDMonitoringAgent.02.png&quot; alt=&quot;Registry with values&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If you use this Virtual Machine - or session hosts you built based on this VM - you can no longer detect the WVD-tenant, host pool name from the registry. These also affect my tools using this information:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://loganalytics.sepago.com/&quot;&gt;Azure Monitor for WVD&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/MarcelMeurer/Project-MySmartScale&quot;&gt;Azure Autoscale for WVD&lt;/a&gt; (aka “Project MySmartScale”, WorkerAgent)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;They reference the data to an “unknown” or “staging” host pool path (host pool path is “tenant.hostpool” name). This behavior can lead to misinterpretations.&lt;/p&gt;
-
-&lt;p&gt;To work-around this peculiar behavior with language packs, I added a new function to both solutions. If the tenant and host pool name can not be discovered by using the registry keys, the agents read the tag “WVD.Path” to get the names. The value in WVD.Path must be in the format: TenantName\TenantGroupName\HostPoolName:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\WVD.LanguagePack.RDMonitoringAgent.03.png&quot; alt=&quot;Tags&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;The new agents are ready to download:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://loganalytics.sepago.com/download.html&quot;&gt;Azure Monitor for WVD&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/MarcelMeurer/Project-MySmartScale/tree/master/bin&quot;&gt;Azure Autoscale for WVD&lt;/a&gt; (aka “Project MySmartScale”, WorkerAgent)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Additionally,  &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt; (from version 1.3.6) will tag new distributed session hosts automatically.&lt;/p&gt;
-</description>
-        <pubDate>Sun, 23 Feb 2020 00:00:00 +0100</pubDate>
-        <link>/Windows-Virtual-Desktop-Language-Packs-Detecting-Host-Pool-and-Tenant-Name/</link>
-        <guid isPermaLink="true">/Windows-Virtual-Desktop-Language-Packs-Detecting-Host-Pool-and-Tenant-Name/</guid>
         
         
         <category>Windows Virtual Desktop</category>
