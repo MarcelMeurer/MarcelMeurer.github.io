@@ -1,0 +1,432 @@
+{
+   "$schema":"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+   "contentVersion":"1.0.0.0",
+   "parameters":{
+      "Name":{
+         "defaultValue":"logic-AADUsersToLogAnalytics",
+         "type":"String"
+      }
+   },
+   "variables":{
+      "connections_azureloganalyticsdatacollector_name": "LogicApp-Connector-AzureLogAnalytics-Upload"
+   },
+   "resources":[
+      {
+         "apiVersion":"2019-05-01",
+         "name":"pid-829f34d0-ff76-42d3-b46f-f527d50ff819",
+         "type":"Microsoft.Resources/deployments",
+         "subscriptionId":"[subscription().subscriptionId]",
+         "resourceGroup":"[resourceGroup().name]",
+         "properties":{
+            "mode":"Incremental",
+            "template":{
+               "$schema":"https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+               "contentVersion":"1.0.0.0",
+               "resources":[
+                  
+               ]
+            }
+         }
+      },
+      {
+         "type":"Microsoft.Web/connections",
+         "apiVersion":"2016-06-01",
+         "name":"[variables('connections_azureloganalyticsdatacollector_name')]",
+         "location":"[resourceGroup().location]",
+         "kind":"V1",
+         "properties":{
+            "displayName":"LogAnalyticsWorkspace",
+            "customParameterValues":{
+               
+            },
+            "api":{
+               "id":"[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/azureloganalyticsdatacollector')]"
+            }
+         }
+      },
+      {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_logic_AADUsersToLogAnalytics_name')]",
+            "location": "westeurope",
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "Recurrence": {
+                            "recurrence": {
+                                "frequency": "Day",
+                                "interval": 1
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "Authentication:_App_Id": {
+                            "runAfter": {
+                                "Authentication:_Tenant_Id": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "AADAppId",
+                                        "type": "string",
+                                        "value": "00000000-0000-0000-0000-000000000000"
+                                    }
+                                ]
+                            }
+                        },
+                        "Authentication:_App_Password": {
+                            "runAfter": {
+                                "Authentication:_App_Id": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "AADAppPassword",
+                                        "type": "string",
+                                        "value": "-----------------------------"
+                                    }
+                                ]
+                            }
+                        },
+                        "Authentication:_Tenant_Id": {
+                            "runAfter": {
+                                "Graph_Query_String": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "AADTenantId",
+                                        "type": "string",
+                                        "value": "00000000-0000-0000-0000-000000000000"
+                                    }
+                                ]
+                            }
+                        },
+                        "Graph_Query_String": {
+                            "runAfter": {},
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "Next",
+                                        "type": "string",
+                                        "value": "https://graph.microsoft.com/v1.0/users?$filter=accountEnabled eq true  and userType eq 'Member'&$select=userPrincipalName,onPremisesSamAccountName,employeeId,officeLocation,department,id"
+                                    }
+                                ]
+                            }
+                        },
+                        "Intern:_UserAndManager": {
+                            "runAfter": {
+                                "LogName:_AADManagers": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "UserAndManager",
+                                        "type": "string"
+                                    }
+                                ]
+                            }
+                        },
+                        "LogName:_AADManagers": {
+                            "runAfter": {
+                                "LogName:_AADUsers": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "LogTypeManagers",
+                                        "type": "string",
+                                        "value": "ITPC_CTX_AADManagers"
+                                    }
+                                ]
+                            }
+                        },
+                        "LogName:_AADUsers": {
+                            "runAfter": {
+                                "Authentication:_App_Password": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "type": "InitializeVariable",
+                            "inputs": {
+                                "variables": [
+                                    {
+                                        "name": "LogTypeUsers",
+                                        "type": "string",
+                                        "value": "ITPC_CTX_ADUsers"
+                                    }
+                                ]
+                            }
+                        },
+                        "Until:_Users": {
+                            "actions": {
+                                "Condition:_Should_try_to_get_manager": {
+                                    "actions": {
+                                        "For_each_Users": {
+                                            "foreach": "@body('Parse_JSON')?['value']",
+                                            "actions": {
+                                                "Condition:_Manager_Exist": {
+                                                    "actions": {
+                                                        "Create_Manager_Object": {
+                                                            "runAfter": {},
+                                                            "type": "SetVariable",
+                                                            "inputs": {
+                                                                "name": "UserAndManager",
+                                                                "value": "{\"ManagerId\":\"@{body('Parse_JSON:_Manager')?['id']}\",\"ManagerMail\":\"@{body('Parse_JSON:_Manager')?['mail']}\",\"ManagerUpn\":\"@{body('Parse_JSON:_Manager')?['userPrincipalName']}\",\"UserId\":\"@{items('For_each_Users')['id']}\",\"UserUpn\":\"@{items('For_each_Users')['userPrincipalName']}\"}"
+                                                            }
+                                                        },
+                                                        "Send_Data:_Manager_Object": {
+                                                            "runAfter": {
+                                                                "Create_Manager_Object": [
+                                                                    "Succeeded"
+                                                                ]
+                                                            },
+                                                            "type": "ApiConnection",
+                                                            "inputs": {
+                                                                "body": "@variables('UserAndManager')",
+                                                                "headers": {
+                                                                    "Log-Type": "@variables('LogTypeManagers')"
+                                                                },
+                                                                "host": {
+                                                                    "connection": {
+                                                                        "name": "@parameters('$connections')['azureloganalyticsdatacollector']['connectionId']"
+                                                                    }
+                                                                },
+                                                                "method": "post",
+                                                                "path": "/api/logs"
+                                                            }
+                                                        }
+                                                    },
+                                                    "runAfter": {
+                                                        "Parse_JSON:_Manager": [
+                                                            "Succeeded"
+                                                        ]
+                                                    },
+                                                    "expression": {
+                                                        "and": [
+                                                            {
+                                                                "not": {
+                                                                    "equals": [
+                                                                        "@coalesce(body('Parse_JSON:_Manager')?['id'], '-')",
+                                                                        "-"
+                                                                    ]
+                                                                }
+                                                            }
+                                                        ]
+                                                    },
+                                                    "type": "If"
+                                                },
+                                                "HTTP_Get_Manager": {
+                                                    "runAfter": {},
+                                                    "type": "Http",
+                                                    "inputs": {
+                                                        "authentication": {
+                                                            "audience": "https://graph.microsoft.com/",
+                                                            "clientId": "@variables('AADAppId')",
+                                                            "secret": "@variables('AADAppPassword')",
+                                                            "tenant": "@variables('AADTenantId')",
+                                                            "type": "ActiveDirectoryOAuth"
+                                                        },
+                                                        "method": "GET",
+                                                        "retryPolicy": {
+                                                            "type": "none"
+                                                        },
+                                                        "uri": "https://graph.microsoft.com/v1.0/users/@{items('For_each_Users')['id']}/manager"
+                                                    }
+                                                },
+                                                "Parse_JSON:_Manager": {
+                                                    "runAfter": {
+                                                        "HTTP_Get_Manager": [
+                                                            "Succeeded",
+                                                            "Failed"
+                                                        ]
+                                                    },
+                                                    "type": "ParseJson",
+                                                    "inputs": {
+                                                        "content": "@body('HTTP_Get_Manager')",
+                                                        "schema": {
+                                                            "properties": {
+                                                                "@@odata.context": {
+                                                                    "type": "string"
+                                                                },
+                                                                "@@odata.type": {
+                                                                    "type": "string"
+                                                                },
+                                                                "businessPhones": {
+                                                                    "type": "array"
+                                                                },
+                                                                "displayName": {
+                                                                    "type": "string"
+                                                                },
+                                                                "givenName": {},
+                                                                "id": {
+                                                                    "type": "string"
+                                                                },
+                                                                "jobTitle": {},
+                                                                "mail": {},
+                                                                "mobilePhone": {},
+                                                                "officeLocation": {},
+                                                                "preferredLanguage": {},
+                                                                "surname": {},
+                                                                "userPrincipalName": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "runAfter": {},
+                                            "type": "Foreach"
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "Parse_JSON": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "expression": {
+                                        "and": [
+                                            {
+                                                "not": {
+                                                    "equals": [
+                                                        "@variables('LogTypeManagers')",
+                                                        ""
+                                                    ]
+                                                }
+                                            }
+                                        ]
+                                    },
+                                    "type": "If"
+                                },
+                                "HTTP_Get_Users": {
+                                    "runAfter": {},
+                                    "type": "Http",
+                                    "inputs": {
+                                        "authentication": {
+                                            "audience": "https://graph.microsoft.com/",
+                                            "clientId": "@variables('AADAppId')",
+                                            "secret": "@variables('AADAppPassword')",
+                                            "tenant": "@variables('AADTenantId')",
+                                            "type": "ActiveDirectoryOAuth"
+                                        },
+                                        "method": "GET",
+                                        "uri": "@variables('Next')"
+                                    }
+                                },
+                                "Parse_JSON": {
+                                    "runAfter": {
+                                        "HTTP_Get_Users": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ParseJson",
+                                    "inputs": {
+                                        "content": "@body('HTTP_Get_Users')",
+                                        "schema": {
+                                            "properties": {
+                                                "@@odata.context": {
+                                                    "type": "string"
+                                                },
+                                                "@@odata.nextLink": {
+                                                    "type": "string"
+                                                },
+                                                "value": {
+                                                    "type": "array"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "Send_Data:_Users": {
+                                    "runAfter": {
+                                        "Set_variable": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection",
+                                    "inputs": {
+                                        "body": "@body('Parse_JSON')?['value']",
+                                        "headers": {
+                                            "Log-Type": "@variables('LogTypeUsers')"
+                                        },
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['azureloganalyticsdatacollector']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/api/logs"
+                                    }
+                                },
+                                "Set_variable": {
+                                    "runAfter": {
+                                        "Condition:_Should_try_to_get_manager": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "SetVariable",
+                                    "inputs": {
+                                        "name": "Next",
+                                        "value": "@body('Parse_JSON')?['@odata.nextLink']"
+                                    }
+                                }
+                            },
+                            "runAfter": {
+                                "Intern:_UserAndManager": [
+                                    "Succeeded"
+                                ]
+                            },
+                            "expression": "@equals(variables('Next'), '')",
+                            "limit": {
+                                "count": 60,
+                                "timeout": "PT1H"
+                            },
+                            "type": "Until"
+                        }
+                    },
+                    "outputs": {}
+                },
+            "parameters":{
+               "$connections":{
+                  "value":{
+                     "azureloganalyticsdatacollector":{
+                        "connectionId":"[resourceId('Microsoft.Web/connections', variables('connections_azureloganalyticsdatacollector_name'))]",
+                        "connectionName":"[variables('connections_azureloganalyticsdatacollector_name')]",
+                        "id":"[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/azureloganalyticsdatacollector')]"
+                     }
+                  }
+               }
+            }
+         }
+      }
+   ]
+}
