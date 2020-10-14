@@ -49,6 +49,9 @@
             "apiVersion": "2017-07-01",
             "name": "[variables('connections_azureloganalyticsdatacollector_name')]",
             "location": "westeurope",
+			"dependsOn": [
+				"[resourceId(resourceGroup().name,'Microsoft.Web/connections', variables('loadBalancerName'))]"
+			]
             "properties": {
                 "state": "Enabled",
                 "definition": {
