@@ -50,7 +50,7 @@
             "name": "[variables('connections_azureloganalyticsdatacollector_name')]",
             "location": "westeurope",
 			"dependsOn": [
-				"[resourceId(resourceGroup().name,'Microsoft.Web/connections', variables('loadBalancerName'))]"
+				"[resourceId(resourceGroup().name,'Microsoft.Web/connections', variables('connections_azureloganalyticsdatacollector_name'))]"
 			],
             "properties": {
                 "state": "Enabled",
