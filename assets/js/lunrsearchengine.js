@@ -103,7 +103,7 @@ var documents = [{
     "id": 20,
     "url": "/Windows-Virtual-Desktop-Admin-Preview/",
     "title": "WVD Admin - A native administration Gui for Windows Virtual Desktop - Preview Version",
-    "body": "2020/02/26 - Feel free to use it and download the 64-bit Windows application “WVD Admin Preview” from here: WVDAdmin-Preview. msi "
+    "body": "2020/02/26 - Feel free to use it and download the 64-bit Windows application “WVD Admin Preview” from here: WVDAdmin-Preview. msi XML Update file: WVDAdmin. xml "
     }, {
     "id": 21,
     "url": "/Windows-Virtual-Desktop-Language-Packs-Detecting-Host-Pool-and-Tenant-Name/",
