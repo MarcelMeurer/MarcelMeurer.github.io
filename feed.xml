@@ -5,9 +5,133 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 12 Nov 2020 17:54:41 +0100</pubDate>
-    <lastBuildDate>Thu, 12 Nov 2020 17:54:41 +0100</lastBuildDate>
+    <pubDate>Wed, 18 Nov 2020 20:42:29 +0100</pubDate>
+    <lastBuildDate>Wed, 18 Nov 2020 20:42:29 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
+    
+      <item>
+        <title>WVD Admin - Custom Scripts to run administrative tasks</title>
+        <description>&lt;h1 id=&quot;custom-scripts-with-wvdadmin&quot;&gt;Custom Scripts with WVDAdmin&lt;/h1&gt;
+
+&lt;p&gt;From version 1.6.15,  &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; supports custom scripts to run administrative tasks simultaneously on different session hosts. And that is easy to use and to extend. Let me show it with the challenge to enable &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath#:~:text=RDP%20Shortpath%20is%20a%20feature,better%20reliability%20and%20consistent%20latency&quot;&gt;RDP Shortpath&lt;/a&gt; on existing session hosts.&lt;/p&gt;
+
+&lt;p&gt;In this &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath#:~:text=RDP%20Shortpath%20is%20a%20feature,better%20reliability%20and%20consistent%20latency&quot;&gt;post&lt;/a&gt;, Microsoft describes how to enable this preview feature for WVD to connect to a WVD session without crossing the internet.&lt;/p&gt;
+
+&lt;p&gt;Start copying the file &lt;a href=&quot;C:\Program Files\ITProCloud.de\WVDAdmin\CustomScript.ps1&quot;&gt;C:\Program Files\ITProCloud.de\WVDAdmin\CustomScript.ps1&lt;/a&gt; to a new name into the same directory. For example EnableRDPShortPath.ps1&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-01.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Open the file with notepad or  the editor of your choice. Edit the first line to give your script a name (that is visible in the drop-down list in WVDAdmin) and a description. The description is shown in the message box where you have to consent to run on the selected session hosts.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;# {&quot;Name&quot;: &quot;Enable RDP Shortpath&quot;,&quot;Description&quot;:&quot;This script enables the preview function for RDP Shortpath on the selected session hosts&quot;}
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;After that, you can copy the code between lines 22 and 23 (LogWriter(“Custom script start”) and LogWriter(“Custom script end”)). I re-used the example code from Microsoft:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;LogWriter(&quot;Custom script start&quot;)
+$WinstationsKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations'
+New-ItemProperty -Path $WinstationsKey -Name 'fUseUdpPortRedirector' -ErrorAction:SilentlyContinue -PropertyType:dword -Value 1 -Force
+New-ItemProperty -Path $WinstationsKey -Name 'UdpPortNumber' -ErrorAction:SilentlyContinue -PropertyType:dword -Value 3390 -Force
+
+New-NetFirewallRule -DisplayName 'Remote Desktop - Shortpath (UDP-In)'  -Action Allow -Description 'Inbound rule for the Remote Desktop service to allow RDP traffic. [UDP 3390]' -Group '@FirewallAPI.dll,-28752' -Name 'RemoteDesktop-UserMode-In-Shortpath-UDP'  -PolicyStore PersistentStore -Profile Domain, Private -Service TermService -Protocol udp -LocalPort 3390 -Program '%SystemRoot%\system32\svchost.exe' -Enabled:True
+LogWriter(&quot;Custom script end&quot;)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The full script should look like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;# {&quot;Name&quot;: &quot;Enable RDP Shortpath&quot;,&quot;Description&quot;:&quot;This script enables the preview function for RDP Shortpath on the selected session hosts&quot;}
+param(
+    [string]$paramLogFileName=&quot;WVD.Custom.log&quot;,
+	[string]$paramString=&quot;&quot;
+);
+
+# This powershell script is part of WVD Admin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
+# Current Version of this script: 1.0 - Custom Script Extension
+# Write a return string to WVDAdmin with the example in the last line
+
+# Define logfilen and dir
+$LogDir=&quot;$env:windir\system32\logfiles&quot;
+$LogFile=&quot;$LogDir\$paramLogFileName&quot;
+
+function LogWriter($message)
+{
+    $message=&quot;$(Get-Date ([datetime]::UtcNow) -Format &quot;o&quot;) $message&quot;
+	write-host($message)
+	if ([System.IO.Directory]::Exists($LogDir)) {write-output($message) | Out-File $LogFile -Append}
+}
+
+LogWriter(&quot;Custom script start&quot;)
+$WinstationsKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations'
+New-ItemProperty -Path $WinstationsKey -Name 'fUseUdpPortRedirector' -ErrorAction:SilentlyContinue -PropertyType:dword -Value 1 -Force
+New-ItemProperty -Path $WinstationsKey -Name 'UdpPortNumber' -ErrorAction:SilentlyContinue -PropertyType:dword -Value 3390 -Force
+
+New-NetFirewallRule -DisplayName 'Remote Desktop - Shortpath (UDP-In)'  -Action Allow -Description 'Inbound rule for the Remote Desktop service to allow RDP traffic. [UDP 3390]' -Group '@FirewallAPI.dll,-28752' -Name 'RemoteDesktop-UserMode-In-Shortpath-UDP'  -PolicyStore PersistentStore -Profile Domain, Private -Service TermService -Protocol udp -LocalPort 3390 -Program '%SystemRoot%\system32\svchost.exe' -Enabled:True
+LogWriter(&quot;Custom script end&quot;)
+
+Write-host(&quot;ScriptReturnMessage:{RDP Shortpath enabled - reboot the session hosts(s) to take effect}:ScriptReturnMessage&quot;)
+&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Alternatively, you can load the script from &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/EnableRDPShortPath.ps1&quot;&gt;here&lt;/a&gt; and copy it into WVDAdmin’s program file folder.&lt;/p&gt;
+
+&lt;p&gt;To load the scripts, restart WVDAdmin. You will see multiple “Information Adding scripts for session host management in the log windows: xxxx.ps1” messages, including your new EnableRDPShortPath.ps.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-02.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To run the script on multiple hosts, go to a host pool, expand the node and click the “Session hosts” container.  Select the hosts, select your script “Enable RDP Shortpath” and click on “Run script”. After clicking OK, the script will be run in the system context on the session hosts. This will take a few minutes.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-03.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-04.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;After that - and in this case, after the next reboot - RDP Shortpath should be available for WVD users in directly connected networks.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 18 Nov 2020 00:00:00 +0100</pubDate>
+        <link>/Windows-Virtual-Desktop-Admin-CustomScripts/</link>
+        <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin-CustomScripts/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>INTERNAL Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these</title>
@@ -767,43 +891,6 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
         <pubDate>Thu, 30 Apr 2020 00:00:00 +0200</pubDate>
         <link>/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/</link>
         <guid isPermaLink="true">/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Using Azure AD groups to assign users to Windows Virtual Desktop (WVD)</title>
-        <description>&lt;p&gt;Today (early April), it’s not possible to join groups to application groups or desktop in Windows Virtual Desktop. Users have to be assigned directly with their user principal name (UPN). With &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt;, you can do this by entering or copying the UPN’s into a text field.&lt;/p&gt;
-
-&lt;p&gt;From Version 1.4.7 you have another option: You can now browse the Azure AD for users AND groups to add them.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\WVDAdmin\AadBrowser-01.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;If you have added users and groups with the new function, &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt; will fill out the text field with the UPN’s of the selected users and group members (only members, no external accounts).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\WVDAdmin\AadBrowser-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;This function doesn’t resolve the missing function in the WVD but can give you an easier way to handle this until the function is integrated into WVD itself.&lt;/p&gt;
-
-&lt;p&gt;Requirement: The service principal needs permission to browse the Azure Active directory. To do this go to the Azure Portal -&amp;gt; Active Directory -&amp;gt; App Registration -&amp;gt; Select your Service Principal -&amp;gt; API Permissions
-Add the permission “Azure Active Directory Graph” -&amp;gt; Application Permission -&amp;gt; Directory.Read.All&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\WVDAdmin\SP-PermissionToReadDirectoryObjects-01.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;To be read for the &lt;em&gt;WVD Spring Update&lt;/em&gt; you have to give the service principal access to the Graph API: Add the permission “Microsoft Graph” -&amp;gt; Application Permission -&amp;gt; Directory.Read.All&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\WVDAdmin\SP-PermissionToReadDirectoryObjects-01b.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;To consent the permission and administrator of Azure AD have to grant this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\WVDAdmin\SP-PermissionToReadDirectoryObjects-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 07 Apr 2020 00:00:00 +0200</pubDate>
-        <link>/Windows-Virtual-Desktop-Add-Users-and-Groups-to-WVD/</link>
-        <guid isPermaLink="true">/Windows-Virtual-Desktop-Add-Users-and-Groups-to-WVD/</guid>
         
         
         <category>Windows Virtual Desktop</category>
