@@ -1,5 +1,5 @@
 # This powershell script is part of WVD Admin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
-# Current Version of this script: 2.2
+# Current Version of this script: 2.3
 
 param(
 
@@ -33,16 +33,31 @@ $LogFile=$LogDir+"\WVD.Customizing.log"
 # Main
 LogWriter("Starting ITPC-WVD-Image-Processing in mode ${Mode}")
 
-if ($mode -eq "Generalize")
-{
+
+# check for the existend of the helper scripts
+if ((Test-Path ($LocalConfig+"\ITPC-WVD-Image-Processing.ps1")) -eq $false) {
 	# Create local directory for script(s) and copy files (including the RD agent and boot loader - rename it to the specified name)
-	LogWriter("Copy files to local session host")
+	LogWriter("Copy files to local session host or downloading files from Microsoft")
 	new-item $LocalConfig -ItemType Directory -ErrorAction Ignore
 	(Get-Item $LocalConfig).attributes="Hidden"
-	Copy-Item "${PSScriptRoot}\ITPC-WVD-Image-Processing.ps1" -Destination ($LocalConfig+"\")
-	Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgent.msi" -Destination ($LocalConfig+"\")
-	Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi" -Destination ($LocalConfig+"\")
 
+	if ((Test-Path ("${PSScriptRoot}\ITPC-WVD-Image-Processing.ps1")) -eq $false) {
+		LogWriter("Creating ITPC-WVD-Image-Processing.ps1")
+		Copy-Item "$($MyInvocation.InvocationName)" -Destination ($LocalConfig+"\ITPC-WVD-Image-Processing.ps1")
+	} else {Copy-Item "${PSScriptRoot}\ITPC-WVD-Image-Processing.ps1" -Destination ($LocalConfig+"\")}
+
+
+	if ((Test-Path ($ScriptRoot+"\Microsoft.RDInfra.RDAgent.msi")) -eq $false) {
+		LogWriter("Downloading RDAgent")
+		Invoke-WebRequest -Uri "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv" -OutFile ($LocalConfig+"\Microsoft.RDInfra.RDAgent.msi")
+	} else {Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgent.msi" -Destination ($LocalConfig+"\")}
+	if ((Test-Path ($ScriptRoot+"\Microsoft.RDInfra.RDAgentBootLoader.msi ")) -eq $false) {
+		LogWriter("Downloading RDBootloader")
+		Invoke-WebRequest -Uri "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH" -OutFile ($LocalConfig+"\Microsoft.RDInfra.RDAgentBootLoader.msi")
+	} else {Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi" -Destination ($LocalConfig+"\")}
+}
+
+if ($mode -eq "Generalize") {
 	LogWriter("Removing existing Remote Desktop Agent Boot Loader")
 	$app=Get-WmiObject -Class Win32_Product | Where-Object {$_.Name -match "Remote Desktop Agent Boot Loader"}
 	if ($app -ne $null) {$app.uninstall()}
@@ -162,8 +177,8 @@ if ($mode -eq "Generalize")
 # SIG # Begin signature block
 # MIIcWwYJKoZIhvcNAQcCoIIcTDCCHEgCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUwT+yAz50cI6mBppSZQMvioHn
-# QgOggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUzw/SttM5ioQ+/rcUC8AFtMeO
+# UyWggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE5MTEwMjAwMDAwMFoXDTIwMTIx
@@ -294,22 +309,22 @@ if ($mode -eq "Generalize")
 # SUQgQ29kZSBTaWduaW5nIENBAhAHaCbvcbn02aj6wGGzZ6EqMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBTth4Mydj62/vXQjH3vciA3QdklwDANBgkqhkiG9w0BAQEFAASCAQAY3Om2
-# Q8UzI/wLgsbPnyiOCMI9/bV1ta+h6NMZNxMrDB/1rb8CgyUJBAG+eBb65Y7YFWwQ
-# UWMzp0CsbA+6+h/o8sdNED3Lzs+2Rc8NHihCaftXdeZyOwUHt0lPmIq1yrUlHoXC
-# I8gVHK8D3tRZMM1/sPYNKuL/71PnO5QzfDyA064Or6TN1r22EGNi5Y/cIlK2NxpQ
-# AqHBiUkbL0emzLPccfnUKOnWSij2aPUB7PyWv2jmsdq/c0Xs/8XELrCCjQIAM4ai
-# 6OMTsy5nupecokIlj/Nyohehes6DXQMU/zk4D1exRCm1Kmh3Ys3BvSWJ9nxeW5F2
-# hhYnGbfvEjZByiRxoYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
+# BDEWBBS5sfG0yyqxqx2RWxPFELA5p08hKzANBgkqhkiG9w0BAQEFAASCAQCFjo/5
+# rHiGs1EyseFkCRecSiJud8Y2xAZegwGXpNUHDZTjhPnSOwPwwWVjFJ7WEO4hDsN2
+# cgguwq07LMiOQyXrIACYYrti9BqSOsM0ruInM2k+XpgzU5Cq7Holo440F+/E0OOC
+# 1qlGAGvpur6ccHuQm4/swcPdGpUlEOm6Y5WWGFQtM6Hl5Ot7UoQr8OOHJGhca5SE
+# 0GsLm2AzymyI6J9GCuH9tvTwzrWhEo2xqslTQ1zqq1ODYdKYKxMU8ZoiEpqie+yH
+# p5pro71wnPS0qcPhBwWj9KzjDuRyMSRDRt4+y6NMgn8NR6Vw1flNXGec02OOimc5
+# cQZSdryzy+6X+y8uoYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
 # MAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3
 # LmRpZ2ljZXJ0LmNvbTEhMB8GA1UEAxMYRGlnaUNlcnQgQXNzdXJlZCBJRCBDQS0x
 # AhADAZoCOv9YsWvW1ermF/BmMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJ
-# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDExMTIxNjQ1MTRaMCMGCSqGSIb3
-# DQEJBDEWBBQm253v0dkVv3npgYaXM5Ugd5t8YzANBgkqhkiG9w0BAQEFAASCAQCS
-# DAKDxHYOLl9NSpNNnbM7IwYePcwyeBeOJ7XWoeiSj7V9Yq6iqPVlTk0+iCwGelE4
-# tj/cldlMW0pe/02jPYbaF8zTmOe0b8q1xPZqVnIqQWoaI9CYS40hMzZQvrlRztKj
-# As7iTgDdnCnlftbfxK5bGpiDw2p67VoNMvkF0og89p2Dt/LRHQWm3tU9bvL6Bl/H
-# r+XJMGAD+Q+9W1RgwiadS3Lh2LMir2R8tWd1NHEd7kwosWYKvnYWaqRujSojCcal
-# r74ZfgpcwJM7bOj+vMYo5i5q0GHiRsAWYOT8FVxHBtYNMWkL8ZopbgKRhycl1tfx
-# gxxm23HP/8VUPwo1Rhjv
+# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDExMjAyMDExMDdaMCMGCSqGSIb3
+# DQEJBDEWBBSFlxlLkJt6gm+9zQKdE7J0khAtqDANBgkqhkiG9w0BAQEFAASCAQAx
+# 3lgJMx77lLHIAGd5XHCgVjjG2CbQxN2vW8Aqe9+N2IL5RYwHLHEt9CNApQDKLAEb
+# BeI3kMvq/QFzg5ew2DeN/U7Shy+bAeAoM/GkbCl9MEF2mVNP+8Nq9XQtqpQcot6a
+# yOnHxJBFRb8w4xNYCAhElg1ITylhpOTiqBIqD06+eljzBdbs3VH+S7EE6lHnL2Sd
+# l0I6OmYKgldCZkBQMbq6dlqYAmI3U7FPR7GQSbRj4EAD+vVrb9IcqEAuYufZbX0A
+# i8cw4cWoZnGfSfqaX3uxVoBzkwr44yw1ePovNtR8uvqwZzlbydLvyfWCc3mJgp9X
+# 0OpwOELTn5DuS35jhHhm
 # SIG # End signature block

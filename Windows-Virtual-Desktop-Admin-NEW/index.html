@@ -6,22 +6,22 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>WVD Admin - A native administration Gui for Windows Virtual Desktop | ITProCloud Blog</title>
+<title>WVDAdmin - A native administration Gui for Windows Virtual Desktop | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>WVD Admin - A native administration Gui for Windows Virtual Desktop | ITProCloud Blog</title>
+<title>WVDAdmin - A native administration Gui for Windows Virtual Desktop | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="WVD Admin - A native administration Gui for Windows Virtual Desktop" />
+<meta property="og:title" content="WVDAdmin - A native administration Gui for Windows Virtual Desktop" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Windows Virtual Desktop administration" />
-<meta property="og:description" content="Windows Virtual Desktop administration" />
+<meta name="description" content="Windows Virtual Desktop administration with WVDAdmin" />
+<meta property="og:description" content="Windows Virtual Desktop administration with WVDAdmin" />
 <meta property="og:site_name" content="ITProCloud Blog" />
 <meta property="og:image" content="/assets/images/WVDAdmin-01.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-11-02T00:00:00+01:00" />
+<meta property="article:published_time" content="2020-11-20T00:00:00+01:00" />
 <script type="application/ld+json">
-{"url":"/Windows-Virtual-Desktop-Admin/","headline":"WVD Admin - A native administration Gui for Windows Virtual Desktop","dateModified":"2019-11-02T00:00:00+01:00","datePublished":"2019-11-02T00:00:00+01:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/assets/images/WVDAdmin-01.png","description":"Windows Virtual Desktop administration","mainEntityOfPage":{"@type":"WebPage","@id":"/Windows-Virtual-Desktop-Admin/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"/Windows-Virtual-Desktop-Admin-NEW/","headline":"WVDAdmin - A native administration Gui for Windows Virtual Desktop","dateModified":"2020-11-20T00:00:00+01:00","datePublished":"2020-11-20T00:00:00+01:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/assets/images/WVDAdmin-01.png","description":"Windows Virtual Desktop administration with WVDAdmin","mainEntityOfPage":{"@type":"WebPage","@id":"/Windows-Virtual-Desktop-Admin-NEW/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -172,17 +172,27 @@
 <div class="main-content">
     <section>
     <div class="section-title">
-        <h2><span>WVD Admin - A native administration Gui for Windows Virtual Desktop</span></h2>
+        <h2><span>WVDAdmin - A native administration Gui for Windows Virtual Desktop</span></h2>
     </div>
 
     <div class="article-post">
-    <h1 id="windows-virtual-desktop-administration">Windows Virtual Desktop administration</h1>
+    <h1 id="windows-virtual-desktop-administration-with-wvdadmin">Windows Virtual Desktop administration with WVDAdmin</h1>
 
-<p><strong>Important for prior 1.2.1 users: Check this <a href="#v121-note">note</a></strong></p>
+<p>Windows Virtual Desktop is generally available and under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.</p>
 
-<p>Windows Virtual Desktop is generally available and under continuous improvement. There was the time before Ignite 2019 where no administration GUI was publicly available. This changed with Ignite. The PG of Remote Desktop services releases an in-portal configuration for Windows Virtual Desktop which looks very nice and has a lot of configurable options. See <a href="https://twitter.com/RDS4U/status/1189773044094361601">https://twitter.com/RDS4U/status/1189773044094361601</a> for a preview or check it out in the Azure portal.</p>
+<p>Sometimes it helps to have a native GUI to make some configuration and - for me most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this and I’m happy to share it with the community.</p>
+<h1 id="a-collapsible-section-with-markdown">A collapsible section with markdown</h1>
 
-<p>Sometimes it helps to have a native GUI to make some configuration. Therefore I build a tool to do this and last night I finished the project (in the current version) and provide it as a community tool for WVD.</p>
+<details>
+<summary>
+<a class="btnfire small stroke"><em class="fas fa-chevron-circle-down"></em>&nbsp;&nbsp;Show all details</a>    
+</summary>
+This text is used as a placeholder or a tk note. Words that will follow won't make any sense and this is fine. At the moment, the goal is to build a structure for our site.
+
+Cheers!
+[Pascal](https://twitter.com/askpascalandy/)
+
+</details>
 
 <p>The current version supports a lot of configuration and administration capabilities. You can:</p>
 
@@ -195,7 +205,8 @@
   <li>Logoff single users or all users of a specific session host</li>
   <li>Start and deallocate session hosts (the Azure VM behind)</li>
   <li>Delete session hosts and the VMs in Azure including disks and nics</li>
-  <li>Create an image of a template VM without destroying the template</li>
+  <li>Run commands and scripts on multiple session hosts (trigger Windows updates, enable RDP Shortpath, …)</li>
+  <li>Create an image from a template VM without destroying the template VM (golden image approach)</li>
   <li>Rollout a number of new session hosts based on a template image - including domain join and WVD installation and registration (comparable to Citrix MCS)</li>
   <li>Rollout VM Scale Sets</li>
   <li>Start and deallocate Scale Set instances</li>
@@ -211,7 +222,7 @@
 
 <p><strong>Download  <a href="../assets/files/WVDAdmin.msi">WVDAdmin.msi</a> and install the application on your Windows client or on a template VM for your WVD.</strong></p>
 
-<h2 id="versions">Versions</h2>
+<h2 id="release-history">Release History</h2>
 
 <p>1.6.35.0		Add: On a session host &gt; State &gt; Mouse over will show the health report of the host</p>
 
@@ -287,7 +298,7 @@
 
 <p>1.3.6.00		Add: New tag for session hosts: WVD.Path - used by <a href="http://loganalytics.sepago.com/">Azure Monitor for WVD</a> and <a href="https://github.com/MarcelMeurer/Project-MySmartScale">Azure Autoscale for WVD - aka Project MySmartScale</a> if an installed language pack conflicts with the Microsoft RDAgent (read this <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Language-Packs-Detecting-Host-Pool-and-Tenant-Name/">post</a> to learn more)</p>
 
-<p>1.3.5.00		Add: Allow an local admin to mirror a user session (WVDAdmin needs direct access to the session host via RDP)</p>
+<p>1.3.5.00		Add: Allow an local admin to shadow a user session (WVDAdmin needs direct access to the session host via RDP)</p>
 
 <p>1.3.4.00		Add: Networks are now listed as VNET/SUBNET in the rollout tab</p>
 
@@ -320,8 +331,6 @@
 <p>1.0.0.23		Support for ephemeral  disks</p>
 
 <p>1.0.0.22		First published version - without auto-update of WVD Admin</p>
-
-<p><strong>Important for prior 1.2.1 users:</strong> I removed the logging of the Azure custom extension so that from version 1.2.1, no secrets are logged to “<em>c:\WindowsAzure\Logs\Plugins\Microsoft.Compute.CustomScriptExtension\*</em>”. I recommend to use the new version and to remove the logs from older session hosts (or to re-deploy these hosts). I found these logs while checking what other services are running on an Azure VM.</p>
 
 <h3 id="support-for-vm-scale-sets">Support for VM Scale Sets</h3>
 
