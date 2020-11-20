@@ -185,36 +185,32 @@
 
 <details>
 <summary>
-<a class="btnfire small stroke"><em class="fas fa-chevron-circle-down"></em>&nbsp;&nbsp;Show all details</a>    
+Show all details
 </summary>
 This text is used as a placeholder or a tk note. Words that will follow won't make any sense and this is fine. At the moment, the goal is to build a structure for our site.
 
-Cheers!
-[Pascal](https://twitter.com/askpascalandy/)
+
+
+The current version supports a lot of configuration and administration capabilities. You can:
+
+- Add, edit and delete host pools
+- Add, edit and delete application groups
+- Add, edit and delete application and desktop (you can add a new app with the Windows file-open-dialog)
+- Add a list of users to applications or a desktop (separated by ;)
+- Send messages to a single user and users on a specific session host
+- Logoff single users or all users of a specific session host
+- Start and deallocate session hosts (the Azure VM behind)
+- Delete session hosts and the VMs in Azure including disks and nics
+- Run commands and scripts on multiple session hosts (trigger Windows updates, enable RDP Shortpath, ...)
+- Create an image from a template VM without destroying the template VM (golden image approach)
+- Rollout a number of new session hosts based on a template image - including domain join and WVD installation and registration (comparable to Citrix MCS)
+- Rollout VM Scale Sets
+- Start and deallocate Scale Set instances
+- Re-image Scale Set instances
+- Add or remove Scale Set instances
+- and some more things
 
 </details>
-
-<p>The current version supports a lot of configuration and administration capabilities. You can:</p>
-
-<ul>
-  <li>Add, edit and delete host pools</li>
-  <li>Add, edit and delete application groups</li>
-  <li>Add, edit and delete application and desktop (you can add a new app with the Windows file-open-dialog)</li>
-  <li>Add a list of users to applications or a desktop (separated by ;)</li>
-  <li>Send messages to a single user and users on a specific session host</li>
-  <li>Logoff single users or all users of a specific session host</li>
-  <li>Start and deallocate session hosts (the Azure VM behind)</li>
-  <li>Delete session hosts and the VMs in Azure including disks and nics</li>
-  <li>Run commands and scripts on multiple session hosts (trigger Windows updates, enable RDP Shortpath, …)</li>
-  <li>Create an image from a template VM without destroying the template VM (golden image approach)</li>
-  <li>Rollout a number of new session hosts based on a template image - including domain join and WVD installation and registration (comparable to Citrix MCS)</li>
-  <li>Rollout VM Scale Sets</li>
-  <li>Start and deallocate Scale Set instances</li>
-  <li>Re-image Scale Set instances</li>
-  <li>Add or remove Scale Set instances</li>
-  <li>and some more things</li>
-</ul>
-
 <h1 id="demo-video">Demo video</h1>
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/g9T0mO1gH9Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>

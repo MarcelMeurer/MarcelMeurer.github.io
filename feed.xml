@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 20 Nov 2020 22:12:57 +0100</pubDate>
-    <lastBuildDate>Fri, 20 Nov 2020 22:12:57 +0100</lastBuildDate>
+    <pubDate>Fri, 20 Nov 2020 22:22:32 +0100</pubDate>
+    <lastBuildDate>Fri, 20 Nov 2020 22:22:32 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -20,36 +20,32 @@
 
 &lt;details&gt;
 &lt;summary&gt;
-&lt;a class=&quot;btnfire small stroke&quot;&gt;&lt;em class=&quot;fas fa-chevron-circle-down&quot;&gt;&lt;/em&gt;&amp;nbsp;&amp;nbsp;Show all details&lt;/a&gt;    
+Show all details
 &lt;/summary&gt;
 This text is used as a placeholder or a tk note. Words that will follow won't make any sense and this is fine. At the moment, the goal is to build a structure for our site.
 
-Cheers!
-[Pascal](https://twitter.com/askpascalandy/)
+
+
+The current version supports a lot of configuration and administration capabilities. You can:
+
+- Add, edit and delete host pools
+- Add, edit and delete application groups
+- Add, edit and delete application and desktop (you can add a new app with the Windows file-open-dialog)
+- Add a list of users to applications or a desktop (separated by ;)
+- Send messages to a single user and users on a specific session host
+- Logoff single users or all users of a specific session host
+- Start and deallocate session hosts (the Azure VM behind)
+- Delete session hosts and the VMs in Azure including disks and nics
+- Run commands and scripts on multiple session hosts (trigger Windows updates, enable RDP Shortpath, ...)
+- Create an image from a template VM without destroying the template VM (golden image approach)
+- Rollout a number of new session hosts based on a template image - including domain join and WVD installation and registration (comparable to Citrix MCS)
+- Rollout VM Scale Sets
+- Start and deallocate Scale Set instances
+- Re-image Scale Set instances
+- Add or remove Scale Set instances
+- and some more things
 
 &lt;/details&gt;
-
-&lt;p&gt;The current version supports a lot of configuration and administration capabilities. You can:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Add, edit and delete host pools&lt;/li&gt;
-  &lt;li&gt;Add, edit and delete application groups&lt;/li&gt;
-  &lt;li&gt;Add, edit and delete application and desktop (you can add a new app with the Windows file-open-dialog)&lt;/li&gt;
-  &lt;li&gt;Add a list of users to applications or a desktop (separated by ;)&lt;/li&gt;
-  &lt;li&gt;Send messages to a single user and users on a specific session host&lt;/li&gt;
-  &lt;li&gt;Logoff single users or all users of a specific session host&lt;/li&gt;
-  &lt;li&gt;Start and deallocate session hosts (the Azure VM behind)&lt;/li&gt;
-  &lt;li&gt;Delete session hosts and the VMs in Azure including disks and nics&lt;/li&gt;
-  &lt;li&gt;Run commands and scripts on multiple session hosts (trigger Windows updates, enable RDP Shortpath, …)&lt;/li&gt;
-  &lt;li&gt;Create an image from a template VM without destroying the template VM (golden image approach)&lt;/li&gt;
-  &lt;li&gt;Rollout a number of new session hosts based on a template image - including domain join and WVD installation and registration (comparable to Citrix MCS)&lt;/li&gt;
-  &lt;li&gt;Rollout VM Scale Sets&lt;/li&gt;
-  &lt;li&gt;Start and deallocate Scale Set instances&lt;/li&gt;
-  &lt;li&gt;Re-image Scale Set instances&lt;/li&gt;
-  &lt;li&gt;Add or remove Scale Set instances&lt;/li&gt;
-  &lt;li&gt;and some more things&lt;/li&gt;
-&lt;/ul&gt;
-
 &lt;h1 id=&quot;demo-video&quot;&gt;Demo video&lt;/h1&gt;
 
 &lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/g9T0mO1gH9Y&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
