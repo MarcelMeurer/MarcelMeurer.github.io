@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 20 Nov 2020 22:38:39 +0100</pubDate>
-    <lastBuildDate>Fri, 20 Nov 2020 22:38:39 +0100</lastBuildDate>
+    <pubDate>Fri, 20 Nov 2020 22:42:31 +0100</pubDate>
+    <lastBuildDate>Fri, 20 Nov 2020 22:42:31 +0100</lastBuildDate>
     <generator>Jekyll v4.0.0</generator>
     
       <item>
@@ -20,7 +20,7 @@
 
 &lt;details&gt;
 &lt;summary&gt;
-Show all details
+Show details of the section
 &lt;/summary&gt;&lt;p&gt;
 This text is used as a placeholder or a tk note. Words that will follow won't make any sense and this is fine. At the moment, the goal is to build a structure for our site.
 
