@@ -5,15 +5,15 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 21 Nov 2020 13:14:54 +0100</pubDate>
-    <lastBuildDate>Sat, 21 Nov 2020 13:14:54 +0100</lastBuildDate>
+    <pubDate>Sat, 21 Nov 2020 17:34:35 +0100</pubDate>
+    <lastBuildDate>Sat, 21 Nov 2020 17:34:35 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Windows Virtual Desktop</title>
         <description>&lt;h1 id=&quot;windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
-&lt;p&gt;Windows Virtual Desktop is generally available and under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;The current version supports a lot of configuration and administration capabilities and I’m continously improving WVDAdmin. Some features:&lt;/p&gt;
+&lt;p&gt;Windows Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
+&lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Add, edit and delete host pools&lt;/li&gt;
 &lt;li&gt;Add, edit and delete application groups&lt;/li&gt;
@@ -22,10 +22,10 @@
 &lt;li&gt;Send messages to a single user and users on a specific session host&lt;/li&gt;
 &lt;li&gt;Logoff single users or all users of a specific session host&lt;/li&gt;
 &lt;li&gt;Start and deallocate session hosts (the Azure VM behind)&lt;/li&gt;
-&lt;li&gt;Delete session hosts and the VMs in Azure including disks and nics&lt;/li&gt;
+&lt;li&gt;Delete session hosts and the VMs in Azure, including disks and nics&lt;/li&gt;
 &lt;li&gt;Run commands and scripts on multiple session hosts (trigger Windows updates, enable RDP Shortpath, …)&lt;/li&gt;
 &lt;li&gt;Create an image from a template VM without destroying the template VM (golden image approach)&lt;/li&gt;
-&lt;li&gt;Rollout a number of new session hosts based on a template image - including domain join and WVD installation and registration (comparable to Citrix MCS)&lt;/li&gt;
+&lt;li&gt;Rollout several new session hosts based on a template image - including domain join and WVD installation and registration (comparable to Citrix MCS)&lt;/li&gt;
 &lt;li&gt;Rollout VM Scale Sets&lt;/li&gt;
 &lt;li&gt;Start and deallocate Scale Set instances&lt;/li&gt;
 &lt;li&gt;Re-image Scale Set instances&lt;/li&gt;
@@ -37,8 +37,67 @@
 # Installation
 &lt;p&gt;&lt;strong&gt;Download  &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin.msi&lt;/a&gt; and install the application on your Windows client or on a template VM for your WVD.&lt;/strong&gt;&lt;/p&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;1.6.40.0		Change: Having a script-path for building images is no longer needed. If you leave the text box empty, the local script coming with WVDAdmin will be used and directly send to the VM&lt;/p&gt;
-&lt;p&gt;1.6.35.0		Add: On a session host &amp;gt; State &amp;gt; Mouse over will show the health report of the host&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Markdown&lt;/th&gt;
+&lt;th&gt;Less&lt;/th&gt;
+&lt;th&gt;Pretty&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;em&gt;Still&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;renders&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;nicely&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Markdown&lt;/th&gt;
+&lt;th&gt;Less&lt;/th&gt;
+&lt;th&gt;Pretty&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;em&gt;Still&lt;/em&gt;&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;renders&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;nicely&lt;/strong&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Release&lt;/th&gt;
+&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6.40.0&lt;/td&gt;
+&lt;td&gt;Change: Having a script-path for building images is no longer needed. If you leave the text box empty, the local script coming with WVDAdmin will be used and directly send to the VM&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6.35.0&lt;/td&gt;
+&lt;td&gt;Add: On a session host &amp;gt; State &amp;gt; Mouse over will show the health report of the host&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;p&gt;1.6.34.0		Fix: The drop-down list “Feature release” was not shown correctly. Feature release is the selector between the different WVD versions like Fall (WVD classic) and Spring (WVD modern on ARM)&lt;/p&gt;
 &lt;p&gt;1.6.32.0		Add: You can run scripts on multiple classic session hosts: Win Updates: Install new available updates; Custom script: Custom script located in the program files folder of WVDAdmin&lt;/p&gt;
 &lt;p&gt;1.6.30.0		Add: Sorting order for WVD resources&lt;/p&gt;
@@ -92,6 +151,7 @@
 &lt;p&gt;1.0.0.25		Fix: If you delete a VM the OS disk will deleted as well&lt;/p&gt;
 &lt;p&gt;1.0.0.23		Support for ephemeral  disks&lt;/p&gt;
 &lt;p&gt;1.0.0.22		First published version - without auto-update of WVD Admin&lt;/p&gt;
+&lt;/details&gt;
 &lt;h3 id=&quot;support-for-vm-scale-sets&quot;&gt;Support for VM Scale Sets&lt;/h3&gt;
 &lt;p&gt;From version 1.2.5, I support working with VM Scale Sets. A Scale Set can have several instances, which are the VMs / session hosts. There are some essential things you have to know if you use VM Scale Set with WVDAdmin and WVD itself:&lt;/p&gt;
 &lt;ul&gt;
