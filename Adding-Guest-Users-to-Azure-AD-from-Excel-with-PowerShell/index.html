@@ -8,9 +8,9 @@
 
 <title>Adding Guest Users to Azure AD from Excel with PowerShell | ITProCloud Blog</title>
 
-<!-- Begin Jekyll SEO tag v2.6.1 -->
+<!-- Begin Jekyll SEO tag v2.7.1 -->
 <title>Adding Guest Users to Azure AD from Excel with PowerShell | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.0.0" />
+<meta name="generator" content="Jekyll v4.1.1" />
 <meta property="og:title" content="Adding Guest Users to Azure AD from Excel with PowerShell" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -20,8 +20,11 @@
 <meta property="og:image" content="/wp-content/uploads/2018/07/excel01-1-1024x260.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2018-07-13T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/wp-content/uploads/2018/07/excel01-1-1024x260.png" />
+<meta property="twitter:title" content="Adding Guest Users to Azure AD from Excel with PowerShell" />
 <script type="application/ld+json">
-{"url":"/Adding-Guest-Users-to-Azure-AD-from-Excel-with-PowerShell/","headline":"Adding Guest Users to Azure AD from Excel with PowerShell","dateModified":"2018-07-13T00:00:00+02:00","datePublished":"2018-07-13T00:00:00+02:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/wp-content/uploads/2018/07/excel01-1-1024x260.png","description":"Sharing access across different tenants in one of the key benefits of Azure AD. My customers appreciate that they can provide Azure-based solution to their cooperated users and to guest users as well. Cooperated users include users from the group and subsidiaries. They all can access resources with one identity – on-premises and in the cloud (Same-sign-on, single-sign-on).","mainEntityOfPage":{"@type":"WebPage","@id":"/Adding-Guest-Users-to-Azure-AD-from-Excel-with-PowerShell/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"/Adding-Guest-Users-to-Azure-AD-from-Excel-with-PowerShell/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"Adding Guest Users to Azure AD from Excel with PowerShell","dateModified":"2018-07-13T00:00:00+02:00","datePublished":"2018-07-13T00:00:00+02:00","description":"Sharing access across different tenants in one of the key benefits of Azure AD. My customers appreciate that they can provide Azure-based solution to their cooperated users and to guest users as well. Cooperated users include users from the group and subsidiaries. They all can access resources with one identity – on-premises and in the cloud (Same-sign-on, single-sign-on).","author":{"@type":"Person","name":"mm"},"mainEntityOfPage":{"@type":"WebPage","@id":"/Adding-Guest-Users-to-Azure-AD-from-Excel-with-PowerShell/"},"image":"/wp-content/uploads/2018/07/excel01-1-1024x260.png","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -84,7 +87,158 @@
                 <li class="nav-item">
                 <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
                 </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (18)</a>
+						</li>
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (7)</a>
+						</li>
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (7)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Log-Analytics">Log Analytics (5)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
 	
+				<!-- Original tag list (unsorted) 
 				
 				
 					
@@ -104,6 +258,7 @@
 						
 					
 				
+				-->
 								
 
                 <li class="nav-item">
@@ -259,73 +414,26 @@
                 
                 <!-- End Toc -->
                 <p>Sharing access across different tenants in one of the key benefits of Azure AD. My customers appreciate that they can provide Azure-based solution to their cooperated users and to guest users as well. Cooperated users include users from the group and subsidiaries. They all can access resources with one identity – on-premises and in the cloud (Same-sign-on, single-sign-on).</p>
-
 <p>Guest users can be deployed manually via the Azure portal, via PowerShell or with a connector to another system (like SAP HR).</p>
-
 <p>Adding users from an Excel file can be done with PowerShell. To show an example I created an Excel file with some headers:</p>
-
 <ul>
-  <li>Company</li>
-  <li>Surname</li>
-  <li>Name</li>
-  <li>Mail</li>
-  <li>Job role</li>
+<li>Company</li>
+<li>Surname</li>
+<li>Name</li>
+<li>Mail</li>
+<li>Job role</li>
 </ul>
-
 <p><img src="/wp-content/uploads/2018/07/excel01-1-1024x260.png" alt="img" /></p>
-
 <p>To add this user, we must archive these steps:</p>
-
 <ul>
-  <li>Login into Azure AD with appropriate rights</li>
-  <li>Enumerate through the excel table</li>
-  <li>Inviting the user</li>
-  <li>Adding the right properties (company, name, surname, …) to the invited user object</li>
+<li>Login into Azure AD with appropriate rights</li>
+<li>Enumerate through the excel table</li>
+<li>Inviting the user</li>
+<li>Adding the right properties (company, name, surname, …) to the invited user object</li>
 </ul>
-
 <p>To do this I prepared this script:</p>
-
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-</pre></td><td class="rouge-code"><pre><span class="nv">$invocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nf">Get-Variable</span><span class="w"> </span><span class="nx">MyInvocation</span><span class="p">)</span><span class="o">.</span><span class="nf">Value</span><span class="w">
-</span><span class="nv">$directorypath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">Split-Path</span><span class="w"> </span><span class="nv">$invocation</span><span class="o">.</span><span class="nf">MyCommand</span><span class="o">.</span><span class="nf">Path</span><span class="w">
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$invocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Get-Variable</span><span class="w"> </span><span class="nx">MyInvocation</span><span class="p">)</span><span class="o">.</span><span class="nf">Value</span><span class="w">
+</span><span class="nv">$directorypath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Split-Path</span><span class="w"> </span><span class="nv">$invocation</span><span class="o">.</span><span class="nf">MyCommand</span><span class="o">.</span><span class="nf">Path</span><span class="w">
 </span><span class="nv">$directorypath</span><span class="w">
 
 </span><span class="nv">$ExcelFile</span><span class="o">=</span><span class="nv">$directorypath</span><span class="o">+</span><span class="s2">"\Users2Invite.xlsx"</span><span class="w"> </span><span class="c"># Path to the excel file</span><span class="w">
@@ -334,10 +442,10 @@
 
 </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nv">$lastLogin</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
    </span><span class="c"># put your Azure AD tenant id here (Azure portal / Azure Active Directory / Properties / Directory ID)</span><span class="w">
-   </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">lastLogin</span><span class="o">=</span><span class="nf">Connect-AzureAD</span><span class="w"> </span><span class="nt">-TenantId</span><span class="w"> </span><span class="s2">"xxxxxxxxxxxxx-xxxxxxxx-xxxxxxxxxxx-xxxxxxxxxxx"</span><span class="w"> 
+   </span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">lastLogin</span><span class="o">=</span><span class="n">Connect-AzureAD</span><span class="w"> </span><span class="nt">-TenantId</span><span class="w"> </span><span class="s2">"xxxxxxxxxxxxx-xxxxxxxx-xxxxxxxxxxx-xxxxxxxxxxx"</span><span class="w"> 
 </span><span class="p">}</span><span class="w">
 
-</span><span class="nv">$Excel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">New-Object</span><span class="w"> </span><span class="nt">-ComObject</span><span class="w"> </span><span class="nx">Excel.Application</span><span class="w">
+</span><span class="nv">$Excel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">New-Object</span><span class="w"> </span><span class="nt">-ComObject</span><span class="w"> </span><span class="nx">Excel.Application</span><span class="w">
 
 </span><span class="nv">$WorkBook</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$Excel</span><span class="o">.</span><span class="nf">Workbooks</span><span class="o">.</span><span class="nf">Open</span><span class="p">(</span><span class="nv">$ExcelFile</span><span class="p">)</span><span class="w">
 </span><span class="nv">$WorkSheet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$WorkBook</span><span class="o">.</span><span class="nf">WorkSheets</span><span class="o">.</span><span class="nf">Item</span><span class="p">(</span><span class="nv">$WorkSheetNum</span><span class="p">)</span><span class="w">
@@ -353,24 +461,20 @@
   </span><span class="nv">$JobTitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$WorkSheet</span><span class="o">.</span><span class="nf">Cells</span><span class="o">.</span><span class="nf">Item</span><span class="p">(</span><span class="nv">$RowNum</span><span class="p">,</span><span class="w"> </span><span class="nx">5</span><span class="p">)</span><span class="o">.</span><span class="nf">Text</span><span class="o">.</span><span class="nf">trim</span><span class="p">()</span><span class="w">
   </span><span class="nv">$userFullName</span><span class="o">=</span><span class="nv">$Name</span><span class="o">+</span><span class="s2">", "</span><span class="o">+</span><span class="nv">$Surname</span><span class="w">
 
-  </span><span class="nf">Write-Output</span><span class="p">(</span><span class="s2">"Adding user: "</span><span class="o">+</span><span class="nv">$userFullName</span><span class="o">+</span><span class="s2">" ("</span><span class="o">+</span><span class="nv">$Mailadress</span><span class="o">+</span><span class="s2">")"</span><span class="p">)</span><span class="w">
-  </span><span class="nv">$invitation</span><span class="o">=</span><span class="nf">New-AzureADMSInvitation</span><span class="w"> </span><span class="nt">-InvitedUserDisplayName</span><span class="w"> </span><span class="nv">$userFullName</span><span class="w"> </span><span class="nt">-InvitedUserEmailAddress</span><span class="w"> </span><span class="nv">$Mailadress</span><span class="w"> </span><span class="nt">-SendInvitationMessage</span><span class="w"> </span><span class="bp">$true</span><span class="w"> </span><span class="nt">-InviteRedirectURL</span><span class="w"> </span><span class="nv">$InviteRedirectURL</span><span class="w">
-  </span><span class="nv">$user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">Get-AzureADUser</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$invitation</span><span class="o">.</span><span class="nf">InvitedUser</span><span class="o">.</span><span class="nf">Id</span><span class="w">
+  </span><span class="n">Write-Output</span><span class="p">(</span><span class="s2">"Adding user: "</span><span class="o">+</span><span class="nv">$userFullName</span><span class="o">+</span><span class="s2">" ("</span><span class="o">+</span><span class="nv">$Mailadress</span><span class="o">+</span><span class="s2">")"</span><span class="p">)</span><span class="w">
+  </span><span class="nv">$invitation</span><span class="o">=</span><span class="n">New-AzureADMSInvitation</span><span class="w"> </span><span class="nt">-InvitedUserDisplayName</span><span class="w"> </span><span class="nv">$userFullName</span><span class="w"> </span><span class="nt">-InvitedUserEmailAddress</span><span class="w"> </span><span class="nv">$Mailadress</span><span class="w"> </span><span class="nt">-SendInvitationMessage</span><span class="w"> </span><span class="bp">$true</span><span class="w"> </span><span class="nt">-InviteRedirectURL</span><span class="w"> </span><span class="nv">$InviteRedirectURL</span><span class="w">
+  </span><span class="nv">$user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Get-AzureADUser</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$invitation</span><span class="o">.</span><span class="nf">InvitedUser</span><span class="o">.</span><span class="nf">Id</span><span class="w">
   </span><span class="nx">Set-AzureADUser</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$invitation</span><span class="o">.</span><span class="nf">InvitedUser</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-Surname</span><span class="w"> </span><span class="nv">$Name</span><span class="w">
-  </span><span class="nx">Set-AzureADUser</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$invitation</span><span class="o">.</span><span class="nf">InvitedUser</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-GivenName</span><span class="w"> </span><span class="nv">$Surname</span><span class="w">
-  </span><span class="nx">Set-AzureADUser</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$invitation</span><span class="o">.</span><span class="nf">InvitedUser</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-JobTitle</span><span class="w"> </span><span class="nv">$JobTitle</span><span class="w">
-  </span><span class="nx">Set-AzureADUser</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$invitation</span><span class="o">.</span><span class="nf">InvitedUser</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-Department</span><span class="w"> </span><span class="nv">$Company</span><span class="w">
-  </span><span class="nx">Set-AzureADUser</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$invitation</span><span class="o">.</span><span class="nf">InvitedUser</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-Displayname</span><span class="w"> </span><span class="nv">$user</span><span class="o">.</span><span class="nf">Displayname</span><span class="w">
+  </span><span class="n">Set-AzureADUser</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$invitation</span><span class="o">.</span><span class="nf">InvitedUser</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-GivenName</span><span class="w"> </span><span class="nv">$Surname</span><span class="w">
+  </span><span class="n">Set-AzureADUser</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$invitation</span><span class="o">.</span><span class="nf">InvitedUser</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-JobTitle</span><span class="w"> </span><span class="nv">$JobTitle</span><span class="w">
+  </span><span class="n">Set-AzureADUser</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$invitation</span><span class="o">.</span><span class="nf">InvitedUser</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-Department</span><span class="w"> </span><span class="nv">$Company</span><span class="w">
+  </span><span class="n">Set-AzureADUser</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$invitation</span><span class="o">.</span><span class="nf">InvitedUser</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-Displayname</span><span class="w"> </span><span class="nv">$user</span><span class="o">.</span><span class="nf">Displayname</span><span class="w">
   </span><span class="nv">$RowNum</span><span class="o">++</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></pre></td></tr></tbody></table></code></pre></div></div>
-
+</span></code></pre></div></div>
 <p>If you run this script all users in the excel file will be invited to your Azure AD tenant.</p>
-
 <p>Remark: The company field can not be written to an Azure AD user object (read-only). So I write the company to the department field.</p>
-
 <p>First published on: <a href="https://www.sepago.de/blog/adding-guest-users-to-azure-ad-from-excel-with-powershell/">https://www.sepago.de/blog/adding-guest-users-to-azure-ad-from-excel-with-powershell/</a></p>
-
 
             </div>
 
@@ -466,7 +570,7 @@ https://search.google.com/structured-data/testing-tool/u/0/
                 
                     <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (7)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (8)</a>
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (7)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (5)</a>
                 
@@ -482,7 +586,7 @@ https://search.google.com/structured-data/testing-tool/u/0/
                 
                     <a class="mt-1 mb-1" href="/categories#Azure">Azure (2)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (20)</a>
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (18)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
                 

@@ -8,9 +8,9 @@
 
 <title>Why configuring Azure AD authentication with an Azure Web App fails | ITProCloud Blog</title>
 
-<!-- Begin Jekyll SEO tag v2.6.1 -->
+<!-- Begin Jekyll SEO tag v2.7.1 -->
 <title>Why configuring Azure AD authentication with an Azure Web App fails | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.0.0" />
+<meta name="generator" content="Jekyll v4.1.1" />
 <meta property="og:title" content="Why configuring Azure AD authentication with an Azure Web App fails" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -20,8 +20,11 @@
 <meta property="og:image" content="/wp-content/uploads/2019/02/01-1024x703.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-02-09T00:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/wp-content/uploads/2019/02/01-1024x703.png" />
+<meta property="twitter:title" content="Why configuring Azure AD authentication with an Azure Web App fails" />
 <script type="application/ld+json">
-{"url":"/Why-configuring-Azure-AD-authentication-with-an-Azure-Web-App-fails/","headline":"Why configuring Azure AD authentication with an Azure Web App fails","dateModified":"2019-02-09T00:00:00+01:00","datePublished":"2019-02-09T00:00:00+01:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/wp-content/uploads/2019/02/01-1024x703.png","description":"I spent hours today adding Azure AD authentication to an Azure MVC web application with Visual Studio. I always got the same error while adding the preconfigured AD application:","mainEntityOfPage":{"@type":"WebPage","@id":"/Why-configuring-Azure-AD-authentication-with-an-Azure-Web-App-fails/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"/Why-configuring-Azure-AD-authentication-with-an-Azure-Web-App-fails/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"Why configuring Azure AD authentication with an Azure Web App fails","dateModified":"2019-02-09T00:00:00+01:00","datePublished":"2019-02-09T00:00:00+01:00","description":"I spent hours today adding Azure AD authentication to an Azure MVC web application with Visual Studio. I always got the same error while adding the preconfigured AD application:","author":{"@type":"Person","name":"mm"},"mainEntityOfPage":{"@type":"WebPage","@id":"/Why-configuring-Azure-AD-authentication-with-an-Azure-Web-App-fails/"},"image":"/wp-content/uploads/2019/02/01-1024x703.png","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -84,7 +87,158 @@
                 <li class="nav-item">
                 <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
                 </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (18)</a>
+						</li>
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (7)</a>
+						</li>
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (7)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Log-Analytics">Log Analytics (5)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
 	
+				<!-- Original tag list (unsorted) 
 				
 				
 					
@@ -104,6 +258,7 @@
 						
 					
 				
+				-->
 								
 
                 <li class="nav-item">
@@ -259,25 +414,15 @@
                 
                 <!-- End Toc -->
                 <p>I spent hours today adding Azure AD authentication to an Azure MVC web application with Visual Studio. I always got the same error while adding the preconfigured AD application:</p>
-
 <p>“Error: Unable to query for Azure AD applications: An error occurred while processing this request.”</p>
-
 <p><img src="/wp-content/uploads/2019/02/01-1024x703.png" alt="img" /></p>
-
 <p>My account has the right permission in Azure AD – I thought. After a while I found out: Visual Studio was connected to my Azure AD with three different accounts:</p>
-
 <p><img src="/wp-content/uploads/2019/02/02-1024x764.png" alt="img" /></p>
-
 <p>Normally, that’s what I want, even if I have to publish some apps in other tenants/subscriptions. But in this special case two accounts are part of the Azure tenant where my Azure applications should be deployed:</p>
-
 <p><img src="/wp-content/uploads/2019/02/03-1024x364.png" alt="img" /></p>
-
 <p>Visual Studio uses the first account (marked in red), which does not have the appropriate permissions.</p>
-
 <p>My “fast” resolution: I gave this account the right Azure AD role (Application Administrator) for 5 minutes and tried again with success:</p>
-
 <p><img src="/wp-content/uploads/2019/02/04-1024x703.png" alt="img" /></p>
-
 <p>First published on: <a href="https://www.sepago.de/blog/why-configuring-azure-ad-authentication-with-an-azure-web-app-fails/">https://www.sepago.de/blog/why-configuring-azure-ad-authentication-with-an-azure-web-app-fails/</a></p>
 
             </div>
@@ -374,7 +519,7 @@ https://search.google.com/structured-data/testing-tool/u/0/
                 
                     <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (7)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (8)</a>
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (7)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (5)</a>
                 
@@ -390,7 +535,7 @@ https://search.google.com/structured-data/testing-tool/u/0/
                 
                     <a class="mt-1 mb-1" href="/categories#Azure">Azure (2)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (20)</a>
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (18)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
                 

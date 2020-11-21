@@ -8,9 +8,9 @@
 
 <title>Shadow a WVD user with least privileges | ITProCloud Blog</title>
 
-<!-- Begin Jekyll SEO tag v2.6.1 -->
+<!-- Begin Jekyll SEO tag v2.7.1 -->
 <title>Shadow a WVD user with least privileges | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.0.0" />
+<meta name="generator" content="Jekyll v4.1.1" />
 <meta property="og:title" content="Shadow a WVD user with least privileges" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -20,8 +20,11 @@
 <meta property="og:image" content="/assets/images/WVD%20request%20shadowing.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-08-24T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/assets/images/WVD%20request%20shadowing.png" />
+<meta property="twitter:title" content="Shadow a WVD user with least privileges" />
 <script type="application/ld+json">
-{"url":"/Shadow-a-WVD-user-with-least-privileges/","headline":"Shadow a WVD user with least privileges","dateModified":"2020-08-24T00:00:00+02:00","datePublished":"2020-08-24T00:00:00+02:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/assets/images/WVD%20request%20shadowing.png","description":"WVD allows local administrators to shadow user sessions. You can do this easily with WVDAdmin or using the command-line like this:","mainEntityOfPage":{"@type":"WebPage","@id":"/Shadow-a-WVD-user-with-least-privileges/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"/Shadow-a-WVD-user-with-least-privileges/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"Shadow a WVD user with least privileges","dateModified":"2020-08-24T00:00:00+02:00","datePublished":"2020-08-24T00:00:00+02:00","description":"WVD allows local administrators to shadow user sessions. You can do this easily with WVDAdmin or using the command-line like this:","author":{"@type":"Person","name":"mm"},"mainEntityOfPage":{"@type":"WebPage","@id":"/Shadow-a-WVD-user-with-least-privileges/"},"image":"/assets/images/WVD%20request%20shadowing.png","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -84,7 +87,158 @@
                 <li class="nav-item">
                 <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
                 </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (18)</a>
+						</li>
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (7)</a>
+						</li>
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (7)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Log-Analytics">Log Analytics (5)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
 	
+				<!-- Original tag list (unsorted) 
 				
 				
 					
@@ -104,6 +258,7 @@
 						
 					
 				
+				-->
 								
 
                 <li class="nav-item">
@@ -259,25 +414,16 @@
                 
                 <!-- End Toc -->
                 <p>WVD allows local administrators to shadow user sessions. You can do this  easily with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> or using the command-line like this:</p>
-
-<pre><code class="language-cmd">mstsc /v:WVD-DESIGN-404 /control /shadow:2 /prompt
+<pre><code class="language-cmd">>mstsc /v:WVD-DESIGN-404 /control /shadow:2 /prompt
 </code></pre>
-
 <p>In most companies, a help desk agent supports users using applications. For that, local admin privileges are not necessary and not recommended. To allow help desk agents shadowing users in WVD, you have to give these users (or better: a user group) only the needed permission. To do this, execute the following command in an administrative cmd:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL AddAccount 'ITPROCLOUD\ADM_WVD-Shadowing',2
-</pre></td></tr></tbody></table></code></pre></div></div>
-
+<pre><code>wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL AddAccount 'ITPROCLOUD\ADM_WVD-Shadowing',2
+</code></pre>
 <p>This gives the users of the group <strong>ITPROCLOUD\ADM_WVD-Shadowing</strong> the needed permission directly on the RDP-SXS stack (you need to reboot the session host).
 I would run this command on the template VM / golden Image to have this permission configured for each session host. Alternatively, you can run this in a computer-logon script for existing session hosts.</p>
-
 <p>Hint: You can reset this setting with:</p>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre>wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL RestoreDefaults
-</pre></td></tr></tbody></table></code></pre></div></div>
-
+<pre><code>wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL RestoreDefaults
+</code></pre>
 <p>Take a look how shadowing a user session with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> looks like: <a href="https://twitter.com/i/status/1229472041423732736">https://twitter.com/i/status/1229472041423732736</a></p>
 
             </div>
@@ -370,7 +516,7 @@ https://search.google.com/structured-data/testing-tool/u/0/
                 
                     <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (7)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (8)</a>
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (7)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (5)</a>
                 
@@ -386,7 +532,7 @@ https://search.google.com/structured-data/testing-tool/u/0/
                 
                     <a class="mt-1 mb-1" href="/categories#Azure">Azure (2)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (20)</a>
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (18)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
                 

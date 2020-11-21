@@ -8,9 +8,9 @@
 
 <title>Workshop Azure Monitor - Lessons | ITProCloud Blog</title>
 
-<!-- Begin Jekyll SEO tag v2.6.1 -->
+<!-- Begin Jekyll SEO tag v2.7.1 -->
 <title>Workshop Azure Monitor - Lessons | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.0.0" />
+<meta name="generator" content="Jekyll v4.1.1" />
 <meta property="og:title" content="Workshop Azure Monitor - Lessons" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -20,8 +20,11 @@
 <meta property="og:image" content="/assets/images/AzureMonitor-Lessons.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-09-21T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/assets/images/AzureMonitor-Lessons.png" />
+<meta property="twitter:title" content="Workshop Azure Monitor - Lessons" />
 <script type="application/ld+json">
-{"url":"/Workshop-Azure-Monitor-Examples/","headline":"Workshop Azure Monitor - Lessons","dateModified":"2019-09-21T00:00:00+02:00","datePublished":"2019-09-21T00:00:00+02:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/assets/images/AzureMonitor-Lessons.png","description":"To get practice in using Azure Monitor, I have prepared some examples. These examples can be recreated with a little PowerShell. I have prepared more complex program parts. These can be found in the “Tools” folder. Finished solutions are stored in the folder “Samples”.","mainEntityOfPage":{"@type":"WebPage","@id":"/Workshop-Azure-Monitor-Examples/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"/Workshop-Azure-Monitor-Examples/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"Workshop Azure Monitor - Lessons","dateModified":"2019-09-21T00:00:00+02:00","datePublished":"2019-09-21T00:00:00+02:00","description":"To get practice in using Azure Monitor, I have prepared some examples. These examples can be recreated with a little PowerShell. I have prepared more complex program parts. These can be found in the “Tools” folder. Finished solutions are stored in the folder “Samples”.","author":{"@type":"Person","name":"mm"},"mainEntityOfPage":{"@type":"WebPage","@id":"/Workshop-Azure-Monitor-Examples/"},"image":"/assets/images/AzureMonitor-Lessons.png","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -84,7 +87,158 @@
                 <li class="nav-item">
                 <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
                 </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (18)</a>
+						</li>
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (7)</a>
+						</li>
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (7)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Log-Analytics">Log Analytics (5)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
 	
+				<!-- Original tag list (unsorted) 
 				
 				
 					
@@ -104,6 +258,7 @@
 						
 					
 				
+				-->
 								
 
                 <li class="nav-item">
@@ -176,129 +331,192 @@
     </div>
 
     <div class="article-post">
+	<!-- change content to anchor styled output -->
     <p>To get practice in using Azure Monitor, I have prepared some examples. These examples can be recreated with a little PowerShell. I have prepared more complex program parts. These can be found in the “Tools” folder. Finished solutions are stored in the folder “Samples”.</p>
-
 <p>GitHub: <a href="https://github.com/MarcelMeurer/Workshop-AzureMonitor">https://github.com/MarcelMeurer/Workshop-AzureMonitor</a></p>
-
-<h3 id="in-the-tools-folder-there-are-the-following-scripts">In the Tools folder there are the following scripts:</h3>
-
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="o">.</span><span class="nf">/Add-AzureMonitorData.ps1</span><span class="w"> </span><span class="nt">-WorpspaceId</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">WorkSpaceId</span><span class="err">&gt;</span><span class="w"> </span><span class="nt">-WorpspaceKey</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">WorpspaceKey</span><span class="err">&gt;</span><span class="w"> </span><span class="nt">-LogTypeName</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">LogTypeName</span><span class="err">&gt;</span><span class="w"> </span><span class="p">[</span><span class="nt">-TimeStampField</span><span class="w"> </span><span class="err">&lt;</span><span class="kt">TimeStampField</span><span class="err">&gt;</span><span class="p">]</span><span class="w"> </span><span class="nt">-JsonData</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">JsonData</span><span class="err">&gt;</span><span class="w">
-</span></pre></td></tr></tbody></table></code></pre></div></div>
-
+      <h3 id="in-the-tools-folder-there-are-the-following-scripts">
+        
+        
+          In the Tools folder there are the following scripts: <a href="#in-the-tools-folder-there-are-the-following-scripts"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h3>
+    
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">.</span><span class="n">/Add-AzureMonitorData.ps1</span><span class="w"> </span><span class="nt">-WorpspaceId</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">WorkSpaceId</span><span class="err">&gt;</span><span class="w"> </span><span class="nt">-WorpspaceKey</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">WorpspaceKey</span><span class="err">&gt;</span><span class="w"> </span><span class="nt">-LogTypeName</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">LogTypeName</span><span class="err">&gt;</span><span class="w"> </span><span class="p">[</span><span class="nt">-TimeStampField</span><span class="w"> </span><span class="err">&lt;</span><span class="n">TimeStampField</span><span class="err">&gt;</span><span class="p">]</span><span class="w"> </span><span class="nt">-JsonData</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">JsonData</span><span class="err">&gt;</span><span class="w">
+</span></code></pre></div></div>
 <p>Send jsonData to the Log Analytics workspace into the given LogTyeName. TimeStampField is not mandatory. If given, it must be the name of the field containing the timestamp of each data set.</p>
-
-<h2 id="missions">Missions</h2>
-
-<h3 id="store-information-about-the-running-processes-from-your-computer">Store information about the running processes from your computer</h3>
-
+      <h2 id="missions">
+        
+        
+          Missions <a href="#missions"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+      <h3 id="store-information-about-the-running-processes-from-your-computer">
+        
+        
+          Store information about the running processes from your computer <a href="#store-information-about-the-running-processes-from-your-computer"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h3>
+    
 <p>Collect the process information from your computer each 30 seconds and send these data to your Log Analytics workspace. Use PowerShell to automate this mission.</p>
-
 <p>Select an app and use this app  to “overload” your CPU.</p>
-
 <p>If data are visible in Log Analytics, build a custom dashboard by using “Log” to query the data.</p>
-
 <ul>
-  <li>
-    <p>Find out:</p>
-
-    <ul>
-      <li>Count of distinct processes</li>
-      <li>Average CPU load over time (all processes). Render a time chart</li>
-      <li>Render a time chart for the app you used to overload the CPU</li>
-    </ul>
-  </li>
-  <li>
-    <p>Some useful PowerShell commands:</p>
-  </li>
+<li>
+<p>Find out:</p>
+<ul>
+<li>Count of distinct processes</li>
+<li>Average CPU load over time (all processes). Render a time chart</li>
+<li>Render a time chart for the app you used to overload the CPU</li>
 </ul>
-
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-</pre></td><td class="rouge-code"><pre><span class="c">#Get cpu consumption by process</span><span class="w">
-</span><span class="p">(</span><span class="nf">Get-Counter</span><span class="w"> </span><span class="s2">"\process(*)\% Processor Time"</span><span class="p">)</span><span class="o">.</span><span class="nf">CounterSamples</span><span class="w">
+</li>
+<li>
+<p>Some useful PowerShell commands:</p>
+</li>
+</ul>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#Get cpu consumption by process</span><span class="w">
+</span><span class="p">(</span><span class="n">Get-Counter</span><span class="w"> </span><span class="s2">"\process(*)\% Processor Time"</span><span class="p">)</span><span class="o">.</span><span class="nf">CounterSamples</span><span class="w">
 
 </span><span class="c">#Convert objects to </span><span class="w">
-</span><span class="nv">$json</span><span class="o">=</span><span class="nv">$object</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nf">ConvertTo-Json</span><span class="w">
-</span></pre></td></tr></tbody></table></code></pre></div></div>
-
-<h3 id="store-temperature-data-for-multiple-cities">Store temperature data for multiple cities</h3>
-
+</span><span class="nv">$json</span><span class="o">=</span><span class="nv">$object</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">ConvertTo-Json</span><span class="w">
+</span></code></pre></div></div>
+      <h3 id="store-temperature-data-for-multiple-cities">
+        
+        
+          Store temperature data for multiple cities <a href="#store-temperature-data-for-multiple-cities"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h3>
+    
 <p>Collect data from OpenWeatherMap for three different cities each 30 seconds. Send the data to your Log Analytics workspace using Add-AzureMonitorData.ps1. Use PowerShell to automate this mission.</p>
-
 <p>If data are visible in Log Analytics, build a custom dashboard using the View Designer within Log Analytics. Build:</p>
-
 <ul>
-  <li>One overview tile showing the number of the different cities</li>
-  <li>Two dashboards showing the temperature and humidity as a chart and as a list per city</li>
-  <li>Connect PowerBi Dekstop to your data: Display Line Charts and use a selector/filter for the cities (drop down field)</li>
+<li>One overview tile showing the number of the different cities</li>
+<li>Two dashboards showing the temperature and humidity as a chart and as a list per city</li>
+<li>Connect PowerBi Dekstop to your data: Display Line Charts and use a selector/filter for the cities (drop down field)</li>
 </ul>
-
 <p>Hints:</p>
-
 <ul>
-  <li>
-    <p>Collect data from OpenWeatherMap</p>
-
-    <ul>
-      <li>https://openweathermap.org/</li>
-      <li>Create an account and api key</li>
-      <li>Test your key (it can take some minutes):
- https://api.openweathermap.org/data/2.5/weather?q=Bonn&amp;APIKEY=xxxxxxx</li>
-    </ul>
-  </li>
-  <li>
-    <p>Some useful PowerShell commands:</p>
-  </li>
+<li>
+<p>Collect data from OpenWeatherMap</p>
+<ul>
+<li><a href="https://openweathermap.org/">https://openweathermap.org/</a></li>
+<li>Create an account and api key</li>
+<li>Test your key (it can take some minutes):
+<a href="https://api.openweathermap.org/data/2.5/weather?q=Bonn&amp;APIKEY=xxxxxxx">https://api.openweathermap.org/data/2.5/weather?q=Bonn&amp;APIKEY=xxxxxxx</a></li>
 </ul>
-
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-</pre></td><td class="rouge-code"><pre><span class="c">#Endless-loop</span><span class="w">
+</li>
+<li>
+<p>Some useful PowerShell commands:</p>
+</li>
+</ul>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#Endless-loop</span><span class="w">
 </span><span class="kr">do</span><span class="w"> </span><span class="p">{</span><span class="w">   </span><span class="p">}</span><span class="w"> </span><span class="kr">while</span><span class="w"> </span><span class="p">(</span><span class="bp">$true</span><span class="p">)</span><span class="w">
 
 </span><span class="c">#Sleep $n seconds</span><span class="w">
-</span><span class="nf">sleep</span><span class="w"> </span><span class="nv">$n</span><span class="w">
+</span><span class="n">sleep</span><span class="w"> </span><span class="nv">$n</span><span class="w">
 
 </span><span class="c">#make a http request</span><span class="w">
-</span><span class="nf">Invoke-WebRequest</span><span class="w"> </span><span class="nt">-Uri</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="nt">-Method</span><span class="w"> </span><span class="nx">GET</span><span class="w"> </span><span class="nt">-ContentType</span><span class="w"> </span><span class="s2">"application/json"</span><span class="w">
-</span></pre></td></tr></tbody></table></code></pre></div></div>
-
-<h3 id="build-your-own-log-writer-function">Build your own log-writer function</h3>
-
+</span><span class="n">Invoke-WebRequest</span><span class="w"> </span><span class="nt">-Uri</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="nt">-Method</span><span class="w"> </span><span class="nx">GET</span><span class="w"> </span><span class="nt">-ContentType</span><span class="w"> </span><span class="s2">"application/json"</span><span class="w">
+</span></code></pre></div></div>
+      <h3 id="build-your-own-log-writer-function">
+        
+        
+          Build your own log-writer function <a href="#build-your-own-log-writer-function"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h3>
+    
 <p>Build a log-writer function for your own PowerShell scripts using Log Analytics. There are some request to your solution:</p>
-
 <ul>
-  <li>Have the following columns:
-    <ul>
-      <li>TimeStamp (as TimeGeneratedField)</li>
-      <li>
-        <table>
-          <tbody>
-            <tr>
-              <td>Serverity (Debug</td>
-              <td>Information</td>
-              <td>Warning</td>
-              <td>Error)</td>
-            </tr>
-          </tbody>
-        </table>
-      </li>
-      <li>Message (Text)</li>
-      <li>ScriptName (Name of the script using your function)</li>
-    </ul>
-  </li>
+<li>Have the following columns:
+<ul>
+<li>TimeStamp (as TimeGeneratedField)</li>
+<li>Serverity (Debug|Information|Warning|Error)</li>
+<li>Message (Text)</li>
+<li>ScriptName (Name of the script using your function)</li>
+</ul>
+</li>
 </ul>
 
+	<!--<p>To get practice in using Azure Monitor, I have prepared some examples. These examples can be recreated with a little PowerShell. I have prepared more complex program parts. These can be found in the “Tools” folder. Finished solutions are stored in the folder “Samples”.</p>
+<p>GitHub: <a href="https://github.com/MarcelMeurer/Workshop-AzureMonitor">https://github.com/MarcelMeurer/Workshop-AzureMonitor</a></p>
+<h3 id="in-the-tools-folder-there-are-the-following-scripts">In the Tools folder there are the following scripts:</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">.</span><span class="n">/Add-AzureMonitorData.ps1</span><span class="w"> </span><span class="nt">-WorpspaceId</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">WorkSpaceId</span><span class="err">&gt;</span><span class="w"> </span><span class="nt">-WorpspaceKey</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">WorpspaceKey</span><span class="err">&gt;</span><span class="w"> </span><span class="nt">-LogTypeName</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">LogTypeName</span><span class="err">&gt;</span><span class="w"> </span><span class="p">[</span><span class="nt">-TimeStampField</span><span class="w"> </span><span class="err">&lt;</span><span class="n">TimeStampField</span><span class="err">&gt;</span><span class="p">]</span><span class="w"> </span><span class="nt">-JsonData</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">JsonData</span><span class="err">&gt;</span><span class="w">
+</span></code></pre></div></div>
+<p>Send jsonData to the Log Analytics workspace into the given LogTyeName. TimeStampField is not mandatory. If given, it must be the name of the field containing the timestamp of each data set.</p>
+<h2 id="missions">Missions</h2>
+<h3 id="store-information-about-the-running-processes-from-your-computer">Store information about the running processes from your computer</h3>
+<p>Collect the process information from your computer each 30 seconds and send these data to your Log Analytics workspace. Use PowerShell to automate this mission.</p>
+<p>Select an app and use this app  to “overload” your CPU.</p>
+<p>If data are visible in Log Analytics, build a custom dashboard by using “Log” to query the data.</p>
+<ul>
+<li>
+<p>Find out:</p>
+<ul>
+<li>Count of distinct processes</li>
+<li>Average CPU load over time (all processes). Render a time chart</li>
+<li>Render a time chart for the app you used to overload the CPU</li>
+</ul>
+</li>
+<li>
+<p>Some useful PowerShell commands:</p>
+</li>
+</ul>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#Get cpu consumption by process</span><span class="w">
+</span><span class="p">(</span><span class="n">Get-Counter</span><span class="w"> </span><span class="s2">"\process(*)\% Processor Time"</span><span class="p">)</span><span class="o">.</span><span class="nf">CounterSamples</span><span class="w">
+
+</span><span class="c">#Convert objects to </span><span class="w">
+</span><span class="nv">$json</span><span class="o">=</span><span class="nv">$object</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">ConvertTo-Json</span><span class="w">
+</span></code></pre></div></div>
+<h3 id="store-temperature-data-for-multiple-cities">Store temperature data for multiple cities</h3>
+<p>Collect data from OpenWeatherMap for three different cities each 30 seconds. Send the data to your Log Analytics workspace using Add-AzureMonitorData.ps1. Use PowerShell to automate this mission.</p>
+<p>If data are visible in Log Analytics, build a custom dashboard using the View Designer within Log Analytics. Build:</p>
+<ul>
+<li>One overview tile showing the number of the different cities</li>
+<li>Two dashboards showing the temperature and humidity as a chart and as a list per city</li>
+<li>Connect PowerBi Dekstop to your data: Display Line Charts and use a selector/filter for the cities (drop down field)</li>
+</ul>
+<p>Hints:</p>
+<ul>
+<li>
+<p>Collect data from OpenWeatherMap</p>
+<ul>
+<li><a href="https://openweathermap.org/">https://openweathermap.org/</a></li>
+<li>Create an account and api key</li>
+<li>Test your key (it can take some minutes):
+<a href="https://api.openweathermap.org/data/2.5/weather?q=Bonn&amp;APIKEY=xxxxxxx">https://api.openweathermap.org/data/2.5/weather?q=Bonn&amp;APIKEY=xxxxxxx</a></li>
+</ul>
+</li>
+<li>
+<p>Some useful PowerShell commands:</p>
+</li>
+</ul>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#Endless-loop</span><span class="w">
+</span><span class="kr">do</span><span class="w"> </span><span class="p">{</span><span class="w">   </span><span class="p">}</span><span class="w"> </span><span class="kr">while</span><span class="w"> </span><span class="p">(</span><span class="bp">$true</span><span class="p">)</span><span class="w">
+
+</span><span class="c">#Sleep $n seconds</span><span class="w">
+</span><span class="n">sleep</span><span class="w"> </span><span class="nv">$n</span><span class="w">
+
+</span><span class="c">#make a http request</span><span class="w">
+</span><span class="n">Invoke-WebRequest</span><span class="w"> </span><span class="nt">-Uri</span><span class="w"> </span><span class="nv">$uri</span><span class="w"> </span><span class="nt">-Method</span><span class="w"> </span><span class="nx">GET</span><span class="w"> </span><span class="nt">-ContentType</span><span class="w"> </span><span class="s2">"application/json"</span><span class="w">
+</span></code></pre></div></div>
+<h3 id="build-your-own-log-writer-function">Build your own log-writer function</h3>
+<p>Build a log-writer function for your own PowerShell scripts using Log Analytics. There are some request to your solution:</p>
+<ul>
+<li>Have the following columns:
+<ul>
+<li>TimeStamp (as TimeGeneratedField)</li>
+<li>Serverity (Debug|Information|Warning|Error)</li>
+<li>Message (Text)</li>
+<li>ScriptName (Name of the script using your function)</li>
+</ul>
+</li>
+</ul>
+-->
     </div>
 
     
@@ -328,7 +546,7 @@
                 
                     <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (7)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (8)</a>
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (7)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (5)</a>
                 
@@ -344,7 +562,7 @@
                 
                     <a class="mt-1 mb-1" href="/categories#Azure">Azure (2)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (20)</a>
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (18)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
                 

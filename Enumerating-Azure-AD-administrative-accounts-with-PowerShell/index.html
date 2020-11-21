@@ -8,9 +8,9 @@
 
 <title>Enumerating Azure AD administrative accounts with PowerShell | ITProCloud Blog</title>
 
-<!-- Begin Jekyll SEO tag v2.6.1 -->
+<!-- Begin Jekyll SEO tag v2.7.1 -->
 <title>Enumerating Azure AD administrative accounts with PowerShell | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.0.0" />
+<meta name="generator" content="Jekyll v4.1.1" />
 <meta property="og:title" content="Enumerating Azure AD administrative accounts with PowerShell" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -20,8 +20,11 @@
 <meta property="og:image" content="/wp-content/uploads/2018/07/EnumAdAdminRoles01-300x153.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2018-06-22T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/wp-content/uploads/2018/07/EnumAdAdminRoles01-300x153.png" />
+<meta property="twitter:title" content="Enumerating Azure AD administrative accounts with PowerShell" />
 <script type="application/ld+json">
-{"url":"/Enumerating-Azure-AD-administrative-accounts-with-PowerShell/","headline":"Enumerating Azure AD administrative accounts with PowerShell","dateModified":"2018-06-22T00:00:00+02:00","datePublished":"2018-06-22T00:00:00+02:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/wp-content/uploads/2018/07/EnumAdAdminRoles01-300x153.png","description":"Users can have different administrative roles in Azure Ad. Azure Portal can show these roles and members. Sometimes it can be favorable to get roles and members in a PowerShell object list.","mainEntityOfPage":{"@type":"WebPage","@id":"/Enumerating-Azure-AD-administrative-accounts-with-PowerShell/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"/Enumerating-Azure-AD-administrative-accounts-with-PowerShell/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"Enumerating Azure AD administrative accounts with PowerShell","dateModified":"2018-06-22T00:00:00+02:00","datePublished":"2018-06-22T00:00:00+02:00","description":"Users can have different administrative roles in Azure Ad. Azure Portal can show these roles and members. Sometimes it can be favorable to get roles and members in a PowerShell object list.","author":{"@type":"Person","name":"mm"},"mainEntityOfPage":{"@type":"WebPage","@id":"/Enumerating-Azure-AD-administrative-accounts-with-PowerShell/"},"image":"/wp-content/uploads/2018/07/EnumAdAdminRoles01-300x153.png","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -84,7 +87,158 @@
                 <li class="nav-item">
                 <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
                 </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (18)</a>
+						</li>
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (7)</a>
+						</li>
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (7)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Log-Analytics">Log Analytics (5)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
 	
+				<!-- Original tag list (unsorted) 
 				
 				
 					
@@ -104,6 +258,7 @@
 						
 					
 				
+				-->
 								
 
                 <li class="nav-item">
@@ -259,58 +414,28 @@
                 
                 <!-- End Toc -->
                 <p>Users can have different administrative roles in Azure Ad. Azure Portal can show these roles and members. Sometimes it can be favorable to get roles and members in a PowerShell object list.</p>
-
 <p>To login into your Azure AD tenant use:</p>
-
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="nf">Connect-AzureAD</span><span class="w"> </span><span class="nt">-TenantId</span><span class="w"> </span><span class="nx">xxx</span><span class="w">
-</span></pre></td></tr></tbody></table></code></pre></div></div>
-
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Connect-AzureAD</span><span class="w"> </span><span class="nt">-TenantId</span><span class="w"> </span><span class="nx">xxx</span><span class="w">
+</span></code></pre></div></div>
 <p>Where xxx is your tenant id. The -TenantId is optional. But if your account member of different Azure ADs you can select the right one.</p>
-
 <p>After login in with your credential you can show the different roles with:</p>
-
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-</pre></td><td class="rouge-code"><pre><span class="nf">Get-AzureADDirectoryRole</span><span class="w">
-</span></pre></td></tr></tbody></table></code></pre></div></div>
-
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-AzureADDirectoryRole</span><span class="w">
+</span></code></pre></div></div>
 <p>Output:</p>
-
 <p><img src="/wp-content/uploads/2018/07/EnumAdAdminRoles01-300x153.png" alt="img" /></p>
-
 <p>Using PSCustomObject helps to build a list/array of custom objects to save all roles and users. The full code:</p>
-
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-</pre></td><td class="rouge-code"><pre><span class="w">
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">
 </span><span class="nv">$roleUsers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@()</span><span class="w"> 
-</span><span class="nv">$roles</span><span class="o">=</span><span class="nf">Get-AzureADDirectoryRole</span><span class="w">
+</span><span class="nv">$roles</span><span class="o">=</span><span class="n">Get-AzureADDirectoryRole</span><span class="w">
 
 </span><span class="kr">ForEach</span><span class="p">(</span><span class="nv">$role</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$roles</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-  </span><span class="nv">$users</span><span class="o">=</span><span class="nf">Get-AzureADDirectoryRoleMember</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$role</span><span class="o">.</span><span class="nf">ObjectId</span><span class="w">
-  </span><span class="nx">ForEach</span><span class="p">(</span><span class="nv">$user</span><span class="w"> </span><span class="nx">in</span><span class="w"> </span><span class="nv">$users</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nf">write-host</span><span class="w"> </span><span class="nv">$role</span><span class="o">.</span><span class="nf">DisplayName</span><span class="p">,</span><span class="nv">$user</span><span class="o">.</span><span class="nf">DisplayName</span><span class="w">
-    </span><span class="nv">$obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">New-Object</span><span class="w"> </span><span class="nx">PSCustomObject</span><span class="w">
-    </span><span class="nv">$obj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nf">Add-Member</span><span class="w"> </span><span class="nt">-type</span><span class="w"> </span><span class="nx">NoteProperty</span><span class="w"> </span><span class="nt">-name</span><span class="w"> </span><span class="nx">RoleName</span><span class="w"> </span><span class="nt">-value</span><span class="w"> </span><span class="s2">""</span><span class="w">
-    </span><span class="nv">$obj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nf">Add-Member</span><span class="w"> </span><span class="nt">-type</span><span class="w"> </span><span class="nx">NoteProperty</span><span class="w"> </span><span class="nt">-name</span><span class="w"> </span><span class="nx">UserDisplayName</span><span class="w"> </span><span class="nt">-value</span><span class="w"> </span><span class="s2">""</span><span class="w">
-    </span><span class="nv">$obj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nf">Add-Member</span><span class="w"> </span><span class="nt">-type</span><span class="w"> </span><span class="nx">NoteProperty</span><span class="w"> </span><span class="nt">-name</span><span class="w"> </span><span class="nx">IsAdSynced</span><span class="w"> </span><span class="nt">-value</span><span class="w"> </span><span class="nx">false</span><span class="w">
+  </span><span class="nv">$users</span><span class="o">=</span><span class="n">Get-AzureADDirectoryRoleMember</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$role</span><span class="o">.</span><span class="nf">ObjectId</span><span class="w">
+  </span><span class="nx">ForEach</span><span class="p">(</span><span class="nv">$user</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$users</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="n">write-host</span><span class="w"> </span><span class="nv">$role</span><span class="o">.</span><span class="nf">DisplayName</span><span class="p">,</span><span class="nv">$user</span><span class="o">.</span><span class="nf">DisplayName</span><span class="w">
+    </span><span class="nv">$obj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">New-Object</span><span class="w"> </span><span class="nx">PSCustomObject</span><span class="w">
+    </span><span class="nv">$obj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Add-Member</span><span class="w"> </span><span class="nt">-type</span><span class="w"> </span><span class="nx">NoteProperty</span><span class="w"> </span><span class="nt">-name</span><span class="w"> </span><span class="nx">RoleName</span><span class="w"> </span><span class="nt">-value</span><span class="w"> </span><span class="s2">""</span><span class="w">
+    </span><span class="nv">$obj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Add-Member</span><span class="w"> </span><span class="nt">-type</span><span class="w"> </span><span class="nx">NoteProperty</span><span class="w"> </span><span class="nt">-name</span><span class="w"> </span><span class="nx">UserDisplayName</span><span class="w"> </span><span class="nt">-value</span><span class="w"> </span><span class="s2">""</span><span class="w">
+    </span><span class="nv">$obj</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Add-Member</span><span class="w"> </span><span class="nt">-type</span><span class="w"> </span><span class="nx">NoteProperty</span><span class="w"> </span><span class="nt">-name</span><span class="w"> </span><span class="nx">IsAdSynced</span><span class="w"> </span><span class="nt">-value</span><span class="w"> </span><span class="nx">false</span><span class="w">
     </span><span class="nv">$obj</span><span class="o">.</span><span class="nf">RoleName</span><span class="o">=</span><span class="nv">$role</span><span class="o">.</span><span class="nf">DisplayName</span><span class="w">
     </span><span class="nv">$obj</span><span class="o">.</span><span class="nf">UserDisplayName</span><span class="o">=</span><span class="nv">$user</span><span class="o">.</span><span class="nf">DisplayName</span><span class="w">
     </span><span class="nv">$obj</span><span class="o">.</span><span class="nf">IsAdSynced</span><span class="o">=</span><span class="nv">$user</span><span class="o">.</span><span class="nf">DirSyncEnabled</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="bp">$true</span><span class="w">
@@ -318,14 +443,10 @@
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span><span class="nv">$roleUsers</span><span class="w">
-</span></pre></td></tr></tbody></table></code></pre></div></div>
-
+</span></code></pre></div></div>
 <p>Output:</p>
-
 <p><img src="/wp-content/uploads/2018/07/EnumAdAdminRoles02-300x138.png" alt="img" /></p>
-
 <p>Feel free to extend the custom object with other values form Azure AD user object.</p>
-
 <p>First published on: <a href="https://www.sepago.de/blog/enumerating-azure-ad-administrative-accounts-with-powershell-2/">https://www.sepago.de/blog/enumerating-azure-ad-administrative-accounts-with-powershell-2/</a></p>
 
             </div>
@@ -422,7 +543,7 @@ https://search.google.com/structured-data/testing-tool/u/0/
                 
                     <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (7)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (8)</a>
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (7)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (5)</a>
                 
@@ -438,7 +559,7 @@ https://search.google.com/structured-data/testing-tool/u/0/
                 
                     <a class="mt-1 mb-1" href="/categories#Azure">Azure (2)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (20)</a>
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (18)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
                 

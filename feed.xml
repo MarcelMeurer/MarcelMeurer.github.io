@@ -5,501 +5,312 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 20 Nov 2020 22:42:31 +0100</pubDate>
-    <lastBuildDate>Fri, 20 Nov 2020 22:42:31 +0100</lastBuildDate>
-    <generator>Jekyll v4.0.0</generator>
+    <pubDate>Sat, 21 Nov 2020 13:07:39 +0100</pubDate>
+    <lastBuildDate>Sat, 21 Nov 2020 13:07:39 +0100</lastBuildDate>
+    <generator>Jekyll v4.1.1</generator>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Windows Virtual Desktop</title>
         <description>&lt;h1 id=&quot;windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
-
-&lt;p&gt;Windows Virtual Desktop is generally available and under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.&lt;/p&gt;
-
-&lt;p&gt;Sometimes it helps to have a native GUI to make some configuration and - for me most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this and I’m happy to share it with the community.&lt;/p&gt;
-&lt;h1 id=&quot;a-collapsible-section-with-markdown&quot;&gt;A collapsible section with markdown&lt;/h1&gt;
-
-&lt;details&gt;
-&lt;summary&gt;
-Show details of the section
-&lt;/summary&gt;&lt;p&gt;
-This text is used as a placeholder or a tk note. Words that will follow won't make any sense and this is fine. At the moment, the goal is to build a structure for our site.
-
-
-
-The current version supports a lot of configuration and administration capabilities. You can:
-
-- Add, edit and delete host pools
-- Add, edit and delete application groups
-- Add, edit and delete application and desktop (you can add a new app with the Windows file-open-dialog)
-- Add a list of users to applications or a desktop (separated by ;)
-- Send messages to a single user and users on a specific session host
-- Logoff single users or all users of a specific session host
-- Start and deallocate session hosts (the Azure VM behind)
-- Delete session hosts and the VMs in Azure including disks and nics
-- Run commands and scripts on multiple session hosts (trigger Windows updates, enable RDP Shortpath, ...)
-- Create an image from a template VM without destroying the template VM (golden image approach)
-- Rollout a number of new session hosts based on a template image - including domain join and WVD installation and registration (comparable to Citrix MCS)
-- Rollout VM Scale Sets
-- Start and deallocate Scale Set instances
-- Re-image Scale Set instances
-- Add or remove Scale Set instances
-- and some more things
-
-&lt;/p&gt;&lt;/details&gt;
-
+&lt;p&gt;Windows Virtual Desktop is generally available and under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this and I’m happy to share it with the community.&lt;/p&gt;
+&lt;p&gt;The current version supports a lot of configuration and administration capabilities and I’m continously improving WVDAdmin. Some features:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Add, edit and delete host pools&lt;/li&gt;
+&lt;li&gt;Add, edit and delete application groups&lt;/li&gt;
+&lt;li&gt;Add, edit and delete application and desktop (you can add a new app with the Windows file-open-dialog)&lt;/li&gt;
+&lt;li&gt;Add a list of users to applications or a desktop (separated by ;)&lt;/li&gt;
+&lt;li&gt;Send messages to a single user and users on a specific session host&lt;/li&gt;
+&lt;li&gt;Logoff single users or all users of a specific session host&lt;/li&gt;
+&lt;li&gt;Start and deallocate session hosts (the Azure VM behind)&lt;/li&gt;
+&lt;li&gt;Delete session hosts and the VMs in Azure including disks and nics&lt;/li&gt;
+&lt;li&gt;Run commands and scripts on multiple session hosts (trigger Windows updates, enable RDP Shortpath, …)&lt;/li&gt;
+&lt;li&gt;Create an image from a template VM without destroying the template VM (golden image approach)&lt;/li&gt;
+&lt;li&gt;Rollout a number of new session hosts based on a template image - including domain join and WVD installation and registration (comparable to Citrix MCS)&lt;/li&gt;
+&lt;li&gt;Rollout VM Scale Sets&lt;/li&gt;
+&lt;li&gt;Start and deallocate Scale Set instances&lt;/li&gt;
+&lt;li&gt;Re-image Scale Set instances&lt;/li&gt;
+&lt;li&gt;Add or remove Scale Set instances&lt;/li&gt;
+&lt;li&gt;and some more things&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h1 id=&quot;demo-video&quot;&gt;Demo video&lt;/h1&gt;
-
-&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/g9T0mO1gH9Y&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-&lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
-
+&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/g9T0mO1gH9Y&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
+# Installation
 &lt;p&gt;&lt;strong&gt;Download  &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin.msi&lt;/a&gt; and install the application on your Windows client or on a template VM for your WVD.&lt;/strong&gt;&lt;/p&gt;
-
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-
 &lt;p&gt;1.6.35.0		Add: On a session host &amp;gt; State &amp;gt; Mouse over will show the health report of the host&lt;/p&gt;
-
 &lt;p&gt;1.6.34.0		Fix: The drop-down list “Feature release” was not shown correctly. Feature release is the selector between the different WVD versions like Fall (WVD classic) and Spring (WVD modern on ARM)&lt;/p&gt;
-
 &lt;p&gt;1.6.32.0		Add: You can run scripts on multiple classic session hosts: Win Updates: Install new available updates; Custom script: Custom script located in the program files folder of WVDAdmin&lt;/p&gt;
-
 &lt;p&gt;1.6.30.0		Add: Sorting order for WVD resources&lt;/p&gt;
-
 &lt;p&gt;1.6.29.0		Add: Support for Eav4 and Easv4-series&lt;/p&gt;
-
 &lt;p&gt;1.6.28.0		Add: Speed up adding a lot of VMs to the treeview&lt;/p&gt;
-
 &lt;p&gt;1.6.27.0		Add: Support for using availability zones. Select it from the drop-down list right to the resource group list&lt;/p&gt;
-
 &lt;p&gt;1.6.26.0		Add: You can run scripts on multiple ARM session hosts: Win Updates: Install new available updates; Custom script: Custom script located in the program files folder of WVDAdmin&lt;/p&gt;
-
 &lt;p&gt;1.6.24.0		Add: Multi selection and action on session hosts for ARM if you select a session host container; Fix: Scale Set instances wasn’t shown in 1.6.23&lt;/p&gt;
-
 &lt;p&gt;1.6.23.0		Fix: New image was not visualized in the tree view after creation&lt;/p&gt;
-
 &lt;p&gt;1.6.22.0		Add: Support for shared image galleries: Add a shared image gallery from the Azure Portal into a resource group managed by WVDAdmin. In WVDAdmin right-click an existing image and select “copy to shared image gallery”. An image can be rolled-out right clicking the shared image&lt;/p&gt;
-
 &lt;p&gt;1.6.21.0		Add: Double-click on the tag Logs, Sessions or Sessions V2 enlarge the part of the windows (double-click again to revert)&lt;/p&gt;
-
 &lt;p&gt;1.6.18.0		Fix: API change from Microsoft cause that updating a host pool property fails if the location is written like “Central US” (centralus is no problem); Add: First version able to deploy session hosts from images in a image gallery&lt;/p&gt;
-
 &lt;p&gt;1.6.16.0		Add: Session hosts icons  are now based on the availability state; Fix: Enumerating thousands of sessions with thousands of session hosts takes longer as expected (&amp;gt; 4 minutes)&lt;/p&gt;
-
 &lt;p&gt;1.6.14.0		Add: Support US Government Cloud. Activate: Add a new string Reg_SZ “Environment” with value “US” to HKCU\SOFTWARE\ITProCloud\WVDAdmin”&lt;/p&gt;
-
 &lt;p&gt;1.6.12.0		Add: Support for VM types: Dv4 and Dsv4-series, Ev4 and Esv4-series&lt;/p&gt;
-
 &lt;p&gt;1.6.11.0		Fix: WVD ARM resources are deployed with the tags; Workspaces and host pools are separated by subscription name&lt;/p&gt;
-
 &lt;p&gt;1.6.9.00		Fix: Generating toke for Spring host pool fails sometimes (Error: ExpirationTime value must be between one hour and 30 days from now”  - An error occurred while gathering an WVD2 token from backend: Object reference not set to an instance of an object.)&lt;/p&gt;
-
 &lt;p&gt;1.6.5.00		Add: Support for DD_v2 and DDS_V4 virtual machine types; Fix: Forwarding from the WVD API cause a authentication lost (error 401, 403 reading resources in the FALL update)&lt;/p&gt;
-
 &lt;p&gt;1.6.4.00		Add: Support for GEN2 virtual machines&lt;/p&gt;
-
 &lt;p&gt;1.6.2.00		Add: New naming feature for new session host. Default (is): Name for a session host is the highest matching name +1; new concept (must be enabled): Name for a session host is the next free name. To enable add a reg dword to HKCU\Software\ITProCloud\WVDAdmin Name:NamingMode and value to “1”&lt;/p&gt;
-
 &lt;p&gt;1.6.1.00		Fix: Default session limit for V2 host pool is now 999999&lt;/p&gt;
-
 &lt;p&gt;1.6.0.00		Change: The tag WVD.Path is aligned to Microsoft naming of “tenant” and “host pool” for the spring update. Tenant=resource group name and no longer subscription name&lt;/p&gt;
-
 &lt;p&gt;1.5.9.00		Add: Load assigned users button to the app group tab (fall update)&lt;/p&gt;
-
 &lt;p&gt;1.5.7.00		Add: You can join existing VM’ to a host pool (VMs must be domain joined and not in a host pool right now)&lt;/p&gt;
-
 &lt;p&gt;1.5.6.00		Add: You can now move session host around host pools not created with WVDAdmin (it downloads the necessary files automatically); you can join existing VM’ to a host pool (VMs must be domain joined)&lt;/p&gt;
-
 &lt;p&gt;1.5.5.00		Fix: Enumerating VMs was endless in some circumstance&lt;/p&gt;
-
 &lt;p&gt;1.5.4.00		Add: Migration from Fall to Spring Update; moving session hosts to another host pool&lt;/p&gt;
-
 &lt;p&gt;1.5.3.00		Fix: Improvement updating the treeview&lt;/p&gt;
-
 &lt;p&gt;1.5.0.00		Add:  &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Spring-Update,-Spring-Release&quot;&gt;Supporting the WVD Spring Release / Spring Update&lt;/a&gt; ; Some user operations from the session grid are now async; Fix: Spontaneous resize of the windows if data are reloaded&lt;/p&gt;
-
 &lt;p&gt;1.4.9.00		Add: Filter users, session hosts and host pools in the overview of sessions&lt;/p&gt;
-
 &lt;p&gt;1.4.8.00		Add: Support to add users by groups from Azure Active Directory, including an AAD browser (check my &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Add-Users-and-Groups-to-WVD/&quot;&gt;blog post&lt;/a&gt; and configure the service principal to use this feature)&lt;/p&gt;
-
 &lt;p&gt;1.4.6.00		Add: New VM sizes; all new scale sets are deployed as really scalable version (up to 600 instances each)&lt;/p&gt;
-
 &lt;p&gt;1.4.4.00		Fix: Service Principal Keys with some special characters are working now; Add: Faster loading of resources from WVD and Azure backend&lt;/p&gt;
-
 &lt;p&gt;1.4.2.00		Add: Support for NVv4 VM sizes (based on AMD Radeon Instinct  MI25-GPU); support to set custom Azure tags for resources while deploying resources&lt;/p&gt;
-
 &lt;p&gt;1.4.0.00		Fix: From an older version, disks are deployed as standard-hdd even if premium-disk was selected; Change: Connection views are now located parallel to the logging list on the bottom (tenant-view); Add: Function to check for an updated version via &lt;a href=&quot;../assets/files/WVDAdmin.xml&quot;&gt;https://blog.itprocloud.de/assets/files/WVDAdmin.xml&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;1.3.6.00		Add: New tag for session hosts: WVD.Path - used by &lt;a href=&quot;http://loganalytics.sepago.com/&quot;&gt;Azure Monitor for WVD&lt;/a&gt; and &lt;a href=&quot;https://github.com/MarcelMeurer/Project-MySmartScale&quot;&gt;Azure Autoscale for WVD - aka Project MySmartScale&lt;/a&gt; if an installed language pack conflicts with the Microsoft RDAgent (read this &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Language-Packs-Detecting-Host-Pool-and-Tenant-Name/&quot;&gt;post&lt;/a&gt; to learn more)&lt;/p&gt;
-
 &lt;p&gt;1.3.5.00		Add: Allow an local admin to shadow a user session (WVDAdmin needs direct access to the session host via RDP)&lt;/p&gt;
-
 &lt;p&gt;1.3.4.00		Add: Networks are now listed as VNET/SUBNET in the rollout tab&lt;/p&gt;
-
 &lt;p&gt;1.3.3.00		Add: Support for a special mode if your WVD tenant and the session hosts in two different Azure Active Directory tenants&lt;/p&gt;
-
 &lt;p&gt;1.3.1.00		Fix: WVDAdmin crashed if 1.3.0 is your first version of WVDAdmin (HKEY_CURRENT_USER\Software\ITProCloud doesn’t exist while checking for multi-tenancy mode)&lt;/p&gt;
-
 &lt;p&gt;1.3.0.00		Add: AAD multi-tenancy mode (drop down list to handle different AADs) - &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners/&quot;&gt;https://blog.itprocloud.de/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;1.2.8.00		Add: If you click a tenant a tenant wide list of sessions is listed.  Logoff or send messages to multiple sessions&lt;/p&gt;
-
 &lt;p&gt;1.2.7.00		Add: The main window of the application is now resizeable&lt;/p&gt;
-
 &lt;p&gt;1.2.5.00		Add: Support for Scale Sets (with normal and ephemeral disks) -&amp;gt; see below&lt;/p&gt;
-
 &lt;p&gt;1.2.4.00		Add: Support for availability sets&lt;/p&gt;
-
 &lt;p&gt;1.2.3.00		Add: Support for automatic and static assigned host pools&lt;/p&gt;
-
 &lt;p&gt;1.2.1.00		&lt;a name=&quot;v121-note&quot;&gt;&lt;/a&gt;Fix: Logging of rollout parameter by Azure custom extension is removed to avoid logging secrets&lt;/p&gt;
-
 &lt;p&gt;1.0.0.30		Fix: Rollout - OU can now be empty to join the default OU&lt;/p&gt;
-
 &lt;p&gt;1.0.0.29		Add: Supporting “special license mode” to save up to 50% on compute-cost (&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license&lt;/a&gt;)&lt;/p&gt;
-
 &lt;p&gt;1.0.0.26		Add: Template VM can now be a VM with a standard disk (non-managed)&lt;/p&gt;
-
 &lt;p&gt;1.0.0.25		Fix: If you delete a VM the OS disk will deleted as well&lt;/p&gt;
-
 &lt;p&gt;1.0.0.23		Support for ephemeral  disks&lt;/p&gt;
-
 &lt;p&gt;1.0.0.22		First published version - without auto-update of WVD Admin&lt;/p&gt;
-
 &lt;h3 id=&quot;support-for-vm-scale-sets&quot;&gt;Support for VM Scale Sets&lt;/h3&gt;
-
 &lt;p&gt;From version 1.2.5, I support working with VM Scale Sets. A Scale Set can have several instances, which are the VMs / session hosts. There are some essential things you have to know if you use VM Scale Set with WVDAdmin and WVD itself:&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;Build a Scale Set with WVDAdmin. Select an image, right-click and select “Create session host from image”. Check “Rollout as VM Scale Set”&lt;/li&gt;
-  &lt;li&gt;You can use regular disks and ephemeral disks. If you use ephemeral disks, you cannot deallocate the instances of your Scale Set. You have to delete the instances&lt;/li&gt;
-  &lt;li&gt;Today you can not use ultra disks&lt;/li&gt;
-  &lt;li&gt;You can add and remove instances with WVDAdmin or in the Azure Portal. New instances will join the domain and WVD&lt;/li&gt;
-  &lt;li&gt;A new instance can only join WVD if the session host with the new name doesn’t exist. If you delete instances, the session host entry will also be removed&lt;/li&gt;
-  &lt;li&gt;You can re-image single instances or all instances of a Scale Set. After that, the instances are “clean” as at the first rollout&lt;/li&gt;
-  &lt;li&gt;Adding instances or re-imaging assumes that the Scale Set configuration (which is a custom script extension) has a valid WVD token to join new instances to WVD. While WVD provides only one token per host pool and that the token can be expiring, you can update the token with a right-click on the Scale Set and select “Update WVD token”. The max. lifetime of a token is 59 days&lt;/li&gt;
-  &lt;li&gt;Unfortunately, change the source image for a VM Scale Set. So if you want to update the image for a host pool, take these steps:
-    &lt;ul&gt;
-      &lt;li&gt;Rollout a new Scale Set based on the new image&lt;/li&gt;
-      &lt;li&gt;Disable new logons for the old session host from the previous Scale Set&lt;/li&gt;
-      &lt;li&gt;Test the host pool based on the new Scale Set&lt;/li&gt;
-      &lt;li&gt;If no user logged on to the ancient Scale Set, remove all instances from the Scale Set (this deletes the session hosts in WVD as well)&lt;/li&gt;
-      &lt;li&gt;Remove the Scale Set&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Please feel free to give feedback&lt;/li&gt;
+&lt;li&gt;Build a Scale Set with WVDAdmin. Select an image, right-click and select “Create session host from image”. Check “Rollout as VM Scale Set”&lt;/li&gt;
+&lt;li&gt;You can use regular disks and ephemeral disks. If you use ephemeral disks, you cannot deallocate the instances of your Scale Set. You have to delete the instances&lt;/li&gt;
+&lt;li&gt;Today you can not use ultra disks&lt;/li&gt;
+&lt;li&gt;You can add and remove instances with WVDAdmin or in the Azure Portal. New instances will join the domain and WVD&lt;/li&gt;
+&lt;li&gt;A new instance can only join WVD if the session host with the new name doesn’t exist. If you delete instances, the session host entry will also be removed&lt;/li&gt;
+&lt;li&gt;You can re-image single instances or all instances of a Scale Set. After that, the instances are “clean” as at the first rollout&lt;/li&gt;
+&lt;li&gt;Adding instances or re-imaging assumes that the Scale Set configuration (which is a custom script extension) has a valid WVD token to join new instances to WVD. While WVD provides only one token per host pool and that the token can be expiring, you can update the token with a right-click on the Scale Set and select “Update WVD token”. The max. lifetime of a token is 59 days&lt;/li&gt;
+&lt;li&gt;Unfortunately, change the source image for a VM Scale Set. So if you want to update the image for a host pool, take these steps:
+&lt;ul&gt;
+&lt;li&gt;Rollout a new Scale Set based on the new image&lt;/li&gt;
+&lt;li&gt;Disable new logons for the old session host from the previous Scale Set&lt;/li&gt;
+&lt;li&gt;Test the host pool based on the new Scale Set&lt;/li&gt;
+&lt;li&gt;If no user logged on to the ancient Scale Set, remove all instances from the Scale Set (this deletes the session hosts in WVD as well)&lt;/li&gt;
+&lt;li&gt;Remove the Scale Set&lt;/li&gt;
 &lt;/ul&gt;
-
+&lt;/li&gt;
+&lt;li&gt;Please feel free to give feedback&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h3 id=&quot;support-for-ephemeral--disks&quot;&gt;Support for ephemeral  disks&lt;/h3&gt;
-
 &lt;p&gt;You can now rollout your session hosts with  ephemeral  disks. Ephemeral  disks are running on the Azure hypervisor and not stored in the fabric. This has some advantages:&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;There are no storage costs (!)&lt;/li&gt;
-  &lt;li&gt;A very high data throughput because the disks exist on the hypervisor&lt;/li&gt;
-  &lt;li&gt;See &lt;a href=&quot;https://twitter.com/michawets&quot;&gt;@MichaWets&lt;/a&gt;   blog post for more information:  &lt;a href=&quot;https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/&quot;&gt;https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;There are no storage costs (!)&lt;/li&gt;
+&lt;li&gt;A very high data throughput because the disks exist on the hypervisor&lt;/li&gt;
+&lt;li&gt;See &lt;a href=&quot;https://twitter.com/michawets&quot;&gt;@MichaWets&lt;/a&gt;   blog post for more information:  &lt;a href=&quot;https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/&quot;&gt;https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;Please note:&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;You can not deallocate a VM with this disk type (because the disk cannot be stored) - you have to delete the VM (and to rollout a new one instead of starting a “normal” VM)&lt;/li&gt;
-  &lt;li&gt;Not each VM size can be used and there are limitations of the disk size (image size for rollout) based on the VM size: Example: Max  ephemeral  disk size for  Standard_D4s_v3  is 64 GByte while a  Standard_D8s_v3 can have up to 128 GByte. See &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;If the Azure hypervisor fails your session host will fail as well and can not be re-deployed automatically&lt;/li&gt;
+&lt;li&gt;You can not deallocate a VM with this disk type (because the disk cannot be stored) - you have to delete the VM (and to rollout a new one instead of starting a “normal” VM)&lt;/li&gt;
+&lt;li&gt;Not each VM size can be used and there are limitations of the disk size (image size for rollout) based on the VM size: Example: Max  ephemeral  disk size for  Standard_D4s_v3  is 64 GByte while a  Standard_D8s_v3 can have up to 128 GByte. See &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;If the Azure hypervisor fails your session host will fail as well and can not be re-deployed automatically&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-014.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
-
 &lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
-
 &lt;h2 id=&quot;service-principal-functional-account&quot;&gt;Service principal (functional account)&lt;/h2&gt;
-
 &lt;p&gt;To work with the GUI you need a service principal (function account) with the permission to administrate your WVD tenant or tenants. I decide to use a service principal at this time to avoid confusion if my Azure Ad user is only a guest account in the WVD tenant I have to administrate.&lt;/p&gt;
-
 &lt;p&gt;To create a service principal go to your Azure Ad -&amp;gt; App registration -&amp;gt; New registration and type a name for your principal like “ svc_WVDAdmin” and press “register”.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-001.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;Click on “certificates &amp;amp; secrets”. Click “new client secret”, select a validity period and a description (like “Key01”). Press “add”.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-002.png&quot; alt=&quot;documentation-002&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;Copy the generated key directly - it will never be displayed again. Note the key for later.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-003.png&quot; alt=&quot;documentation-003&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;To use WVDAdmin with the AAD-Browser feature to select users and groups and to be prepared for the  &lt;em&gt;WVD Spring Update&lt;/em&gt; (expected in H1/2020) the service principal need two API permissions:&lt;/p&gt;
-
 &lt;p&gt;API Permissions: Add the permission “Azure Active Directory Graph” -&amp;gt; Application Permission -&amp;gt; Directory.Read.All
 &lt;img src=&quot;../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;Add the permission “Microsoft Graph” -&amp;gt; Application Permission -&amp;gt; Directory.Read.All&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;To consent the permission and administrator of Azure AD have to grant this:&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;Go to “Overview”. Note the “Application (client) ID” and the “Directory (tenant) ID” as well.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-004.png&quot; alt=&quot;documentation-004&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;You now have all data for your service principal:&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;Tenant id&lt;/li&gt;
-  &lt;li&gt;Service principal id (application id)&lt;/li&gt;
-  &lt;li&gt;Service principal key&lt;/li&gt;
+&lt;li&gt;Tenant id&lt;/li&gt;
+&lt;li&gt;Service principal id (application id)&lt;/li&gt;
+&lt;li&gt;Service principal key&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;h2 id=&quot;wdv-permissions-pre-spring-release&quot;&gt;WDV permissions (pre-Spring release)&lt;/h2&gt;
-
 &lt;p&gt;To  use WVDAdmin you need at least an existing WVD tenant. If you new to WVD follow this article to create a WVD tenant:  &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/tenant-setup-azure-active-directory&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/tenant-setup-azure-active-directory&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;You have to use PowerShell to give the WVD the appropriated permission:&lt;/p&gt;
-
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;nf&quot;&gt;Import-Module&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Microsoft.RDInfra.RDPowerShell&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Import-Module&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Microsoft.RDInfra.RDPowerShell&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# log on with an administrative user account to your &lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Add-RdsAccount&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-DeploymentUrl&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://rdbroker.wvd.microsoft.com&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Add-RdsAccount&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-DeploymentUrl&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;https://rdbroker.wvd.microsoft.com&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  
 
 &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# list rds tenants&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Get-RdsTenant&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Get-RdsTenant&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 
 &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# give your service principal the right permission&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;New-RdsRoleAssignment&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-TenantName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Builder City&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-RoleDefinitionName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;RDS Owner&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ApplicationId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;89050a12-xxxx-xxxx-xxxx-000000000000&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;New-RdsRoleAssignment&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-TenantName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Builder City&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-RoleDefinitionName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;RDS Owner&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ApplicationId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;89050a12-xxxx-xxxx-xxxx-000000000000&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-005.png&quot; alt=&quot;documentation-005&quot; /&gt;&lt;/p&gt;
-
 &lt;h2 id=&quot;azure-resource-permissions&quot;&gt;Azure resource permissions&lt;/h2&gt;
-
 &lt;p&gt;To image template VMs and to rollout new session hosts the service principal needs permission to the resource groups containing your session hosts (or are the target for these).&lt;/p&gt;
-
 &lt;p&gt;Open the Azure portal and go to the resource groups. Go into each resource group, click “Access control (IAM)” -&amp;gt; select “Add” -&amp;gt; Add role assignment. Select “contributor” (“owner” for resource groups you want to use for the &lt;strong&gt;Spring Release&lt;/strong&gt; to allow adding users and groups) and search in “select” for your service principal name. Click the principal and save the settings.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt;To use WVDAdmin with the &lt;em&gt;WVD Spring Release&lt;/em&gt;(expected in H1/2020) the service principal needs the “&lt;strong&gt;Owner&lt;/strong&gt;” Role to give users permissions to access the desktops and apps.&lt;/p&gt;
-
+&lt;p&gt;**Note:**To use WVDAdmin with the &lt;em&gt;WVD Spring Release&lt;/em&gt;(expected in H1/2020) the service principal needs the “&lt;strong&gt;Owner&lt;/strong&gt;” Role to give users permissions to access the desktops and apps.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-006.png&quot; alt=&quot;documentation-006&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;Do the same for the other resource groups. It’s a good way to have several resource groups:&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;For each tenant or host pool&lt;/li&gt;
-  &lt;li&gt;For template VMs&lt;/li&gt;
-  &lt;li&gt;For the created images&lt;/li&gt;
+&lt;li&gt;For each tenant or host pool&lt;/li&gt;
+&lt;li&gt;For template VMs&lt;/li&gt;
+&lt;li&gt;For the created images&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;The service principal must have permissions to your virtual network (vnet) to assign new VMs to the right subnet. Go to your vnet, click “Access control (IAM)” -&amp;gt; select “Add” -&amp;gt; Add role assignment. Select “contributor” and search in “select” for your service principal name. Click the principal and save the settings.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-007.png&quot; alt=&quot;documentation-007&quot; /&gt;&lt;/p&gt;
-
 &lt;h2 id=&quot;prepare-your-normal-active-directory&quot;&gt;Prepare your “normal” Active Directory&lt;/h2&gt;
-
 &lt;p&gt;Today each session host must be part of a “legacy” active directory domain (or have to use the domain services). To add new session hosts unattended we need two more things:&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;An administrative user account with the permission to add a computer object to the active directory domain&lt;/li&gt;
-  &lt;li&gt;A file share with a configuration script and the WVD agent software&lt;/li&gt;
+&lt;li&gt;An administrative user account with the permission to add a computer object to the active directory domain&lt;/li&gt;
+&lt;li&gt;A file share with a configuration script and the WVD agent software&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;Create an administrative account to join computer objects to the domain&lt;/p&gt;
-
-&lt;p&gt;Open “Active Directory Users and Computers” and create a user object with a complex password and set a password to “never expire” (if you fine with this). I added the user srv_WVD-Join@itprocloud.de.&lt;/p&gt;
-
+&lt;p&gt;Open “Active Directory Users and Computers” and create a user object with a complex password and set a password to “never expire” (if you fine with this). I added the user &lt;a href=&quot;mailto:srv_WVD-Join@itprocloud.de&quot;&gt;srv_WVD-Join@itprocloud.de&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Open the menu “View” and select “Advanced Features”. Create or go to the OU where do you want to have your WVD session hosts in. Right-click the OU, select security and add your account with read/write/… permission.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-008.png&quot; alt=&quot;documentation-008&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;Please note the OU canonical name. In my case: “OU=WVD,OU=Azure,OU=Site,OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test”&lt;/p&gt;
-
 &lt;h2 id=&quot;create-a-file-share&quot;&gt;Create a file share&lt;/h2&gt;
-
-&lt;p&gt;&lt;em&gt;Hint: Alternatively, you can use Azure blob storage to store the script. Make the blob storage read-only and use the URL as rollout script-path. E.g.: https://sharedservices01.blob.core.windows.net/wvd&lt;/em&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;em&gt;Hint: Alternatively, you can use Azure blob storage to store the script. Make the blob storage read-only and use the URL as rollout script-path. E.g.: &lt;a href=&quot;https://sharedservices01.blob.core.windows.net/wvd&quot;&gt;https://sharedservices01.blob.core.windows.net/wvd&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;Create a file share for the configuration script (which adds new session hosts to the domain and install the WVD agent). Give everyone at least read permissions. Set the NTFS permissions to everyone and read. This is necessary while during the first startup the VM extension tries to execute the script. In this process, the file share is accessed anonymously.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-009.png&quot; alt=&quot;documentation-009&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-010.png&quot; alt=&quot;documentation-010&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;Place the following files in this share:&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt; (rename the download to .ps1)&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv&quot;&gt;Microsoft.RDInfra.RDAgent.msi&lt;/a&gt; (rename the file)&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH&quot;&gt;Microsoft.RDInfra.RDAgentBootLoader.msi&lt;/a&gt; (rename the file)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt; (rename the download to .ps1)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv&quot;&gt;Microsoft.RDInfra.RDAgent.msi&lt;/a&gt; (rename the file)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH&quot;&gt;Microsoft.RDInfra.RDAgentBootLoader.msi&lt;/a&gt; (rename the file)&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;Make sure that you rename the files to fit the list above (without version numbers).&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-011.png&quot; alt=&quot;documentation-011&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt; If you are using Windows Server &lt;strong&gt;2019&lt;/strong&gt; as file share make sure that anonymous file share access is enabled. Create a GPO for the session hosts containing the following configurations:&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;Security Options:
-    &lt;ul&gt;
-      &lt;li&gt;Accounts: Guest Account Status: Enabled&lt;/li&gt;
-      &lt;li&gt;Network access: Let Everyone permissions apply to anonymous users: Enabled&lt;/li&gt;
-      &lt;li&gt;Network access: Do not allow anonymous enumeration of SAM accounts and shares: Disabled&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+&lt;li&gt;Security Options:
+&lt;ul&gt;
+&lt;li&gt;Accounts: Guest Account Status: Enabled&lt;/li&gt;
+&lt;li&gt;Network access: Let Everyone permissions apply to anonymous users: Enabled&lt;/li&gt;
+&lt;li&gt;Network access: Do not allow anonymous enumeration of SAM accounts and shares: Disabled&lt;/li&gt;
 &lt;/ul&gt;
-
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;h1 id=&quot;configure-wvdadmin&quot;&gt;Configure WVDAdmin&lt;/h1&gt;
-
 &lt;p&gt;Please start WVDAdmin. Before you load WVD and Azure data copy the Azure tenant id, service principal id and service principal key into the welcome tab. Press save and load the data by clicking “Reload all”.&lt;/p&gt;
-
 &lt;p&gt;You are now able to administrate WVD, create images from template VMs and rollout new session hosts.&lt;/p&gt;
-
 &lt;p&gt;The first time you want to rollout new session hosts you have to enter some information from your Active Directory and file share configuration from above:&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-012.png&quot; alt=&quot;documentation-012&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;Local Admin and local pw. are the local administrator account credentials which you can enter at this time.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-013.png&quot; alt=&quot;documentation-013&quot; /&gt;&lt;/p&gt;
-
 &lt;h1 id=&quot;building-an-image&quot;&gt;Building an image&lt;/h1&gt;
-
 &lt;p&gt;You can rollout VMs and VM Scale Set with images created by WVDAdmin. These images contain the logic to join the AD domain and WVD.&lt;/p&gt;
-
 &lt;p&gt;You can simple create an image from a template VM. The template VM must part of your AD like a normal client. You have not to sysprep or to normalize this template VM. Use the same template VM for Windows and application updates.&lt;/p&gt;
-
 &lt;p&gt;Following these steps to build your template:&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;Install a VM in the Azure portal. Select the right OS (like Windows 10 Enterprise for Virtual Desktops)&lt;/li&gt;
-  &lt;li&gt;Make all Windows updates&lt;/li&gt;
-  &lt;li&gt;Join the VM to your AD&lt;/li&gt;
-  &lt;li&gt;Install your application&lt;/li&gt;
-  &lt;li&gt;Make your customizing (like installing language packages)&lt;/li&gt;
-  &lt;li&gt;Shutdown the template VM&lt;/li&gt;
+&lt;li&gt;Install a VM in the Azure portal. Select the right OS (like Windows 10 Enterprise for Virtual Desktops)&lt;/li&gt;
+&lt;li&gt;Make all Windows updates&lt;/li&gt;
+&lt;li&gt;Join the VM to your AD&lt;/li&gt;
+&lt;li&gt;Install your application&lt;/li&gt;
+&lt;li&gt;Make your customizing (like installing language packages)&lt;/li&gt;
+&lt;li&gt;Shutdown the template VM&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;To create the image open WVDAdmin and&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;Navigate to the Azure template VM (Azure -&amp;gt; Virtual Machines -&amp;gt; RG -&amp;gt; VM)&lt;/li&gt;
-  &lt;li&gt;Right-click -&amp;gt; “Create a template image”&lt;/li&gt;
-  &lt;li&gt;Select the resource group to store the image&lt;/li&gt;
-  &lt;li&gt;Correct the script-path if necessary&lt;/li&gt;
-  &lt;li&gt;Press “Capture”&lt;/li&gt;
+&lt;li&gt;Navigate to the Azure template VM (Azure -&amp;gt; Virtual Machines -&amp;gt; RG -&amp;gt; VM)&lt;/li&gt;
+&lt;li&gt;Right-click -&amp;gt; “Create a template image”&lt;/li&gt;
+&lt;li&gt;Select the resource group to store the image&lt;/li&gt;
+&lt;li&gt;Correct the script-path if necessary&lt;/li&gt;
+&lt;li&gt;Press “Capture”&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;You can and should reuse the template VM for new updates and applications. After these changes shut down the template VM and create a new image .&lt;/p&gt;
-
 &lt;h1 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h1&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;The image is not created. An error message occurs:&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Check if your template VM part of the AD&lt;/li&gt;
-  &lt;li&gt;If your file server Windows Server 2019, read above&lt;/li&gt;
-  &lt;li&gt;Check if you have set the NTFS and share permission correctly&lt;/li&gt;
-  &lt;li&gt;Azure portal: Go to the temp VM (next to the template VM) and check the state of the extension installation. There should be an error message like script not found; access denied, etc.&lt;/li&gt;
-  &lt;li&gt;Have you renamed the RD agent and bootloader?&lt;/li&gt;
-  &lt;li&gt;Is the script saved correctly: ITPC-WVD-Image-Processing.ps1 not ITPC-WVD-Image-Processing.ps1.txt&lt;/li&gt;
-  &lt;li&gt;Don’t forget to delete the temp VM and temp disk to avoid costs&lt;/li&gt;
-  &lt;li&gt;Make sure that your template VM uses managed disk&lt;/li&gt;
-  &lt;li&gt;The script generates additional log files in %WinDir%\System32\LogFiles&lt;/li&gt;
-  &lt;li&gt;&lt;em&gt;Windows 7&lt;/em&gt;: Make sure to install PowerShell 5.1 and all Windows updates (including the optional updates without the language packages) to the template VM and restart the VM to take effect: &lt;a href=&quot;https://www.microsoft.com/en-us/download/details.aspx?id=54616&quot;&gt;https://www.microsoft.com/en-us/download/details.aspx?id=54616&lt;/a&gt; Makes sure that you use the newest script file from 09/2020: &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;NEW: An endless loop of “Waiting for the temporary vm (power off)” : Update to the newest PowerShell script for generalizing: &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The image is not created. An error message occurs:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Check if your template VM part of the AD&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If your file server Windows Server 2019, read above&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Check if you have set the NTFS and share permission correctly&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Azure portal: Go to the temp VM (next to the template VM) and check the state of the extension installation. There should be an error message like script not found; access denied, etc.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Have you renamed the RD agent and bootloader?&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Is the script saved correctly: ITPC-WVD-Image-Processing.ps1 not ITPC-WVD-Image-Processing.ps1.txt&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Don’t forget to delete the temp VM and temp disk to avoid costs&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Make sure that your template VM uses managed disk&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The script generates additional log files in %WinDir%\System32\LogFiles&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;Windows 7&lt;/em&gt;: Make sure to install PowerShell 5.1 and all Windows updates (including the optional updates without the language packages) to the template VM and restart the VM to take effect: &lt;a href=&quot;https://www.microsoft.com/en-us/download/details.aspx?id=54616&quot;&gt;https://www.microsoft.com/en-us/download/details.aspx?id=54616&lt;/a&gt; Makes sure that you use the newest script file from 09/2020: &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;NEW: An endless loop of “Waiting for the temporary vm (power off)” : Update to the newest PowerShell script for generalizing: &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVD Admin” from here: &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin.msi&lt;/a&gt;&lt;/p&gt;
-
 </description>
         <pubDate>Fri, 20 Nov 2020 00:00:00 +0100</pubDate>
         <link>/Windows-Virtual-Desktop-Admin-NEW/</link>
         <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin-NEW/</guid>
         
         
-        <category>Windows Virtual Desktop</category>
-        
       </item>
     
       <item>
         <title>WVD Admin - Custom Scripts to run administrative tasks</title>
         <description>&lt;h1 id=&quot;custom-scripts-with-wvdadmin&quot;&gt;Custom Scripts with WVDAdmin&lt;/h1&gt;
-
 &lt;p&gt;From version 1.6.15,  &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; supports custom scripts to run administrative tasks simultaneously on different session hosts. And that is easy to use and to extend. Let me show it with the challenge to enable &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath#:~:text=RDP%20Shortpath%20is%20a%20feature,better%20reliability%20and%20consistent%20latency&quot;&gt;RDP Shortpath&lt;/a&gt; on existing session hosts.&lt;/p&gt;
-
 &lt;p&gt;In this &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath#:~:text=RDP%20Shortpath%20is%20a%20feature,better%20reliability%20and%20consistent%20latency&quot;&gt;post&lt;/a&gt;, Microsoft describes how to enable this preview feature for WVD to connect to a WVD session without crossing the internet.&lt;/p&gt;
-
-&lt;p&gt;Start copying the file &lt;a href=&quot;C:\Program Files\ITProCloud.de\WVDAdmin\CustomScript.ps1&quot;&gt;C:\Program Files\ITProCloud.de\WVDAdmin\CustomScript.ps1&lt;/a&gt; to a new name into the same directory. For example EnableRDPShortPath.ps1&lt;/p&gt;
-
+&lt;p&gt;Start copying the file [C:\Program Files\ITProCloud.de\WVDAdmin\CustomScript.ps1](C:\Program Files\ITProCloud.de\WVDAdmin\CustomScript.ps1) to a new name into the same directory. For example EnableRDPShortPath.ps1&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-01.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;Open the file with notepad or  the editor of your choice. Edit the first line to give your script a name (that is visible in the drop-down list in WVDAdmin) and a description. The description is shown in the message box where you have to consent to run on the selected session hosts.&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;# {&quot;Name&quot;: &quot;Enable RDP Shortpath&quot;,&quot;Description&quot;:&quot;This script enables the preview function for RDP Shortpath on the selected session hosts&quot;}
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+&lt;pre&gt;&lt;code&gt;# {&amp;quot;Name&amp;quot;: &amp;quot;Enable RDP Shortpath&amp;quot;,&amp;quot;Description&amp;quot;:&amp;quot;This script enables the preview function for RDP Shortpath on the selected session hosts&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;After that, you can copy the code between lines 22 and 23 (LogWriter(“Custom script start”) and LogWriter(“Custom script end”)). I re-used the example code from Microsoft:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;LogWriter(&quot;Custom script start&quot;)
+&lt;pre&gt;&lt;code&gt;LogWriter(&amp;quot;Custom script start&amp;quot;)
 $WinstationsKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations'
 New-ItemProperty -Path $WinstationsKey -Name 'fUseUdpPortRedirector' -ErrorAction:SilentlyContinue -PropertyType:dword -Value 1 -Force
 New-ItemProperty -Path $WinstationsKey -Name 'UdpPortNumber' -ErrorAction:SilentlyContinue -PropertyType:dword -Value 3390 -Force
 
 New-NetFirewallRule -DisplayName 'Remote Desktop - Shortpath (UDP-In)'  -Action Allow -Description 'Inbound rule for the Remote Desktop service to allow RDP traffic. [UDP 3390]' -Group '@FirewallAPI.dll,-28752' -Name 'RemoteDesktop-UserMode-In-Shortpath-UDP'  -PolicyStore PersistentStore -Profile Domain, Private -Service TermService -Protocol udp -LocalPort 3390 -Program '%SystemRoot%\system32\svchost.exe' -Enabled:True
-LogWriter(&quot;Custom script end&quot;)
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+LogWriter(&amp;quot;Custom script end&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The full script should look like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;# {&quot;Name&quot;: &quot;Enable RDP Shortpath&quot;,&quot;Description&quot;:&quot;This script enables the preview function for RDP Shortpath on the selected session hosts&quot;}
+&lt;pre&gt;&lt;code&gt;# {&amp;quot;Name&amp;quot;: &amp;quot;Enable RDP Shortpath&amp;quot;,&amp;quot;Description&amp;quot;:&amp;quot;This script enables the preview function for RDP Shortpath on the selected session hosts&amp;quot;}
 param(
-    [string]$paramLogFileName=&quot;WVD.Custom.log&quot;,
-	[string]$paramString=&quot;&quot;
+    [string]$paramLogFileName=&amp;quot;WVD.Custom.log&amp;quot;,
+	[string]$paramString=&amp;quot;&amp;quot;
 );
 
 # This powershell script is part of WVD Admin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
@@ -507,41 +318,33 @@ param(
 # Write a return string to WVDAdmin with the example in the last line
 
 # Define logfilen and dir
-$LogDir=&quot;$env:windir\system32\logfiles&quot;
-$LogFile=&quot;$LogDir\$paramLogFileName&quot;
+$LogDir=&amp;quot;$env:windir\system32\logfiles&amp;quot;
+$LogFile=&amp;quot;$LogDir\$paramLogFileName&amp;quot;
 
 function LogWriter($message)
 {
-    $message=&quot;$(Get-Date ([datetime]::UtcNow) -Format &quot;o&quot;) $message&quot;
+    $message=&amp;quot;$(Get-Date ([datetime]::UtcNow) -Format &amp;quot;o&amp;quot;) $message&amp;quot;
 	write-host($message)
 	if ([System.IO.Directory]::Exists($LogDir)) {write-output($message) | Out-File $LogFile -Append}
 }
 
-LogWriter(&quot;Custom script start&quot;)
+LogWriter(&amp;quot;Custom script start&amp;quot;)
 $WinstationsKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations'
 New-ItemProperty -Path $WinstationsKey -Name 'fUseUdpPortRedirector' -ErrorAction:SilentlyContinue -PropertyType:dword -Value 1 -Force
 New-ItemProperty -Path $WinstationsKey -Name 'UdpPortNumber' -ErrorAction:SilentlyContinue -PropertyType:dword -Value 3390 -Force
 
 New-NetFirewallRule -DisplayName 'Remote Desktop - Shortpath (UDP-In)'  -Action Allow -Description 'Inbound rule for the Remote Desktop service to allow RDP traffic. [UDP 3390]' -Group '@FirewallAPI.dll,-28752' -Name 'RemoteDesktop-UserMode-In-Shortpath-UDP'  -PolicyStore PersistentStore -Profile Domain, Private -Service TermService -Protocol udp -LocalPort 3390 -Program '%SystemRoot%\system32\svchost.exe' -Enabled:True
-LogWriter(&quot;Custom script end&quot;)
+LogWriter(&amp;quot;Custom script end&amp;quot;)
 
-Write-host(&quot;ScriptReturnMessage:{RDP Shortpath enabled - reboot the session hosts(s) to take effect}:ScriptReturnMessage&quot;)
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+Write-host(&amp;quot;ScriptReturnMessage:{RDP Shortpath enabled - reboot the session hosts(s) to take effect}:ScriptReturnMessage&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Alternatively, you can load the script from &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/EnableRDPShortPath.ps1&quot;&gt;here&lt;/a&gt; and copy it into WVDAdmin’s program file folder.&lt;/p&gt;
-
 &lt;p&gt;To load the scripts, restart WVDAdmin. You will see multiple “Information Adding scripts for session host management in the log windows: xxxx.ps1” messages, including your new EnableRDPShortPath.ps.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-02.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;To run the script on multiple hosts, go to a host pool, expand the node and click the “Session hosts” container.  Select the hosts, select your script “Enable RDP Shortpath” and click on “Run script”. After clicking OK, the script will be run in the system context on the session hosts. This will take a few minutes.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-03.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-04.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;After that - and in this case, after the next reboot - RDP Shortpath should be available for WVD users in directly connected networks.&lt;/p&gt;
-
 </description>
         <pubDate>Wed, 18 Nov 2020 00:00:00 +0100</pubDate>
         <link>/Windows-Virtual-Desktop-Admin-CustomScripts/</link>
@@ -555,181 +358,127 @@ Write-host(&quot;ScriptReturnMessage:{RDP Shortpath enabled - reboot the session
       <item>
         <title>INTERNAL Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these</title>
         <description>&lt;p&gt;Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Windows Virtual Desktop (WVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance.&lt;/p&gt;
-
 &lt;p&gt;I do that using Azure Monitor for WVD (&lt;a href=&quot;https://www.sepago.de/en/azure-monitor-en/&quot;&gt;https://www.sepago.de/en/azure-monitor-en/&lt;/a&gt;) from sepago, which is also included in Nerdio Manager for WVD (&lt;a href=&quot;https://getnerdio.com/nerdio-manager-for-wvd/&quot;&gt;https://getnerdio.com/nerdio-manager-for-wvd/&lt;/a&gt;).&lt;/p&gt;
-
 &lt;p&gt;The solution gives you insight into the performance of the apps and hosts and allows you to build a cost calculation on a per-user base. If you want to query and analyze data by other properties - like the department - you have to include these properties from Azure AD into your log analytics workspace.&lt;/p&gt;
-
 &lt;p&gt;I found an easy solution doing that with an Azure logic app. The logic app access the Azure AD tenant and queries the users and some defined properties and send it to log analytics. A challenge was to handle the challenge that you have to query multiple times to get all users from Azure AD (a single query gives you only a specific amount of users -&amp;gt; Paging). I solved this using an “Until-loop” to get all users. The logic app pushed the users and their properties to the defined log analytics workspace. After this, the users and properties can be used in a KUSTO query. For example: To query the over-all session runtime by the department.&lt;/p&gt;
-
 &lt;h2 id=&quot;installation-and-configuration&quot;&gt;Installation and configuration&lt;/h2&gt;
-
 &lt;p&gt;Deploy the prepared logic app into your subscription using the “Deploy to Azure” button.&lt;/p&gt;
-
 &lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FLA-AADUsersToLogAnalytics-v2.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;To query the Azure AD unattended, you need a service principal (a function account) with the right permission. Create the service principal in the Azure Portal:&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;Azure Active Directory -&amp;gt; App registrations -&amp;gt; New registration and give it a name (e.g. svc_AzureAdUserReader4AzureMonitor) and press register
+&lt;li&gt;Azure Active Directory -&amp;gt; App registrations -&amp;gt; New registration and give it a name (e.g. svc_AzureAdUserReader4AzureMonitor) and press register
 &lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-001.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Go to Certificates and secrets -&amp;gt; Add new client secret and type in a name (e.g. Key1) and expiration date (make a note into your calendar) and press add
+&lt;li&gt;Go to Certificates and secrets -&amp;gt; Add new client secret and type in a name (e.g. Key1) and expiration date (make a note into your calendar) and press add
 &lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-002.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Copy the generated secret for later use&lt;/li&gt;
-  &lt;li&gt;Go to Api permissions -&amp;gt; Add a permission -&amp;gt; select Microsoft Graph -&amp;gt; Application permissions -&amp;gt; select User.Read.All -&amp;gt; click Add permissions
+&lt;li&gt;Copy the generated secret for later use&lt;/li&gt;
+&lt;li&gt;Go to Api permissions -&amp;gt; Add a permission -&amp;gt; select Microsoft Graph -&amp;gt; Application permissions -&amp;gt; select User.Read.All -&amp;gt; click Add permissions
 &lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-003.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Click Grant admin consent to allow this setting (you have to be in the right role to do that)
+&lt;li&gt;Click Grant admin consent to allow this setting (you have to be in the right role to do that)
 &lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-004.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Go to overview and copy the application id and directory id for later use&lt;/li&gt;
+&lt;li&gt;Go to overview and copy the application id and directory id for later use&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;To upload the data to your Azure Monitor / log analytics workspace, you need the workspace id and key.&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;Go to your log analytics workspace -&amp;gt; select Advanced settings -&amp;gt; Agents management -&amp;gt; copy the workspace id and primary key for later use
+&lt;li&gt;Go to your log analytics workspace -&amp;gt; select Advanced settings -&amp;gt; Agents management -&amp;gt; copy the workspace id and primary key for later use
 &lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-005.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;Go to your deployed logic app and click edit.&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Expand “Until 2”&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Click on http. Enter the data from your service principal into the fields Tenant (Directory id), client id, and secret
+&lt;li&gt;
+&lt;p&gt;Expand “Until 2”&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Click on http. Enter the data from your service principal into the fields Tenant (Directory id), client id, and secret
 &lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-006.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Click on Connections and add a new one (Add new)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Give a name (e.g. ToLogAnalytics), the primary key and workspace id from log analytics and press create
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Click on Connections and add a new one (Add new)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;Give a name (e.g. ToLogAnalytics), the primary key and workspace id from log analytics and press create
 &lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-007.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
 &lt;/ul&gt;
-
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;Save the logic app and press run to test it.&lt;/p&gt;
-
 &lt;p&gt;If everything looks good, our logic app will write the user data to log analytics once a day.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-008.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;You can query the data from log analytics with “ITPC_CTX_ADUsers_CL”. Keep in mind that it takes a while (30 minutes) to build the first upload schema.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-009.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;&lt;strong&gt;Hint:&lt;/strong&gt;&lt;/p&gt;
-
 &lt;p&gt;You can modify the filter and the properties you get back, modifying the query URL. The URL can be modified in “Initialize variable” in the logic app.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-010.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;The default is:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;https://graph.microsoft.com/v1.0/users?$filter=accountEnabled eq true  and userType eq 'Member'&amp;amp;$select=userPrincipalName,onPremisesSamAccountName,employeeId,officeLocation,department
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+&lt;pre&gt;&lt;code&gt;https://graph.microsoft.com/v1.0/users?$filter=accountEnabled eq true  and userType eq 'Member'&amp;amp;$select=userPrincipalName,onPremisesSamAccountName,employeeId,officeLocation,department
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;A list of valid properties is here: &lt;a href=&quot;https://docs.microsoft.com/de-de/graph/api/resources/user?view=graph-rest-1.0&quot;&gt;https://docs.microsoft.com/de-de/graph/api/resources/user?view=graph-rest-1.0&lt;/a&gt;&lt;/p&gt;
-
 </description>
         <pubDate>Tue, 13 Oct 2020 00:00:00 +0200</pubDate>
         <link>/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data-INTERNAL/</link>
         <guid isPermaLink="true">/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data-INTERNAL/</guid>
         
         
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Monitor</category>
-        
       </item>
     
       <item>
         <title>Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these</title>
         <description>&lt;p&gt;Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Windows Virtual Desktop (WVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance.&lt;/p&gt;
-
 &lt;p&gt;I do that using Azure Monitor for WVD (&lt;a href=&quot;https://www.sepago.de/en/azure-monitor-en/&quot;&gt;https://www.sepago.de/en/azure-monitor-en/&lt;/a&gt;) from sepago, which is also included in Nerdio Manager for WVD (&lt;a href=&quot;https://getnerdio.com/nerdio-manager-for-wvd/&quot;&gt;https://getnerdio.com/nerdio-manager-for-wvd/&lt;/a&gt;).&lt;/p&gt;
-
 &lt;p&gt;The solution gives you insight into the performance of the apps and hosts and allows you to build a cost calculation on a per-user base. If you want to query and analyze data by other properties - like the department - you have to include these properties from Azure AD into your log analytics workspace.&lt;/p&gt;
-
 &lt;p&gt;I found an easy solution doing that with an Azure logic app. The logic app access the Azure AD tenant and queries the users and some defined properties and send it to log analytics. A challenge was to handle the challenge that you have to query multiple times to get all users from Azure AD (a single query gives you only a specific amount of users -&amp;gt; Paging). I solved this using an “Until-loop” to get all users. The logic app pushed the users and their properties to the defined log analytics workspace. After this, the users and properties can be used in a KUSTO query. For example: To query the over-all session runtime by the department.&lt;/p&gt;
-
 &lt;h2 id=&quot;installation-and-configuration&quot;&gt;Installation and configuration&lt;/h2&gt;
-
 &lt;p&gt;Deploy the prepared logic app into your subscription using the “Deploy to Azure” button.&lt;/p&gt;
-
 &lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FLA-AADUsersToLogAnalytics.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;To query the Azure AD unattended, you need a service principal (a function account) with the right permission. Create the service principal in the Azure Portal:&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;Azure Active Directory -&amp;gt; App registrations -&amp;gt; New registration and give it a name (e.g. svc_AzureAdUserReader4AzureMonitor) and press register
+&lt;li&gt;Azure Active Directory -&amp;gt; App registrations -&amp;gt; New registration and give it a name (e.g. svc_AzureAdUserReader4AzureMonitor) and press register
 &lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-001.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Go to Certificates and secrets -&amp;gt; Add new client secret and type in a name (e.g. Key1) and expiration date (make a note into your calendar) and press add
+&lt;li&gt;Go to Certificates and secrets -&amp;gt; Add new client secret and type in a name (e.g. Key1) and expiration date (make a note into your calendar) and press add
 &lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-002.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Copy the generated secret for later use&lt;/li&gt;
-  &lt;li&gt;Go to Api permissions -&amp;gt; Add a permission -&amp;gt; select Microsoft Graph -&amp;gt; Application permissions -&amp;gt; select User.Read.All -&amp;gt; click Add permissions
+&lt;li&gt;Copy the generated secret for later use&lt;/li&gt;
+&lt;li&gt;Go to Api permissions -&amp;gt; Add a permission -&amp;gt; select Microsoft Graph -&amp;gt; Application permissions -&amp;gt; select User.Read.All -&amp;gt; click Add permissions
 &lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-003.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Click Grant admin consent to allow this setting (you have to be in the right role to do that)
+&lt;li&gt;Click Grant admin consent to allow this setting (you have to be in the right role to do that)
 &lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-004.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-  &lt;li&gt;Go to overview and copy the application id and directory id for later use&lt;/li&gt;
+&lt;li&gt;Go to overview and copy the application id and directory id for later use&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;To upload the data to your Azure Monitor / log analytics workspace, you need the workspace id and key.&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;Go to your log analytics workspace -&amp;gt; select Advanced settings -&amp;gt; Agents management -&amp;gt; copy the workspace id and primary key for later use
+&lt;li&gt;Go to your log analytics workspace -&amp;gt; select Advanced settings -&amp;gt; Agents management -&amp;gt; copy the workspace id and primary key for later use
 &lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-005.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;Go to your deployed logic app and click edit.&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;Expand “Until 2”&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Click on http. Enter the data from your service principal into the fields Tenant (Directory id), client id, and secret
+&lt;li&gt;
+&lt;p&gt;Expand “Until 2”&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Click on http. Enter the data from your service principal into the fields Tenant (Directory id), client id, and secret
 &lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-006.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Click on Connections and add a new one (Add new)&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Give a name (e.g. ToLogAnalytics), the primary key and workspace id from log analytics and press create
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Click on Connections and add a new one (Add new)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;Give a name (e.g. ToLogAnalytics), the primary key and workspace id from log analytics and press create
 &lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-007.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
 &lt;/ul&gt;
-
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;Save the logic app and press run to test it.&lt;/p&gt;
-
 &lt;p&gt;If everything looks good, our logic app will write the user data to log analytics once a day.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-008.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;You can query the data from log analytics with “ITPC_CTX_ADUsers_CL”. Keep in mind that it takes a while (30 minutes) to build the first upload schema.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-009.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;&lt;strong&gt;Hint:&lt;/strong&gt;&lt;/p&gt;
-
 &lt;p&gt;You can modify the filter and the properties you get back, modifying the query URL. The URL can be modified in “Initialize variable” in the logic app.&lt;/p&gt;
-
 &lt;p&gt;&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-010.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;The default is:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;https://graph.microsoft.com/v1.0/users?$filter=accountEnabled eq true  and userType eq 'Member'&amp;amp;$select=userPrincipalName,onPremisesSamAccountName,employeeId,officeLocation,department
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+&lt;pre&gt;&lt;code&gt;https://graph.microsoft.com/v1.0/users?$filter=accountEnabled eq true  and userType eq 'Member'&amp;amp;$select=userPrincipalName,onPremisesSamAccountName,employeeId,officeLocation,department
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;A list of valid properties is here: &lt;a href=&quot;https://docs.microsoft.com/de-de/graph/api/resources/user?view=graph-rest-1.0&quot;&gt;https://docs.microsoft.com/de-de/graph/api/resources/user?view=graph-rest-1.0&lt;/a&gt;&lt;/p&gt;
-
 </description>
         <pubDate>Thu, 01 Oct 2020 00:00:00 +0200</pubDate>
         <link>/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/</link>
@@ -745,55 +494,30 @@ Write-host(&quot;ScriptReturnMessage:{RDP Shortpath enabled - reboot the session
       <item>
         <title>Least privileges with custom roles for Windows Virtual Desktop (WVD)</title>
         <description>&lt;p&gt;Administration, deployment, user support of Windows Virtual Desktop (WVD) needs permission in Azure. But these permissions are depending on the task a group of users/administrators have to do. For example, if the help desk has to log off and send messages to users, they need fewer permissions than the administrator building session hosts.&lt;/p&gt;
-
 &lt;p&gt;In the first step, the permission for the different groups can be given using the build-in roles in Azure and assigning them to the groups and specific resources. But this doesn’t allow us to assign granular permissions to fulfill the least privileges approach. To do that, we have to go with custom roles. Custom roles allow combining specific permission for different resource types to a new role. Luckily, Windows Virtual Desktop has many additional permissions per resource type (host pool, app group, workspace, etc.).&lt;/p&gt;
-
 &lt;p&gt;I combined the permission from WVD and from other resource types (like Microsoft Compute) to build eight roles I often use in projects to assign the least permission as needed for the different administrator. These roles can be used to assign them to users, groups, and even service principals (important for &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;). In my opinion, the best way is to assign these roles on a resource group level and not to a subscription level.&lt;/p&gt;
-
 &lt;p&gt;Before I describe the different new roles, I have to mention one “Specialty”: Assigning users to an app group in Windows Virtual Desktop needs that you have “Owner Permission” (or more precisely: &lt;em&gt;Microsoft.Authorization/roleAssignments/write&lt;/em&gt;) to the app group. While Azure doesn’t have the ability to assign owner permission in a role to a specific resource type, I didn’t add this permission to the roles. So, you can easily use the new roles on a resource group level, and you can be sure that the user only has the least permission, but you have to assign appropriate admins as an owner to (only) the app groups. Owner permission on resource groups causes that the user can do and rollout anything in these groups.&lt;/p&gt;
-
 &lt;p&gt;Note: In a real-world scenario where the least privileges approach for a specific group of admins is not necessary, owner permissions are given to the resource groups containing the WVD resources (especially the app groups).&lt;/p&gt;
-
 &lt;h2 id=&quot;my-common-wvd-roles&quot;&gt;My common WVD roles:&lt;/h2&gt;
-
 &lt;h3 id=&quot;wvd---user-session-reader&quot;&gt;WVD - User Session Reader&lt;/h3&gt;
-
 &lt;p&gt;Allows to read the user session and host pool properties of Windows Virtual Desktop.&lt;/p&gt;
-
 &lt;h3 id=&quot;wvd---user-session-contributor&quot;&gt;WVD - User Session Contributor&lt;/h3&gt;
-
 &lt;p&gt;Allows to work with the user session and read host pool properties of Windows Virtual Desktop host pools, including to send messages to users and logoff/disconnect user sessions&lt;/p&gt;
-
 &lt;h3 id=&quot;wvd---infrastructure-reader&quot;&gt;WVD - Infrastructure Reader&lt;/h3&gt;
-
 &lt;p&gt;Allows to read all properties of a WVD infrastructure: Host pools, session hosts, workspaces, app groups, and user sessions.&lt;/p&gt;
-
 &lt;h3 id=&quot;wvd---infrastructure-contributor&quot;&gt;WVD - Infrastructure Contributor&lt;/h3&gt;
-
 &lt;p&gt;Allows to read and write all properties of a WVD infrastructure but doesn’t allow to delete resources: Host pools, session hosts, workspaces, app groups, and user sessions.&lt;/p&gt;
-
 &lt;h3 id=&quot;wvd---infrastructure-administrator&quot;&gt;WVD - Infrastructure Administrator&lt;/h3&gt;
-
 &lt;p&gt;Allows to read and write all properties of a WVD infrastructure and allows to delete resources: Host pools, session hosts, workspaces, app groups, and user sessions.&lt;/p&gt;
-
-&lt;h3 id=&quot;wvd---infrastructure-administrator--vm-manager&quot;&gt;WVD - Infrastructure Administrator &amp;amp; VM Manager&lt;/h3&gt;
-
+&lt;h3 id=&quot;wvd---infrastructure-administrator-amp-vm-manager&quot;&gt;WVD - Infrastructure Administrator &amp;amp; VM Manager&lt;/h3&gt;
 &lt;p&gt;Allows to read and write all properties of a WVD infrastructure and allows to delete resources: Host pools, session hosts, workspaces, app groups, and user sessions. Additionally, the power state of all hosts and VMs can be changed.&lt;/p&gt;
-
 &lt;h3 id=&quot;wvd---template-and-session-host-administrator&quot;&gt;WVD - Template and Session Host Administrator&lt;/h3&gt;
-
 &lt;p&gt;Allows to create/modify/delete Virtual Machines, images, rollout new session hosts into host pools, and attach them to a vnet.&lt;/p&gt;
-
 &lt;h3 id=&quot;wvd---full-administrator&quot;&gt;WVD - Full Administrator&lt;/h3&gt;
-
 &lt;p&gt;Allows to create/modify/delete Virtual Machines, images, rollout new session hosts into host pools, attach them to a vnet, and all permissions from the role ‘WVD - Infrastructure Administrator &amp;amp; VM Manager’.&lt;/p&gt;
-
 &lt;p&gt;I’m happy about feedback and give me a ping if you want to have the ‘&lt;em&gt;Microsoft.Authorization/roleAssignments/write&lt;/em&gt;’ inside the contributor roles (but that doesn’t prevent users from getting higher permissions on the resource group).&lt;/p&gt;
-
 &lt;p&gt;Feel free to roll out these WVD roles into your own subscription (ignore the location, the roles are available in the subscription independent from the location - or take a look into the deployment &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AzureDeployments/WVD-Custom-Roles-01.json&quot;&gt;script&lt;/a&gt;):&lt;/p&gt;
-
 &lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWVD-Custom-Roles-01.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-
 </description>
         <pubDate>Thu, 10 Sep 2020 00:00:00 +0200</pubDate>
         <link>/Least-privileges-with-custom-roles-for-Windows-Virtual-Desktop-(WVD)/</link>
@@ -807,25 +531,16 @@ Write-host(&quot;ScriptReturnMessage:{RDP Shortpath enabled - reboot the session
       <item>
         <title>Shadow a WVD user with least privileges</title>
         <description>&lt;p&gt;WVD allows local administrators to shadow user sessions. You can do this  easily with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; or using the command-line like this:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;mstsc /v:WVD-DESIGN-404 /control /shadow:2 /prompt
+&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;&gt;mstsc /v:WVD-DESIGN-404 /control /shadow:2 /prompt
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;In most companies, a help desk agent supports users using applications. For that, local admin privileges are not necessary and not recommended. To allow help desk agents shadowing users in WVD, you have to give these users (or better: a user group) only the needed permission. To do this, execute the following command in an administrative cmd:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL AddAccount 'ITPROCLOUD\ADM_WVD-Shadowing',2
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+&lt;pre&gt;&lt;code&gt;wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL AddAccount 'ITPROCLOUD\ADM_WVD-Shadowing',2
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;This gives the users of the group &lt;strong&gt;ITPROCLOUD\ADM_WVD-Shadowing&lt;/strong&gt; the needed permission directly on the RDP-SXS stack (you need to reboot the session host).
 I would run this command on the template VM / golden Image to have this permission configured for each session host. Alternatively, you can run this in a computer-logon script for existing session hosts.&lt;/p&gt;
-
 &lt;p&gt;Hint: You can reset this setting with:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL RestoreDefaults
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+&lt;pre&gt;&lt;code&gt;wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL RestoreDefaults
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Take a look how shadowing a user session with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; looks like: &lt;a href=&quot;https://twitter.com/i/status/1229472041423732736&quot;&gt;https://twitter.com/i/status/1229472041423732736&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Mon, 24 Aug 2020 00:00:00 +0200</pubDate>
@@ -842,56 +557,32 @@ I would run this command on the template VM / golden Image to have this permissi
         <description>&lt;p&gt;I’m working in the WVD area and often create golden images to deploy session hosts for WVD - mainly based on Windows 10 Enterprise multi-session.
 To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep.
 One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;sysprep.exe /generalize /oobe /shutdown /mode:vm
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+&lt;pre&gt;&lt;code&gt;sysprep.exe /generalize /oobe /shutdown /mode:vm
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Sometimes I run into an issue, and Sysprep stops work with an error message:
 &lt;img src=&quot;../assets/images/Sysprep-01.png&quot; alt=&quot;Sysprep&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;Digging into the log file show the issue:
 &lt;img src=&quot;../assets/images/Sysprep-02.png&quot; alt=&quot;Sysprep&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;Error: Package XXXXXXX was installed for a user, but not provisioned for all users.&lt;/p&gt;
-
 &lt;p&gt;The package various. Sometimes I got a part of a language pack or other internal app packages. To run into the problem with certainty, install an app from the Windows Store.&lt;/p&gt;
-
 &lt;p&gt;Let’s find out what happens, for doing that I installed different applications from the Windows Store into the VM and tried to Sysprep the VM. The first package blocking Sysprep was in this test “5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm”&lt;/p&gt;
-
 &lt;p&gt;To get details of the package run the following PowerShell script with administrative privileges:&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm')}
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+&lt;pre&gt;&lt;code&gt;Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm')}
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The returned object shows that this package is only installed for the local administrator (installing the apps from the Windows Store). The user querying this data (mm-admin) doesn’t have this package installed.
 &lt;img src=&quot;../assets/images/Sysprep-03.png&quot; alt=&quot;Sysprep&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;Okay. Appx packages from the store are personnel and not shared with all users on a VM (to install appx packages for all users, you have to sideload the packages with DISM.exe). So I tried to remove this app from all users:_&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm')} | Remove-AppxPackage -AllUsers
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+&lt;pre&gt;&lt;code&gt;Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm')} | Remove-AppxPackage -AllUsers
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Ok. Sysprep again. The next issue occurs: Sysprep has the same problem with NetFlix - installed only for one user of the VM. Instead of removing the packages by trial and error, I found another way: Teach Sysprep to ignore this behavior. I guess it’s not a problem having an appx package assigned to only one user - even if it and administrative user.&lt;/p&gt;
-
-&lt;p&gt;I figured out that Sysprep uses an XML file with a set of rules preparing a VM. The rule-set for generalizing an image is stored in &lt;code class=&quot;highlighter-rouge&quot;&gt;&quot;C:\windows\System32\sysprep\ActionFiles\Generalize.xml&quot;&lt;/code&gt;&lt;/p&gt;
-
+&lt;p&gt;I figured out that Sysprep uses an XML file with a set of rules preparing a VM. The rule-set for generalizing an image is stored in &lt;code&gt;&amp;quot;C:\windows\System32\sysprep\ActionFiles\Generalize.xml&amp;quot;&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;To ignore the installed or update AppX package remove the following lines and save Generalize.xml (you have to take ownership of the file and give yourself permission to do that):&lt;/p&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;&amp;lt;sysprepOrder order=&quot;0x1A00&quot;&amp;gt;&amp;lt;/sysprepOrder&amp;gt;
-&amp;lt;sysprepValidate methodName=&quot;SysprepGeneralizeValidate&quot; moduleName=&quot;$(runtime.system32)\AppxSysprep.dll&quot;&amp;gt;&amp;lt;/sysprepValidate&amp;gt;
-&amp;lt;sysprepModule methodName=&quot;SysprepGeneralize&quot; moduleName=&quot;$(runtime.system32)\AppxSysprep.dll&quot;&amp;gt;&amp;lt;/sysprepModule&amp;gt;&amp;lt;/imaging&amp;gt;&amp;lt;imaging exclude=&quot;&quot;&amp;gt;&amp;lt;assemblyIdentity name=&quot;Microsoft-Windows-SecureBoot-FirmwareUpdate&quot; version=&quot;10.0.19041.1&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; processorArchitecture=&quot;amd64&quot; versionScope=&quot;NonSxS&quot;&amp;gt;&amp;lt;/assemblyIdentity&amp;gt;
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+&lt;pre&gt;&lt;code&gt;&amp;lt;sysprepOrder order=&amp;quot;0x1A00&amp;quot;&amp;gt;&amp;lt;/sysprepOrder&amp;gt;
+&amp;lt;sysprepValidate methodName=&amp;quot;SysprepGeneralizeValidate&amp;quot; moduleName=&amp;quot;$(runtime.system32)\AppxSysprep.dll&amp;quot;&amp;gt;&amp;lt;/sysprepValidate&amp;gt;
+&amp;lt;sysprepModule methodName=&amp;quot;SysprepGeneralize&amp;quot; moduleName=&amp;quot;$(runtime.system32)\AppxSysprep.dll&amp;quot;&amp;gt;&amp;lt;/sysprepModule&amp;gt;&amp;lt;/imaging&amp;gt;&amp;lt;imaging exclude=&amp;quot;&amp;quot;&amp;gt;&amp;lt;assemblyIdentity name=&amp;quot;Microsoft-Windows-SecureBoot-FirmwareUpdate&amp;quot; version=&amp;quot;10.0.19041.1&amp;quot; publicKeyToken=&amp;quot;31bf3856ad364e35&amp;quot; processorArchitecture=&amp;quot;amd64&amp;quot; versionScope=&amp;quot;NonSxS&amp;quot;&amp;gt;&amp;lt;/assemblyIdentity&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/Sysprep-04.png&quot; alt=&quot;Sysprep&quot; /&gt;&lt;/p&gt;
-
 &lt;p&gt;After that Sysprep runs without an issue. Rolling out a session host based on the new image works, and even the user could logon without a problem (and yes: they don’t have the Store apps from the local admin - as expected).&lt;/p&gt;
-
 &lt;p&gt;Maybe there are some smarter ways to handle UWP and Sysprep (if you know one - let me know it, too). But this solves an issue creating or updating an image for WVD based on a template VM (golden image approach).&lt;/p&gt;
 </description>
         <pubDate>Tue, 28 Jul 2020 00:00:00 +0200</pubDate>
@@ -905,8 +596,7 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
     
       <item>
         <title>PolarConf 2019 - Building own solutions whit Azure Monitor </title>
-        <description>&lt;p&gt;&lt;a href=&quot;../assets/files/WVD - How to enjoy perfect published apps and desktops.pdf&quot;&gt;Azure Global Bootcamp - WVD - How to enjoy perfect published apps and desktops.pdf&lt;/a&gt;&lt;/p&gt;
-
+        <description>&lt;p&gt;[Azure Global Bootcamp - WVD - How to enjoy perfect published apps and desktops.pdf](../assets/files/WVD - How to enjoy perfect published apps and desktops.pdf)&lt;/p&gt;
 </description>
         <pubDate>Mon, 25 May 2020 00:00:00 +0200</pubDate>
         <link>/Azure-Global-Bootcamp-2020/</link>
@@ -918,178 +608,112 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
       <item>
         <title>Windows Virtual Desktop - Monitoring the Spring Backend - WVD</title>
         <description>&lt;p&gt;The long await update from WVD is public. It comes with a full ARM integration and is natively useable in the Azure Portal. Some things changed from the Fall to Spring update, and that’s include monitoring.&lt;/p&gt;
-
 &lt;p&gt;In this post, I’m focused on monitoring the WVD backend and not monitoring the sessions, applications, session host performance, latency, etc. To exactly monitoring these metrics, check out the solution &lt;a href=&quot;https://www.sepago.de/en/azure-monitor-en/&quot;&gt;“Azure Monitor for WVD”&lt;/a&gt; which works for Fall and the Spring update - and the new version comes with great Azure workbooks to additionally visualize data by host pool.&lt;/p&gt;
-
 &lt;p&gt;The Fall update writes logs to Azure Monitor / Log Analytics as custom logs. There is a &lt;a href=&quot;https://techcommunity.microsoft.com/t5/azure-sentinel/monitoring-windows-virtual-desktop-environments-fall-2019/ba-p/1356632&quot;&gt;really good blog post&lt;/a&gt; about this.&lt;/p&gt;
-
 &lt;p&gt;The Spring update writes logs to Log Analytics as well, but they have a different name and schema. To enable logging the backend, you have to enable the diagnostic settings on all involved resources:&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;Workspace&lt;/li&gt;
-  &lt;li&gt;Host Pool&lt;/li&gt;
-  &lt;li&gt;App Group&lt;/li&gt;
+&lt;li&gt;Workspace&lt;/li&gt;
+&lt;li&gt;Host Pool&lt;/li&gt;
+&lt;li&gt;App Group&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;Make sure that you select all logs and select your Log Analytics workspace (if you use sepago’s “Azure Monitor for WVD” use the same Log Analytics workspace for the backend logging)&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\Azure Monitor for WVD\Blog-01-05.png&quot; alt=&quot;Registry with values&quot; /&gt;&lt;/p&gt;
-
+&lt;p&gt;![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-05.png)&lt;/p&gt;
 &lt;p&gt;If you have done this for all resources, the WVD send logs to the selected workspace. Keep in mind that writing the first entries can take up to 20 minutes to build the data schema initially.&lt;/p&gt;
-
 &lt;p&gt;After a while, you should have log data in your Log Analytics workspace:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\Azure Monitor for WVD\Blog-01-06.png&quot; alt=&quot;Registry with values&quot; /&gt;&lt;/p&gt;
-
+&lt;p&gt;![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-06.png)&lt;/p&gt;
 &lt;p&gt;You can see the following logs (tables):&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;WVDCheckpoints
-    &lt;ul&gt;
-      &lt;li&gt;Intermediate steps while establishing and running a connection&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;WVDConnections
-    &lt;ul&gt;
-      &lt;li&gt;Start/End of connections&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;WVDErrors
-    &lt;ul&gt;
-      &lt;li&gt;Errors while establishing a connection, failures during the administration, failures getting feed informations&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;WVDHostRegistrations
-    &lt;ul&gt;
-      &lt;li&gt;About session host registration to host pools&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;WVDManagement
-    &lt;ul&gt;
-      &lt;li&gt;Administration log&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+&lt;li&gt;WVDCheckpoints
+&lt;ul&gt;
+&lt;li&gt;Intermediate steps while establishing and running a connection&lt;/li&gt;
 &lt;/ul&gt;
-
+&lt;/li&gt;
+&lt;li&gt;WVDConnections
+&lt;ul&gt;
+&lt;li&gt;Start/End of connections&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;WVDErrors
+&lt;ul&gt;
+&lt;li&gt;Errors while establishing a connection, failures during the administration, failures getting feed informations&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;WVDHostRegistrations
+&lt;ul&gt;
+&lt;li&gt;About session host registration to host pools&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;WVDManagement
+&lt;ul&gt;
+&lt;li&gt;Administration log&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;The logs are internally connectable with their correlation id you have in each log.&lt;/p&gt;
-
 &lt;h2 id=&quot;lets-start-digging-some-data&quot;&gt;Let’s start digging some data&lt;/h2&gt;
-
 &lt;p&gt;Open Log Analytics an go to “Logs” and run your queries based on the KUSTO query language.&lt;/p&gt;
-
 &lt;h3 id=&quot;count-of-brokered-sessions-by-state&quot;&gt;Count of brokered sessions by state&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;WVDConnections 
-| where State =~ &quot;Started&quot; and Type =~&quot;WVDConnections&quot; 
-| extend CState=iff(SessionHostOSVersion==&quot;&amp;lt;&amp;gt;&quot;,&quot;Failure&quot;,&quot;Success&quot;) | summarize Count=count() by State=CState
+&lt;pre&gt;&lt;code&gt;WVDConnections 
+| where State =~ &amp;quot;Started&amp;quot; and Type =~&amp;quot;WVDConnections&amp;quot; 
+| extend CState=iff(SessionHostOSVersion==&amp;quot;&amp;lt;&amp;gt;&amp;quot;,&amp;quot;Failure&amp;quot;,&amp;quot;Success&amp;quot;) | summarize Count=count() by State=CState
 | render piechart 
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\Azure Monitor for WVD\Blog-01-02.png&quot; alt=&quot;Registry with values&quot; /&gt;&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-02.png)&lt;/p&gt;
 &lt;h3 id=&quot;failed-connections&quot;&gt;Failed connections&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;WVDConnections 
-| where State =~ &quot;Started&quot; and Type =~&quot;WVDConnections&quot; 
-| extend Multi=split(_ResourceId, &quot;/&quot;) | extend CState=iff(SessionHostOSVersion==&quot;&amp;lt;&amp;gt;&quot;,&quot;Failure&quot;,&quot;Success&quot;)
-| where CState=~&quot;Failure&quot; 
+&lt;pre&gt;&lt;code&gt;WVDConnections 
+| where State =~ &amp;quot;Started&amp;quot; and Type =~&amp;quot;WVDConnections&amp;quot; 
+| extend Multi=split(_ResourceId, &amp;quot;/&amp;quot;) | extend CState=iff(SessionHostOSVersion==&amp;quot;&amp;lt;&amp;gt;&amp;quot;,&amp;quot;Failure&amp;quot;,&amp;quot;Success&amp;quot;)
+| where CState=~&amp;quot;Failure&amp;quot; 
 | project TimeStamp=TimeGenerated, UserName, ResourceGroup=Multi[4], HostPool=Multi[8],ResourceAlias, SessionHost=SessionHostName, ClientOS=ClientOS, ClientWvdVersion=ClientVersion, CorrelationId
 | order by TimeStamp desc
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&quot;failed-connection-with-details&quot;&gt;Failed connection with details&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;WVDConnections | where State =~ &quot;Started&quot; and Type =~&quot;WVDConnections&quot; 
-| extend Multi=split(_ResourceId, &quot;/&quot;) | extend CState=iff(SessionHostOSVersion==&quot;&amp;lt;&amp;gt;&quot;,&quot;Failure&quot;,&quot;Success&quot;)
-| where CState =~&quot;Failure&quot;
+&lt;pre&gt;&lt;code&gt;WVDConnections | where State =~ &amp;quot;Started&amp;quot; and Type =~&amp;quot;WVDConnections&amp;quot; 
+| extend Multi=split(_ResourceId, &amp;quot;/&amp;quot;) | extend CState=iff(SessionHostOSVersion==&amp;quot;&amp;lt;&amp;gt;&amp;quot;,&amp;quot;Failure&amp;quot;,&amp;quot;Success&amp;quot;)
+| where CState =~&amp;quot;Failure&amp;quot;
 | order by TimeGenerated desc
-| where State =~ &quot;Started&quot; | extend Multi=split(_ResourceId, &quot;/&quot;) 
-| project ResourceAlias, ResourceGroup=Multi[4], HostPool=Multi[8], SessionHostName ,UserName ,CState=iff(SessionHostOSVersion==&quot;&amp;lt;&amp;gt;&quot;,&quot;Failure&quot;,&quot;Success&quot;), CorrelationId, TimeGenerated
+| where State =~ &amp;quot;Started&amp;quot; | extend Multi=split(_ResourceId, &amp;quot;/&amp;quot;) 
+| project ResourceAlias, ResourceGroup=Multi[4], HostPool=Multi[8], SessionHostName ,UserName ,CState=iff(SessionHostOSVersion==&amp;quot;&amp;lt;&amp;gt;&amp;quot;,&amp;quot;Failure&amp;quot;,&amp;quot;Success&amp;quot;), CorrelationId, TimeGenerated
 | join kind= leftouter (
     WVDErrors 
 ) on CorrelationId
-| extend DurationFromLogon=datetime_diff(&quot;Second&quot;,TimeGenerated1,TimeGenerated)
+| extend DurationFromLogon=datetime_diff(&amp;quot;Second&amp;quot;,TimeGenerated1,TimeGenerated)
 | project  TimeStamp=TimeGenerated, DurationFromLogon, UserName, ResourceAlias ,SessionHost=SessionHostName ,Source ,CodeSymbolic , ErrorMessage=Message, ErrorCode=Code, ErrorSource=Source ,ServiceError, CorrelationId
 | order by TimeStamp desc
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;
 &lt;h3 id=&quot;session-logon-duration-by-host-pool&quot;&gt;Session logon duration by host pool&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;WVDConnections 
-| where Type =~&quot;WVDConnections&quot; and State =~ &quot;Started&quot; | extend Multi=split(_ResourceId, &quot;/&quot;) | project ResourceAlias, HostPool=toupper(HP=Multi[8]), SessionHostName , UserName ,CState=iff(SessionHostOSVersion==&quot;&amp;lt;&amp;gt;&quot;,&quot;Failure&quot;,&quot;Success&quot;), CorrelationId, TimeGenerated, ResourceGroup=Multi[4], DesktopGroup_s=toupper(strcat(RG=Multi[4],&quot;.&quot;, HP=Multi[8])) 
+&lt;pre&gt;&lt;code&gt;WVDConnections 
+| where Type =~&amp;quot;WVDConnections&amp;quot; and State =~ &amp;quot;Started&amp;quot; | extend Multi=split(_ResourceId, &amp;quot;/&amp;quot;) | project ResourceAlias, HostPool=toupper(HP=Multi[8]), SessionHostName , UserName ,CState=iff(SessionHostOSVersion==&amp;quot;&amp;lt;&amp;gt;&amp;quot;,&amp;quot;Failure&amp;quot;,&amp;quot;Success&amp;quot;), CorrelationId, TimeGenerated, ResourceGroup=Multi[4], DesktopGroup_s=toupper(strcat(RG=Multi[4],&amp;quot;.&amp;quot;, HP=Multi[8])) 
 | join kind= leftouter (
     WVDCheckpoints 
 ) on CorrelationId
-| extend DurationFromLogon=datetime_diff(&quot;Second&quot;,TimeGenerated1,TimeGenerated)
-| where Name=~&quot;RdpStackLogon&quot; 
+| extend DurationFromLogon=datetime_diff(&amp;quot;Second&amp;quot;,TimeGenerated1,TimeGenerated)
+| where Name=~&amp;quot;RdpStackLogon&amp;quot; 
 | project UserName, ResourceGroup, DesktopGroup_s,SessionHost=SessionHostName, TimeStamp=TimeGenerated1, DurationFromLogon
 | summarize DurationInSeconds=avg(DurationFromLogon) by HostPool=DesktopGroup_s 
 | render columnchart kind=unstacked 
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\Azure Monitor for WVD\Blog-01-01.png&quot; alt=&quot;Registry with values&quot; /&gt;&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-01.png)&lt;/p&gt;
 &lt;h3 id=&quot;session-logon-duration-by-user-desc&quot;&gt;Session logon duration by user (desc)&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-kusto&quot;&gt;WVDConnections 
-| where Type =~&quot;WVDConnections&quot; and State =~ &quot;Started&quot; | extend Multi=split(_ResourceId, &quot;/&quot;) | project ResourceAlias, HostPool=toupper(HP=Multi[8]), SessionHostName , UserName ,CState=iff(SessionHostOSVersion==&quot;&amp;lt;&amp;gt;&quot;,&quot;Failure&quot;,&quot;Success&quot;), CorrelationId, TimeGenerated, ResourceGroup=Multi[4], DesktopGroup_s=toupper(strcat(RG=Multi[4],&quot;.&quot;, HP=Multi[8])) 
+&lt;pre&gt;&lt;code class=&quot;language-kusto&quot;&gt;&gt;WVDConnections 
+| where Type =~&amp;quot;WVDConnections&amp;quot; and State =~ &amp;quot;Started&amp;quot; | extend Multi=split(_ResourceId, &amp;quot;/&amp;quot;) | project ResourceAlias, HostPool=toupper(HP=Multi[8]), SessionHostName , UserName ,CState=iff(SessionHostOSVersion==&amp;quot;&amp;lt;&amp;gt;&amp;quot;,&amp;quot;Failure&amp;quot;,&amp;quot;Success&amp;quot;), CorrelationId, TimeGenerated, ResourceGroup=Multi[4], DesktopGroup_s=toupper(strcat(RG=Multi[4],&amp;quot;.&amp;quot;, HP=Multi[8])) 
 | join kind= leftouter (
     WVDCheckpoints 
 ) on CorrelationId
-| extend DurationFromLogon=datetime_diff(&quot;Second&quot;,TimeGenerated1,TimeGenerated)
-| where Name=~&quot;RdpStackLogon&quot; 
+| extend DurationFromLogon=datetime_diff(&amp;quot;Second&amp;quot;,TimeGenerated1,TimeGenerated)
+| where Name=~&amp;quot;RdpStackLogon&amp;quot; 
 | project UserName, ResourceGroup, DesktopGroup_s,SessionHost=SessionHostName, TimeStamp=TimeGenerated1, DurationFromLogon
 | summarize DurationInSeconds=avg(DurationFromLogon) by HostPool=UserName
 | order by DurationInSeconds desc 
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;h3 id=&quot;administrative-activities-over-time&quot;&gt;Administrative activities over time&lt;/h3&gt;
-
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;rouge-gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
-2
-3
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;rouge-code&quot;&gt;&lt;pre&gt;WVDManagement 
+&lt;pre&gt;&lt;code&gt;WVDManagement 
 | summarize Count=count() by bin(TimeGenerated,15)
 | render scatterchart 
-&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\Azure Monitor for WVD\Blog-01-03.png&quot; alt=&quot;Registry with values&quot; /&gt;&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-03.png)&lt;/p&gt;
 &lt;p&gt;Good to know: Sepago’s commercial “Azure Monitor for WVD”  brings the ready to use Azure workbooks for the session and app monitoring and workbooks for the WVD backend:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\Azure Monitor for WVD\Blog-01-07.png&quot; alt=&quot;Registry with values&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-07.png)&lt;/p&gt;
 </description>
         <pubDate>Tue, 05 May 2020 00:00:00 +0200</pubDate>
         <link>/Windows-Virtual-Desktop-Monitoring-the-Spring-backend/</link>
@@ -1105,123 +729,102 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
       <item>
         <title>Migrate Windows Virtual Desktop Host Pools from Fall to Spring Release - WVD</title>
         <description>&lt;p&gt;The long await update from WVD is public. It comes with a full ARM integration and is natively useable in the Azure Portal. The change from Fall to Spring (the name of both releases) cames without a build-in migration solution right now. You can rebuild your host pools and app groups and manually join your existing session hosts into the new once.&lt;/p&gt;
-
 &lt;p&gt;With WVDAdmin I added two features to do that directly from the GUI:&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;Migrate a host pool to the Spring update: Creates a new host pool with the same properties as an existing host pool in the Fall update&lt;/li&gt;
-  &lt;li&gt;Move session hosts to another host pool*: Works in each direction and from host pool to host poll in the same version (you can use this additionally to remove an assigned user from a session host).&lt;/li&gt;
+&lt;li&gt;Migrate a host pool to the Spring update: Creates a new host pool with the same properties as an existing host pool in the Fall update&lt;/li&gt;
+&lt;li&gt;Move session hosts to another host pool*: Works in each direction and from host pool to host poll in the same version (you can use this additionally to remove an assigned user from a session host).&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;Note: If you are using WVDAdmin V1.5.5 or lower (v1.5.6 and higher downloads the files from Microsoft if internet access is not blogged): You can only move session hosts from host pool to host pool if you built the session host with WVDAdmin. If not, and you want to use this function with your other deployed session create a folder “ITPC-WVD-PostCustomizing” in C:\ and copy the RDAgent files into this folder and rename the files:&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv&quot;&gt;Microsoft.RDInfra.RDAgent.msi&lt;/a&gt; (rename the file)&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH&quot;&gt;Microsoft.RDInfra.RDAgentBootLoader.msi&lt;/a&gt; (rename the file)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv&quot;&gt;Microsoft.RDInfra.RDAgent.msi&lt;/a&gt; (rename the file)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH&quot;&gt;Microsoft.RDInfra.RDAgentBootLoader.msi&lt;/a&gt; (rename the file)&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;Make sure that you rename the files to fit the list above (without version numbers).&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\WVDAdmin\Migrate-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&quot;..%5Cassets%5Cimages%5CWVDAdmin%5CMigrate-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;But first: If you are new to WVD Spring update and have never used it before in your subscription, you have to register the service provider Microsoft.DesktopVirtualization (one-time process). You must be the owner of this subscription to do this. Go to your subscription -&amp;gt; Resource providers -&amp;gt; search for “Microsoft.DesktopVirtualization” and click register:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;..\assets\images\WVDAdmin\ResourceProvider.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&quot;..%5Cassets%5Cimages%5CWVDAdmin%5CResourceProvider.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
 &lt;h2 id=&quot;the-migration-process&quot;&gt;The migration process&lt;/h2&gt;
-
 &lt;p&gt;The easiest way to migrate a Host Pool from Fall to Spring is by using WVDAdmin. If you have not WVDAdmin before, check out this &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;post&lt;/a&gt; .&lt;/p&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;Right-click your existing host pool and click: Migrate Host Pool settings to WVD Spring Update&lt;/li&gt;
-  &lt;li&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Select a target subscription and resource group (note: be sure not to mix different host pools in one resource group with app groups having the same name. If you do this, you will see that the migration process cannot migrate this app groups)&lt;/li&gt;
-      &lt;li&gt;Select a region: The region saved the meta-data and is independent of the region of your session hosts. There are only limited regions today&lt;/li&gt;
-      &lt;li&gt;Enter a name for your new Spring host pool&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Logoff all users&lt;/li&gt;
-  &lt;li&gt;Right-click a session host and click “Change host pool” (read my note above, if this host was not created with WVDAdmin)&lt;/li&gt;
-  &lt;li&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Select the target host pool. Spring update host pools are tagged with a ²&lt;/li&gt;
-      &lt;li&gt;Check “Keep user assignment” if you migrate aa assigned session hosts and want to keep the assignment. If you uncheck this, the user assignment will be repealed&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Repeat the step “Right-click your existing host pool and click: Migrate Host Pool settings to WVD Spring Update” to re-create the icons for your applications. This can only be done if one session host is online&lt;/li&gt;
-  &lt;li&gt;Give the right user groups permission to the app groups: Click the app group(s) and click the button “Users and groups assignments” and start typing the name of the group(s). Note: I don’t migrate the user permission from the fall update believing that you won’t to add groups instead of single users&lt;/li&gt;
-  &lt;li&gt;Create a Workspace&lt;/li&gt;
-  &lt;li&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Create a Workspace right-clicking the workspace note. Create a workspace in the same region as your new host pool&lt;/li&gt;
-      &lt;li&gt;Right-click the workspace and add/link the app groups you have created&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;Move more session hosts to the new host pool&lt;/li&gt;
-  &lt;li&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Right-click the session host note and select “Change host pool”&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+&lt;li&gt;Right-click your existing host pool and click: Migrate Host Pool settings to WVD Spring Update&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;Select a target subscription and resource group (note: be sure not to mix different host pools in one resource group with app groups having the same name. If you do this, you will see that the migration process cannot migrate this app groups)&lt;/li&gt;
+&lt;li&gt;Select a region: The region saved the meta-data and is independent of the region of your session hosts. There are only limited regions today&lt;/li&gt;
+&lt;li&gt;Enter a name for your new Spring host pool&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;After that, you should see your resources in the native RD client and in the HTML web site which has a new URL: https://rdweb.wvd.microsoft.com/arm/webclient&lt;/strong&gt;&lt;/p&gt;
-
+&lt;/li&gt;
+&lt;li&gt;Logoff all users&lt;/li&gt;
+&lt;li&gt;Right-click a session host and click “Change host pool” (read my note above, if this host was not created with WVDAdmin)&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;Select the target host pool. Spring update host pools are tagged with a ²&lt;/li&gt;
+&lt;li&gt;Check “Keep user assignment” if you migrate aa assigned session hosts and want to keep the assignment. If you uncheck this, the user assignment will be repealed&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Repeat the step “Right-click your existing host pool and click: Migrate Host Pool settings to WVD Spring Update” to re-create the icons for your applications. This can only be done if one session host is online&lt;/li&gt;
+&lt;li&gt;Give the right user groups permission to the app groups: Click the app group(s) and click the button “Users and groups assignments” and start typing the name of the group(s). Note: I don’t migrate the user permission from the fall update believing that you won’t to add groups instead of single users&lt;/li&gt;
+&lt;li&gt;Create a Workspace&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a Workspace right-clicking the workspace note. Create a workspace in the same region as your new host pool&lt;/li&gt;
+&lt;li&gt;Right-click the workspace and add/link the app groups you have created&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Move more session hosts to the new host pool&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;Right-click the session host note and select “Change host pool”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;After that, you should see your resources in the native RD client and in the HTML web site which has a new URL: &lt;a href=&quot;https://rdweb.wvd.microsoft.com/arm/webclient&quot;&gt;https://rdweb.wvd.microsoft.com/arm/webclient&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;h2 id=&quot;debuggingnotes&quot;&gt;Debugging/notes:&lt;/h2&gt;
-
 &lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;If you are using WVDAdmin V1.5.5 or lower (v1.5.6 and higher downloads the files from Microsoft if internet access is not blogged): Moving session host works with host created with WVDAdmin or if you create a folder “ITPC-WVD-PostCustomizing”. Copy the files into it:&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv&quot;&gt;Microsoft.RDInfra.RDAgent.msi&lt;/a&gt; (rename the file)&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH&quot;&gt;Microsoft.RDInfra.RDAgentBootLoader.msi&lt;/a&gt; (rename the file)&lt;/p&gt;
-
-        &lt;p&gt;&lt;img src=&quot;..\assets\images\WVDAdmin\Migrate-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;You cannot have app groups with from different host pools with the same name in one resource group&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;Register Microsoft.DesktopVirtualization service provider
-&lt;img src=&quot;..\assets\images\WVDAdmin\ResourceProvider.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The service principal of WVDAdmin needs owner permission to the resource groups containing the app groups to add/remove users&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;The HTML5 client has a new URL: https://rdweb.wvd.microsoft.com/arm/webclient&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;If you “lost” a session host you can add them manually to a host pool by doing:&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;ul&gt;
-      &lt;li&gt;Login to the VM&lt;/li&gt;
-      &lt;li&gt;Uninstall the RD agent and bootloader&lt;/li&gt;
-      &lt;li&gt;Install the bootloader&lt;/li&gt;
-      &lt;li&gt;install the agent and copy the registration key for the target host pool into the installation screen&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If you are using WVDAdmin V1.5.5 or lower (v1.5.6 and higher downloads the files from Microsoft if internet access is not blogged): Moving session host works with host created with WVDAdmin or if you create a folder “ITPC-WVD-PostCustomizing”. Copy the files into it:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv&quot;&gt;Microsoft.RDInfra.RDAgent.msi&lt;/a&gt; (rename the file)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH&quot;&gt;Microsoft.RDInfra.RDAgentBootLoader.msi&lt;/a&gt; (rename the file)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;..%5Cassets%5Cimages%5CWVDAdmin%5CMigrate-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ul&gt;
-
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;You cannot have app groups with from different host pools with the same name in one resource group&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Register Microsoft.DesktopVirtualization service provider
+&lt;img src=&quot;..%5Cassets%5Cimages%5CWVDAdmin%5CResourceProvider.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The service principal of WVDAdmin needs owner permission to the resource groups containing the app groups to add/remove users&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The HTML5 client has a new URL: &lt;a href=&quot;https://rdweb.wvd.microsoft.com/arm/webclient&quot;&gt;https://rdweb.wvd.microsoft.com/arm/webclient&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If you “lost” a session host you can add them manually to a host pool by doing:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;Login to the VM&lt;/li&gt;
+&lt;li&gt;Uninstall the RD agent and bootloader&lt;/li&gt;
+&lt;li&gt;Install the bootloader&lt;/li&gt;
+&lt;li&gt;install the agent and copy the registration key for the target host pool into the installation screen&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
 &lt;p&gt;I record a short video showing the migration process:&lt;/p&gt;
-
-&lt;iframe width=&quot;800&quot; height=&quot;815&quot; src=&quot;https://www.youtube-nocookie.com/embed/pqGsIdFxTs4&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;
-
+&lt;iframe width=&quot;800&quot; height=&quot;815&quot; src=&quot;https://www.youtube-nocookie.com/embed/pqGsIdFxTs4&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
 &lt;p&gt;More details and download: &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;And get additional information from &lt;a href=&quot;https://www.linkedin.com/pulse/next-big-innovation-windows-virtual-desktop-here-freek-berson/&quot;&gt;Freek Berson&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;Official announcement: &lt;a href=&quot;https://www.microsoft.com/en-us/microsoft-365/blog/2020/04/30/enable-remote-work-faster-new-windows-virtual-desktop-capabilities/&quot;&gt;https://www.microsoft.com/en-us/microsoft-365/blog/2020/04/30/enable-remote-work-faster-new-windows-virtual-desktop-capabilities/&lt;/a&gt;&lt;/p&gt;
-
 </description>
         <pubDate>Mon, 04 May 2020 00:00:00 +0200</pubDate>
         <link>/Windows-Virtual-Desktop-Migrate-from-Fall-to-Spring/</link>

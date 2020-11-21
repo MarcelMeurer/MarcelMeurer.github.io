@@ -8,9 +8,9 @@
 
 <title>Deploy an Azure Functional App as an interface to Log Analytics / Azure Monitor | ITProCloud Blog</title>
 
-<!-- Begin Jekyll SEO tag v2.6.1 -->
+<!-- Begin Jekyll SEO tag v2.7.1 -->
 <title>Deploy an Azure Functional App as an interface to Log Analytics / Azure Monitor | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.0.0" />
+<meta name="generator" content="Jekyll v4.1.1" />
 <meta property="og:title" content="Deploy an Azure Functional App as an interface to Log Analytics / Azure Monitor" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -20,8 +20,11 @@
 <meta property="og:image" content="/wp-content/uploads/2019/01/StreamAnalytics-Query-1024x395.png" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-01-13T00:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/wp-content/uploads/2019/01/StreamAnalytics-Query-1024x395.png" />
+<meta property="twitter:title" content="Deploy an Azure Functional App as an interface to Log Analytics / Azure Monitor" />
 <script type="application/ld+json">
-{"url":"/Deploy-an-Azure-Functional-App-as-an-interface-to-Log-Analytics-Azure-Monitor/","headline":"Deploy an Azure Functional App as an interface to Log Analytics / Azure Monitor","dateModified":"2019-01-13T00:00:00+01:00","datePublished":"2019-01-13T00:00:00+01:00","author":{"@type":"Person","name":"mm"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"image":"/wp-content/uploads/2019/01/StreamAnalytics-Query-1024x395.png","description":"Introduction","mainEntityOfPage":{"@type":"WebPage","@id":"/Deploy-an-Azure-Functional-App-as-an-interface-to-Log-Analytics-Azure-Monitor/"},"@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"/Deploy-an-Azure-Functional-App-as-an-interface-to-Log-Analytics-Azure-Monitor/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"Deploy an Azure Functional App as an interface to Log Analytics / Azure Monitor","dateModified":"2019-01-13T00:00:00+01:00","datePublished":"2019-01-13T00:00:00+01:00","description":"Introduction","author":{"@type":"Person","name":"mm"},"mainEntityOfPage":{"@type":"WebPage","@id":"/Deploy-an-Azure-Functional-App-as-an-interface-to-Log-Analytics-Azure-Monitor/"},"image":"/wp-content/uploads/2019/01/StreamAnalytics-Query-1024x395.png","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -84,7 +87,158 @@
                 <li class="nav-item">
                 <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
                 </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (18)</a>
+						</li>
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (7)</a>
+						</li>
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (7)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Log-Analytics">Log Analytics (5)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
 	
+				<!-- Original tag list (unsorted) 
 				
 				
 					
@@ -104,6 +258,7 @@
 						
 					
 				
+				-->
 								
 
                 <li class="nav-item">
@@ -259,135 +414,83 @@
                 
                 <!-- End Toc -->
                 <h1 id="introduction">Introduction</h1>
-
 <p>Microsoft offers with Log Analytics a cloud-based big data service. Log Analytics is used by several services (including Azure itself) to log and analyze data. It’s a core component of Azure Monitor and Application Insights.</p>
-
 <p>Log Analytics key facts:</p>
-
 <ul>
-  <li>Cloud-based</li>
-  <li>No data aggregation</li>
-  <li>Pay per upload and data retention</li>
-  <li>Powerful query language (kql: &lt;<a href="https://docs.microsoft.com/en-us/azure/kusto/">https://docs.microsoft.com/en-us/azure/kusto/</a>&gt;)</li>
-  <li>Direct support for visualization on portal.azure.com</li>
+<li>Cloud-based</li>
+<li>No data aggregation</li>
+<li>Pay per upload and data retention</li>
+<li>Powerful query language (kql: &lt;<a href="https://docs.microsoft.com/en-us/azure/kusto/">https://docs.microsoft.com/en-us/azure/kusto/</a>&gt;)</li>
+<li>Direct support for visualization on portal.azure.com</li>
 </ul>
-
 <p>I use Log Analytics for several projects where data aggregation and analyzation are main tasks. If I write code, I push data directly to Log Analytics – including generating a SAS signature for every single upload.</p>
-
 <p>The mandatory SAS signature avoids a simple upload via http-post to Log Analytics. But in some cases, it could be very helpful to work with a simple http-post command. For example: If you use Azure Stream Analytics, you cannot push data directly to Log Analytics.</p>
-
 <p>To allow pushing data via http-post I built this project. This project deploys an Azure function to your subscription. This function offers a simple http(s) interface (webhook) you can use to post JSON data to it. This data will be processed by the Azure Function and will be posted to your Log Analytics workspace.</p>
-
 <h1 id="examples">Examples:</h1>
-
 <h2 id="with-postman">With Postman</h2>
-
-<h1><img src="/wp-content/uploads/2019/01/Postman-1024x377.png" alt="img" /></h1>
-
+<h1 id="img-srcwp-contentuploads201901postman-1024x377png-altimg-"><img src="/wp-content/uploads/2019/01/Postman-1024x377.png" alt="img" /></h1>
 <h2 id="with-powershell">With PowerShell</h2>
-
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-5
-6
-7
-</pre></td><td class="rouge-code"><pre><span class="nv">$data</span><span class="o">=</span><span class="s1">'{
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$data</span><span class="o">=</span><span class="s1">'{
 "localTime":"2019-01-02T11:11:12.013Z",
 "Humi":46.5,
 "Temp":14.2
 }'</span><span class="w">
 
-</span><span class="nf">Invoke-WebRequest</span><span class="w"> </span><span class="nt">-Uri</span><span class="w"> </span><span class="s2">"https://testaf01xx8.azurewebsites.net/api/Send2LogAnalytics?code=xje5aQIMzPxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=="</span><span class="w"> </span><span class="nt">-Method</span><span class="w"> </span><span class="nx">POST</span><span class="w"> </span><span class="nt">-Body</span><span class="w"> </span><span class="nv">$data</span><span class="w">
-</span></pre></td></tr></tbody></table></code></pre></div></div>
-
+</span><span class="n">Invoke-WebRequest</span><span class="w"> </span><span class="nt">-Uri</span><span class="w"> </span><span class="s2">"https://testaf01xx8.azurewebsites.net/api/Send2LogAnalytics?code=xje5aQIMzPxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=="</span><span class="w"> </span><span class="nt">-Method</span><span class="w"> </span><span class="nx">POST</span><span class="w"> </span><span class="nt">-Body</span><span class="w"> </span><span class="nv">$data</span><span class="w">
+</span></code></pre></div></div>
 <p><img src="/wp-content/uploads/2019/01/PowerShell-1024x656.png" alt="img" /></p>
-
 <h2 id="with-stream-analytics">With Stream Analytics</h2>
-
 <p><strong>Query:</strong></p>
-
-<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
-2
-3
-4
-</pre></td><td class="rouge-code"><pre><span class="k">INTO</span>
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">INTO</span>
 <span class="p">[</span><span class="k">To</span><span class="o">-</span><span class="k">Function</span><span class="p">]</span>
 <span class="k">FROM</span>
 <span class="p">[</span><span class="k">From</span><span class="o">-</span><span class="n">IoT</span><span class="o">-</span><span class="n">Hub</span><span class="p">]</span>
-</pre></td></tr></tbody></table></code></pre></div></div>
-
+</code></pre></div></div>
 <p><img src="/wp-content/uploads/2019/01/StreamAnalytics-Query-1024x395.png" alt="img" /></p>
-
 <p><strong>Output:</strong></p>
-
 <p>Enter your Azure Function parameters</p>
-
 <p><img src="/wp-content/uploads/2019/01/StreamAnalytics-Output-1024x377.png" alt="img" /></p>
-
 <h2 id="results-in-log-analytics">Results in Log Analytics</h2>
-
 <p><img src="/wp-content/uploads/2019/01/LA1-1024x697.png" alt="img" /></p>
-
 <p>For another data series</p>
-
 <p><img src="/wp-content/uploads/2019/01/LA2-1024x665.png" alt="img" /></p>
-
 <h1 id="deploying-and-configuration">Deploying and configuration</h1>
-
 <p>Deploy your Azure Function using the deploy to Azure button.</p>
-
 <p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMarcelMeurer%2FFunctionApp-to-LogAnalytics%2Fmaster%2Ftemplate.json"><img src="http://azuredeploy.net/deploybutton.png" alt="img" /></a></p>
-
 <p>Github: <a href="https://github.com/MarcelMeurer/FunctionApp-to-LogAnalytics">https://github.com/MarcelMeurer/FunctionApp-to-LogAnalytics</a></p>
-
 <h2 id="configuration">Configuration</h2>
-
 <p>In the next step enter the following parameters:</p>
-
 <ul>
-  <li>Resource Group:
+<li>Resource Group:
 Select an existing or create a new resource group in a location of your choice (the function will be deployed in the Azure region of the resource group)</li>
-  <li>Site name:
-A unique name of your function (unique means a worldwide unique hostname; the fqdn is: <hostname>.azurewebsites.com)</hostname></li>
-  <li>Workspace_Id:
+<li>Site name:
+A unique name of your function (unique means a worldwide unique hostname; the fqdn is: <hostname>.azurewebsites.com)</li>
+<li>Workspace_Id:
 The workspace id of your Log Analytics workspace (Log Analytics resource -&gt; Advanced settings -&gt; Workspace id)</li>
-  <li>Workspace_Key:
+<li>Workspace_Key:
 The workspace id of your Log Analytics workspace (Log Analytics resource -&gt; Advanced settings -&gt; Primary or secondary key)</li>
-  <li>LogType:
+<li>LogType:
 Name of your type (“table” name). You will see this name with an appended _CL (custom log) later in your workspace with your data</li>
-  <li>Time Field:
+<li>Time Field:
 Optional. All data sets you send get a new field called “TimeGenerated”. TimeGenerated contains the time the data arrived at the workspace. If you set Time field to a custom field (like localTime from the example above), the time in this field is used as TimeGenerated.</li>
 </ul>
-
 <p><strong>Hint:</strong> Workspace_Id, Workspace_Key, LogType, Time Field can be changed later in the function app:</p>
-
 <p>Your Function app -&gt; Platform features -&gt; Application settings</p>
-
 <p><img src="/wp-content/uploads/2019/01/AppSettings-1024x264.png" alt="img" /></p>
-
 <h2 id="resources">Resources</h2>
-
 <p>After the deployment three resources are deployed and configured:</p>
-
 <ul>
-  <li>ServerFarmPlan:
+<li>ServerFarmPlan:
 A consumption-based pricing plan for the Azure Functional App. See <a href="https://azure.microsoft.com/en-us/pricing/details/functions/">https://azure.microsoft.com/en-us/pricing/details/functions/</a> check the estimated costs billed to your subscription</li>
-  <li>Site name - Application Insights:
+<li>Site name - Application Insights:
 Application Insights to monitor the Azure Function itself</li>
-  <li>Site name - Azure Functional App:
+<li>Site name - Azure Functional App:
 The Azure Function containing the code</li>
 </ul>
-
 <h2 id="get-the-resource-url-of-the-azure-function">Get the resource URL of the Azure Function</h2>
-
 <p>Open your Azure Function and navigate to Functions -&gt; Send2LogAnalytics -&gt; &lt;/&gt; Get function URL</p>
-
 <p><img src="/wp-content/uploads/2019/01/FunctionURL-1024x377.png" alt="img" /></p>
-
 <p>This URL contains your private key.</p>
-
 <p>First published on: <a href="https://www.sepago.de/blog/deploy-an-azure-functional-app-as-an-interface-to-log-analytics-azure-monitor/">https://www.sepago.de/blog/deploy-an-azure-functional-app-as-an-interface-to-log-analytics-azure-monitor/</a></p>
 
             </div>
@@ -488,7 +591,7 @@ https://search.google.com/structured-data/testing-tool/u/0/
                 
                     <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (7)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (8)</a>
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (7)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (5)</a>
                 
@@ -504,7 +607,7 @@ https://search.google.com/structured-data/testing-tool/u/0/
                 
                     <a class="mt-1 mb-1" href="/categories#Azure">Azure (2)</a>
                 
-                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (20)</a>
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (18)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
                 
