@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 29 Nov 2020 18:09:58 +0100</pubDate>
-    <lastBuildDate>Sun, 29 Nov 2020 18:09:58 +0100</lastBuildDate>
+    <pubDate>Sun, 29 Nov 2020 18:13:06 +0100</pubDate>
+    <lastBuildDate>Sun, 29 Nov 2020 18:13:06 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
@@ -304,8 +304,8 @@
 &lt;li&gt;Service principal id (application id)&lt;/li&gt;
 &lt;li&gt;Service principal key&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id=&quot;wdv-permissions-classic--fall-version&quot;&gt;WDV permissions (Classic / Fall Version)&lt;/h2&gt;
-&lt;p&gt;This chapter is for WVD Classic / Fall. &lt;a href=&quot;#wdv-permissions-arm--spring-version&quot;&gt;Skip&lt;/a&gt; this chapter if you only work with WVD ARM (Spring).&lt;/p&gt;
+&lt;h2 id=&quot;wvd-permissions-classic--fall-version&quot;&gt;WVD permissions (Classic / Fall Version)&lt;/h2&gt;
+&lt;p&gt;This chapter is for WVD Classic / Fall. &lt;a href=&quot;#wvd-permissions-arm--spring-version&quot;&gt;Skip&lt;/a&gt; this chapter if you only work with WVD ARM (Spring).&lt;/p&gt;
 &lt;p&gt;To use WVDAdmin you need at least an existing WVD tenant. If you new to WVD follow this article to create a WVD tenant:  &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/tenant-setup-azure-active-directory&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/tenant-setup-azure-active-directory&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;You have to use PowerShell to give the WVD the appropriated permission:&lt;/p&gt;
 &lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Import-Module&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Microsoft.RDInfra.RDPowerShell&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
@@ -319,7 +319,7 @@
 &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;New-RdsRoleAssignment&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-TenantName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Builder City&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-RoleDefinitionName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;RDS Owner&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ApplicationId&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;89050a12-xxxx-xxxx-xxxx-000000000000&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-005.png&quot; alt=&quot;documentation-005&quot; /&gt;&lt;/p&gt;
-&lt;h2 id=&quot;wdv-permissions-arm--spring-version&quot;&gt;WDV permissions (ARM / Spring Version)&lt;/h2&gt;
+&lt;h2 id=&quot;wvd-permissions-arm--spring-version&quot;&gt;WVD permissions (ARM / Spring Version)&lt;/h2&gt;
 &lt;p&gt;This chapter is for WVD ARM / Spring. &lt;a href=&quot;#azure-resource-permissions&quot;&gt;Skip&lt;/a&gt; this chapter if you only work with WVD Classic (Fall).&lt;/p&gt;
 &lt;p&gt;The service principal needs permission to add and modify WVD resource objects (host pools, workspaces, app groups). To assign users and groups to app groups, the service principal needs the owner role on the resource groups you want to use for your WVD environment. Add the service principal in the next step and use the &lt;strong&gt;owner&lt;/strong&gt; role.&lt;/p&gt;
 &lt;h2 id=&quot;register-resource-provider-arm--spring-version&quot;&gt;Register Resource Provider (ARM / Spring Version)&lt;/h2&gt;

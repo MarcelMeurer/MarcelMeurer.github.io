@@ -665,15 +665,15 @@
 <li>Service principal id (application id)</li>
 <li>Service principal key</li>
 </ul>
-      <h2 id="wdv-permissions-classic--fall-version">
+      <h2 id="wvd-permissions-classic--fall-version">
         
         
-          WDV permissions (Classic / Fall Version) <a href="#wdv-permissions-classic--fall-version"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+          WVD permissions (Classic / Fall Version) <a href="#wvd-permissions-classic--fall-version"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
         
         
       </h2>
     
-<p>This chapter is for WVD Classic / Fall. <a href="#wdv-permissions-arm--spring-version">Skip</a> this chapter if you only work with WVD ARM (Spring).</p>
+<p>This chapter is for WVD Classic / Fall. <a href="#wvd-permissions-arm--spring-version">Skip</a> this chapter if you only work with WVD ARM (Spring).</p>
 <p>To use WVDAdmin you need at least an existing WVD tenant. If you new to WVD follow this article to create a WVD tenant:  <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/tenant-setup-azure-active-directory">https://docs.microsoft.com/en-us/azure/virtual-desktop/tenant-setup-azure-active-directory</a></p>
 <p>You have to use PowerShell to give the WVD the appropriated permission:</p>
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Import-Module</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">Microsoft.RDInfra.RDPowerShell</span><span class="w">
@@ -687,10 +687,10 @@
 </span><span class="n">New-RdsRoleAssignment</span><span class="w"> </span><span class="nt">-TenantName</span><span class="w"> </span><span class="s2">"Builder City"</span><span class="w"> </span><span class="nt">-RoleDefinitionName</span><span class="w"> </span><span class="s2">"RDS Owner"</span><span class="w"> </span><span class="nt">-ApplicationId</span><span class="w"> </span><span class="nx">89050a12-xxxx-xxxx-xxxx-000000000000</span><span class="w">
 </span></code></pre></div></div>
 <p><img src="../assets/images/WVDAdmin/documentation-005.png" alt="documentation-005" /></p>
-      <h2 id="wdv-permissions-arm--spring-version">
+      <h2 id="wvd-permissions-arm--spring-version">
         
         
-          WDV permissions (ARM / Spring Version) <a href="#wdv-permissions-arm--spring-version"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+          WVD permissions (ARM / Spring Version) <a href="#wvd-permissions-arm--spring-version"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
         
         
       </h2>
@@ -1298,8 +1298,8 @@ Reg-SZ: <strong>Environment</strong> = <strong>US</strong></p>
 <li>Service principal id (application id)</li>
 <li>Service principal key</li>
 </ul>
-<h2 id="wdv-permissions-classic--fall-version">WDV permissions (Classic / Fall Version)</h2>
-<p>This chapter is for WVD Classic / Fall. <a href="#wdv-permissions-arm--spring-version">Skip</a> this chapter if you only work with WVD ARM (Spring).</p>
+<h2 id="wvd-permissions-classic--fall-version">WVD permissions (Classic / Fall Version)</h2>
+<p>This chapter is for WVD Classic / Fall. <a href="#wvd-permissions-arm--spring-version">Skip</a> this chapter if you only work with WVD ARM (Spring).</p>
 <p>To use WVDAdmin you need at least an existing WVD tenant. If you new to WVD follow this article to create a WVD tenant:  <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/tenant-setup-azure-active-directory">https://docs.microsoft.com/en-us/azure/virtual-desktop/tenant-setup-azure-active-directory</a></p>
 <p>You have to use PowerShell to give the WVD the appropriated permission:</p>
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Import-Module</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">Microsoft.RDInfra.RDPowerShell</span><span class="w">
@@ -1313,7 +1313,7 @@ Reg-SZ: <strong>Environment</strong> = <strong>US</strong></p>
 </span><span class="n">New-RdsRoleAssignment</span><span class="w"> </span><span class="nt">-TenantName</span><span class="w"> </span><span class="s2">"Builder City"</span><span class="w"> </span><span class="nt">-RoleDefinitionName</span><span class="w"> </span><span class="s2">"RDS Owner"</span><span class="w"> </span><span class="nt">-ApplicationId</span><span class="w"> </span><span class="nx">89050a12-xxxx-xxxx-xxxx-000000000000</span><span class="w">
 </span></code></pre></div></div>
 <p><img src="../assets/images/WVDAdmin/documentation-005.png" alt="documentation-005" /></p>
-<h2 id="wdv-permissions-arm--spring-version">WDV permissions (ARM / Spring Version)</h2>
+<h2 id="wvd-permissions-arm--spring-version">WVD permissions (ARM / Spring Version)</h2>
 <p>This chapter is for WVD ARM / Spring. <a href="#azure-resource-permissions">Skip</a> this chapter if you only work with WVD Classic (Fall).</p>
 <p>The service principal needs permission to add and modify WVD resource objects (host pools, workspaces, app groups). To assign users and groups to app groups, the service principal needs the owner role on the resource groups you want to use for your WVD environment. Add the service principal in the next step and use the <strong>owner</strong> role.</p>
 <h2 id="register-resource-provider-arm--spring-version">Register Resource Provider (ARM / Spring Version)</h2>
@@ -1499,8 +1499,8 @@ Reg-SZ: <strong>Environment</strong> = <strong>US</strong></p>
 <li><a href="#release-history">Release History</a></li>
 <li><a href="#configuration">Configuration</a></li>
 <li><a href="#service-principal-functional-account">Service principal (functional account)</a></li>
-<li><a href="#wdv-permissions-classic--fall-version">WDV permissions (Classic / Fall Version)</a></li>
-<li><a href="#wdv-permissions-arm--spring-version">WDV permissions (ARM / Spring Version)</a></li>
+<li><a href="#wvd-permissions-classic--fall-version">WVD permissions (Classic / Fall Version)</a></li>
+<li><a href="#wvd-permissions-arm--spring-version">WVD permissions (ARM / Spring Version)</a></li>
 <li><a href="#register-resource-provider-arm--spring-version">Register Resource Provider (ARM / Spring Version)</a></li>
 <li><a href="#azure-resource-permissions">Azure resource permissions</a></li>
 <li><a href="#prepare-your-native-active-directory">Prepare your “native” Active Directory</a></li>
