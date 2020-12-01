@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 30 Nov 2020 22:30:30 +0100</pubDate>
-    <lastBuildDate>Mon, 30 Nov 2020 22:30:30 +0100</lastBuildDate>
+    <pubDate>Tue, 01 Dec 2020 10:58:44 +0100</pubDate>
+    <lastBuildDate>Tue, 01 Dec 2020 10:58:44 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
@@ -14,7 +14,7 @@
         <description>&lt;h1 id=&quot;windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Windows Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/29/2020&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;**Hint: Remove an older installation of WVDAdmin first (or remove all DLLs in C:\Program Files\ITProCloud.de\WVDAdmin) - there is an issue in the versioning of Microsoft’s underlying fluent API. **&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Hint: Remove an older installation of WVDAdmin first (or remove all DLLs in C:\Program Files\ITProCloud.de\WVDAdmin) - there is an issue in the versioning of Microsoft’s underlying fluent API.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Add, edit and delete host pools&lt;/li&gt;
@@ -37,7 +37,7 @@
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
 &lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/29/2020&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;**Hint: Remove an older installation of WVDAdmin first (or remove all DLLs in C:\Program Files\ITProCloud.de\WVDAdmin) - there is an issue in the versioning of Microsoft’s underlying fluent API. **&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Hint: Remove an older installation of WVDAdmin first (or remove all DLLs in C:\Program Files\ITProCloud.de\WVDAdmin) - there is an issue in the versioning of Microsoft’s underlying fluent API.&lt;/strong&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -491,7 +491,7 @@ Reg-SZ: &lt;strong&gt;Environment&lt;/strong&gt; = &lt;strong&gt;US&lt;/strong&g
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/29/2020&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;**Hint: Remove an older installation of WVDAdmin first (or remove all DLLs in C:\Program Files\ITProCloud.de\WVDAdmin) - there is an issue in the versioning of Microsoft’s underlying fluent API. **&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Hint: Remove an older installation of WVDAdmin first (or remove all DLLs in C:\Program Files\ITProCloud.de\WVDAdmin) - there is an issue in the versioning of Microsoft’s underlying fluent API.&lt;/strong&gt;&lt;/p&gt;
 </description>
         <pubDate>Sun, 29 Nov 2020 00:00:00 +0100</pubDate>
         <link>/Windows-Virtual-Desktop-Admin/</link>
