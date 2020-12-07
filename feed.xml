@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 04 Dec 2020 21:58:13 +0100</pubDate>
-    <lastBuildDate>Fri, 04 Dec 2020 21:58:13 +0100</lastBuildDate>
+    <pubDate>Mon, 07 Dec 2020 09:15:19 +0100</pubDate>
+    <lastBuildDate>Mon, 07 Dec 2020 09:15:19 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
@@ -314,7 +314,7 @@
 &lt;/ul&gt;
 &lt;h2 id=&quot;wvd-permissions-classic--fall-version&quot;&gt;WVD permissions (Classic / Fall Version)&lt;/h2&gt;
 &lt;p&gt;This chapter is for WVD Classic / Fall. &lt;a href=&quot;#wvd-permissions-arm--spring-version&quot;&gt;Skip&lt;/a&gt; this chapter if you only work with WVD ARM (Spring).&lt;/p&gt;
-&lt;p&gt;To use WVDAdmin you need at least an existing WVD tenant. If you new to WVD follow this article to create a WVD tenant:  &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/tenant-setup-azure-active-directory&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/tenant-setup-azure-active-directory&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;To use WVDAdmin you need at least an existing WVD tenant. If you new to WVD follow this article to create a WVD tenant:  [https://docs.microsoft.com/en-us/azure/virtual-desktop/virtual-desktop-fall-2019/tenant-setup-azure-active-directory)&lt;/p&gt;
 &lt;p&gt;You have to use PowerShell to give the WVD the appropriated permission:&lt;/p&gt;
 &lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Import-Module&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Microsoft.RDInfra.RDPowerShell&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# log on with an administrative user account to your &lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
