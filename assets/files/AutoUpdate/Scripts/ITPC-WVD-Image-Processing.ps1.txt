@@ -107,6 +107,7 @@ if ($mode -eq "Generalize") {
 	New-ItemProperty -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Runtime" -Name "TimeZone.Origin" -Value $timeZone -force
 	
 	LogWriter("Starting sysprep to generalize session host")
+	# Write-host("ScriptReturnMessage:{Image preparation done}:ScriptReturnMessage")
 	if ([System.Environment]::OSVersion.Version.Major -le 6) {
 		#Windows 7
 		LogWriter("Enabling RDP8 on Windows 7")
@@ -171,14 +172,19 @@ if ($mode -eq "Generalize") {
 	Enable-ScheduledTask  -TaskName "ITPC-MySmartScaleAgent" -ErrorAction Ignore
 
 	LogWriter("Finally restarting session host")
+
+	# last message to engine
+	Write-host("ScriptReturnMessage:{Rollout complete}:ScriptReturnMessage")
+	
+	# final reboot
 	Restart-Computer -Force
 }
 
 # SIG # Begin signature block
 # MIIcWwYJKoZIhvcNAQcCoIIcTDCCHEgCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUzw/SttM5ioQ+/rcUC8AFtMeO
-# UyWggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUdg+vKihwLccSvgaBo5CJKl4k
+# eViggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE5MTEwMjAwMDAwMFoXDTIwMTIx
@@ -309,22 +315,22 @@ if ($mode -eq "Generalize") {
 # SUQgQ29kZSBTaWduaW5nIENBAhAHaCbvcbn02aj6wGGzZ6EqMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBS5sfG0yyqxqx2RWxPFELA5p08hKzANBgkqhkiG9w0BAQEFAASCAQCFjo/5
-# rHiGs1EyseFkCRecSiJud8Y2xAZegwGXpNUHDZTjhPnSOwPwwWVjFJ7WEO4hDsN2
-# cgguwq07LMiOQyXrIACYYrti9BqSOsM0ruInM2k+XpgzU5Cq7Holo440F+/E0OOC
-# 1qlGAGvpur6ccHuQm4/swcPdGpUlEOm6Y5WWGFQtM6Hl5Ot7UoQr8OOHJGhca5SE
-# 0GsLm2AzymyI6J9GCuH9tvTwzrWhEo2xqslTQ1zqq1ODYdKYKxMU8ZoiEpqie+yH
-# p5pro71wnPS0qcPhBwWj9KzjDuRyMSRDRt4+y6NMgn8NR6Vw1flNXGec02OOimc5
-# cQZSdryzy+6X+y8uoYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
+# BDEWBBQAO1WjgLY8H5mKvyyJ0SgmF8VJ2zANBgkqhkiG9w0BAQEFAASCAQCQC0tX
+# STOKbQ5WbJbpGEIMkh0+9DHS/SmyGgpbHreNxwha5ixUO8ZF+G2RsNfK3a97mYdZ
+# BX93MLa6qlS/chLHFE0uH367xfmFkDpa1hU5yEhD5KM8mEukOxsn5rhULH8xRHEh
+# 9eTgq4k3mGKmE/KWk1lwcHZzrvix8ITJSP8nal0cCdlBHrQ41LsiHd9vuv5rFQJB
+# STAapg4TJOva6CPh4Qgmh+NN+JF1J3Lpm05eTy/NahVyOQYiNKLrbIdTxvjASovp
+# FbWfDfByp7HxpewHbFBMFy+n2p0JPleInNu0xzKJp50gSw13n099CoAy2A5/zr7k
+# 6KaEhtC9JGbT5JuToYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
 # MAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3
 # LmRpZ2ljZXJ0LmNvbTEhMB8GA1UEAxMYRGlnaUNlcnQgQXNzdXJlZCBJRCBDQS0x
 # AhADAZoCOv9YsWvW1ermF/BmMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJ
-# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDEyMDgxODA0NTRaMCMGCSqGSIb3
-# DQEJBDEWBBSFlxlLkJt6gm+9zQKdE7J0khAtqDANBgkqhkiG9w0BAQEFAASCAQAu
-# fEuMlJndklAtd3mNTWsyHHKUugx1/rDizsEXYelD5kG030VgMCx89j7yRqdD855f
-# h95utQUXzkmpR9kVjLD3KeSVy7Xj7tWtP4lMLBSg551GA0wqVtZ2KZOkRofahPZH
-# WJvt/h4B8/gAIdljJrp24zBOh2K0p7i2kwOtBIbJb+LXE6XAAKJBDFe+CVPPAsIJ
-# QhjwjwNp8zUGDW+qGtUReP7kdJYSwKwqUABiu13f1gdbNu+HxO+e5lXdR55Qd52Q
-# 17T//LbPn6E7NvGtG5q293bgIGR8CSBmuevLakGDgWkHgLNyZQIp2cYESlEsCyEd
-# JwX5cPtaGXTN/86HMCu/
+# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDEyMDgyMDQzMDJaMCMGCSqGSIb3
+# DQEJBDEWBBTaTeSuVTVtsAKrfYlbhvgxNECyqzANBgkqhkiG9w0BAQEFAASCAQAg
+# OOs8KnxVjSTEqqiQFeAywrOYxki312VEb6C7WQ2eDrVSyYY0NlznZkmkaF0R2Vwq
+# rgVuNu1lIjcA+NmLjd/5+xQbLbuxOfL16FI2huKgqhf2QNnvI6UwKjeI+TcAcw42
+# fY3trUriU7EmSndD5NzWmvRPqegxjk/MVMwkwKXcbz9Ir71W4mzC6f6pBpR0oi4Y
+# yQMkhsUCp2KamVPwKGS6i31AMAqjOrGe5koDAl6n+t/2IO46TKrO8Rul6bKqHGv1
+# oGw0/TMs5NNn2uIFDo7TXg3AH6CAhmovVvUyiOd/DawOb+/b4TstOqGn2irNwtnv
+# Gpgain4Ln+AEnDI/jcj+
 # SIG # End signature block
