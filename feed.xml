@@ -5,15 +5,15 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 07 Dec 2020 16:44:34 +0100</pubDate>
-    <lastBuildDate>Mon, 07 Dec 2020 16:44:34 +0100</lastBuildDate>
+    <pubDate>Tue, 08 Dec 2020 19:09:09 +0100</pubDate>
+    <lastBuildDate>Tue, 08 Dec 2020 19:09:09 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
         <title>WVD Admin - A native administration Gui for Windows Virtual Desktop</title>
         <description>&lt;h1 id=&quot;windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Windows Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 12/07/2020&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 12/08/2020&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Add, edit and delete host pools&lt;/li&gt;
@@ -35,7 +35,7 @@
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 12/07/2020&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 12/08/2020&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -45,6 +45,10 @@
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6.52.0&lt;/td&gt;
+&lt;td&gt;Add: Add session hosts automatically to Loadbalancer Backend Pools; Add: If a VM resource is unavailable, the first alternative VM size will be tried&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.51.0&lt;/td&gt;
 &lt;td&gt;Add: Custom script to install &lt;a href=&quot;https://www.sepago.de/en/azure-monitor-en&quot;&gt;Azure Monitor for WVD from sepago&lt;/a&gt; to existing session hosts&lt;/td&gt;
@@ -469,6 +473,9 @@ Reg-SZ: &lt;strong&gt;Environment&lt;/strong&gt; = &lt;strong&gt;US&lt;/strong&g
 &lt;h3 id=&quot;add-a-session-host-automatically-to-an-asg&quot;&gt;Add a session host automatically to an ASG&lt;/h3&gt;
 &lt;p&gt;You can add a session host automatically to application security groups (ASG) within the rollout process. To achieve this, add one or more tags to the host pool containing your new session hosts. Name &lt;strong&gt;WVD.Default.ASG.X&lt;/strong&gt; and add the azure resource id of an existing asg. X can be numbers to assign more ASGs. You can copy the id from an ASG from your browser. It looks like this: /subscriptions/&amp;lt;&lt;subscription-id&gt;&amp;gt;/resourcegroups/&amp;lt;&lt;resourcegroup-name&gt;&amp;gt;/providers/Microsoft.Network/applicationSecurityGroups/&amp;lt;&lt;asg-name&gt;&amp;gt;
 &lt;img src=&quot;../assets/images/WVDAdmin/asg-001.png&quot; alt=&quot;Tag for ASG&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;add-a-session-host-automatically-to-a-loadbalancer-backend-pool&quot;&gt;Add a session host automatically to a Loadbalancer Backend Pool&lt;/h3&gt;
+&lt;p&gt;You can add a session host automatically to a loadbalancer backend pool within the rollout process. To achieve this, add one or more tags to the host pool containing your new session hosts. Name &lt;strong&gt;WVD.Default.LBPool.X&lt;/strong&gt; and add the azure resource id of an existing loadbalancer backend pool. X can be numbers to assign more ASGs. You can copy the id from a pool from your browser. It looks like this: /subscriptions/&amp;lt;&lt;subscription-id&gt;&amp;gt;/resourcegroups/&amp;lt;&lt;resourcegroup-name&gt;&amp;gt;/providers/Microsoft.Network/loadBalancers/&amp;lt;&lt;loadbalancer-name&gt;&amp;gt;/backendAddressPools/&amp;lt;&lt;pool-name&gt;&amp;gt;
+Keep in mind to use availability sets for each rollout to use this feature.&lt;/p&gt;
 &lt;/details&gt;&lt;br/&gt;
 &lt;h1 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h1&gt;
 &lt;h2 id=&quot;create-an-image&quot;&gt;Create an Image&lt;/h2&gt;
@@ -500,9 +507,9 @@ Reg-SZ: &lt;strong&gt;Environment&lt;/strong&gt; = &lt;strong&gt;US&lt;/strong&g
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 12/07/2020&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 12/08/2020&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Mon, 07 Dec 2020 00:00:00 +0100</pubDate>
+        <pubDate>Tue, 08 Dec 2020 00:00:00 +0100</pubDate>
         <link>/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin/</guid>
         
