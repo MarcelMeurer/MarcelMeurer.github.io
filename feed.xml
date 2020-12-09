@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 09 Dec 2020 21:23:47 +0100</pubDate>
-    <lastBuildDate>Wed, 09 Dec 2020 21:23:47 +0100</lastBuildDate>
+    <pubDate>Wed, 09 Dec 2020 21:24:16 +0100</pubDate>
+    <lastBuildDate>Wed, 09 Dec 2020 21:24:16 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
@@ -46,7 +46,7 @@
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;1.6.55.0&lt;/td&gt;
+&lt;td&gt;1.6.56.0&lt;/td&gt;
 &lt;td&gt;Change: Single session nodes are not listed under the session host node if more then 100 sessions exist to speed up WVDAdmin - all sessions are still in the session list&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
