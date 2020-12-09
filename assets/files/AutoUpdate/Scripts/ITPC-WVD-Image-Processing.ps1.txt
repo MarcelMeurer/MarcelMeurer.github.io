@@ -20,6 +20,7 @@ param(
 )
 function LogWriter($message)
 {
+    $message="$(Get-Date ([datetime]::UtcNow) -Format "o") $message"
 	write-host($message)
 	if ([System.IO.Directory]::Exists($LogDir)) {write-output($message) | Out-File $LogFile -Append}
 }
@@ -77,7 +78,7 @@ if ($mode -eq "Generalize") {
 	Remove-ItemProperty -Path $key -Name "LastAliveStamp" -ErrorAction Ignore
 	Remove-ItemProperty -Path $key -Name "TimeStampInterval" -ErrorAction Ignore
 	
-	LogWriter("Modifying sysprep to avoid issues with AppXPackages")
+	LogWriter("Modifying sysprep to avoid issues with AppXPackages - Start")
 	$sysPrepActionPath="$env:windir\System32\Sysprep\ActionFiles"
 	$sysPrepActionFile="Generalize.xml"
 	$sysPrepActionPathItem = Get-Item $sysPrepActionPath.Replace("C:\","\\localhost\\c$\")
@@ -107,7 +108,7 @@ if ($mode -eq "Generalize") {
 	New-ItemProperty -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Runtime" -Name "TimeZone.Origin" -Value $timeZone -force
 	
 	LogWriter("Starting sysprep to generalize session host")
-	# Write-host("ScriptReturnMessage:{Image preparation done}:ScriptReturnMessage")
+
 	if ([System.Environment]::OSVersion.Version.Major -le 6) {
 		#Windows 7
 		LogWriter("Enabling RDP8 on Windows 7")
@@ -116,7 +117,6 @@ if ($mode -eq "Generalize") {
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft" -Name "Windows NT" -ErrorAction Ignore
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT" -Name "Terminal Services" -ErrorAction Ignore
 		New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" -Name "fServerEnableRDP8" -Value 1 -force
-
 		Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown"
 	} else {
 		Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown /mode:vm"
@@ -132,8 +132,7 @@ if ($mode -eq "Generalize") {
 			Set-TimeZone -Id $timeZone
 		}
 	}
-	
-	
+		
 	LogWriter("Joining domain")
 	$psc = New-Object System.Management.Automation.PSCredential($DomainJoinUserName, (ConvertTo-SecureString $DomainJoinUserPassword -AsPlainText -Force))
 	if ($DomainJoinOU -eq "")
@@ -173,9 +172,6 @@ if ($mode -eq "Generalize") {
 
 	LogWriter("Finally restarting session host")
 
-	# last message to engine
-	Write-host("ScriptReturnMessage:{Rollout complete}:ScriptReturnMessage")
-	
 	# final reboot
 	Restart-Computer -Force
 }
@@ -183,8 +179,8 @@ if ($mode -eq "Generalize") {
 # SIG # Begin signature block
 # MIIcWwYJKoZIhvcNAQcCoIIcTDCCHEgCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUdg+vKihwLccSvgaBo5CJKl4k
-# eViggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUyz6GhxhJ3f7GswHNvyEd9aYq
+# 9oaggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE5MTEwMjAwMDAwMFoXDTIwMTIx
@@ -315,22 +311,22 @@ if ($mode -eq "Generalize") {
 # SUQgQ29kZSBTaWduaW5nIENBAhAHaCbvcbn02aj6wGGzZ6EqMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBQAO1WjgLY8H5mKvyyJ0SgmF8VJ2zANBgkqhkiG9w0BAQEFAASCAQCQC0tX
-# STOKbQ5WbJbpGEIMkh0+9DHS/SmyGgpbHreNxwha5ixUO8ZF+G2RsNfK3a97mYdZ
-# BX93MLa6qlS/chLHFE0uH367xfmFkDpa1hU5yEhD5KM8mEukOxsn5rhULH8xRHEh
-# 9eTgq4k3mGKmE/KWk1lwcHZzrvix8ITJSP8nal0cCdlBHrQ41LsiHd9vuv5rFQJB
-# STAapg4TJOva6CPh4Qgmh+NN+JF1J3Lpm05eTy/NahVyOQYiNKLrbIdTxvjASovp
-# FbWfDfByp7HxpewHbFBMFy+n2p0JPleInNu0xzKJp50gSw13n099CoAy2A5/zr7k
-# 6KaEhtC9JGbT5JuToYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
+# BDEWBBTj/KsfbKH4Gr0pfB0j1hdNxTVnUDANBgkqhkiG9w0BAQEFAASCAQCFYH7r
+# rYbXV9Tn2tvfGYTasCjbH7tznegnarl7baakGsSgAuPqc24wGPvCKyZXo7tT17sB
+# Di2GJ4UBHRKHU6MwxlBQkccq6yVVjAcKG6PfyJEdjRr5oiqUxbwIYEpGu/C2zBdw
+# iwWbucE7tbZrDS4i0Pwd3Ha/Zh5nhFndNQG41Dc/ojHhQuhpm29hCME6ebBZmS/z
+# j7DltNKyE4RFxkOfMYeB1a3On98svipOvQFsnq5CE3s7l8lDPwaKgsLw5r12+0JX
+# y6EdwBIrecKBwm/V5xlfX/39d1+iXX8dx60QkC3VeOxCbggT9VxJ1akC+M77T/+C
+# fSJQEGGTbi0lyPcroYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
 # MAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3
 # LmRpZ2ljZXJ0LmNvbTEhMB8GA1UEAxMYRGlnaUNlcnQgQXNzdXJlZCBJRCBDQS0x
 # AhADAZoCOv9YsWvW1ermF/BmMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJ
-# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDEyMDgyMDQzMDJaMCMGCSqGSIb3
-# DQEJBDEWBBTaTeSuVTVtsAKrfYlbhvgxNECyqzANBgkqhkiG9w0BAQEFAASCAQAg
-# OOs8KnxVjSTEqqiQFeAywrOYxki312VEb6C7WQ2eDrVSyYY0NlznZkmkaF0R2Vwq
-# rgVuNu1lIjcA+NmLjd/5+xQbLbuxOfL16FI2huKgqhf2QNnvI6UwKjeI+TcAcw42
-# fY3trUriU7EmSndD5NzWmvRPqegxjk/MVMwkwKXcbz9Ir71W4mzC6f6pBpR0oi4Y
-# yQMkhsUCp2KamVPwKGS6i31AMAqjOrGe5koDAl6n+t/2IO46TKrO8Rul6bKqHGv1
-# oGw0/TMs5NNn2uIFDo7TXg3AH6CAhmovVvUyiOd/DawOb+/b4TstOqGn2irNwtnv
-# Gpgain4Ln+AEnDI/jcj+
+# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDEyMDkxNjI3MzhaMCMGCSqGSIb3
+# DQEJBDEWBBSYIJhAlqPj2bSvket6Sgvy5S3O6DANBgkqhkiG9w0BAQEFAASCAQB5
+# LH8uUwAYEP2uLvgwpAdQ1s+BF0BDTsGmVhlv3HHVCcY0ISwKjoY3S1BChcf0tKHj
+# GDgEpPM0xpAAZuxrDSbh5BE6/IYUsgaAU29f9T7QF2/JP8wo/QJTD31ge9LNiD9e
+# ezIxCUT6jiLc1e+jSVRicc0hHzJS0gw2HlAW7PHGz75oJpEzNY7IY+k8wyJX1L/F
+# k6ag/s8R6A+vTBqhraHBnDT86NfAVWWC92bEHDtC4KEqN1DAsmIKw4CkeylN4Tn9
+# 1y6oY763QZsFq566xNPM82QGrXdVjqxSbjuwWd10s4piAth25R/BQnnPwYrYNIuD
+# aV8bULRJTvn1U4zqcvBA
 # SIG # End signature block
