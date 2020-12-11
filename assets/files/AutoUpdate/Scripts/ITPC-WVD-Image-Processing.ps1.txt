@@ -40,7 +40,7 @@ if ((Test-Path ($LocalConfig+"\ITPC-WVD-Image-Processing.ps1")) -eq $false) {
 	# Create local directory for script(s) and copy files (including the RD agent and boot loader - rename it to the specified name)
 	LogWriter("Copy files to local session host or downloading files from Microsoft")
 	new-item $LocalConfig -ItemType Directory -ErrorAction Ignore
-	(Get-Item $LocalConfig -ErrorAction Ignore).attributes="Hidden"
+	try {(Get-Item $LocalConfig -ErrorAction Ignore).attributes="Hidden"} catch {}
 
 	if ((Test-Path ("${PSScriptRoot}\ITPC-WVD-Image-Processing.ps1")) -eq $false) {
 		LogWriter("Creating ITPC-WVD-Image-Processing.ps1")
@@ -179,8 +179,8 @@ if ($mode -eq "Generalize") {
 # SIG # Begin signature block
 # MIIcWwYJKoZIhvcNAQcCoIIcTDCCHEgCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU9O0FcibbOQnciXG9TF4lvtgf
-# EfyggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUJC9xXPi4+N2/hM8l0n0zvdys
+# uqCggheKMIIFEzCCA/ugAwIBAgIQB2gm73G59Nmo+sBhs2ehKjANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTE5MTEwMjAwMDAwMFoXDTIwMTIx
@@ -311,22 +311,22 @@ if ($mode -eq "Generalize") {
 # SUQgQ29kZSBTaWduaW5nIENBAhAHaCbvcbn02aj6wGGzZ6EqMAkGBSsOAwIaBQCg
 # eDAYBgorBgEEAYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEE
 # AYI3AgEEMBwGCisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJ
-# BDEWBBRPqhAhh8hbNpPaGdKbZQ/UrdWveDANBgkqhkiG9w0BAQEFAASCAQBRhi0a
-# TSLZybnZTVjK2m25qzBGCpUOyXavPg8i0Ow8H97T/3ViDm2kj4oCVrmUq5/99o8s
-# qEwvHF7FZym+J+Xw4Q6MjqjGvOxqqXKJ8Xs08zuqx6rGr1JG3DHnJO5XK2dplauF
-# xYDkScBm5ZDpf3gleEh6Yk6hVoaREs1R0r6ykGxmWtRG5pRBp8YexMGinuyLX2PK
-# SMCSPTtoQE3Kc+RUG6SkLNqHrupAXa9l5wb1Px0Kov48WzuV7bJLrdTEGPau/KHu
-# LbFoLUfvBnAqiFTFclWpG1ox7ejCMkMFlGeYbvH74zdPkHSxvrbFyjFwPJwAG5qx
-# Jelkuz50Sjwc278FoYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
+# BDEWBBSOsJTFEo6Tc5OjtqQGujmGmnSQsTANBgkqhkiG9w0BAQEFAASCAQCDejcQ
+# LR6U12/RPJHjNyfUGLJyysckqa0Lk7uxvBOO/a3iE2OSXs1kdKBdNhLDeyKqIbpn
+# KtsEH1foKITNHo8qOFHL+BPbioNDQMJCD2/242iRBclSRYIpCIKB1+aJl/dO/H6/
+# ShRi+2Yb1ORyzu8909fExuTf7iIQc2YD/YR9ZLMeJqoti3Loqdn9B/QQzhS8LOhM
+# W5UIBBQRHhwxN7mGq+4Q7aPfBxLzkZ/QUt9xcuFSMrJ2ZVzF6C6biJhYAl6vVxjs
+# 1TXIkoMqTP2PqfFEekyKgrGP8gJtqZvSAWGoeKfZsDXG+cKxsbHahjx1cfxTn6Ia
+# mStz+nftcRPROQ/8oYICDzCCAgsGCSqGSIb3DQEJBjGCAfwwggH4AgEBMHYwYjEL
 # MAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3
 # LmRpZ2ljZXJ0LmNvbTEhMB8GA1UEAxMYRGlnaUNlcnQgQXNzdXJlZCBJRCBDQS0x
 # AhADAZoCOv9YsWvW1ermF/BmMAkGBSsOAwIaBQCgXTAYBgkqhkiG9w0BCQMxCwYJ
-# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDEyMTAxODA2NTZaMCMGCSqGSIb3
-# DQEJBDEWBBRFppij4JLv2dpFR2CsAIRARVN4TzANBgkqhkiG9w0BAQEFAASCAQCf
-# IgZ64L0Hfrfn8FWLnxjA9MGm8G0gAOY093vVNjMVZ+oWjD3a2uaexWgrkhiEWnnN
-# Bs37v81oq8jpCz4w+0Y7v8a1blAuI/g21diBKwUDR4VUHxOopOvs5urqmM+4RgbP
-# /HBlLzRsYMJ/iuJ8fr+Ha30tkp3u38GKxH0S5EdiKHKYP6j0+PGQSh1U52SLCH+O
-# Ub0YWGGMTjzkQ8KHouWT/gHS5yeIEKBb36jirfjqaK5Gf3aYNLIMQ2ztwSLZqu8G
-# 1IJAoQVBvjDf3vbfgHl4hyGBuPktqmPC4YKQwxjf8NJQtY6VHhVvLATer2CAhPhq
-# f39bEICE08idIp+OJ7iQ
+# KoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMDEyMTEwOTQwNTlaMCMGCSqGSIb3
+# DQEJBDEWBBQMRdtlbiBSRncmazSETBwQ+B4kITANBgkqhkiG9w0BAQEFAASCAQCU
+# lZ5x70ES2QQ7/YKh7frIDbeYA7hSY57gSciDDU/WVH7S8zz04iCAsSk9GdAll3f2
+# rdvDjpVqC835v8gmwEkiOqAhhWQAadRosKjFNDnIGX0p+Ig0IqlPRgJc16zGswC2
+# 1j++dxEn2xG6JUem8tfJOJ/A3sPZwJ21ukMg38cXmI83WGeJ+EkiDPpNM5A5B/pI
+# gZOgrFOyYI+GmDFFrSPDWRJu0RCT+g9rI6LJ0zDHHtaHwJFayf1rL6rkj9Qhnx20
+# uLyu+R4u9zT/Hny6YDqtRy/QdqG7TafTvmcQnMOtvSGc7LUItT5H/EGDxE4H/dtI
+# 77geUDaWRl2DVlI2egxb
 # SIG # End signature block
