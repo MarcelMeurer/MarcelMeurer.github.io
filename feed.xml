@@ -5,15 +5,15 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 11 Dec 2020 10:55:04 +0100</pubDate>
-    <lastBuildDate>Fri, 11 Dec 2020 10:55:04 +0100</lastBuildDate>
+    <pubDate>Tue, 15 Dec 2020 12:39:55 +0100</pubDate>
+    <lastBuildDate>Tue, 15 Dec 2020 12:39:55 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
         <title>WVD Admin - A native administration Gui for Windows Virtual Desktop</title>
         <description>&lt;h1 id=&quot;windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Windows Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 12/11/2020&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 12/15/2020&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Add, edit and delete host pools&lt;/li&gt;
@@ -35,7 +35,7 @@
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 12/11/2020&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 12/15/2020&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -45,6 +45,10 @@
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6.62.0&lt;/td&gt;
+&lt;td&gt;Add: You can now terminate file handles to an Azure Storage (orphaned handles avoiding a user to log in with its FSLogix profile) - Service Principal needs contributor permissions to the storage account&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.61.0&lt;/td&gt;
 &lt;td&gt;Add: VC++ runtime if you use the destkop installer&lt;/td&gt;
@@ -531,9 +535,9 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 12/11/2020&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 12/15/2020&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Fri, 11 Dec 2020 00:00:00 +0100</pubDate>
+        <pubDate>Tue, 15 Dec 2020 00:00:00 +0100</pubDate>
         <link>/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin/</guid>
         
@@ -872,10 +876,10 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
 &lt;li&gt;App Group&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Make sure that you select all logs and select your Log Analytics workspace (if you use sepago’s “Azure Monitor for WVD” use the same Log Analytics workspace for the backend logging)&lt;/p&gt;
-&lt;p&gt;![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-05.png)&lt;/p&gt;
+&lt;p&gt;![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-05.png)&lt;/p&gt;
 &lt;p&gt;If you have done this for all resources, the WVD send logs to the selected workspace. Keep in mind that writing the first entries can take up to 20 minutes to build the data schema initially.&lt;/p&gt;
 &lt;p&gt;After a while, you should have log data in your Log Analytics workspace:&lt;/p&gt;
-&lt;p&gt;![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-06.png)&lt;/p&gt;
+&lt;p&gt;![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-06.png)&lt;/p&gt;
 &lt;p&gt;You can see the following logs (tables):&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;WVDCheckpoints
@@ -913,7 +917,7 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
 | extend CState=iff(SessionHostOSVersion==&amp;quot;&amp;lt;&amp;gt;&amp;quot;,&amp;quot;Failure&amp;quot;,&amp;quot;Success&amp;quot;) | summarize Count=count() by State=CState
 | render piechart 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-02.png)&lt;/p&gt;
+&lt;p&gt;![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-02.png)&lt;/p&gt;
 &lt;h3 id=&quot;failed-connections&quot;&gt;Failed connections&lt;/h3&gt;
 &lt;pre&gt;&lt;code&gt;WVDConnections 
 | where State =~ &amp;quot;Started&amp;quot; and Type =~&amp;quot;WVDConnections&amp;quot; 
@@ -948,7 +952,7 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
 | summarize DurationInSeconds=avg(DurationFromLogon) by HostPool=DesktopGroup_s 
 | render columnchart kind=unstacked 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-01.png)&lt;/p&gt;
+&lt;p&gt;![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-01.png)&lt;/p&gt;
 &lt;h3 id=&quot;session-logon-duration-by-user-desc&quot;&gt;Session logon duration by user (desc)&lt;/h3&gt;
 &lt;pre&gt;&lt;code class=&quot;language-kusto&quot;&gt;&gt;WVDConnections 
 | where Type =~&amp;quot;WVDConnections&amp;quot; and State =~ &amp;quot;Started&amp;quot; | extend Multi=split(_ResourceId, &amp;quot;/&amp;quot;) | project ResourceAlias, HostPool=toupper(HP=Multi[8]), SessionHostName , UserName ,CState=iff(SessionHostOSVersion==&amp;quot;&amp;lt;&amp;gt;&amp;quot;,&amp;quot;Failure&amp;quot;,&amp;quot;Success&amp;quot;), CorrelationId, TimeGenerated, ResourceGroup=Multi[4], DesktopGroup_s=toupper(strcat(RG=Multi[4],&amp;quot;.&amp;quot;, HP=Multi[8])) 
@@ -966,9 +970,9 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
 | summarize Count=count() by bin(TimeGenerated,15)
 | render scatterchart 
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-03.png)&lt;/p&gt;
+&lt;p&gt;![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-03.png)&lt;/p&gt;
 &lt;p&gt;Good to know: Sepago’s commercial “Azure Monitor for WVD”  brings the ready to use Azure workbooks for the session and app monitoring and workbooks for the WVD backend:&lt;/p&gt;
-&lt;p&gt;![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-07.png)&lt;/p&gt;
+&lt;p&gt;![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-07.png)&lt;/p&gt;
 </description>
         <pubDate>Tue, 05 May 2020 00:00:00 +0200</pubDate>
         <link>/Windows-Virtual-Desktop-Monitoring-the-Spring-backend/</link>
@@ -995,9 +999,9 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
 &lt;li&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH&quot;&gt;Microsoft.RDInfra.RDAgentBootLoader.msi&lt;/a&gt; (rename the file)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Make sure that you rename the files to fit the list above (without version numbers).&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;..%5Cassets%5Cimages%5CWVDAdmin%5CMigrate-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/Migrate-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;But first: If you are new to WVD Spring update and have never used it before in your subscription, you have to register the service provider Microsoft.DesktopVirtualization (one-time process). You must be the owner of this subscription to do this. Go to your subscription -&amp;gt; Resource providers -&amp;gt; search for “Microsoft.DesktopVirtualization” and click register:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;..%5Cassets%5Cimages%5CWVDAdmin%5CResourceProvider.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/ResourceProvider.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
 &lt;h2 id=&quot;the-migration-process&quot;&gt;The migration process&lt;/h2&gt;
 &lt;p&gt;The easiest way to migrate a Host Pool from Fall to Spring is by using WVDAdmin. If you have not WVDAdmin before, check out this &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;post&lt;/a&gt; .&lt;/p&gt;
 &lt;ul&gt;
@@ -1046,7 +1050,7 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH&quot;&gt;Microsoft.RDInfra.RDAgentBootLoader.msi&lt;/a&gt; (rename the file)&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;..%5Cassets%5Cimages%5CWVDAdmin%5CMigrate-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/Migrate-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
@@ -1055,7 +1059,7 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Register Microsoft.DesktopVirtualization service provider
-&lt;img src=&quot;..%5Cassets%5Cimages%5CWVDAdmin%5CResourceProvider.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;../assets/images/WVDAdmin/ResourceProvider.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;The service principal of WVDAdmin needs owner permission to the resource groups containing the app groups to add/remove users&lt;/p&gt;

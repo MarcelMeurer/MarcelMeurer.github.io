@@ -428,11 +428,11 @@
 
 (Reg_DWord) &quot;FeatureSet&quot; = 1
 </code></pre>
-<p><img src="..%5Cassets%5Cimages%5CWVDAdmin%5CSpringReleaseRegistry.png" alt="AADBrowser" /></p>
+<p><img src="../assets/images/WVDAdmin/SpringReleaseRegistry.png" alt="AADBrowser" /></p>
 <p>First, register the new service provide Microsoft.DesktopVirtualization on your Azure subscription (one-time process). You must be owner of this subscription to do this. Go to your subscription -&gt; Resource providers -&gt;  search for “Microsoft.DesktopVirtualization” and click register:</p>
-<p><img src="..%5Cassets%5Cimages%5CWVDAdmin%5CResourceProvider.png" alt="AADBrowser" /></p>
+<p><img src="../assets/images/WVDAdmin/ResourceProvider.png" alt="AADBrowser" /></p>
 <p>If you restart WVDAdmin you will see the new note “WVD V2” which displays your resources in the Spring Release. Please make sure that your service principal has the right permission to create and administrate your resources (the sp needs owner permission to the resource group containing your host pool, app groups, … to assign users and groups).</p>
-<p><img src="..%5Cassets%5Cimages%5CWVDAdmin%5CSpringReleaseGui.png" alt="AADBrowser" /></p>
+<p><img src="../assets/images/WVDAdmin/SpringReleaseGui.png" alt="AADBrowser" /></p>
 <p>But what can you do with WVDAdmin compared to the portal integration? You can (e.g.):</p>
 <ul>
 <li>Administrate all resources with a Windows GUI</li>
@@ -455,7 +455,7 @@
 <li>And you can assign groups to apps and desktops</li>
 <li>…</li>
 </ul>
-<p><img src="..%5Cassets%5Cimages%5CWVDAdmin%5CSpringReleaseVSWVD.png" alt="AADBrowser" /></p>
+<p><img src="../assets/images/WVDAdmin/SpringReleaseVSWVD.png" alt="AADBrowser" /></p>
 <p>Check out my video rolling out session hosts from an existing WVD image into the spring update (sorry for the bad sound - I will change this later):</p>
 <iframe width="800" height="815" src="https://www.youtube-nocookie.com/embed/Nb97VBiNQLI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <p>More details and download: <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">WVDAdmin</a></p>

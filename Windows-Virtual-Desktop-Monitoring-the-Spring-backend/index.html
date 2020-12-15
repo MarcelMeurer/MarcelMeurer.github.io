@@ -423,10 +423,10 @@
 <li>App Group</li>
 </ul>
 <p>Make sure that you select all logs and select your Log Analytics workspace (if you use sepago’s “Azure Monitor for WVD” use the same Log Analytics workspace for the backend logging)</p>
-<p>![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-05.png)</p>
+<p>![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-05.png)</p>
 <p>If you have done this for all resources, the WVD send logs to the selected workspace. Keep in mind that writing the first entries can take up to 20 minutes to build the data schema initially.</p>
 <p>After a while, you should have log data in your Log Analytics workspace:</p>
-<p>![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-06.png)</p>
+<p>![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-06.png)</p>
 <p>You can see the following logs (tables):</p>
 <ul>
 <li>WVDCheckpoints
@@ -464,7 +464,7 @@
 | extend CState=iff(SessionHostOSVersion==&quot;&lt;&gt;&quot;,&quot;Failure&quot;,&quot;Success&quot;) | summarize Count=count() by State=CState
 | render piechart 
 </code></pre>
-<p>![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-02.png)</p>
+<p>![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-02.png)</p>
 <h3 id="failed-connections">Failed connections</h3>
 <pre><code>WVDConnections 
 | where State =~ &quot;Started&quot; and Type =~&quot;WVDConnections&quot; 
@@ -499,7 +499,7 @@
 | summarize DurationInSeconds=avg(DurationFromLogon) by HostPool=DesktopGroup_s 
 | render columnchart kind=unstacked 
 </code></pre>
-<p>![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-01.png)</p>
+<p>![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-01.png)</p>
 <h3 id="session-logon-duration-by-user-desc">Session logon duration by user (desc)</h3>
 <pre><code class="language-kusto">>WVDConnections 
 | where Type =~&quot;WVDConnections&quot; and State =~ &quot;Started&quot; | extend Multi=split(_ResourceId, &quot;/&quot;) | project ResourceAlias, HostPool=toupper(HP=Multi[8]), SessionHostName , UserName ,CState=iff(SessionHostOSVersion==&quot;&lt;&gt;&quot;,&quot;Failure&quot;,&quot;Success&quot;), CorrelationId, TimeGenerated, ResourceGroup=Multi[4], DesktopGroup_s=toupper(strcat(RG=Multi[4],&quot;.&quot;, HP=Multi[8])) 
@@ -517,9 +517,9 @@
 | summarize Count=count() by bin(TimeGenerated,15)
 | render scatterchart 
 </code></pre>
-<p>![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-03.png)</p>
+<p>![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-03.png)</p>
 <p>Good to know: Sepago’s commercial “Azure Monitor for WVD”  brings the ready to use Azure workbooks for the session and app monitoring and workbooks for the WVD backend:</p>
-<p>![Registry with values](..\assets\images\Azure Monitor for WVD\Blog-01-07.png)</p>
+<p>![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-07.png)</p>
 
             </div>
 
