@@ -5,9 +5,27 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 11 Jan 2021 17:40:50 +0100</pubDate>
-    <lastBuildDate>Mon, 11 Jan 2021 17:40:50 +0100</lastBuildDate>
+    <pubDate>Mon, 11 Jan 2021 18:56:28 +0100</pubDate>
+    <lastBuildDate>Mon, 11 Jan 2021 18:56:28 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
+    
+      <item>
+        <title>WVDAdmin videos on YouTube</title>
+        <description>&lt;p&gt;WVDAdmin is my free community solution to manage and work with WVD / Windows Virtual Desktop. Mainly, building images and rolling out session hosts are key-value-adds. But you can also run parallel tasks on VMs and session hosts.&lt;/p&gt;
+&lt;p&gt;Learn how to use and some tips &amp;amp; tricks showing my &lt;a href=&quot;https://www.youtube.com/playlist?list=PLOhYYkRGNEImaVBZKBI-24MB-iytsCgsA&quot;&gt;YouTube channel&lt;/a&gt; about WVDAdmin - I’m continuously  adding more videos to the channel.&lt;/p&gt;
+&lt;h4 id=&quot;wvdadmin---configuring-wvdadmin&quot;&gt;01: WVDAdmin - Configuring WVDAdmin&lt;/h4&gt;
+&lt;iframe width=&quot;1280&quot; height=&quot;720&quot; src=&quot;https://www.youtube.com/embed/z8yWPoEDzZg?list=PLOhYYkRGNEImaVBZKBI-24MB-iytsCgsA&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;h4 id=&quot;wvdadmin---building-a-template-image-for-session-hosts&quot;&gt;02: WVDAdmin - Building a template image for session hosts&lt;/h4&gt;
+&lt;iframe width=&quot;1280&quot; height=&quot;720&quot; src=&quot;https://www.youtube.com/embed/ehnsUvXYYjc?list=PLOhYYkRGNEImaVBZKBI-24MB-iytsCgsA&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
+</description>
+        <pubDate>Mon, 11 Jan 2021 00:00:00 +0100</pubDate>
+        <link>/WVDAdmin-for-WVD-management-and-roll-out-videos-on-Youtube/</link>
+        <guid isPermaLink="true">/WVDAdmin-for-WVD-management-and-roll-out-videos-on-Youtube/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>Custom Role for Power On Connect preview</title>
@@ -886,127 +904,6 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
         <link>/Azure-Global-Bootcamp-2020/</link>
         <guid isPermaLink="true">/Azure-Global-Bootcamp-2020/</guid>
         
-        
-      </item>
-    
-      <item>
-        <title>Windows Virtual Desktop - Monitoring the Spring Backend - WVD</title>
-        <description>&lt;p&gt;The long await update from WVD is public. It comes with a full ARM integration and is natively useable in the Azure Portal. Some things changed from the Fall to Spring update, and that’s include monitoring.&lt;/p&gt;
-&lt;p&gt;In this post, I’m focused on monitoring the WVD backend and not monitoring the sessions, applications, session host performance, latency, etc. To exactly monitoring these metrics, check out the solution &lt;a href=&quot;https://www.sepago.de/en/azure-monitor-en/&quot;&gt;“Azure Monitor for WVD”&lt;/a&gt; which works for Fall and the Spring update - and the new version comes with great Azure workbooks to additionally visualize data by host pool.&lt;/p&gt;
-&lt;p&gt;The Fall update writes logs to Azure Monitor / Log Analytics as custom logs. There is a &lt;a href=&quot;https://techcommunity.microsoft.com/t5/azure-sentinel/monitoring-windows-virtual-desktop-environments-fall-2019/ba-p/1356632&quot;&gt;really good blog post&lt;/a&gt; about this.&lt;/p&gt;
-&lt;p&gt;The Spring update writes logs to Log Analytics as well, but they have a different name and schema. To enable logging the backend, you have to enable the diagnostic settings on all involved resources:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Workspace&lt;/li&gt;
-&lt;li&gt;Host Pool&lt;/li&gt;
-&lt;li&gt;App Group&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Make sure that you select all logs and select your Log Analytics workspace (if you use sepago’s “Azure Monitor for WVD” use the same Log Analytics workspace for the backend logging)&lt;/p&gt;
-&lt;p&gt;![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-05.png)&lt;/p&gt;
-&lt;p&gt;If you have done this for all resources, the WVD send logs to the selected workspace. Keep in mind that writing the first entries can take up to 20 minutes to build the data schema initially.&lt;/p&gt;
-&lt;p&gt;After a while, you should have log data in your Log Analytics workspace:&lt;/p&gt;
-&lt;p&gt;![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-06.png)&lt;/p&gt;
-&lt;p&gt;You can see the following logs (tables):&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;WVDCheckpoints
-&lt;ul&gt;
-&lt;li&gt;Intermediate steps while establishing and running a connection&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;WVDConnections
-&lt;ul&gt;
-&lt;li&gt;Start/End of connections&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;WVDErrors
-&lt;ul&gt;
-&lt;li&gt;Errors while establishing a connection, failures during the administration, failures getting feed informations&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;WVDHostRegistrations
-&lt;ul&gt;
-&lt;li&gt;About session host registration to host pools&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;WVDManagement
-&lt;ul&gt;
-&lt;li&gt;Administration log&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The logs are internally connectable with their correlation id you have in each log.&lt;/p&gt;
-&lt;h2 id=&quot;lets-start-digging-some-data&quot;&gt;Let’s start digging some data&lt;/h2&gt;
-&lt;p&gt;Open Log Analytics an go to “Logs” and run your queries based on the KUSTO query language.&lt;/p&gt;
-&lt;h3 id=&quot;count-of-brokered-sessions-by-state&quot;&gt;Count of brokered sessions by state&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;WVDConnections 
-| where State =~ &amp;quot;Started&amp;quot; and Type =~&amp;quot;WVDConnections&amp;quot; 
-| extend CState=iff(SessionHostOSVersion==&amp;quot;&amp;lt;&amp;gt;&amp;quot;,&amp;quot;Failure&amp;quot;,&amp;quot;Success&amp;quot;) | summarize Count=count() by State=CState
-| render piechart 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-02.png)&lt;/p&gt;
-&lt;h3 id=&quot;failed-connections&quot;&gt;Failed connections&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;WVDConnections 
-| where State =~ &amp;quot;Started&amp;quot; and Type =~&amp;quot;WVDConnections&amp;quot; 
-| extend Multi=split(_ResourceId, &amp;quot;/&amp;quot;) | extend CState=iff(SessionHostOSVersion==&amp;quot;&amp;lt;&amp;gt;&amp;quot;,&amp;quot;Failure&amp;quot;,&amp;quot;Success&amp;quot;)
-| where CState=~&amp;quot;Failure&amp;quot; 
-| project TimeStamp=TimeGenerated, UserName, ResourceGroup=Multi[4], HostPool=Multi[8],ResourceAlias, SessionHost=SessionHostName, ClientOS=ClientOS, ClientWvdVersion=ClientVersion, CorrelationId
-| order by TimeStamp desc
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&quot;failed-connection-with-details&quot;&gt;Failed connection with details&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;WVDConnections | where State =~ &amp;quot;Started&amp;quot; and Type =~&amp;quot;WVDConnections&amp;quot; 
-| extend Multi=split(_ResourceId, &amp;quot;/&amp;quot;) | extend CState=iff(SessionHostOSVersion==&amp;quot;&amp;lt;&amp;gt;&amp;quot;,&amp;quot;Failure&amp;quot;,&amp;quot;Success&amp;quot;)
-| where CState =~&amp;quot;Failure&amp;quot;
-| order by TimeGenerated desc
-| where State =~ &amp;quot;Started&amp;quot; | extend Multi=split(_ResourceId, &amp;quot;/&amp;quot;) 
-| project ResourceAlias, ResourceGroup=Multi[4], HostPool=Multi[8], SessionHostName ,UserName ,CState=iff(SessionHostOSVersion==&amp;quot;&amp;lt;&amp;gt;&amp;quot;,&amp;quot;Failure&amp;quot;,&amp;quot;Success&amp;quot;), CorrelationId, TimeGenerated
-| join kind= leftouter (
-    WVDErrors 
-) on CorrelationId
-| extend DurationFromLogon=datetime_diff(&amp;quot;Second&amp;quot;,TimeGenerated1,TimeGenerated)
-| project  TimeStamp=TimeGenerated, DurationFromLogon, UserName, ResourceAlias ,SessionHost=SessionHostName ,Source ,CodeSymbolic , ErrorMessage=Message, ErrorCode=Code, ErrorSource=Source ,ServiceError, CorrelationId
-| order by TimeStamp desc
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&quot;session-logon-duration-by-host-pool&quot;&gt;Session logon duration by host pool&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;WVDConnections 
-| where Type =~&amp;quot;WVDConnections&amp;quot; and State =~ &amp;quot;Started&amp;quot; | extend Multi=split(_ResourceId, &amp;quot;/&amp;quot;) | project ResourceAlias, HostPool=toupper(HP=Multi[8]), SessionHostName , UserName ,CState=iff(SessionHostOSVersion==&amp;quot;&amp;lt;&amp;gt;&amp;quot;,&amp;quot;Failure&amp;quot;,&amp;quot;Success&amp;quot;), CorrelationId, TimeGenerated, ResourceGroup=Multi[4], DesktopGroup_s=toupper(strcat(RG=Multi[4],&amp;quot;.&amp;quot;, HP=Multi[8])) 
-| join kind= leftouter (
-    WVDCheckpoints 
-) on CorrelationId
-| extend DurationFromLogon=datetime_diff(&amp;quot;Second&amp;quot;,TimeGenerated1,TimeGenerated)
-| where Name=~&amp;quot;RdpStackLogon&amp;quot; 
-| project UserName, ResourceGroup, DesktopGroup_s,SessionHost=SessionHostName, TimeStamp=TimeGenerated1, DurationFromLogon
-| summarize DurationInSeconds=avg(DurationFromLogon) by HostPool=DesktopGroup_s 
-| render columnchart kind=unstacked 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-01.png)&lt;/p&gt;
-&lt;h3 id=&quot;session-logon-duration-by-user-desc&quot;&gt;Session logon duration by user (desc)&lt;/h3&gt;
-&lt;pre&gt;&lt;code class=&quot;language-kusto&quot;&gt;&gt;WVDConnections 
-| where Type =~&amp;quot;WVDConnections&amp;quot; and State =~ &amp;quot;Started&amp;quot; | extend Multi=split(_ResourceId, &amp;quot;/&amp;quot;) | project ResourceAlias, HostPool=toupper(HP=Multi[8]), SessionHostName , UserName ,CState=iff(SessionHostOSVersion==&amp;quot;&amp;lt;&amp;gt;&amp;quot;,&amp;quot;Failure&amp;quot;,&amp;quot;Success&amp;quot;), CorrelationId, TimeGenerated, ResourceGroup=Multi[4], DesktopGroup_s=toupper(strcat(RG=Multi[4],&amp;quot;.&amp;quot;, HP=Multi[8])) 
-| join kind= leftouter (
-    WVDCheckpoints 
-) on CorrelationId
-| extend DurationFromLogon=datetime_diff(&amp;quot;Second&amp;quot;,TimeGenerated1,TimeGenerated)
-| where Name=~&amp;quot;RdpStackLogon&amp;quot; 
-| project UserName, ResourceGroup, DesktopGroup_s,SessionHost=SessionHostName, TimeStamp=TimeGenerated1, DurationFromLogon
-| summarize DurationInSeconds=avg(DurationFromLogon) by HostPool=UserName
-| order by DurationInSeconds desc 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h3 id=&quot;administrative-activities-over-time&quot;&gt;Administrative activities over time&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;WVDManagement 
-| summarize Count=count() by bin(TimeGenerated,15)
-| render scatterchart 
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-03.png)&lt;/p&gt;
-&lt;p&gt;Good to know: Sepago’s commercial “Azure Monitor for WVD”  brings the ready to use Azure workbooks for the session and app monitoring and workbooks for the WVD backend:&lt;/p&gt;
-&lt;p&gt;![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-07.png)&lt;/p&gt;
-</description>
-        <pubDate>Tue, 05 May 2020 00:00:00 +0200</pubDate>
-        <link>/Windows-Virtual-Desktop-Monitoring-the-Spring-backend/</link>
-        <guid isPermaLink="true">/Windows-Virtual-Desktop-Monitoring-the-Spring-backend/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Monitor</category>
         
       </item>
     
