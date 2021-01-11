@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+  },
+  "variables":{
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2018-07-01",
+      "name": "[guid(subscription().id, 'start VM on connect')]",
+      "properties": {
+        "roleName": "start VM on connect",
+        "description": "Custom role for WVD Power-On-Connect - Preview",
+        "type": "customRole",
+        "isCustom": true,
+        "permissions": [
+          {
+            "actions": [
+				"Microsoft.Compute/virtualMachines/start/action",
+				"Microsoft.Compute/virtualMachines/read"
+				],
+            "notActions": ""
+          }
+        ],
+        "assignableScopes": [
+          "[subscription().id]"
+        ]
+      }
+    }
+  ]
+}
