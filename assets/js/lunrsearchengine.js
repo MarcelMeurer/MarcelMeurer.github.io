@@ -53,7 +53,7 @@ var documents = [{
     "id": 10,
     "url": "/WVDAdmin-for-WVD-management-and-roll-out-videos-on-Youtube/",
     "title": "WVDAdmin videos on YouTube",
-    "body": "2021/01/11 - WVDAdmin is my free community solution to manage and work with WVD / Windows Virtual Desktop. Mainly, building images and rolling out session hosts are key-value-adds. But you can also run parallel tasks on VMs and session hosts. Learn how to use and some tips &amp; tricks showing my YouTube channel about WVDAdmin - I’m continuously adding more videos to the channel. 01: WVDAdmin - Configuring WVDAdmin: 02: WVDAdmin - Building a template image for session hosts: "
+    "body": "2021/01/11 - WVDAdmin is my free community solution to manage and work with WVD / Windows Virtual Desktop. Mainly, building images and rolling out session hosts are key-value-adds. But you can also run parallel tasks on VMs and session hosts. Learn how to use and some tips &amp; tricks showing my YouTube channel about WVDAdmin - I’m continuously adding more videos to the channel. 01: WVDAdmin - Configuring WVDAdmin: 02: WVDAdmin - Building a template image for session hosts: 03: WVDAdmin - Rollout multiple session hosts: "
     }, {
     "id": 11,
     "url": "/Custom-Role-for-Power-On-Connect-Preview/",

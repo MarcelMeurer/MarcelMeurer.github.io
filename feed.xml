@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 11 Jan 2021 18:56:28 +0100</pubDate>
-    <lastBuildDate>Mon, 11 Jan 2021 18:56:28 +0100</lastBuildDate>
+    <pubDate>Tue, 12 Jan 2021 12:55:42 +0100</pubDate>
+    <lastBuildDate>Tue, 12 Jan 2021 12:55:42 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
@@ -17,6 +17,8 @@
 &lt;iframe width=&quot;1280&quot; height=&quot;720&quot; src=&quot;https://www.youtube.com/embed/z8yWPoEDzZg?list=PLOhYYkRGNEImaVBZKBI-24MB-iytsCgsA&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
 &lt;h4 id=&quot;wvdadmin---building-a-template-image-for-session-hosts&quot;&gt;02: WVDAdmin - Building a template image for session hosts&lt;/h4&gt;
 &lt;iframe width=&quot;1280&quot; height=&quot;720&quot; src=&quot;https://www.youtube.com/embed/ehnsUvXYYjc?list=PLOhYYkRGNEImaVBZKBI-24MB-iytsCgsA&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;h4 id=&quot;wvdadmin---rollout-multiple-session-hosts&quot;&gt;03: WVDAdmin - Rollout multiple session hosts&lt;/h4&gt;
+&lt;iframe width=&quot;1280&quot; height=&quot;720&quot; src=&quot;https://www.youtube.com/embed/od7FA7vQWcs?list=PLOhYYkRGNEImaVBZKBI-24MB-iytsCgsA&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
 </description>
         <pubDate>Mon, 11 Jan 2021 00:00:00 +0100</pubDate>
         <link>/WVDAdmin-for-WVD-management-and-roll-out-videos-on-Youtube/</link>
