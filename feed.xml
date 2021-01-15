@@ -5,9 +5,76 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 13 Jan 2021 08:44:15 +0100</pubDate>
-    <lastBuildDate>Wed, 13 Jan 2021 08:44:15 +0100</lastBuildDate>
+    <pubDate>Fri, 15 Jan 2021 10:17:02 +0100</pubDate>
+    <lastBuildDate>Fri, 15 Jan 2021 10:17:02 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
+    
+      <item>
+        <title>Push Windows Virtual Desktop (WVD) Session Host state to Log Analytics to create alerts if hosts become unavailable or failed</title>
+        <description>&lt;p&gt;Microsoft offers an easy way to monitor a WVD environment’s basic metrics directly integrated into the Azure portal. I mostly extend the monitoring using sepago’s Azure Monitor for WVD (&lt;a href=&quot;https://www.sepago.de/en/azure-monitor-en/&quot;&gt;https://www.sepago.de/en/azure-monitor-en/&lt;/a&gt;), which is also included in Nerdio Manager for WVD (&lt;a href=&quot;https://getnerdio.com/nerdio-manager-for-wvd/&quot;&gt;https://getnerdio.com/nerdio-manager-for-wvd/&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;The native Microsoft solution shows the session hosts’ state (available, unavailable, failed, …) in a workbook (insights) in the Azure Portal. Unfortunately, the way of showing this state cannot be used to create an alert in Azure Monitor and get notified.&lt;/p&gt;
+&lt;p&gt;To solve this challenge, we have to put the session host states as a custom log into a Log Analytics workspace. The data can be queried and uploaded to Log Analytics with an Azure Logic App&lt;/p&gt;
+&lt;h2 id=&quot;installation-and-configuration&quot;&gt;Installation and configuration&lt;/h2&gt;
+&lt;p&gt;Deploy the prepared logic app into your subscription using the “Deploy to Azure” button.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FLA-SessionHostStatesToLogAnalytics.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;To query the Azure Management API, you need a service principal (a function account) with the right permission. Create the service principal in the Azure Portal:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Azure Active Directory -&amp;gt; App registrations -&amp;gt; New registration and give it a name (e.g. svc_AzureAdUserReader4AzureMonitor) and press register
+&lt;img src=&quot;../assets/images/LogicApp-WVDSH-AzureMonitor-001.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;li&gt;Go to Certificates and secrets -&amp;gt; Add new client secret and type in a name (e.g. Key1) and expiration date (make a note into your calendar) and press add
+&lt;img src=&quot;../assets/images/LogicApp-WVDSH-AzureMonitor-002.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;li&gt;Copy the generated secret for later use&lt;/li&gt;
+&lt;li&gt;Go to overview and copy the application id and directory id for later use
+&lt;img src=&quot;../assets/images/LogicApp-WVDSH-AzureMonitor-003.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;li&gt;Give the service principal permission to the subscription: Access control (IAM) -&amp;gt; Add -&amp;gt; Add role assignment -&amp;gt; “Desktop Virtualization Host Pool Reader” and select the service principal
+&lt;img src=&quot;../assets/images/LogicApp-WVDSH-AzureMonitor-004.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To upload the data to your Azure Monitor / log analytics workspace, you need the workspace id and key of an existing Log Analytics workspace.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Go to your log analytics workspace -&amp;gt; select Advanced settings -&amp;gt; Agents management -&amp;gt; copy the workspace id and primary key for later use
+&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-005.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Go to your deployed logic app and click edit.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Edit the configuration of “Authentication: Tenant Id”, “Authentication: App Id”, “Authentication: App Password” and “Subscription Id”: Enter the data of the service principal and the subscription id (Guid)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Expand “For each”, “Until” and open “Send Data (Preview)”&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Click on Connections and add a new one (Add new)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Give a name (e.g. ToLogAnalytics), the primary key and workspace id from log analytics and press create
+&lt;img src=&quot;../assets/images/LogicApp-WVDSH-AzureMonitor-005.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Save the logic app and press run to test it.&lt;/p&gt;
+&lt;p&gt;If everything looks good, our logic app will upload the  data to log analytics every 5 minutes (can be changed).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/LogicApp-WVDSH-AzureMonitor-006.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;querying-data&quot;&gt;Querying data&lt;/h2&gt;
+&lt;p&gt;You can query the data from log analytics with &lt;strong&gt;WVDHostPoolStatistic_CL&lt;/strong&gt;. Keep in mind that it takes a while (30 minutes) to build the first upload schema.&lt;/p&gt;
+&lt;p&gt;To show the data in a list you can start with this query:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;WVDHostPoolStatistic_CL
+| project TimeGenerated, SessionHost=name_s, properties_status_s, properties_allowNewSession_b, properties_updateState_s, properties_assignedUser_s
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/LogicApp-WVDSH-AzureMonitor-007.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;To create an alert you can add an alert to Log Analytics based on the following query (lists unavailable hosts):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;WVDHostPoolStatistic_CL
+| project TimeGenerated, SessionHost=name_s, properties_status_s, properties_allowNewSession_b, properties_updateState_s, properties_assignedUser_s
+| where properties_status_s=~&amp;quot;unavailable&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;</description>
+        <pubDate>Fri, 15 Jan 2021 00:00:00 +0100</pubDate>
+        <link>/Push-WVD-Session-Hosts-data-and-status-into-Azure-Monitor-Log-Analytics-to-create-alerts/</link>
+        <guid isPermaLink="true">/Push-WVD-Session-Hosts-data-and-status-into-Azure-Monitor-Log-Analytics-to-create-alerts/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Monitor</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin videos on YouTube</title>
@@ -895,17 +962,6 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
         
         
         <category>Windows Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>PolarConf 2019 - Building own solutions whit Azure Monitor </title>
-        <description>&lt;p&gt;[Azure Global Bootcamp - WVD - How to enjoy perfect published apps and desktops.pdf](../assets/files/WVD - How to enjoy perfect published apps and desktops.pdf)&lt;/p&gt;
-</description>
-        <pubDate>Mon, 25 May 2020 00:00:00 +0200</pubDate>
-        <link>/Azure-Global-Bootcamp-2020/</link>
-        <guid isPermaLink="true">/Azure-Global-Bootcamp-2020/</guid>
-        
         
       </item>
     
