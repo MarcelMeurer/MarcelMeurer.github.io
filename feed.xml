@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 15 Jan 2021 10:17:02 +0100</pubDate>
-    <lastBuildDate>Fri, 15 Jan 2021 10:17:02 +0100</lastBuildDate>
+    <pubDate>Fri, 15 Jan 2021 10:23:55 +0100</pubDate>
+    <lastBuildDate>Fri, 15 Jan 2021 10:23:55 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
@@ -19,7 +19,7 @@
 &lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FLA-SessionHostStatesToLogAnalytics.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;To query the Azure Management API, you need a service principal (a function account) with the right permission. Create the service principal in the Azure Portal:&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;Azure Active Directory -&amp;gt; App registrations -&amp;gt; New registration and give it a name (e.g. svc_AzureAdUserReader4AzureMonitor) and press register
+&lt;li&gt;Azure Active Directory -&amp;gt; App registrations -&amp;gt; New registration and give it a name (e.g. svc_AzureWvdSessionHostsAvailability4AzureMonitor) and press register
 &lt;img src=&quot;../assets/images/LogicApp-WVDSH-AzureMonitor-001.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
 &lt;li&gt;Go to Certificates and secrets -&amp;gt; Add new client secret and type in a name (e.g. Key1) and expiration date (make a note into your calendar) and press add
 &lt;img src=&quot;../assets/images/LogicApp-WVDSH-AzureMonitor-002.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
