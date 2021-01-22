@@ -141,10 +141,6 @@
 <lastmod>2020-11-18T00:00:00+01:00</lastmod>
 </url>
 <url>
-<loc>/Windows-Virtual-Desktop-Admin/</loc>
-<lastmod>2021-01-07T00:00:00+01:00</lastmod>
-</url>
-<url>
 <loc>/Custom-Role-for-Power-On-Connect-Preview/</loc>
 <lastmod>2021-01-11T00:00:00+01:00</lastmod>
 </url>
@@ -155,6 +151,10 @@
 <url>
 <loc>/Push-WVD-Session-Hosts-data-and-status-into-Azure-Monitor-Log-Analytics-to-create-alerts/</loc>
 <lastmod>2021-01-15T00:00:00+01:00</lastmod>
+</url>
+<url>
+<loc>/Windows-Virtual-Desktop-Admin/</loc>
+<lastmod>2021-01-22T00:00:00+01:00</lastmod>
 </url>
 <url>
 <loc>/about</loc>
