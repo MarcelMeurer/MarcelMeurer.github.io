@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 14 Feb 2021 20:54:19 +0100</pubDate>
-    <lastBuildDate>Sun, 14 Feb 2021 20:54:19 +0100</lastBuildDate>
+    <pubDate>Sun, 14 Feb 2021 21:40:29 +0100</pubDate>
+    <lastBuildDate>Sun, 14 Feb 2021 21:40:29 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
@@ -22,7 +22,7 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
 2021-02-09 17:17:55, Error      [0x0f0070] SYSPRP RunDlls:An error occurred while running registry sysprep DLLs, halting sysprep execution. dwRet = 0x27a
 2021-02-09 17:17:55, Error                 SYSPRP WinMain:Hit failure while processing sysprep re-specialize internal providers; hr = 0x8007027a
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;It took some time, but I found a way to bring sysprep back to work (even if I didn’t find the root cause of this issue).&lt;/p&gt;
+&lt;p&gt;It took some time, but I found a way to bring sysprep back to work (even if I didn’t find the root cause of this issue). Keep in mind that this workaround doesn’t resolve the unknown reason and maybe bring your image in an unsupported state.&lt;/p&gt;
 &lt;p&gt;Delete the following registry key or set it to 0:
 HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\Sysprep	SysprepCorrupt&lt;/p&gt;
 &lt;p&gt;Powershell:&lt;/p&gt;
