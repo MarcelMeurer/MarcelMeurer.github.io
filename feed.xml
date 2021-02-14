@@ -5,12 +5,12 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 14 Feb 2021 20:33:13 +0100</pubDate>
-    <lastBuildDate>Sun, 14 Feb 2021 20:33:13 +0100</lastBuildDate>
+    <pubDate>Sun, 14 Feb 2021 20:54:19 +0100</pubDate>
+    <lastBuildDate>Sun, 14 Feb 2021 20:54:19 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
-        <title>Syspre error: RunPlatformActions:Sysprep data was marked corrupt; cannot proceed</title>
+        <title>Sysprep error: RunPlatformActions:Sysprep data was marked corrupt; cannot proceed</title>
         <description>&lt;p&gt;I’m working in the WVD area and often create golden images to deploy session hosts for WVD - mainly based on Windows 10 Enterprise multi-session.
 To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep.
 One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:&lt;/p&gt;
@@ -29,8 +29,8 @@ HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\Sysprep	SysprepCorrupt&lt;
 &lt;pre&gt;&lt;code&gt;Remove-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\Sysprep&amp;quot; -Name &amp;quot;SysprepCorrupt&amp;quot; -ErrorAction Ignore
 &lt;/code&gt;&lt;/pre&gt;</description>
         <pubDate>Sun, 14 Feb 2021 00:00:00 +0100</pubDate>
-        <link>/Sysprep-Error-ysprep-data-was-marked-corrupt;-cannot-proceed/</link>
-        <guid isPermaLink="true">/Sysprep-Error-ysprep-data-was-marked-corrupt;-cannot-proceed/</guid>
+        <link>/Sysprep-Error-sysprep-data-was-marked-corrupt;-cannot-proceed/</link>
+        <guid isPermaLink="true">/Sysprep-Error-sysprep-data-was-marked-corrupt;-cannot-proceed/</guid>
         
         
         <category>Windows Virtual Desktop</category>
