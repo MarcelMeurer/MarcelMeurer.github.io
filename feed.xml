@@ -5,15 +5,43 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 11 Feb 2021 10:39:24 +0100</pubDate>
-    <lastBuildDate>Thu, 11 Feb 2021 10:39:24 +0100</lastBuildDate>
+    <pubDate>Sun, 14 Feb 2021 20:33:13 +0100</pubDate>
+    <lastBuildDate>Sun, 14 Feb 2021 20:33:13 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
+    
+      <item>
+        <title>Syspre error: RunPlatformActions:Sysprep data was marked corrupt; cannot proceed</title>
+        <description>&lt;p&gt;I’m working in the WVD area and often create golden images to deploy session hosts for WVD - mainly based on Windows 10 Enterprise multi-session.
+To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep.
+One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sysprep.exe /generalize /oobe /shutdown /mode:vm
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the last weeks, I got the feedback that Sysprep runs into an error if you sysprep a former syspreped virtual machine again - and if Windows-updates were installed between both preparations.&lt;/p&gt;
+&lt;p&gt;The error is written in C:\Windows\System32\Panther\setupact.log is:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;2021-02-09 17:17:55, Error      [0x0f00d6] SYSPRP RunPlatformActions:Sysprep data was marked corrupt; cannot proceed
+2021-02-09 17:17:55, Error      [0x0f0070] SYSPRP RunDlls:An error occurred while running registry sysprep DLLs, halting sysprep execution. dwRet = 0x27a
+2021-02-09 17:17:55, Error                 SYSPRP WinMain:Hit failure while processing sysprep re-specialize internal providers; hr = 0x8007027a
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;It took some time, but I found a way to bring sysprep back to work (even if I didn’t find the root cause of this issue).&lt;/p&gt;
+&lt;p&gt;Delete the following registry key or set it to 0:
+HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\Sysprep	SysprepCorrupt&lt;/p&gt;
+&lt;p&gt;Powershell:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Remove-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\Sysprep&amp;quot; -Name &amp;quot;SysprepCorrupt&amp;quot; -ErrorAction Ignore
+&lt;/code&gt;&lt;/pre&gt;</description>
+        <pubDate>Sun, 14 Feb 2021 00:00:00 +0100</pubDate>
+        <link>/Sysprep-Error-ysprep-data-was-marked-corrupt;-cannot-proceed/</link>
+        <guid isPermaLink="true">/Sysprep-Error-ysprep-data-was-marked-corrupt;-cannot-proceed/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVD Admin - A native administration Gui for Windows Virtual Desktop</title>
         <description>&lt;h1 id=&quot;windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Windows Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 02/11/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 02/13/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Add, edit and delete host pools&lt;/li&gt;
@@ -35,7 +63,7 @@
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 02/11/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 02/13/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -45,6 +73,10 @@
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6.73.0&lt;/td&gt;
+&lt;td&gt;Add: A hidden feature will be unrevealed at the Scottish Summit 2021&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.72.0&lt;/td&gt;
 &lt;td&gt;Add: Fix for a sysprep failure (Sysprep data was marked corrupt; cannot proceed) in the ITPC-WVD-Image-Processing.ps1 script; Add: Better handling for shutdown/start/delete VM tasks in the Virtual Machines node&lt;/td&gt;
@@ -567,9 +599,9 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 02/11/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 02/13/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Thu, 11 Feb 2021 00:00:00 +0100</pubDate>
+        <pubDate>Sat, 13 Feb 2021 00:00:00 +0100</pubDate>
         <link>/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin/</guid>
         
@@ -937,48 +969,6 @@ I would run this command on the template VM / golden Image to have this permissi
         <pubDate>Mon, 24 Aug 2020 00:00:00 +0200</pubDate>
         <link>/Shadow-a-WVD-user-with-least-privileges/</link>
         <guid isPermaLink="true">/Shadow-a-WVD-user-with-least-privileges/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>What's wrong with Windows 10 and UWP and Sysprep?</title>
-        <description>&lt;p&gt;I’m working in the WVD area and often create golden images to deploy session hosts for WVD - mainly based on Windows 10 Enterprise multi-session.
-To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep.
-One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;sysprep.exe /generalize /oobe /shutdown /mode:vm
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Sometimes I run into an issue, and Sysprep stops work with an error message:
-&lt;img src=&quot;../assets/images/Sysprep-01.png&quot; alt=&quot;Sysprep&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Digging into the log file show the issue:
-&lt;img src=&quot;../assets/images/Sysprep-02.png&quot; alt=&quot;Sysprep&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Error: Package XXXXXXX was installed for a user, but not provisioned for all users.&lt;/p&gt;
-&lt;p&gt;The package various. Sometimes I got a part of a language pack or other internal app packages. To run into the problem with certainty, install an app from the Windows Store.&lt;/p&gt;
-&lt;p&gt;Let’s find out what happens, for doing that I installed different applications from the Windows Store into the VM and tried to Sysprep the VM. The first package blocking Sysprep was in this test “5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm”&lt;/p&gt;
-&lt;p&gt;To get details of the package run the following PowerShell script with administrative privileges:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm')}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The returned object shows that this package is only installed for the local administrator (installing the apps from the Windows Store). The user querying this data (mm-admin) doesn’t have this package installed.
-&lt;img src=&quot;../assets/images/Sysprep-03.png&quot; alt=&quot;Sysprep&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Okay. Appx packages from the store are personnel and not shared with all users on a VM (to install appx packages for all users, you have to sideload the packages with DISM.exe). So I tried to remove this app from all users:_&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm')} | Remove-AppxPackage -AllUsers
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Ok. Sysprep again. The next issue occurs: Sysprep has the same problem with NetFlix - installed only for one user of the VM. Instead of removing the packages by trial and error, I found another way: Teach Sysprep to ignore this behavior. I guess it’s not a problem having an appx package assigned to only one user - even if it and administrative user.&lt;/p&gt;
-&lt;p&gt;I figured out that Sysprep uses an XML file with a set of rules preparing a VM. The rule-set for generalizing an image is stored in &lt;code&gt;&amp;quot;C:\windows\System32\sysprep\ActionFiles\Generalize.xml&amp;quot;&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;To ignore the installed or update AppX package remove the following lines and save Generalize.xml (you have to take ownership of the file and give yourself permission to do that):&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;sysprepOrder order=&amp;quot;0x1A00&amp;quot;&amp;gt;&amp;lt;/sysprepOrder&amp;gt;
-&amp;lt;sysprepValidate methodName=&amp;quot;SysprepGeneralizeValidate&amp;quot; moduleName=&amp;quot;$(runtime.system32)\AppxSysprep.dll&amp;quot;&amp;gt;&amp;lt;/sysprepValidate&amp;gt;
-&amp;lt;sysprepModule methodName=&amp;quot;SysprepGeneralize&amp;quot; moduleName=&amp;quot;$(runtime.system32)\AppxSysprep.dll&amp;quot;&amp;gt;&amp;lt;/sysprepModule&amp;gt;&amp;lt;/imaging&amp;gt;&amp;lt;imaging exclude=&amp;quot;&amp;quot;&amp;gt;&amp;lt;assemblyIdentity name=&amp;quot;Microsoft-Windows-SecureBoot-FirmwareUpdate&amp;quot; version=&amp;quot;10.0.19041.1&amp;quot; publicKeyToken=&amp;quot;31bf3856ad364e35&amp;quot; processorArchitecture=&amp;quot;amd64&amp;quot; versionScope=&amp;quot;NonSxS&amp;quot;&amp;gt;&amp;lt;/assemblyIdentity&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Sysprep-04.png&quot; alt=&quot;Sysprep&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;After that Sysprep runs without an issue. Rolling out a session host based on the new image works, and even the user could logon without a problem (and yes: they don’t have the Store apps from the local admin - as expected).&lt;/p&gt;
-&lt;p&gt;Maybe there are some smarter ways to handle UWP and Sysprep (if you know one - let me know it, too). But this solves an issue creating or updating an image for WVD based on a template VM (golden image approach).&lt;/p&gt;
-</description>
-        <pubDate>Tue, 28 Jul 2020 00:00:00 +0200</pubDate>
-        <link>/Sysprep-and-WVD-and-UWP/</link>
-        <guid isPermaLink="true">/Sysprep-and-WVD-and-UWP/</guid>
         
         
         <category>Windows Virtual Desktop</category>
