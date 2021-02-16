@@ -159,6 +159,43 @@
 	{
       "type": "Microsoft.Authorization/roleDefinitions",
       "apiVersion": "2018-07-01",
+      "name": "[guid(subscription().id, 'WVD - VM Start-, Stop- and Restarter')]",
+      "properties": {
+        "roleName": "WVD - VM Start-, Stop- and Restarter",
+        "description": "Allows to start, stop and restart VMs and VM Scale Set instances",
+        "type": "customRole",
+        "isCustom": true,
+        "permissions": [
+          {
+            "actions": [
+				"Microsoft.Compute/virtualMachines/read",
+				"Microsoft.Compute/virtualMachines/start/action",
+				"Microsoft.Compute/virtualMachines/restart/action",
+				"Microsoft.Compute/virtualMachines/deallocate/action",
+				
+				"Microsoft.Compute/virtualMachineScaleSets/virtualMachines/read",
+				"Microsoft.Compute/virtualMachineScaleSets/virtualMachines/deallocate/action",
+				"Microsoft.Compute/virtualMachineScaleSets/virtualMachines/restart/action",
+				"Microsoft.Compute/virtualMachineScaleSets/virtualMachines/start/action",
+				
+				
+				"Microsoft.Authorization/permissions/read",
+				
+				
+				"Microsoft.Resources/subscriptions/resourceGroups/read"
+				
+				],
+            "notActions": ""
+          }
+        ],
+        "assignableScopes": [
+          "[subscription().id]"
+        ]
+      }
+    },
+	{
+      "type": "Microsoft.Authorization/roleDefinitions",
+      "apiVersion": "2018-07-01",
       "name": "[guid(subscription().id, 'WVD - Infrastructure Administrator & VM Manager')]",
       "properties": {
         "roleName": "WVD - Infrastructure Administrator & VM Manager",

@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 15 Feb 2021 16:14:44 +0100</pubDate>
-    <lastBuildDate>Mon, 15 Feb 2021 16:14:44 +0100</lastBuildDate>
+    <pubDate>Tue, 16 Feb 2021 10:11:02 +0100</pubDate>
+    <lastBuildDate>Tue, 16 Feb 2021 10:11:02 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
@@ -928,6 +928,8 @@ Write-host(&amp;quot;ScriptReturnMessage:{RDP Shortpath enabled - reboot the ses
 &lt;h2 id=&quot;my-common-wvd-roles&quot;&gt;My common WVD roles:&lt;/h2&gt;
 &lt;h3 id=&quot;wvd---user-session-reader&quot;&gt;WVD - User Session Reader&lt;/h3&gt;
 &lt;p&gt;Allows to read the user session and host pool properties of Windows Virtual Desktop.&lt;/p&gt;
+&lt;h3 id=&quot;wvd---vm-start--stop--and-restarter&quot;&gt;WVD - VM Start-, Stop- and Restarter&lt;/h3&gt;
+&lt;p&gt;Allows to start, stop and restart virtual machines and VM Scale Set instances&lt;/p&gt;
 &lt;h3 id=&quot;wvd---user-session-contributor&quot;&gt;WVD - User Session Contributor&lt;/h3&gt;
 &lt;p&gt;Allows to work with the user session and read host pool properties of Windows Virtual Desktop host pools, including to send messages to users and logoff/disconnect user sessions&lt;/p&gt;
 &lt;h3 id=&quot;wvd---infrastructure-reader&quot;&gt;WVD - Infrastructure Reader&lt;/h3&gt;
