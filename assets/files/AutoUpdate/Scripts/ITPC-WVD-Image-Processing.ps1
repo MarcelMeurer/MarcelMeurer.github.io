@@ -116,8 +116,12 @@ if ($mode -eq "Generalize") {
 	LogWriter("Removing existing Azure Monitoring Certificates")
 	Get-ChildItem "Cert:\LocalMachine\Microsoft Monitoring Agent" -ErrorAction Ignore | Remove-Item
 
-	LogWriter("Starting sysprep to generalize session host")
+	if ([System.IO.File]::Exists("C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1")) {
+		LogWriter("Running VDI Optimization script")
+		Start-Process -wait -FilePath PowerShell.exe -WorkingDirectory "C:\ProgramData\Optimize" -ArgumentList '-ExecutionPolicy Bypass -File "C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1" -WindowsVersion 2004 -Verbose -WindowsMediaPlayer -AppxPackages -DefaultUserSettings -Autologgers -ScheduledTasks -Services -NetworkOptimizations -LGPO' -RedirectStandardOutput "$($LogDir)\VirtualDesktop_Optimize.Stage1.Out.txt" -RedirectStandardError "$($LogDir)\VirtualDesktop_Optimize.Stage1.Warning.txt"
+	}
 
+	LogWriter("Starting sysprep to generalize session host")
 	if ([System.Environment]::OSVersion.Version.Major -le 6) {
 		#Windows 7
 		LogWriter("Enabling RDP8 on Windows 7")
@@ -179,6 +183,12 @@ if ($mode -eq "Generalize") {
 	Enable-ScheduledTask  -TaskName "ITPC-LogAnalyticAgent for RDS and Citrix" -ErrorAction Ignore
 	Enable-ScheduledTask  -TaskName "ITPC-MySmartScaleAgent" -ErrorAction Ignore
 
+	if ([System.IO.File]::Exists("C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1")) {
+		LogWriter("Running VDI Optimization script")
+		Start-Process -wait -FilePath PowerShell.exe -WorkingDirectory "C:\ProgramData\Optimize" -ArgumentList '-ExecutionPolicy Bypass -File "C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1" -WindowsVersion 2004 -Verbose -WindowsMediaPlayer -AppxPackages -DefaultUserSettings -Autologgers -ScheduledTasks -Services -NetworkOptimizations -LGPO' -RedirectStandardOutput "$($LogDir)\VirtualDesktop_Optimize.Stage2.Out.txt" -RedirectStandardError "$($LogDir)\VirtualDesktop_Optimize.Stage2.Warning.txt"
+	}
+
+
 	LogWriter("Finally restarting session host")
 
 	# final reboot
@@ -188,8 +198,8 @@ if ($mode -eq "Generalize") {
 # SIG # Begin signature block
 # MIIZZAYJKoZIhvcNAQcCoIIZVTCCGVECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUxqfwQ2lCN2r2RlpuTD6xJrOH
-# oI2gghSCMIIE/jCCA+agAwIBAgIQDUJK4L46iP9gQCHOFADw3TANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQULrbH6xFyypMJLprb06RbLXSh
+# LzagghSCMIIE/jCCA+agAwIBAgIQDUJK4L46iP9gQCHOFADw3TANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgVGltZXN0YW1waW5nIENBMB4XDTIxMDEwMTAwMDAwMFoXDTMxMDEw
@@ -303,23 +313,23 @@ if ($mode -eq "Generalize") {
 # ZXJ0LmNvbTExMC8GA1UEAxMoRGlnaUNlcnQgU0hBMiBBc3N1cmVkIElEIENvZGUg
 # U2lnbmluZyBDQQIQAs5KUttbmmyoHluSw+u3hTAJBgUrDgMCGgUAoHgwGAYKKwYB
 # BAGCNwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIBBDAc
-# BgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUX0Lp
-# J3TMVQYM+OR2BJcIQCoNJD0wDQYJKoZIhvcNAQEBBQAEggEAgzbYMX7Exk0Iwdes
-# yJZBOjSFprKxiHmYvcOuXZfc3E9lI6Veu13DObQAyDnLr9BHuzpovuSW145FM5C/
-# 2kqPpVzj+p18gXZbuCKuyv4RG01MuTw5VBLsIgHhKNlUsIWFtiBQH8TNAfHJpCOw
-# HjOzyQxkp2z8lTCaWQ8N1ecwxJqi9KI6d+Gn43yNRSGxsx/4JHqrmNvYVn1nhK4h
-# InGSVZd904qm78ezTbN45Eu3nojYsRwfKUI2iGYEWuJOiEoG1Q8C4FCx9mb0FAWT
-# 9XdS0NYfJ4oyKht/SCfWCjziUBASu08zD0eqLroEa994EyHGnDTHmwxPxh3d8JRP
-# IfyrlaGCAiAwggIcBgkqhkiG9w0BCQYxggINMIICCQIBATCBhjByMQswCQYDVQQG
+# BgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUZj7O
+# TfHumVZ6QGsJixlV4eDkI70wDQYJKoZIhvcNAQEBBQAEggEAilG6+UjCpM6N9CiB
+# VHzx/MY/4yxdAqaKqV0DabxO01sODvA5DbqpfrWfrDSgj3UZy9H+eJpUe5FGFar0
+# 8VheGT0+tyEXh7pmQ2g/mGUctudUJMz6+fuEsARIekBq8+WmQSYI+l5W2xrvi8X8
+# u+Kv7g7jEiNwZ2y65wks3xILgXnvDaY6hkPjsmPQhZmjqFAUyFeV3z2xoJegnu8L
+# KOPG2Mepr20f9l7cxRqTjPjLpBgHZi8one/oE1XwmvQ/lxSLcl38gcITBAa9l1vu
+# huymhmCbMiD2Uw4TYKbmRF7mnxL+jtsVLzkHXcfwpTj6s2BlQn4cABk8TE7g1LmJ
+# jARgGKGCAiAwggIcBgkqhkiG9w0BCQYxggINMIICCQIBATCBhjByMQswCQYDVQQG
 # EwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNl
 # cnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFzc3VyZWQgSUQgVGltZXN0
 # YW1waW5nIENBAhANQkrgvjqI/2BAIc4UAPDdMAkGBSsOAwIaBQCgXTAYBgkqhkiG
-# 9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMTAyMTEwOTM1MDda
-# MCMGCSqGSIb3DQEJBDEWBBQKVivDdF4ZsKQXo4F1N4jM8/zJ4DANBgkqhkiG9w0B
-# AQEFAASCAQBFdP5PK574SsErwOXe0ehIdsjgtX9u3nGZmJkEKT5swsAPhquCgAr2
-# hSeXa5aBHvZQukxHxaktzxr7vZSNGcprKyGWvFQMsMGW6hNSe+N8JNRwu+WOsNf7
-# OaVOYGp8xiiMIFUEssBBftlyiGWpF5sBTQUs5pzeOkcupkyEa2PNxrR8UB83mdNa
-# CfNZO1CpJFivpKIgVaLKi90zUO1oPnVvSVeEwfjYdueU1mveXVLLrc5xLDsYw/Cd
-# NBywN1Qe5xtIPbgpehi37YrjnJFMZojhUxPxKdeFeSRjx4VNSFHF67tN6dxWE+eu
-# p3fBra6pkShLOyFkb1dSIK37AmoeDjKs
+# 9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMTAyMTcxMzU0MDBa
+# MCMGCSqGSIb3DQEJBDEWBBTk/gxmI+T8DwyqAcWGvC4YBYz0BDANBgkqhkiG9w0B
+# AQEFAASCAQAZYAhuoQlM+RF2FRo4Ty0KE+fppbQYvwUlLT0Ivzo6qUjlgf8JHgpF
+# IOqPGLoLp1QeIukKlsAqyElkbySTweHOPqcGmWupuAYPINKh5PFhI9MJWShowGMz
+# 2DAZ2IynIp+TGsmE3DAme32QtrQyVjdtr/3MJT4RSfWcYHFO72UIfCtySbUSPFiA
+# fAfzctGsWOoPwo7gpHf7aXnDSaUqwu9lGFh4SG9zLK+i5Pm/vpcesUO02WlD2PmI
+# M3dxEsADLZGMSu46HJukG+/vqXrg16CqHZWcEiloeYhFt1Rd28MVx7/doU8FZtqO
+# XRDDTFtpP8cDBlTyAoU6WgGyvqD0aQ5h
 # SIG # End signature block
