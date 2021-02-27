@@ -157,8 +157,12 @@
 <lastmod>2021-02-14T00:00:00+01:00</lastmod>
 </url>
 <url>
+<loc>/Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD/</loc>
+<lastmod>2021-02-27T00:00:00+01:00</lastmod>
+</url>
+<url>
 <loc>/Windows-Virtual-Desktop-Admin/</loc>
-<lastmod>2021-02-17T00:00:00+01:00</lastmod>
+<lastmod>2021-02-27T00:00:00+01:00</lastmod>
 </url>
 <url>
 <loc>/about</loc>
@@ -225,6 +229,9 @@
 </url>
 <url>
 <loc>/page3/</loc>
+</url>
+<url>
+<loc>/page4/</loc>
 </url>
 <url>
 <loc>/assets/files/PolarConf%202019%20-%20Build%20your%20own%20Azure%20Monitor%20solution.pdf</loc>

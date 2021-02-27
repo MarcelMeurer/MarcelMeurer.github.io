@@ -5,15 +5,15 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 19 Feb 2021 09:49:27 +0100</pubDate>
-    <lastBuildDate>Fri, 19 Feb 2021 09:49:27 +0100</lastBuildDate>
+    <pubDate>Sat, 27 Feb 2021 11:43:48 +0100</pubDate>
+    <lastBuildDate>Sat, 27 Feb 2021 11:43:48 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
         <title>WVD Admin - A native administration Gui for Windows Virtual Desktop</title>
         <description>&lt;h1 id=&quot;windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Windows Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 02/17/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 02/27/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Add, edit and delete host pools&lt;/li&gt;
@@ -35,7 +35,7 @@
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 02/17/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 02/27/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -59,7 +59,7 @@
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.73.0&lt;/td&gt;
-&lt;td&gt;Add: A hidden feature will be unrevealed at the Scottish Summit 2021&lt;/td&gt;
+&lt;td&gt;Add: Automatically change the disk type on start/stop: Add a tag “WVD.AdvDiskType” to a VM with the value “StandardSSD_LRS” or “Premium_LRS”. On the stop, the disk is converted to HDD (lowes costs), and on start, the disk is converted to the named type.  Works only with WVDAdmin (not from the Azure Portal or scaling solutions)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.72.0&lt;/td&gt;
@@ -583,11 +583,39 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 02/17/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 02/27/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Wed, 17 Feb 2021 00:00:00 +0100</pubDate>
+        <pubDate>Sat, 27 Feb 2021 00:00:00 +0100</pubDate>
         <link>/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Changing the disk type automatically while starting or deallocating a session host / VM for WVD</title>
+        <description>&lt;p&gt;The costs of running virtual machines in Azure summarize the costs of their components like VM type (compute), storage, network, and some other parts. While the spendings for the compute stops after deallocating VMs, Microsoft continues charging for the storage (the virtual disks). These make sense while the disks continue using the underlying storage.&lt;/p&gt;
+&lt;p&gt;There are three main types of storage for managed disks with different prices: E.g 128 GByte costs between $5.89 to $19.71 per disk per month.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/VMTag-WVD.AdvDiskType-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;If you have many VMs, the disks’ costs become more important while you have to pay for the disk while the VM is running or not.&lt;/p&gt;
+&lt;p&gt;If you run Windows Virtual Desktops, your session hosts don’t run 24/7 (the same happens for test and demo environments). So, you start and stop the virtual machines to your needs. This lowers the compute costs, but the costs for the disks continue. But if a virtual machine is deallocated, the storage performance is unimportant. Why don’t we change the disk type to the cheapest after deallocating and bringing it back to a higher performance before starting the VM? That is absolutely possible and can be done through the Azure Portal - or using WVDAdmin.&lt;/p&gt;
+&lt;p&gt;With the current version of WVDAdmin you can tag a VM / session host to change the disk type on start and after the deallocation. Simply add a tag to the VMs with the name “&lt;em&gt;WVD.AdvDiskType&lt;/em&gt;” and one of the following values:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;StandardSSD_LRS&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Premium_LRS&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;After this, refresh WVDAdmin, and the disk type changes on start to the named type and goes to standard HDD (the cheapest) after the deallocation.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/VMTag-WVD.AdvDiskType-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;PS: You can add the tags automatically using the “Custom Tags” tab in WVDAdmin:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/VMTag-WVD.AdvDiskType-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/VMTag-WVD.AdvDiskType-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt; Keep in mind that change the disk type on the fly only works in WVDAdmin. If you start/stop a VM in the Azure Portal (or with an autoscaling engine), the disk type will not change.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 27 Feb 2021 00:00:00 +0100</pubDate>
+        <link>/Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD/</link>
+        <guid isPermaLink="true">/Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -959,30 +987,6 @@ Write-host(&amp;quot;ScriptReturnMessage:{RDP Shortpath enabled - reboot the ses
         <pubDate>Thu, 10 Sep 2020 00:00:00 +0200</pubDate>
         <link>/Least-privileges-with-custom-roles-for-Windows-Virtual-Desktop-(WVD)/</link>
         <guid isPermaLink="true">/Least-privileges-with-custom-roles-for-Windows-Virtual-Desktop-(WVD)/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Shadow a WVD user with least privileges</title>
-        <description>&lt;p&gt;WVD allows local administrators to shadow user sessions. You can do this  easily with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; or using the command-line like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-cmd&quot;&gt;&gt;mstsc /v:WVD-DESIGN-404 /control /shadow:2 /prompt
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;In most companies, a help desk agent supports users using applications. For that, local admin privileges are not necessary and not recommended. To allow help desk agents shadowing users in WVD, you have to give these users (or better: a user group) only the needed permission. To do this, execute the following command in an administrative cmd:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL AddAccount 'ITPROCLOUD\ADM_WVD-Shadowing',2
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;This gives the users of the group &lt;strong&gt;ITPROCLOUD\ADM_WVD-Shadowing&lt;/strong&gt; the needed permission directly on the RDP-SXS stack (you need to reboot the session host).
-I would run this command on the template VM / golden Image to have this permission configured for each session host. Alternatively, you can run this in a computer-logon script for existing session hosts.&lt;/p&gt;
-&lt;p&gt;Hint: You can reset this setting with:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL RestoreDefaults
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Take a look how shadowing a user session with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; looks like: &lt;a href=&quot;https://twitter.com/i/status/1229472041423732736&quot;&gt;https://twitter.com/i/status/1229472041423732736&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Mon, 24 Aug 2020 00:00:00 +0200</pubDate>
-        <link>/Shadow-a-WVD-user-with-least-privileges/</link>
-        <guid isPermaLink="true">/Shadow-a-WVD-user-with-least-privileges/</guid>
         
         
         <category>Windows Virtual Desktop</category>
