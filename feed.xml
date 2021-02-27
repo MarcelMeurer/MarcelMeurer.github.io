@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 27 Feb 2021 11:43:48 +0100</pubDate>
-    <lastBuildDate>Sat, 27 Feb 2021 11:43:48 +0100</lastBuildDate>
+    <pubDate>Sat, 27 Feb 2021 11:47:46 +0100</pubDate>
+    <lastBuildDate>Sat, 27 Feb 2021 11:47:46 +0100</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
@@ -59,7 +59,7 @@
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.73.0&lt;/td&gt;
-&lt;td&gt;Add: Automatically change the disk type on start/stop: Add a tag “WVD.AdvDiskType” to a VM with the value “StandardSSD_LRS” or “Premium_LRS”. On the stop, the disk is converted to HDD (lowes costs), and on start, the disk is converted to the named type.  Works only with WVDAdmin (not from the Azure Portal or scaling solutions)&lt;/td&gt;
+&lt;td&gt;Add: Automatically change the disk type on start/stop: Add a tag “&lt;a href=&quot;../Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD&quot;&gt;WVD.AdvDiskType&lt;/a&gt;” to a VM with the value “StandardSSD_LRS” or “Premium_LRS”. On the stop, the disk is converted to HDD (lowes costs), and on start, the disk is converted to the named type.  Works only with WVDAdmin (not from the Azure Portal or scaling solutions)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.72.0&lt;/td&gt;
