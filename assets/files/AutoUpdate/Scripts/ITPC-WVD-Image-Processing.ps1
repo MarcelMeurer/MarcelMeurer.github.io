@@ -1,5 +1,5 @@
 # This powershell script is part of WVD Admin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
-# Current Version of this script: 2.5
+# Current Version of this script: 2.7
 
 param(
 
@@ -49,11 +49,11 @@ if ((Test-Path ($LocalConfig+"\ITPC-WVD-Image-Processing.ps1")) -eq $false) {
 	} else {Copy-Item "${PSScriptRoot}\ITPC-WVD-Image-Processing.ps1" -Destination ($LocalConfig+"\")}
 
 
-	if ((Test-Path ($ScriptRoot+"\Microsoft.RDInfra.RDAgent.msi")) -eq $false) {
+	if ((Test-Path ("${PSScriptRoot}\Microsoft.RDInfra.RDAgent.msi")) -eq $false) {
 		LogWriter("Downloading RDAgent")
 		Invoke-WebRequest -Uri "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv" -OutFile ($LocalConfig+"\Microsoft.RDInfra.RDAgent.msi")
 	} else {Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgent.msi" -Destination ($LocalConfig+"\")}
-	if ((Test-Path ($ScriptRoot+"\Microsoft.RDInfra.RDAgentBootLoader.msi ")) -eq $false) {
+	if ((Test-Path ("${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi")) -eq $false) {
 		LogWriter("Downloading RDBootloader")
 		Invoke-WebRequest -Uri "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH" -OutFile ($LocalConfig+"\Microsoft.RDInfra.RDAgentBootLoader.msi")
 	} else {Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi" -Destination ($LocalConfig+"\")}
@@ -150,11 +150,11 @@ if ($mode -eq "Generalize") {
 	$psc = New-Object System.Management.Automation.PSCredential($DomainJoinUserName, (ConvertTo-SecureString $DomainJoinUserPassword -AsPlainText -Force))
 	if ($DomainJoinOU -eq "")
 	{
-		Add-Computer -DomainName $DomainFqdn -Credential $psc -Force
+		Add-Computer -DomainName $DomainFqdn -Credential $psc -Force -ErrorAction Stop
 	} 
 	else
 	{
-		Add-Computer -DomainName $DomainFqdn -OUPath $DomainJoinOU -Credential $psc -Force
+		Add-Computer -DomainName $DomainFqdn -OUPath $DomainJoinOU -Credential $psc -Force -ErrorAction Stop
 	}
 
 
@@ -196,10 +196,10 @@ if ($mode -eq "Generalize") {
 }
 
 # SIG # Begin signature block
-# MIIZZAYJKoZIhvcNAQcCoIIZVTCCGVECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
+# MIIZdAYJKoZIhvcNAQcCoIIZZTCCGWECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQULrbH6xFyypMJLprb06RbLXSh
-# LzagghSCMIIE/jCCA+agAwIBAgIQDUJK4L46iP9gQCHOFADw3TANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUWTl9pkUOY/b/GIDCx5nfup/O
+# 1DOgghSCMIIE/jCCA+agAwIBAgIQDUJK4L46iP9gQCHOFADw3TANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgVGltZXN0YW1waW5nIENBMB4XDTIxMDEwMTAwMDAwMFoXDTMxMDEw
@@ -308,28 +308,28 @@ if ($mode -eq "Generalize") {
 # 1lssFDVDBGiy23UC4HLHmNY8ZOUfSBAYX4k4YU1iRiSHY4yRUiyvKYnleB/WCxSl
 # gNcSR3CzddWThZN+tpJn+1Nhiaj1a5bA9FhpDXzIAbG5KHW3mWOFIoxhynmUfln8
 # jA/jb7UBJrZspe6HUSHkWGCbugwtK22ixH67xCUrRwIIfEmuE7bhfEJCKMYYVs9B
-# NLZmXbZ0e/VWMyIvIjayS6JKldj1po5SMYIETDCCBEgCAQEwgYYwcjELMAkGA1UE
+# NLZmXbZ0e/VWMyIvIjayS6JKldj1po5SMYIEXDCCBFgCAQEwgYYwcjELMAkGA1UE
 # BhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3LmRpZ2lj
 # ZXJ0LmNvbTExMC8GA1UEAxMoRGlnaUNlcnQgU0hBMiBBc3N1cmVkIElEIENvZGUg
 # U2lnbmluZyBDQQIQAs5KUttbmmyoHluSw+u3hTAJBgUrDgMCGgUAoHgwGAYKKwYB
 # BAGCNwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIBBDAc
-# BgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUZj7O
-# TfHumVZ6QGsJixlV4eDkI70wDQYJKoZIhvcNAQEBBQAEggEAilG6+UjCpM6N9CiB
-# VHzx/MY/4yxdAqaKqV0DabxO01sODvA5DbqpfrWfrDSgj3UZy9H+eJpUe5FGFar0
-# 8VheGT0+tyEXh7pmQ2g/mGUctudUJMz6+fuEsARIekBq8+WmQSYI+l5W2xrvi8X8
-# u+Kv7g7jEiNwZ2y65wks3xILgXnvDaY6hkPjsmPQhZmjqFAUyFeV3z2xoJegnu8L
-# KOPG2Mepr20f9l7cxRqTjPjLpBgHZi8one/oE1XwmvQ/lxSLcl38gcITBAa9l1vu
-# huymhmCbMiD2Uw4TYKbmRF7mnxL+jtsVLzkHXcfwpTj6s2BlQn4cABk8TE7g1LmJ
-# jARgGKGCAiAwggIcBgkqhkiG9w0BCQYxggINMIICCQIBATCBhjByMQswCQYDVQQG
+# BgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUDLVP
+# FCgHDSDJMfUMq/HGCKyiDpEwDQYJKoZIhvcNAQEBBQAEggEAPmAYxW2Exs3Yc5NJ
+# E0JmNNIU94XpjgLSZgerPoKzvCmFbK4BM2ZqrBAhChzneDv6aDJgL1cEZsIEmAks
+# b3RjEu4YfwnwF2pmRvtjiR0v21IBCvVuhYuA9tJ9KUYK8LpEj7jputEiG/5B3Taf
+# 8JqnF/iW4AwjAeHDHfyKJqQk9huzZUiJzP2jLkGDhBDHZMsWFye2V98ovjQFCwMQ
+# JiHMY8dVN/AypCci6P6Kc15KjBSgR/fkiv0y35vjFwRvJr1nqv7sHyk+z3oHmCiu
+# 6RIBbMb07SW9bFEqt+TC/vBWWdmMB3/Ilbp+dY83iFmZaX0AyxbKbXWzposf2KTr
+# su26PaGCAjAwggIsBgkqhkiG9w0BCQYxggIdMIICGQIBATCBhjByMQswCQYDVQQG
 # EwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNl
 # cnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFzc3VyZWQgSUQgVGltZXN0
-# YW1waW5nIENBAhANQkrgvjqI/2BAIc4UAPDdMAkGBSsOAwIaBQCgXTAYBgkqhkiG
-# 9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMTAyMTcxMzU0MDBa
-# MCMGCSqGSIb3DQEJBDEWBBTk/gxmI+T8DwyqAcWGvC4YBYz0BDANBgkqhkiG9w0B
-# AQEFAASCAQAZYAhuoQlM+RF2FRo4Ty0KE+fppbQYvwUlLT0Ivzo6qUjlgf8JHgpF
-# IOqPGLoLp1QeIukKlsAqyElkbySTweHOPqcGmWupuAYPINKh5PFhI9MJWShowGMz
-# 2DAZ2IynIp+TGsmE3DAme32QtrQyVjdtr/3MJT4RSfWcYHFO72UIfCtySbUSPFiA
-# fAfzctGsWOoPwo7gpHf7aXnDSaUqwu9lGFh4SG9zLK+i5Pm/vpcesUO02WlD2PmI
-# M3dxEsADLZGMSu46HJukG+/vqXrg16CqHZWcEiloeYhFt1Rd28MVx7/doU8FZtqO
-# XRDDTFtpP8cDBlTyAoU6WgGyvqD0aQ5h
+# YW1waW5nIENBAhANQkrgvjqI/2BAIc4UAPDdMA0GCWCGSAFlAwQCAQUAoGkwGAYJ
+# KoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjEwMzIwMTc0
+# MDM1WjAvBgkqhkiG9w0BCQQxIgQgoFifB1bY1gQgIUVyoDO9cnpxg5xltdQl4Sdv
+# rd8uIVowDQYJKoZIhvcNAQEBBQAEggEAFas0TPtFtw/6thVma4Mb5Ner25Z2wCGJ
+# qOJNI2q+PfDyNk3zCJ1sHRcPa9Yg1deQXEfkm4ducZKf0EK+xnXw6KBW/jvfJVF2
+# P78Tq5b1yCLDRWDlzcXuuwIbbjLdpAyOonBD7YKLYCNzHLpB5OlzZHGsR4KmpEeq
+# HKsA9JWUQDGazci5Ra5uqeBvhq7bEawhn6RyI134LEXGzcS5+ZSAZF/yok/pkbHw
+# Jxkf9zRYlH8dqda3PwrL/94nomVNyjUBVIr3b8dL8T3sVwqxd6GKr3wkkzWehnsd
+# X1rrCaZNu5dV7fHrpobjI6wktIWRqYONXBOZEWNqypbKnS5EstCKXg==
 # SIG # End signature block
