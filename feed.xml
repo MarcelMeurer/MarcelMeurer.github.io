@@ -5,15 +5,15 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 27 Mar 2021 18:21:22 +0100</pubDate>
-    <lastBuildDate>Sat, 27 Mar 2021 18:21:22 +0100</lastBuildDate>
+    <pubDate>Wed, 07 Apr 2021 23:21:42 +0200</pubDate>
+    <lastBuildDate>Wed, 07 Apr 2021 23:21:42 +0200</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
     
       <item>
         <title>WVD Admin - A native administration Gui for Windows Virtual Desktop</title>
         <description>&lt;h1 id=&quot;windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Windows Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 03/27/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 04/07/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Add, edit and delete host pools&lt;/li&gt;
@@ -35,7 +35,7 @@
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 03/27/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 04/07/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -45,6 +45,10 @@
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6.87.0&lt;/td&gt;
+&lt;td&gt;Add: Option to switch on “Power on connect” for pooled (and assigned) host pools (preview feature)&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.86.0&lt;/td&gt;
 &lt;td&gt;Add: Option to directly roll-out new session hosts with actice Azure Disk Encryption (ADE) - See “secret features” below&lt;/td&gt;
@@ -609,9 +613,9 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 03/27/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 04/07/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Sat, 27 Mar 2021 00:00:00 +0100</pubDate>
+        <pubDate>Wed, 07 Apr 2021 00:00:00 +0200</pubDate>
         <link>/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin/</guid>
         
