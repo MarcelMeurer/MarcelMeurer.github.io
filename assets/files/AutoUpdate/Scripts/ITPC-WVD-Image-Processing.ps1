@@ -1,5 +1,5 @@
 # This powershell script is part of WVD Admin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
-# Current Version of this script: 2.7
+# Current Version of this script: 2.8
 
 param(
 
@@ -118,7 +118,7 @@ if ($mode -eq "Generalize") {
 
 	if ([System.IO.File]::Exists("C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1")) {
 		LogWriter("Running VDI Optimization script")
-		Start-Process -wait -FilePath PowerShell.exe -WorkingDirectory "C:\ProgramData\Optimize" -ArgumentList '-ExecutionPolicy Bypass -File "C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1" -WindowsVersion 2004 -Verbose -WindowsMediaPlayer -AppxPackages -DefaultUserSettings -Autologgers -ScheduledTasks -Services -NetworkOptimizations -LGPO' -RedirectStandardOutput "$($LogDir)\VirtualDesktop_Optimize.Stage1.Out.txt" -RedirectStandardError "$($LogDir)\VirtualDesktop_Optimize.Stage1.Warning.txt"
+		Start-Process -wait -FilePath PowerShell.exe -WorkingDirectory "C:\ProgramData\Optimize" -ArgumentList '-ExecutionPolicy Bypass -File "C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1" ' -RedirectStandardOutput "$($LogDir)\VirtualDesktop_Optimize.Stage1.Out.txt" -RedirectStandardError "$($LogDir)\VirtualDesktop_Optimize.Stage1.Warning.txt"
 	}
 
 	LogWriter("Starting sysprep to generalize session host")
@@ -185,7 +185,7 @@ if ($mode -eq "Generalize") {
 
 	if ([System.IO.File]::Exists("C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1")) {
 		LogWriter("Running VDI Optimization script")
-		Start-Process -wait -FilePath PowerShell.exe -WorkingDirectory "C:\ProgramData\Optimize" -ArgumentList '-ExecutionPolicy Bypass -File "C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1" -WindowsVersion 2004 -Verbose -WindowsMediaPlayer -AppxPackages -DefaultUserSettings -Autologgers -ScheduledTasks -Services -NetworkOptimizations -LGPO' -RedirectStandardOutput "$($LogDir)\VirtualDesktop_Optimize.Stage2.Out.txt" -RedirectStandardError "$($LogDir)\VirtualDesktop_Optimize.Stage2.Warning.txt"
+		Start-Process -wait -FilePath PowerShell.exe -WorkingDirectory "C:\ProgramData\Optimize" -ArgumentList '-ExecutionPolicy Bypass -File "C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1" ' -RedirectStandardOutput "$($LogDir)\VirtualDesktop_Optimize.Stage2.Out.txt" -RedirectStandardError "$($LogDir)\VirtualDesktop_Optimize.Stage2.Warning.txt"
 	}
 
 
@@ -198,8 +198,8 @@ if ($mode -eq "Generalize") {
 # SIG # Begin signature block
 # MIIZdAYJKoZIhvcNAQcCoIIZZTCCGWECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUWTl9pkUOY/b/GIDCx5nfup/O
-# 1DOgghSCMIIE/jCCA+agAwIBAgIQDUJK4L46iP9gQCHOFADw3TANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU2kVn9v1L5XBe4zbqBAy7QlXe
+# oh+gghSCMIIE/jCCA+agAwIBAgIQDUJK4L46iP9gQCHOFADw3TANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgVGltZXN0YW1waW5nIENBMB4XDTIxMDEwMTAwMDAwMFoXDTMxMDEw
@@ -313,23 +313,23 @@ if ($mode -eq "Generalize") {
 # ZXJ0LmNvbTExMC8GA1UEAxMoRGlnaUNlcnQgU0hBMiBBc3N1cmVkIElEIENvZGUg
 # U2lnbmluZyBDQQIQAs5KUttbmmyoHluSw+u3hTAJBgUrDgMCGgUAoHgwGAYKKwYB
 # BAGCNwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIBBDAc
-# BgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUDLVP
-# FCgHDSDJMfUMq/HGCKyiDpEwDQYJKoZIhvcNAQEBBQAEggEAPmAYxW2Exs3Yc5NJ
-# E0JmNNIU94XpjgLSZgerPoKzvCmFbK4BM2ZqrBAhChzneDv6aDJgL1cEZsIEmAks
-# b3RjEu4YfwnwF2pmRvtjiR0v21IBCvVuhYuA9tJ9KUYK8LpEj7jputEiG/5B3Taf
-# 8JqnF/iW4AwjAeHDHfyKJqQk9huzZUiJzP2jLkGDhBDHZMsWFye2V98ovjQFCwMQ
-# JiHMY8dVN/AypCci6P6Kc15KjBSgR/fkiv0y35vjFwRvJr1nqv7sHyk+z3oHmCiu
-# 6RIBbMb07SW9bFEqt+TC/vBWWdmMB3/Ilbp+dY83iFmZaX0AyxbKbXWzposf2KTr
-# su26PaGCAjAwggIsBgkqhkiG9w0BCQYxggIdMIICGQIBATCBhjByMQswCQYDVQQG
+# BgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUUOs4
+# Y/sh+gxqOjSJ3HA6YnGGvfUwDQYJKoZIhvcNAQEBBQAEggEAEsOdpze8dkdk3rvP
+# S1dyv7dBKZMT0NFRU5rcN2zo3Tp4ucMmO/OtbES2WqUPyrQ5h/GAGqt2UfGul6sR
+# +4PzvFAStLkJiAvJR52UccS//B8CzKe5JUSWY+KHLTifJkLMeZ7sNlEIYbm+F8RW
+# 41fbCpgCY2z7gQq+ntoFiFqRTSX/NrLSeav1sSI95EWA+xHaxiWgzVOt6dITeG46
+# a8R3kIBg+p9tsSKreJzBEdSzh4cWNSKHr3i0hts9cxcGR+JCQyeT9H/l3tHtC8p2
+# 4ulqeVW3Pejq0EVsav/D7MfSAA6jA2J4/eljatpA4aLLAxN9pdYTExkjjINva6xI
+# SuPJmaGCAjAwggIsBgkqhkiG9w0BCQYxggIdMIICGQIBATCBhjByMQswCQYDVQQG
 # EwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNl
 # cnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFzc3VyZWQgSUQgVGltZXN0
 # YW1waW5nIENBAhANQkrgvjqI/2BAIc4UAPDdMA0GCWCGSAFlAwQCAQUAoGkwGAYJ
-# KoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjEwMzIwMTc0
-# MDM1WjAvBgkqhkiG9w0BCQQxIgQgoFifB1bY1gQgIUVyoDO9cnpxg5xltdQl4Sdv
-# rd8uIVowDQYJKoZIhvcNAQEBBQAEggEAFas0TPtFtw/6thVma4Mb5Ner25Z2wCGJ
-# qOJNI2q+PfDyNk3zCJ1sHRcPa9Yg1deQXEfkm4ducZKf0EK+xnXw6KBW/jvfJVF2
-# P78Tq5b1yCLDRWDlzcXuuwIbbjLdpAyOonBD7YKLYCNzHLpB5OlzZHGsR4KmpEeq
-# HKsA9JWUQDGazci5Ra5uqeBvhq7bEawhn6RyI134LEXGzcS5+ZSAZF/yok/pkbHw
-# Jxkf9zRYlH8dqda3PwrL/94nomVNyjUBVIr3b8dL8T3sVwqxd6GKr3wkkzWehnsd
-# X1rrCaZNu5dV7fHrpobjI6wktIWRqYONXBOZEWNqypbKnS5EstCKXg==
+# KoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjEwNDA5MTYx
+# MTI2WjAvBgkqhkiG9w0BCQQxIgQgQV0dZNlmS9/3TPr2DIPq2xWALrj/wZsW4HPn
+# 6hxJPmkwDQYJKoZIhvcNAQEBBQAEggEAWcHFsELVJkn9OnjQRI//a9urWq2QXyLZ
+# ypwpenO9JYw3hRjDdpM/sOkDLnNHz1psYtigLqWyNunN8tC5ey0v6IGp1Vg/Irce
+# 9aP0o/16MIOJxa++y68WPW43eEPuq2vfe1eh558BmLOIcrVZKLJIMBltLC7Iqh3j
+# qnw7dKC2St+VHvuzJHc3IW/VSYn8hyY6JLYw3IshwvJpnGCUNYyKsl+/yTPkT2Id
+# nYY22pn8tnRGdRO9iXQvLSJ81Cjr1I5ATdDpNECWkp/VdhyUC+eS79RcbfUmKrA/
+# DgMmlYsZ0O15fO6zRRNgdTpruojOIGeytvICm8JRHUnrp1I5IfSqHA==
 # SIG # End signature block
