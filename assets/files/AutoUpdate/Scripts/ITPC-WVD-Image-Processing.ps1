@@ -1,5 +1,5 @@
 # This powershell script is part of WVD Admin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
-# Current Version of this script: 2.8
+# Current Version of this script: 3.0
 
 param(
 
@@ -7,7 +7,7 @@ param(
 
 	[Parameter(Mandatory)]
 	[ValidateNotNullOrEmpty()]
-	[ValidateSet('Generalize','JoinDomain')]
+	[ValidateSet('Generalize','JoinDomain','DataPartition')]
 	[string] $Mode,
 	[string] $LocalAdminName='localAdmin',
 	[string] $LocalAdminPassword='',
@@ -19,11 +19,28 @@ param(
 	[string] $LogDir="$env:windir\system32\logfiles"
 )
 
-function LogWriter($message)
-{
+function LogWriter($message) {
     $message="$(Get-Date ([datetime]::UtcNow) -Format "o") $message"
 	write-host($message)
 	if ([System.IO.Directory]::Exists($LogDir)) {write-output($message) | Out-File $LogFile -Append}
+}
+
+function ShowDrives() {
+	$drives = Get-WmiObject -Class win32_volume -Filter "DriveType = 3"	
+
+	LogWriter("Drives:")
+	foreach ($drive in $drives) {
+		LogWriter("Name: '$($drive.Name)', Letter: '$($drive.DriveLetter)', Label: '$($drive.Label)'")
+	}
+}
+
+function ShowPageFiles() {
+	$pageFiles = Get-WmiObject -Class Win32_PageFileSetting	
+
+	LogWriter("Pagefiles:")
+	foreach ($pageFile in $pageFiles) {
+		LogWriter("Name: '$($pageFile.Name)', Maximum size: '$($pageFile.MaximumSize)'")
+	}
 }
 
 # Define static variables
@@ -60,6 +77,9 @@ if ((Test-Path ($LocalConfig+"\ITPC-WVD-Image-Processing.ps1")) -eq $false) {
 }
 
 if ($mode -eq "Generalize") {
+	# updating local script (from maybe an older version from the last image process)
+	Copy-Item "$($MyInvocation.InvocationName)" -Destination ($LocalConfig+"\ITPC-WVD-Image-Processing.ps1")
+
 	LogWriter("Removing existing Remote Desktop Agent Boot Loader")
 	$app=Get-WmiObject -Class Win32_Product | Where-Object {$_.Name -match "Remote Desktop Agent Boot Loader"}
 	if ($app -ne $null) {$app.uninstall()}
@@ -118,9 +138,51 @@ if ($mode -eq "Generalize") {
 
 	if ([System.IO.File]::Exists("C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1")) {
 		LogWriter("Running VDI Optimization script")
-		Start-Process -wait -FilePath PowerShell.exe -WorkingDirectory "C:\ProgramData\Optimize" -ArgumentList '-ExecutionPolicy Bypass -File "C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1" ' -RedirectStandardOutput "$($LogDir)\VirtualDesktop_Optimize.Stage1.Out.txt" -RedirectStandardError "$($LogDir)\VirtualDesktop_Optimize.Stage1.Warning.txt"
+		Start-Process -wait -FilePath PowerShell.exe -WorkingDirectory "C:\ProgramData\Optimize" -ArgumentList '-ExecutionPolicy Bypass -File "C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1"' -RedirectStandardOutput "$($LogDir)\VirtualDesktop_Optimize.Stage1.Out.txt" -RedirectStandardError "$($LogDir)\VirtualDesktop_Optimize.Stage1.Warning.txt"
 	}
 
+	# check if D:-drive not the temporary storage and having three drives 
+	$modifyDrives=$false
+	$disks=Get-WmiObject -Class win32_volume | Where-Object { $_.DriveLetter -ne $null -and $_.DriveType -eq 3 }
+	foreach ($disk in $disks) {if ($disk.Name -ne 'D:\' -and $disk.Label -eq 'Temporary Storage') {$modifyDrives=$true}}
+	if ($disks.Count -eq 3 -and $modifyDrives) {
+		LogWriter("VM with 3 drives so prepare change of drive letters of temp and data after deployment")
+		New-ItemProperty -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Runtime" -Name "ChangeDrives" -Value 1 -force
+
+		# check if default value 'automatic manage pagefile size for all devices' is activated 
+		if ($null -eq (Get-WmiObject Win32_Pagefile) ) {
+			# disable 'automatic manage pagefile size for all devices'
+			$sys = Get-WmiObject Win32_Computersystem -EnableAllPrivileges
+			$sys.AutomaticManagedPagefile = $false
+			$sys.put()
+			LogWriter("Automatic manage pagefile size for all devices deactivated")
+		}
+		else {
+			LogWriter("Automatic manage pagefile size for all devices not activated")
+		}
+
+		# redirect pagefile to C: to rename data partition after deployment
+		$CurrentPageFile = Get-WmiObject -Query 'select * from Win32_PageFileSetting'
+		LogWriter("Pagefile name: '$($CurrentPageFile.Name)', max size: $($CurrentPageFile.MaximumSize)")
+		$CurrentPageFile.delete()
+		LogWriter("Pagefile deleted")
+		$CurrentPageFile = Get-WmiObject -Query 'select * from Win32_PageFileSetting'
+		if ($null -eq $CurrentPageFile) {
+			LogWriter("Pagefile deletion successful")
+		}
+		else {
+			LogWriter("Pagefile deletion failed")
+		}
+		Set-WMIInstance -Class Win32_PageFileSetting -Arguments @{name='c:\pagefile.sys';InitialSize = 0; MaximumSize = 0}
+		$CurrentPageFile = Get-WmiObject -Query 'select * from Win32_PageFileSetting'
+		if ($null -eq $CurrentPageFile) {
+			LogWriter("Pagefile not found")
+		}
+		else {
+			LogWriter("New pagefile name: '$($CurrentPageFile.Name)', max size: $($CurrentPageFile.MaximumSize)")
+		}
+	}
+	
 	LogWriter("Starting sysprep to generalize session host")
 	if ([System.Environment]::OSVersion.Version.Major -le 6) {
 		#Windows 7
@@ -146,38 +208,83 @@ if ($mode -eq "Generalize") {
 		}
 	}
 		
-	LogWriter("Joining domain")
-	$psc = New-Object System.Management.Automation.PSCredential($DomainJoinUserName, (ConvertTo-SecureString $DomainJoinUserPassword -AsPlainText -Force))
-	if ($DomainJoinOU -eq "")
-	{
-		Add-Computer -DomainName $DomainFqdn -Credential $psc -Force -ErrorAction Stop
-	} 
-	else
-	{
-		Add-Computer -DomainName $DomainFqdn -OUPath $DomainJoinOU -Credential $psc -Force -ErrorAction Stop
+	if ($DomainJoinUserName -ne "") {
+		LogWriter("Joining domain")
+		$psc = New-Object System.Management.Automation.PSCredential($DomainJoinUserName, (ConvertTo-SecureString $DomainJoinUserPassword -AsPlainText -Force))
+		if ($DomainJoinOU -eq "")
+		{
+			Add-Computer -DomainName $DomainFqdn -Credential $psc -Force -ErrorAction Stop
+		} 
+		else
+		{
+			Add-Computer -DomainName $DomainFqdn -OUPath $DomainJoinOU -Credential $psc -Force -ErrorAction Stop
+		}
+	}
+	
+	# check for disk handling
+	$modifyDrives=$false
+	if (Test-Path -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Runtime") {
+		if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Runtime").ChangeDrives -eq 1) {
+			$disks=Get-WmiObject -Class win32_volume | Where-Object { $_.DriveLetter -ne $null -and $_.DriveType -eq 3 }
+			foreach ($disk in $disks) {if ($disk.Name -eq 'D:\' -and $disk.Label -eq 'Temporary Storage') {$modifyDrives=$true}}
+				if ($modifyDrives -and $disks.Count -eq 3) {
+				# change drive letters of temp and data drive for VMs with 3 drives
+				LogWriter("VM with 3 drives so delete old pagefile and install runonce key")
+
+				# create scheduled task executed at startup for next phase
+				$action = New-ScheduledTaskAction -Execute "$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe" -Argument "-executionPolicy Unrestricted -File `"$LocalConfig\ITPC-WVD-Image-Processing.ps1`" -Mode `"DataPartition`""
+				$trigger = New-ScheduledTaskTrigger	-AtStartup
+				$principal = New-ScheduledTaskPrincipal 'NT Authority\SYSTEM' -RunLevel Highest
+				$settingsSet = New-ScheduledTaskSettingsSet
+				$task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
+				Register-ScheduledTask -TaskName 'ITPC-WVD-Disk-Mover-Helper' -InputObject $task
+				LogWriter("Added new startup task")
+
+				# change c:\pagefile.sys to e:\pagefile.sys
+				ShowPageFiles
+				$CurrentPageFile = Get-WmiObject -Query 'select * from Win32_PageFileSetting'
+				if ($null -eq $CurrentPageFile) {
+					LogWriter("No pagefile found")
+				}
+				else {
+					if ($CurrentPageFile.Name.tolower().contains('d:')) {
+						$CurrentPageFile.delete()
+						LogWriter("Old pagefile deleted")	
+
+						Set-WMIInstance -Class Win32_PageFileSetting -Arguments @{name='c:\pagefile.sys';InitialSize = 0; MaximumSize = 0}
+						LogWriter("Set pagefile to c:\pagefile.sys")
+						ShowPageFiles
+					}
+				}
+				ShowPageFiles
+			}
+		}
 	}
 
 
-	if ([System.Environment]::OSVersion.Version.Major -gt 6) {
-		LogWriter("Installing WVD boot loader - current path is ${PSScriptRoot}")
-		Start-Process -wait -FilePath "${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi" -ArgumentList "/q"
-		LogWriter("Installing WVD agent")
-		Start-Process -wait -FilePath "${PSScriptRoot}\Microsoft.RDInfra.RDAgent.msi" -ArgumentList "/q RegistrationToken=${WvdRegistrationKey}"
-	} else {
-        if ((Test-Path "${PSScriptRoot}\Microsoft.RDInfra.WVDAgent.msi") -eq $false) {
-            LogWriter("Downloading Microsoft.RDInfra.WVDAgent.msi")
-            Invoke-WebRequest -Uri 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE3JZCm' -OutFile "${PSScriptRoot}\Microsoft.RDInfra.WVDAgent.msi"
-        }
-        if ((Test-Path "${PSScriptRoot}\Microsoft.RDInfra.WVDAgentManager.msi") -eq $false) {
-            LogWriter("Downloading Microsoft.RDInfra.WVDAgentManager.msi")
-            Invoke-WebRequest -Uri 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE3K2e3' -OutFile "${PSScriptRoot}\Microsoft.RDInfra.WVDAgentManager.msi"
-        }
-		LogWriter("Installing WVDAgent")
-        Start-Process -wait -FilePath "${PSScriptRoot}\Microsoft.RDInfra.WVDAgent.msi" -ArgumentList "/q RegistrationToken=${WvdRegistrationKey}"
-        LogWriter("Installing WVDAgentManager")
-		Start-Process -wait -FilePath "${PSScriptRoot}\Microsoft.RDInfra.WVDAgentManager.msi" -ArgumentList '/q'
-	}
 
+	# install WVD Agent if a registration key given
+	if ($WvdRegistrationKey -ne "") {
+		if ([System.Environment]::OSVersion.Version.Major -gt 6) {
+			LogWriter("Installing WVD boot loader - current path is ${PSScriptRoot}")
+			Start-Process -wait -FilePath "${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi" -ArgumentList "/q"
+			LogWriter("Installing WVD agent")
+			Start-Process -wait -FilePath "${PSScriptRoot}\Microsoft.RDInfra.RDAgent.msi" -ArgumentList "/q RegistrationToken=${WvdRegistrationKey}"
+		} else {
+			if ((Test-Path "${PSScriptRoot}\Microsoft.RDInfra.WVDAgent.msi") -eq $false) {
+				LogWriter("Downloading Microsoft.RDInfra.WVDAgent.msi")
+				Invoke-WebRequest -Uri 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE3JZCm' -OutFile "${PSScriptRoot}\Microsoft.RDInfra.WVDAgent.msi"
+			}
+			if ((Test-Path "${PSScriptRoot}\Microsoft.RDInfra.WVDAgentManager.msi") -eq $false) {
+				LogWriter("Downloading Microsoft.RDInfra.WVDAgentManager.msi")
+				Invoke-WebRequest -Uri 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE3K2e3' -OutFile "${PSScriptRoot}\Microsoft.RDInfra.WVDAgentManager.msi"
+			}
+			LogWriter("Installing WVDAgent")
+			Start-Process -wait -FilePath "${PSScriptRoot}\Microsoft.RDInfra.WVDAgent.msi" -ArgumentList "/q RegistrationToken=${WvdRegistrationKey}"
+			LogWriter("Installing WVDAgentManager")
+			Start-Process -wait -FilePath "${PSScriptRoot}\Microsoft.RDInfra.WVDAgentManager.msi" -ArgumentList '/q'
+		}
+	}
 
 	LogWriter("Enabling ITPC-LogAnalyticAgent and MySmartScale if exist") 
 	Enable-ScheduledTask  -TaskName "ITPC-LogAnalyticAgent for RDS and Citrix" -ErrorAction Ignore
@@ -185,7 +292,7 @@ if ($mode -eq "Generalize") {
 
 	if ([System.IO.File]::Exists("C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1")) {
 		LogWriter("Running VDI Optimization script")
-		Start-Process -wait -FilePath PowerShell.exe -WorkingDirectory "C:\ProgramData\Optimize" -ArgumentList '-ExecutionPolicy Bypass -File "C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1" ' -RedirectStandardOutput "$($LogDir)\VirtualDesktop_Optimize.Stage2.Out.txt" -RedirectStandardError "$($LogDir)\VirtualDesktop_Optimize.Stage2.Warning.txt"
+		Start-Process -wait -FilePath PowerShell.exe -WorkingDirectory "C:\ProgramData\Optimize" -ArgumentList '-ExecutionPolicy Bypass -File "C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1"' -RedirectStandardOutput "$($LogDir)\VirtualDesktop_Optimize.Stage2.Out.txt" -RedirectStandardError "$($LogDir)\VirtualDesktop_Optimize.Stage2.Warning.txt"
 	}
 
 
@@ -194,12 +301,100 @@ if ($mode -eq "Generalize") {
 	# final reboot
 	Restart-Computer -Force
 }
+elseif ($Mode -eq "DataPartition") {
 
+	if ((Get-WmiObject -Class win32_volume | Where-Object { $_.DriveLetter -ne $null -and $_.DriveType -eq 3 }).Count -eq 3) {
+		# change drive letters of temp and data drive for VMs with 3 drives
+		LogWriter("VM with 3 drives so change drive letters of temp and data")
+
+		ShowDrives
+
+		# change c:\pagefile.sys to e:\pagefile.sys
+		ShowPageFiles
+		$CurrentPageFile = Get-WmiObject -Query 'select * from Win32_PageFileSetting'
+		if ($null -eq $CurrentPageFile) {
+			LogWriter("No pagefile found")
+		}
+		else {
+			if ($CurrentPageFile.Name.tolower().contains('c:')) {
+
+				ShowDrives
+
+				# change temp drive to Z:
+				$drive = Get-WmiObject -Class win32_volume -Filter "DriveLetter = 'd:'"
+				if ($null -ne $drive) {
+					LogWriter("d: drive: $($drive.Label)")
+					Set-WmiInstance -input $drive -Arguments @{ DriveLetter='z:' }
+					LogWriter("changed drive letter to z:")
+					ShowDrives
+				}
+				else {
+					LogWriter("Drive D: not found")
+				}
+		
+				# change data drive to D: 
+				$drive = Get-WmiObject -Class win32_volume -Filter "DriveLetter = 'e:'"
+				if ($null -ne $drive) {
+					LogWriter("e: drive: $($drive.Label)")
+					Set-WmiInstance -input $drive -Arguments @{ DriveLetter='D:' }
+					LogWriter("changed drive letter to D:")
+					ShowDrives
+				}
+				else {
+					LogWriter("Drive E: not found")
+				}
+		
+				# change temp drive back to E: 
+				$drive = Get-WmiObject -Class win32_volume -Filter "DriveLetter = 'z:'"
+				if ($null -ne $drive) {
+					LogWriter("z: drive: $($drive.Label)")
+					Set-WmiInstance -input $drive -Arguments @{ DriveLetter='E:' }
+					LogWriter("changed drive letter to E:")
+					ShowDrives
+				}
+				else {
+					LogWriter("Drive Z: not found")
+				}
+		
+				# change c:\pagefile.sys to e:\pagefile.sys
+				ShowPageFiles
+				$CurrentPageFile = Get-WmiObject -Query 'select * from Win32_PageFileSetting'
+				if ($null -eq $CurrentPageFile) {
+					LogWriter("No pagefile found")
+				}
+				else {
+					$CurrentPageFile.delete()
+					LogWriter("Old pagefile deleted")	
+				}
+				ShowPageFiles
+		
+		
+				Set-WMIInstance -Class Win32_PageFileSetting -Arguments @{name='e:\pagefile.sys';InitialSize = 0; MaximumSize = 0}
+				LogWriter("set pagefile to e:\pagefile.sys")
+				ShowPageFiles
+
+				# reboot to activate pagefile
+				LogWriter("Finally restarting session host")
+				Restart-Computer -Force
+				LogWriter("After Finally restarting session host")
+			}
+		}
+	}
+	LogWriter("Disable scheduled task")
+	try {
+		# disable startup scheduled task
+		Disable-ScheduledTask -TaskName 'ITPC-WVD-Disk-Mover-Helper'
+		LogWriter("scheduled task disabled")
+	}
+	catch {
+		LogWriter("remove scheduled task failed: " + $_.Exception.Message)
+	}
+}
 # SIG # Begin signature block
 # MIIZdAYJKoZIhvcNAQcCoIIZZTCCGWECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU2kVn9v1L5XBe4zbqBAy7QlXe
-# oh+gghSCMIIE/jCCA+agAwIBAgIQDUJK4L46iP9gQCHOFADw3TANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUBT0DfKYHxhdoOC/Se4yrJWhl
+# 7ZWgghSCMIIE/jCCA+agAwIBAgIQDUJK4L46iP9gQCHOFADw3TANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgVGltZXN0YW1waW5nIENBMB4XDTIxMDEwMTAwMDAwMFoXDTMxMDEw
@@ -313,23 +508,23 @@ if ($mode -eq "Generalize") {
 # ZXJ0LmNvbTExMC8GA1UEAxMoRGlnaUNlcnQgU0hBMiBBc3N1cmVkIElEIENvZGUg
 # U2lnbmluZyBDQQIQAs5KUttbmmyoHluSw+u3hTAJBgUrDgMCGgUAoHgwGAYKKwYB
 # BAGCNwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIBBDAc
-# BgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUUOs4
-# Y/sh+gxqOjSJ3HA6YnGGvfUwDQYJKoZIhvcNAQEBBQAEggEAEsOdpze8dkdk3rvP
-# S1dyv7dBKZMT0NFRU5rcN2zo3Tp4ucMmO/OtbES2WqUPyrQ5h/GAGqt2UfGul6sR
-# +4PzvFAStLkJiAvJR52UccS//B8CzKe5JUSWY+KHLTifJkLMeZ7sNlEIYbm+F8RW
-# 41fbCpgCY2z7gQq+ntoFiFqRTSX/NrLSeav1sSI95EWA+xHaxiWgzVOt6dITeG46
-# a8R3kIBg+p9tsSKreJzBEdSzh4cWNSKHr3i0hts9cxcGR+JCQyeT9H/l3tHtC8p2
-# 4ulqeVW3Pejq0EVsav/D7MfSAA6jA2J4/eljatpA4aLLAxN9pdYTExkjjINva6xI
-# SuPJmaGCAjAwggIsBgkqhkiG9w0BCQYxggIdMIICGQIBATCBhjByMQswCQYDVQQG
+# BgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUUkSK
+# uWkiJQ3QutpIHiKt80C8QwAwDQYJKoZIhvcNAQEBBQAEggEAHMzF/EsG+p705H2j
+# yGvzmmzONnAjlULZPWdMU7xwYeXJu4V1rSHKy1k/3MtowPoYy/nQbuedA2g5Vvco
+# MmIbxjzMYCzQkVMkMpcbzdFRR87DZ4w9STLwSGlDmScOHf5IgjXAcH2NoWxAVFi1
+# KCiav7My2TkDDSSGnv/auMEbZsyYCHGVJYCL/A0WAUHVknvnKNfhXaHiKT4ZRzuY
+# PQ/K1BCYU7kOAUm8pxNc56QrfncGeFY1+Tbvg/Am1+4G6lCgpBiOKlQo0w9zRqvb
+# mRqGIg842m20J7UrpxGe08UjG5N/bdu918EYfldPiJqdGXx+AIMkW2jvf4/P75Ri
+# rjltBaGCAjAwggIsBgkqhkiG9w0BCQYxggIdMIICGQIBATCBhjByMQswCQYDVQQG
 # EwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNl
 # cnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFzc3VyZWQgSUQgVGltZXN0
 # YW1waW5nIENBAhANQkrgvjqI/2BAIc4UAPDdMA0GCWCGSAFlAwQCAQUAoGkwGAYJ
-# KoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjEwNDA5MTYx
-# MTI2WjAvBgkqhkiG9w0BCQQxIgQgQV0dZNlmS9/3TPr2DIPq2xWALrj/wZsW4HPn
-# 6hxJPmkwDQYJKoZIhvcNAQEBBQAEggEAWcHFsELVJkn9OnjQRI//a9urWq2QXyLZ
-# ypwpenO9JYw3hRjDdpM/sOkDLnNHz1psYtigLqWyNunN8tC5ey0v6IGp1Vg/Irce
-# 9aP0o/16MIOJxa++y68WPW43eEPuq2vfe1eh558BmLOIcrVZKLJIMBltLC7Iqh3j
-# qnw7dKC2St+VHvuzJHc3IW/VSYn8hyY6JLYw3IshwvJpnGCUNYyKsl+/yTPkT2Id
-# nYY22pn8tnRGdRO9iXQvLSJ81Cjr1I5ATdDpNECWkp/VdhyUC+eS79RcbfUmKrA/
-# DgMmlYsZ0O15fO6zRRNgdTpruojOIGeytvICm8JRHUnrp1I5IfSqHA==
+# KoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjEwNDExMTEz
+# OTUxWjAvBgkqhkiG9w0BCQQxIgQg7WYLXd9JKMj3uwZAZ7rkiPWCSn3BCrMBkbU0
+# Lv93tmswDQYJKoZIhvcNAQEBBQAEggEAdWSf5dkRROyd5R2rr0vb4x7ICfp8ZBfp
+# XKbd5RNZ7Nijcqb2MuLdN1GBMyYRlXCnHvEClOGwj6dploz4eurxY2ZNG8IP/ekp
+# amT9QMRJ6Orexxx9bkQ7wWzB37ZgYM6iXAQ+2yJ3+y/GU03G5/Iim6eAZ8UzV78z
+# qMguGr4MOBhKdZM/pPIwAcCdWToU6SqRut+gkKzWkjkj5KQpFKVIShRO2IxaZrxB
+# /n5MDWAhxlInmWtwTf/MMsK/oWFwNjzRA0Ky66wsgAWVn3RBrE0fvEOAn2XyOCPp
+# Z1wUlAMV+TGCqfCuijuK3hpA+DpNYgI3NqhKpjBnySjPm0s87XvwwA==
 # SIG # End signature block
