@@ -19,12 +19,12 @@
 <meta property="og:site_name" content="ITProCloud Blog" />
 <meta property="og:image" content="/assets/images/WVDAdmin-01.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2021-04-11T00:00:00+02:00" />
+<meta property="article:published_time" content="2021-04-14T00:00:00+02:00" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:image" content="/assets/images/WVDAdmin-01.png" />
 <meta property="twitter:title" content="WVD Admin - A native administration Gui for Windows Virtual Desktop" />
 <script type="application/ld+json">
-{"url":"/Windows-Virtual-Desktop-Admin/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"WVD Admin - A native administration Gui for Windows Virtual Desktop","dateModified":"2021-04-11T00:00:00+02:00","datePublished":"2021-04-11T00:00:00+02:00","description":"Windows Virtual Desktop administration with WVDAdmin","author":{"@type":"Person","name":"mm"},"mainEntityOfPage":{"@type":"WebPage","@id":"/Windows-Virtual-Desktop-Admin/"},"image":"/assets/images/WVDAdmin-01.png","@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"/Windows-Virtual-Desktop-Admin/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"WVD Admin - A native administration Gui for Windows Virtual Desktop","dateModified":"2021-04-14T00:00:00+02:00","datePublished":"2021-04-14T00:00:00+02:00","description":"Windows Virtual Desktop administration with WVDAdmin","author":{"@type":"Person","name":"mm"},"mainEntityOfPage":{"@type":"WebPage","@id":"/Windows-Virtual-Desktop-Admin/"},"image":"/assets/images/WVDAdmin-01.png","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -342,7 +342,7 @@
       </h1>
     
 <p>Windows Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.</p>
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 04/11/2021</strong></a></p>
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 04/14/2021</strong></a></p>
 <p>The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:</p>
 <ul>
 <li>Add, edit and delete host pools</li>
@@ -378,7 +378,7 @@
         
       </h2>
     
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 04/11/2021</strong></a></p>
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 04/14/2021</strong></a></p>
 <details><summary>I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.</summary>
 <table>
 <thead>
@@ -388,6 +388,10 @@
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>1.6.89.0</td>
+<td>Add: Workaround to fix an issue in the Azure API querying VM. In subscriptions with a lot of VMs an error message could given back from the API which will be workaround with this version. Original error message from Azure: Resource provider ‘Microsoft.Compute’ failed to return collection response for type ‘virtualMachines’</td>
+</tr>
 <tr>
 <td>1.6.88.0</td>
 <td>Add: Option to rollout virtual machines based on an image without joining to WVD (for servers, new golden masters, …), Update: Newest PowerShell script for generalizing and deployment to 3.0: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a></td>
@@ -1142,11 +1146,11 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 </ul>
 </li>
 </ul>
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 04/11/2021</strong></a></p>
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 04/14/2021</strong></a></p>
 
 						<!--<h1 id="windows-virtual-desktop-administration-with-wvdadmin">Windows Virtual Desktop administration with WVDAdmin</h1>
 <p>Windows Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.</p>
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 04/11/2021</strong></a></p>
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 04/14/2021</strong></a></p>
 <p>The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:</p>
 <ul>
 <li>Add, edit and delete host pools</li>
@@ -1168,7 +1172,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 </ul>
 <h1 id="installation">Installation</h1>
 <h2 id="release-history">Release History</h2>
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 04/11/2021</strong></a></p>
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 04/14/2021</strong></a></p>
 <details><summary>I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.</summary>
 <table>
 <thead>
@@ -1178,6 +1182,10 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>1.6.89.0</td>
+<td>Add: Workaround to fix an issue in the Azure API querying VM. In subscriptions with a lot of VMs an error message could given back from the API which will be workaround with this version. Original error message from Azure: Resource provider ‘Microsoft.Compute’ failed to return collection response for type ‘virtualMachines’</td>
+</tr>
 <tr>
 <td>1.6.88.0</td>
 <td>Add: Option to rollout virtual machines based on an image without joining to WVD (for servers, new golden masters, …), Update: Newest PowerShell script for generalizing and deployment to 3.0: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a></td>
@@ -1750,7 +1758,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 </ul>
 </li>
 </ul>
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 04/11/2021</strong></a></p>
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 04/14/2021</strong></a></p>
 -->
 					</div>
 					<!-- Side toc Container -->
