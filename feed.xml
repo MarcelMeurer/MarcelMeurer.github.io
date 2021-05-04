@@ -5,9 +5,25 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 14 Apr 2021 17:34:30 +0200</pubDate>
-    <lastBuildDate>Wed, 14 Apr 2021 17:34:30 +0200</lastBuildDate>
+    <pubDate>Tue, 04 May 2021 20:50:02 +0200</pubDate>
+    <lastBuildDate>Tue, 04 May 2021 20:50:02 +0200</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
+    
+      <item>
+        <title>Windows Virtual Desktop Fileupload with the HTML5 client</title>
+        <description>&lt;p&gt;Microsoft is extending the HTML5 web client. Today (May 2021), there is a new function to allow uploading files directly into the session. The user can select the feature while starting a connection. Inside the HTML5 client, the user can upload a file with the icon in the upper right corner. The file is saved into the virtual drive: &lt;em&gt;\\tsclient\Remote Desktop Virtual Drive\Uploads&lt;/em&gt; (the drive only exist in the current session)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/FileUpload01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;An administrator can avoid storing files into the virtual drive setting the group policy (per user or per machine) to “Enabled”:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session\Device and Resource\Do not allow drive redirection
+&lt;/code&gt;&lt;/pre&gt;</description>
+        <pubDate>Tue, 04 May 2021 00:00:00 +0200</pubDate>
+        <link>/WVD-Fileupload-HTML5/</link>
+        <guid isPermaLink="true">/WVD-Fileupload-HTML5/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVD Admin - A native administration Gui for Windows Virtual Desktop</title>
@@ -989,45 +1005,6 @@ Write-host(&amp;quot;ScriptReturnMessage:{RDP Shortpath enabled - reboot the ses
         <category>Windows Virtual Desktop</category>
         
         <category>Azure Monitor</category>
-        
-      </item>
-    
-      <item>
-        <title>Least privileges with custom roles for Windows Virtual Desktop (WVD)</title>
-        <description>&lt;p&gt;Administration, deployment, user support of Windows Virtual Desktop (WVD) needs permission in Azure. But these permissions are depending on the task a group of users/administrators have to do. For example, if the help desk has to log off and send messages to users, they need fewer permissions than the administrator building session hosts.&lt;/p&gt;
-&lt;p&gt;In the first step, the permission for the different groups can be given using the build-in roles in Azure and assigning them to the groups and specific resources. But this doesn’t allow us to assign granular permissions to fulfill the least privileges approach. To do that, we have to go with custom roles. Custom roles allow combining specific permission for different resource types to a new role. Luckily, Windows Virtual Desktop has many additional permissions per resource type (host pool, app group, workspace, etc.).&lt;/p&gt;
-&lt;p&gt;I combined the permission from WVD and from other resource types (like Microsoft Compute) to build eight roles I often use in projects to assign the least permission as needed for the different administrator. These roles can be used to assign them to users, groups, and even service principals (important for &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;). In my opinion, the best way is to assign these roles on a resource group level and not to a subscription level.&lt;/p&gt;
-&lt;p&gt;Before I describe the different new roles, I have to mention one “Specialty”: Assigning users to an app group in Windows Virtual Desktop needs that you have “Owner Permission” (or more precisely: &lt;em&gt;Microsoft.Authorization/roleAssignments/write&lt;/em&gt;) to the app group. While Azure doesn’t have the ability to assign owner permission in a role to a specific resource type, I didn’t add this permission to the roles. So, you can easily use the new roles on a resource group level, and you can be sure that the user only has the least permission, but you have to assign appropriate admins as an owner to (only) the app groups. Owner permission on resource groups causes that the user can do and rollout anything in these groups.&lt;/p&gt;
-&lt;p&gt;Note: In a real-world scenario where the least privileges approach for a specific group of admins is not necessary, owner permissions are given to the resource groups containing the WVD resources (especially the app groups).&lt;/p&gt;
-&lt;h2 id=&quot;my-common-wvd-roles&quot;&gt;My common WVD roles:&lt;/h2&gt;
-&lt;h3 id=&quot;wvd---user-session-reader&quot;&gt;WVD - User Session Reader&lt;/h3&gt;
-&lt;p&gt;Allows to read the user session and host pool properties of Windows Virtual Desktop.&lt;/p&gt;
-&lt;h3 id=&quot;wvd---vm-start--stop--and-restarter&quot;&gt;WVD - VM Start-, Stop- and Restarter&lt;/h3&gt;
-&lt;p&gt;Allows to start, stop and restart virtual machines and VM Scale Set instances&lt;/p&gt;
-&lt;h3 id=&quot;wvd---user-session-contributor&quot;&gt;WVD - User Session Contributor&lt;/h3&gt;
-&lt;p&gt;Allows to work with the user session and read host pool properties of Windows Virtual Desktop host pools, including to send messages to users and logoff/disconnect user sessions&lt;/p&gt;
-&lt;h3 id=&quot;wvd---infrastructure-reader&quot;&gt;WVD - Infrastructure Reader&lt;/h3&gt;
-&lt;p&gt;Allows to read all properties of a WVD infrastructure: Host pools, session hosts, workspaces, app groups, and user sessions.&lt;/p&gt;
-&lt;h3 id=&quot;wvd---infrastructure-contributor&quot;&gt;WVD - Infrastructure Contributor&lt;/h3&gt;
-&lt;p&gt;Allows to read and write all properties of a WVD infrastructure but doesn’t allow to delete resources: Host pools, session hosts, workspaces, app groups, and user sessions.&lt;/p&gt;
-&lt;h3 id=&quot;wvd---infrastructure-administrator&quot;&gt;WVD - Infrastructure Administrator&lt;/h3&gt;
-&lt;p&gt;Allows to read and write all properties of a WVD infrastructure and allows to delete resources: Host pools, session hosts, workspaces, app groups, and user sessions.&lt;/p&gt;
-&lt;h3 id=&quot;wvd---infrastructure-administrator-amp-vm-manager&quot;&gt;WVD - Infrastructure Administrator &amp;amp; VM Manager&lt;/h3&gt;
-&lt;p&gt;Allows to read and write all properties of a WVD infrastructure and allows to delete resources: Host pools, session hosts, workspaces, app groups, and user sessions. Additionally, the power state of all hosts and VMs can be changed.&lt;/p&gt;
-&lt;h3 id=&quot;wvd---template-and-session-host-administrator&quot;&gt;WVD - Template and Session Host Administrator&lt;/h3&gt;
-&lt;p&gt;Allows to create/modify/delete Virtual Machines, images, rollout new session hosts into host pools, and attach them to a vnet.&lt;/p&gt;
-&lt;h3 id=&quot;wvd---full-administrator&quot;&gt;WVD - Full Administrator&lt;/h3&gt;
-&lt;p&gt;Allows to create/modify/delete Virtual Machines, images, rollout new session hosts into host pools, attach them to a vnet, and all permissions from the role ‘WVD - Infrastructure Administrator &amp;amp; VM Manager’.&lt;/p&gt;
-&lt;p&gt;I’m happy about feedback and give me a ping if you want to have the ‘&lt;em&gt;Microsoft.Authorization/roleAssignments/write&lt;/em&gt;’ inside the contributor roles (but that doesn’t prevent users from getting higher permissions on the resource group).&lt;/p&gt;
-&lt;p&gt;Feel free to roll out these WVD roles into your own subscription (ignore the location, the roles are available in the subscription independent from the location - or take a look into the deployment &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AzureDeployments/WVD-Custom-Roles-01.json&quot;&gt;script&lt;/a&gt;):&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWVD-Custom-Roles-01.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Thu, 10 Sep 2020 00:00:00 +0200</pubDate>
-        <link>/Least-privileges-with-custom-roles-for-Windows-Virtual-Desktop-(WVD)/</link>
-        <guid isPermaLink="true">/Least-privileges-with-custom-roles-for-Windows-Virtual-Desktop-(WVD)/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
         
       </item>
     
