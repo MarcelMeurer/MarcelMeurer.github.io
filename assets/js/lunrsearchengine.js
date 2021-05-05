@@ -88,7 +88,7 @@ var documents = [{
     "id": 17,
     "url": "/Custom-Role-for-Power-On-Connect-Preview/",
     "title": "Custom Role for Power On Connect preview",
-    "body": "2021/01/11 -  "
+    "body": "2021/01/11 - Power-On-Connect Role Schedule-Role "
     }, {
     "id": 18,
     "url": "/Windows-Virtual-Desktop-Admin-CustomScripts/",
