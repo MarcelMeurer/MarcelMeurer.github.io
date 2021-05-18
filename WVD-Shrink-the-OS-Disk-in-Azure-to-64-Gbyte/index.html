@@ -6,25 +6,25 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>CDC Germany: RDS and Windows Virtual Desktop – Desktops in the year 2019 and beyond | ITProCloud Blog</title>
+<title>Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>CDC Germany: RDS and Windows Virtual Desktop – Desktops in the year 2019 and beyond | ITProCloud Blog</title>
+<title>Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.1.1" />
-<meta property="og:title" content="CDC Germany: RDS and Windows Virtual Desktop – Desktops in the year 2019 and beyond" />
+<meta property="og:title" content="Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="From 21. to 22. April 2019 the annual Cloud and Datacenter Conference took place in Hanau/Frankfurt in Germany. It’s one of my favorite community events in Germany. This year I was allowed to contribute something to RDS in Windows Server 2019 and Windows Virtual Desktop – including Windows 10 Multi Session Host and FSLogix (an awesome combination)." />
-<meta property="og:description" content="From 21. to 22. April 2019 the annual Cloud and Datacenter Conference took place in Hanau/Frankfurt in Germany. It’s one of my favorite community events in Germany. This year I was allowed to contribute something to RDS in Windows Server 2019 and Windows Virtual Desktop – including Windows 10 Multi Session Host and FSLogix (an awesome combination)." />
+<meta name="description" content="A Windows 10 image from the marketplace has a size of 128 Gbyte. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a 64 Gbyte OS disk is usually sufficient - even if FSLogix is used to store personal data." />
+<meta property="og:description" content="A Windows 10 image from the marketplace has a size of 128 Gbyte. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a 64 Gbyte OS disk is usually sufficient - even if FSLogix is used to store personal data." />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="/wp-content/uploads/2019/05/cdc-1024x558.png" />
+<meta property="og:image" content="/assets/images/WVDAdmin-Shrink-01.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-05-23T00:00:00+02:00" />
+<meta property="article:published_time" content="2021-05-18T00:00:00+02:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="/wp-content/uploads/2019/05/cdc-1024x558.png" />
-<meta property="twitter:title" content="CDC Germany: RDS and Windows Virtual Desktop – Desktops in the year 2019 and beyond" />
+<meta property="twitter:image" content="/assets/images/WVDAdmin-Shrink-01.png" />
+<meta property="twitter:title" content="Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master" />
 <script type="application/ld+json">
-{"url":"/CDC-Germany-RDS-&-Windows-Virtual-Desktop-Desktops-in-2019/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"CDC Germany: RDS and Windows Virtual Desktop – Desktops in the year 2019 and beyond","dateModified":"2019-05-23T00:00:00+02:00","datePublished":"2019-05-23T00:00:00+02:00","description":"From 21. to 22. April 2019 the annual Cloud and Datacenter Conference took place in Hanau/Frankfurt in Germany. It’s one of my favorite community events in Germany. This year I was allowed to contribute something to RDS in Windows Server 2019 and Windows Virtual Desktop – including Windows 10 Multi Session Host and FSLogix (an awesome combination).","author":{"@type":"Person","name":"mm"},"mainEntityOfPage":{"@type":"WebPage","@id":"/CDC-Germany-RDS-&-Windows-Virtual-Desktop-Desktops-in-2019/"},"image":"/wp-content/uploads/2019/05/cdc-1024x558.png","@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master","dateModified":"2021-05-18T00:00:00+02:00","datePublished":"2021-05-18T00:00:00+02:00","description":"A Windows 10 image from the marketplace has a size of 128 Gbyte. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a 64 Gbyte OS disk is usually sufficient - even if FSLogix is used to store personal data.","author":{"@type":"Person","name":"mm"},"mainEntityOfPage":{"@type":"WebPage","@id":"/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/"},"image":"/assets/images/WVDAdmin-Shrink-01.png","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -334,19 +334,19 @@
     </p>
     <ul>
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://twitter.com/intent/tweet?text=CDC Germany: RDS and Windows Virtual Desktop – Desktops in the year 2019 and beyond&url=https://blog.itprocloud.de/CDC-Germany-RDS-&-Windows-Virtual-Desktop-Desktops-in-2019/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master&url=https://blog.itprocloud.de/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                 <i class="fab fa-twitter"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/CDC-Germany-RDS-&-Windows-Virtual-Desktop-Desktops-in-2019/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
                 <i class="fab fa-facebook-f"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/CDC-Germany-RDS-&-Windows-Virtual-Desktop-Desktops-in-2019/&title=CDC Germany: RDS and Windows Virtual Desktop – Desktops in the year 2019 and beyond" onclick="window.open(this.href, 'width=550,height=435');return false;">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/&title=Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master" onclick="window.open(this.href, 'width=550,height=435');return false;">
                 <i class="fab fa-linkedin-in"></i>
             </a>
         </li>
@@ -386,7 +386,7 @@
                 
 
                 <!-- Post Title -->
-                <h1 class="posttitle">CDC Germany: RDS and Windows Virtual Desktop – Desktops in the year 2019 and beyond</h1>
+                <h1 class="posttitle">Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master</h1>
 
             </div>
 
@@ -398,7 +398,7 @@
             
 
             
-            <img class="featured-image img-fluid" src="/wp-content/uploads/2019/05/cdc-1024x558.png" alt="CDC Germany: RDS and Windows Virtual Desktop – Desktops in the year 2019 and beyond">
+            <img class="featured-image img-fluid" src="/assets/images/WVDAdmin-Shrink-01.png" alt="Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master">
             
 
             
@@ -409,26 +409,48 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>From 21. to 22. April 2019 the annual Cloud and Datacenter Conference took place in Hanau/Frankfurt in Germany. It’s one of my favorite community events in Germany. This year I was allowed to contribute something to RDS in Windows Server 2019 and Windows Virtual Desktop – including Windows 10 Multi Session Host and FSLogix (an awesome combination).</p>
-<p>I published my slides to slideshare.net:
-<a href="https://de.slideshare.net/MarcelMeurer/rds-windows-virtual-desktop-desktop-in-2019">https://de.slideshare.net/MarcelMeurer/rds-windows-virtual-desktop-desktop-in-2019</a></p>
-<h2 id="the-demos-are-also-available-via-youtube">The demos are also available via Youtube:</h2>
-<h3 id="windows-virtual-desktop---login-to-a-shared-windows-10-multi-session-host">Windows Virtual Desktop - Login to a shared Windows 10 Multi Session Host</h3>
-<iframe width="1196" height="673" src="https://www.youtube.com/embed/rgsaQf3hmHw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<p><a href="https://youtu.be/rgsaQf3hmHw">https://youtu.be/rgsaQf3hmHw</a></p>
-<h3 id="windows-virtual-desktop---update-the-template-vm">Windows Virtual Desktop - Update the template VM</h3>
-<iframe width="1196" height="673" src="https://www.youtube.com/embed/YqrEm3EhbVY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<p><a href="https://youtu.be/YqrEm3EhbVY">https://youtu.be/YqrEm3EhbVY</a></p>
-<h3 id="windows-virtual-desktop---build-a-new-image-from-a-template-vm">Windows Virtual Desktop - Build a new Image from a template VM</h3>
-<iframe width="1196" height="673" src="https://www.youtube.com/embed/MOuH482A1co" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<p><a href="https://youtu.be/MOuH482A1co">https://youtu.be/MOuH482A1co</a></p>
-<h3 id="windows-virtual-desktop---deploy-a-vm-from-a-template-via-powershell">Windows Virtual Desktop - Deploy a VM from a template via PowerShell</h3>
-<iframe width="1196" height="673" src="https://www.youtube.com/embed/U9zxyk_HuAM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<p><a href="https://youtu.be/U9zxyk_HuAM">https://youtu.be/U9zxyk_HuAM</a></p>
-<h3 id="windows-virtual-desktop---deploy-a-scale-set-from-an-image-re-scale-azure-monitor">Windows Virtual Desktop - Deploy a Scale Set from an image, re-scale, Azure Monitor</h3>
-<iframe width="1196" height="673" src="https://www.youtube.com/embed/_l5P_JeQANM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<p><a href="https://youtu.be/_l5P_JeQANM">https://youtu.be/_l5P_JeQANM</a></p>
-<p>Fist published on: <a href="https://www.sepago.de/blog/cdc-germany-rds-windows-virtual-desktop-desktops-in-2019/">https://www.sepago.de/blog/cdc-germany-rds-windows-virtual-desktop-desktops-in-2019/</a></p>
+                <p>A Windows 10 image from the marketplace has a size of <strong>128 Gbyte</strong>. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a <strong>64 Gbyte</strong> OS disk is usually sufficient - even if FSLogix is used to store personal data.</p>
+<ul>
+<li>
+<p>But what are the advantages of smaller disks? First, they are some reason to use smaller disks, like:
+A smaller disk costs less. Usually 50% less and with the same performance for HDD and standard SSD (the premium disk has more IOPS for the larger size)</p>
+</li>
+<li>
+<p>Ephemeral disks for smaller VM sizes: Ephemeral disks are really good for VM without local user data - like session hosts using FSLogix. VMs with ephemeral disks living on the Azure hypervisor without a network-attached disk - the OS disks are created directly in the cache of the hypervisor.</p>
+<ul>
+<li>Advantages:
+No costs for the disk and high performance.
+Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyte Windows, (e.g.) a D8ds_v4 (8 cores, 32 Gbyte RAM, 200 GiB cache) is needed. That is maybe not attractive for a single user session host. If we go with a 64 Gbyte disk image, a D4ds_v4 can be used (4 cores, 16 Gbyte, 100GiB cache), which costs half.</li>
+</ul>
+</li>
+</ul>
+<p>My favorite is the ephemeral disk approach for some environments because this offers high performance for a low price and often fits Windows Virtual Desktop.</p>
+<h2 id="the-challenge">The challenge</h2>
+<p>The challenge is to resize the Golden Master. There are some good posts about doing that, but it’s not easy and needs many different steps. Therefore, I added this as a feature in WVDAdmin from the release of today. So feel free to resize your Golden Master to 64 Gbyte, grab an image and deploy smaller session hosts - may be as ephemeral with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">#WVDAdmin</a></p>
+<p>I recommend making a snapshot first and keep in mind that the process takes a while (between 20 and 60 minutes). But you only have to do it once.</p>
+<p>What happens in the background:</p>
+<ul>
+<li>The Windows partition will be resized to 31 Gbyte</li>
+<li>The disk is uploaded to a temporary created storage account (that takes a while)</li>
+<li>The disk is resized, and the signature for a 32 Gbyte disk is written</li>
+<li>A new 32 Gbyte managed disk is created</li>
+<li>The disk is attached to the VM</li>
+<li>The temporary storage account is deleted</li>
+</ul>
+<h2 id="site-node-how-to-use-ephemeral-vms-in-a-very-cool-way">Site node: How to use ephemeral VMs in a very cool way?</h2>
+<p>I’m currently working on the following solution called “Project Hydra” to managed WVD. In addition, I added an “Autoscale” feature that is going hand-in-hand with Microsoft’s “Power-on-Connect”:</p>
+<ul>
+<li>In the morning, a bunch of ephemeral session hosts are automatically created to handle the first user storm</li>
+<li>Some stand-by session hosts (deallocated) with standard SSD are then started with Power-On-Connect if a user tries to log in, and all of the ephemeral hosts are in use</li>
+<li>And for sure: Deallocation of the “normal” hosts and deletion of the ephemeral hosts are part of the autoscaling</li>
+</ul>
+<h2 id="preqersits-to-shrink-a-disk">Preqersits to shrink a disk:</h2>
+<ul>
+<li>Windows operating system installed on a 128 Gbyte disk or greater</li>
+<li>Only drive C: (exact two partitions: recovery partition and C-drive - default)</li>
+</ul>
+<p>Check out the newest version of <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">#WVDAdmin</a> and check a short demo video about resizing a disk on <a href="https://youtu.be/Qb9CRHytXv0">YouTube (external Link)</a>.</p>
+<p><img src="../assets/images/WVDAdmin-Shrink-01.png" alt="" /></p>
 
             </div>
 
@@ -438,7 +460,7 @@
             <!-- Post Date -->
             <p>
             <small>
-                <span class="post-date"><time class="post-date" datetime="2019-05-23">23 May 2019</time></span>           
+                <span class="post-date"><time class="post-date" datetime="2021-05-18">18 May 2021</time></span>           
                 
                 </small>
             </p>
@@ -447,18 +469,6 @@
             <div class="after-post-cats">
                 <ul class="tags mb-4">
                     
-                    
-                    <li>
-                        <a class="smoothscroll" href="/categories#Azure">Azure</a>
-                    </li>
-                    
-                    <li>
-                        <a class="smoothscroll" href="/categories#Events">Events</a>
-                    </li>
-                    
-                    <li>
-                        <a class="smoothscroll" href="/categories#PowerShell">PowerShell</a>
-                    </li>
                     
                     <li>
                         <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
@@ -480,10 +490,8 @@
             <!-- Prev/Next -->
             <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
             
-            <a class="prev d-block col-md-6" href="/Publish-your-solution-to-the-Azure-Marketplace/"> &laquo; Publish your solution to the Azure Marketplace</a>
+            <a class="prev d-block col-md-6" href="/Windows-Virtual-Desktop-Admin/"> &laquo; WVD Admin - A native administration Gui for Windows Virtual Desktop</a>
             
-            
-            <a class="next d-block col-md-6 text-lg-right" href="/Speaking-update/">On the road - My next speaking engagements &raquo; </a>
             
             <div class="clearfix"></div>
             </div>
