@@ -5,9 +5,29 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 18 May 2021 17:50:11 +0200</pubDate>
-    <lastBuildDate>Tue, 18 May 2021 17:50:11 +0200</lastBuildDate>
+    <pubDate>Mon, 24 May 2021 12:48:38 +0200</pubDate>
+    <lastBuildDate>Mon, 24 May 2021 12:48:38 +0200</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
+    
+      <item>
+        <title>Power-On-Connect Feature in Windows Virtual Desktop and custom role for Power On Connect preview</title>
+        <description>&lt;p&gt;Power-On-Connect Feature in Windows Virtual Desktop
+Power-on-connect is in preview for assigned session hosts and pooled session hosts (multi-user host pool). With the new feature, users are triggering the start of the assigned session hosts or of a pooled on demand. That allows scaling up from zero hosts. Shutting down is omitted, but you can check my upcoming project to use power-on-connect with predictive autoscaling, including the shutdown of the hosts (and many other features). Check out my “preview” project “Hydra” at &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You can enable power-on-connect for private host pools in the Azure Portal or with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;. &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; also allows enabling power-on-connect for pooled/multi-user host pools.&lt;/p&gt;
+&lt;p&gt;To use power-on-connect, you have to allow Microsoft to start virtual machines. To do that, create a custom role with the following link and add the &lt;em&gt;user&lt;/em&gt; “Windows Virtual Desktop” with this role to the resource group containing the virtual machines.&lt;/p&gt;
+&lt;p&gt;Install the power-on-connect role
+&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWVD-Role-PowerOnConnect-preview.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Learn more at:
+&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/start-virtual-machine-connect&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/start-virtual-machine-connect&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 24 May 2021 00:00:00 +0200</pubDate>
+        <link>/Custom-Role-for-Power-On-Connect-Preview/</link>
+        <guid isPermaLink="true">/Custom-Role-for-Power-On-Connect-Preview/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master</title>
@@ -930,72 +950,6 @@ Write-host(&amp;quot;ScriptReturnMessage:{RDP Shortpath enabled - reboot the ses
         
         
         <category>Windows Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>INTERNAL Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these</title>
-        <description>&lt;p&gt;Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Windows Virtual Desktop (WVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance.&lt;/p&gt;
-&lt;p&gt;I do that using Azure Monitor for WVD (&lt;a href=&quot;https://www.sepago.de/en/azure-monitor-en/&quot;&gt;https://www.sepago.de/en/azure-monitor-en/&lt;/a&gt;) from sepago, which is also included in Nerdio Manager for WVD (&lt;a href=&quot;https://getnerdio.com/nerdio-manager-for-wvd/&quot;&gt;https://getnerdio.com/nerdio-manager-for-wvd/&lt;/a&gt;).&lt;/p&gt;
-&lt;p&gt;The solution gives you insight into the performance of the apps and hosts and allows you to build a cost calculation on a per-user base. If you want to query and analyze data by other properties - like the department - you have to include these properties from Azure AD into your log analytics workspace.&lt;/p&gt;
-&lt;p&gt;I found an easy solution doing that with an Azure logic app. The logic app access the Azure AD tenant and queries the users and some defined properties and send it to log analytics. A challenge was to handle the challenge that you have to query multiple times to get all users from Azure AD (a single query gives you only a specific amount of users -&amp;gt; Paging). I solved this using an “Until-loop” to get all users. The logic app pushed the users and their properties to the defined log analytics workspace. After this, the users and properties can be used in a KUSTO query. For example: To query the over-all session runtime by the department.&lt;/p&gt;
-&lt;h2 id=&quot;installation-and-configuration&quot;&gt;Installation and configuration&lt;/h2&gt;
-&lt;p&gt;Deploy the prepared logic app into your subscription using the “Deploy to Azure” button.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FLA-AADUsersToLogAnalytics-v2.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;To query the Azure AD unattended, you need a service principal (a function account) with the right permission. Create the service principal in the Azure Portal:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Azure Active Directory -&amp;gt; App registrations -&amp;gt; New registration and give it a name (e.g. svc_AzureAdUserReader4AzureMonitor) and press register
-&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-001.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-&lt;li&gt;Go to Certificates and secrets -&amp;gt; Add new client secret and type in a name (e.g. Key1) and expiration date (make a note into your calendar) and press add
-&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-002.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-&lt;li&gt;Copy the generated secret for later use&lt;/li&gt;
-&lt;li&gt;Go to Api permissions -&amp;gt; Add a permission -&amp;gt; select Microsoft Graph -&amp;gt; Application permissions -&amp;gt; select User.Read.All -&amp;gt; click Add permissions
-&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-003.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-&lt;li&gt;Click Grant admin consent to allow this setting (you have to be in the right role to do that)
-&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-004.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-&lt;li&gt;Go to overview and copy the application id and directory id for later use&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;To upload the data to your Azure Monitor / log analytics workspace, you need the workspace id and key.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Go to your log analytics workspace -&amp;gt; select Advanced settings -&amp;gt; Agents management -&amp;gt; copy the workspace id and primary key for later use
-&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-005.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Go to your deployed logic app and click edit.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Expand “Until 2”&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Click on http. Enter the data from your service principal into the fields Tenant (Directory id), client id, and secret
-&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-006.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Click on Connections and add a new one (Add new)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;ul&gt;
-&lt;li&gt;Give a name (e.g. ToLogAnalytics), the primary key and workspace id from log analytics and press create
-&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-007.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Save the logic app and press run to test it.&lt;/p&gt;
-&lt;p&gt;If everything looks good, our logic app will write the user data to log analytics once a day.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-008.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;You can query the data from log analytics with “ITPC_CTX_ADUsers_CL”. Keep in mind that it takes a while (30 minutes) to build the first upload schema.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-009.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Hint:&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;You can modify the filter and the properties you get back, modifying the query URL. The URL can be modified in “Initialize variable” in the logic app.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/LogicApp-AAD-AzureMonitor-010.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The default is:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;https://graph.microsoft.com/v1.0/users?$filter=accountEnabled eq true  and userType eq 'Member'&amp;amp;$select=userPrincipalName,onPremisesSamAccountName,employeeId,officeLocation,department
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;A list of valid properties is here: &lt;a href=&quot;https://docs.microsoft.com/de-de/graph/api/resources/user?view=graph-rest-1.0&quot;&gt;https://docs.microsoft.com/de-de/graph/api/resources/user?view=graph-rest-1.0&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Tue, 13 Oct 2020 00:00:00 +0200</pubDate>
-        <link>/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data-INTERNAL/</link>
-        <guid isPermaLink="true">/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data-INTERNAL/</guid>
-        
         
       </item>
     
