@@ -5,89 +5,15 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 24 May 2021 12:50:38 +0200</pubDate>
-    <lastBuildDate>Mon, 24 May 2021 12:50:38 +0200</lastBuildDate>
+    <pubDate>Thu, 27 May 2021 18:44:12 +0200</pubDate>
+    <lastBuildDate>Thu, 27 May 2021 18:44:12 +0200</lastBuildDate>
     <generator>Jekyll v4.1.1</generator>
-    
-      <item>
-        <title>Power-On-Connect Feature in Windows Virtual Desktop and custom role for Power On Connect preview</title>
-        <description>&lt;p&gt;Power-On-Connect Feature in Windows Virtual Desktop
-Power-on-connect is in preview for assigned session hosts and pooled session hosts (multi-user host pool). With the new feature, users are triggering the start of the assigned session hosts or of a pooled on demand. That allows scaling up from zero hosts. Shutting down is omitted, but you can check my upcoming project to use power-on-connect with predictive autoscaling, including the shutdown of the hosts (and many other features). Check out my “preview” project “Hydra” at &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;You can enable power-on-connect for private host pools in the Azure Portal or with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;. &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; also allows enabling power-on-connect for pooled/multi-user host pools.&lt;/p&gt;
-&lt;p&gt;To use power-on-connect, you have to allow Microsoft to start virtual machines. To do that, create a custom role with the following link and add the &lt;em&gt;user&lt;/em&gt; “Windows Virtual Desktop” with this role to the resource group containing the virtual machines.&lt;/p&gt;
-&lt;p&gt;Install the power-on-connect role
-&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWVD-Role-PowerOnConnect-preview.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Learn more at:
-&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/start-virtual-machine-connect&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/start-virtual-machine-connect&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Mon, 24 May 2021 00:00:00 +0200</pubDate>
-        <link>/Custom-Role-for-Power-On-Connect-Preview/</link>
-        <guid isPermaLink="true">/Custom-Role-for-Power-On-Connect-Preview/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master</title>
-        <description>&lt;p&gt;A Windows 10 image from the marketplace has a size of &lt;strong&gt;128 Gbyte&lt;/strong&gt;. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a &lt;strong&gt;64 Gbyte&lt;/strong&gt; OS disk is usually sufficient - even if FSLogix is used to store personal data.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;But what are the advantages of smaller disks? First, they are some reason to use smaller disks, like:
-A smaller disk costs less. Usually 50% less and with the same performance for HDD and standard SSD (the premium disk has more IOPS for the larger size)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Ephemeral disks for smaller VM sizes: Ephemeral disks are really good for VM without local user data - like session hosts using FSLogix. VMs with ephemeral disks living on the Azure hypervisor without a network-attached disk - the OS disks are created directly in the cache of the hypervisor.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Advantages:
-No costs for the disk and high performance.
-Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyte Windows, (e.g.) a D8ds_v4 (8 cores, 32 Gbyte RAM, 200 GiB cache) is needed. That is maybe not attractive for a single user session host. If we go with a 64 Gbyte disk image, a D4ds_v4 can be used (4 cores, 16 Gbyte, 100GiB cache), which costs half.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;My favorite is the ephemeral disk approach for some environments because this offers high performance for a low price and often fits Windows Virtual Desktop.&lt;/p&gt;
-&lt;h2 id=&quot;the-challenge&quot;&gt;The challenge&lt;/h2&gt;
-&lt;p&gt;The challenge is to resize the Golden Master. There are some good posts about doing that, but it’s not easy and needs many different steps. Therefore, I added this as a feature in WVDAdmin from the release of today. So feel free to resize your Golden Master to 64 Gbyte, grab an image and deploy smaller session hosts - may be as ephemeral with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;#WVDAdmin&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;I recommend making a snapshot first and keep in mind that the process takes a while (between 20 and 60 minutes). But you only have to do it once.&lt;/p&gt;
-&lt;p&gt;What happens in the background:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;The Windows partition will be resized to 31 Gbyte&lt;/li&gt;
-&lt;li&gt;The disk is uploaded to a temporary created storage account (that takes a while)&lt;/li&gt;
-&lt;li&gt;The disk is resized, and the signature for a 32 Gbyte disk is written&lt;/li&gt;
-&lt;li&gt;A new 32 Gbyte managed disk is created&lt;/li&gt;
-&lt;li&gt;The disk is attached to the VM&lt;/li&gt;
-&lt;li&gt;The temporary storage account is deleted&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;site-node-how-to-use-ephemeral-vms-in-a-very-cool-way&quot;&gt;Site node: How to use ephemeral VMs in a very cool way?&lt;/h2&gt;
-&lt;p&gt;I’m currently working on the following solution called “Project Hydra” to managed WVD. In addition, I added an “Autoscale” feature that is going hand-in-hand with Microsoft’s “Power-on-Connect”:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;In the morning, a bunch of ephemeral session hosts are automatically created to handle the first user storm&lt;/li&gt;
-&lt;li&gt;Some stand-by session hosts (deallocated) with standard SSD are then started with Power-On-Connect if a user tries to log in, and all of the ephemeral hosts are in use&lt;/li&gt;
-&lt;li&gt;And for sure: Deallocation of the “normal” hosts and deletion of the ephemeral hosts are part of the autoscaling&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;preqersits-to-shrink-a-disk&quot;&gt;Preqersits to shrink a disk:&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Windows operating system installed on a 128 Gbyte disk or greater&lt;/li&gt;
-&lt;li&gt;Only drive C: (exact two partitions: recovery partition and C-drive - default)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Check out the newest version of &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;#WVDAdmin&lt;/a&gt; and check a short demo video about resizing a disk on &lt;a href=&quot;https://youtu.be/Qb9CRHytXv0&quot;&gt;YouTube (external Link)&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin-Shrink-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Tue, 18 May 2021 00:00:00 +0200</pubDate>
-        <link>/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/</link>
-        <guid isPermaLink="true">/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-      </item>
     
       <item>
         <title>WVD Admin - A native administration Gui for Windows Virtual Desktop</title>
         <description>&lt;h1 id=&quot;windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Windows Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/17/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/27/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Add, edit and delete host pools&lt;/li&gt;
@@ -109,7 +35,7 @@ Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyt
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/17/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/27/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -119,6 +45,10 @@ Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyt
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6.91.0&lt;/td&gt;
+&lt;td&gt;Add: Create and restore snapshots of a VM (right click the VM in the Azure node)&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.90.0&lt;/td&gt;
 &lt;td&gt;Add: Function to shrink a disk of a VM to 64 GByte to rollout cheaper instances and/or use smaller instances with ephemeral disks&lt;/td&gt;
@@ -699,11 +629,85 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/17/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/27/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Mon, 17 May 2021 00:00:00 +0200</pubDate>
+        <pubDate>Thu, 27 May 2021 00:00:00 +0200</pubDate>
         <link>/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Power-On-Connect Feature in Windows Virtual Desktop and custom role for Power On Connect preview</title>
+        <description>&lt;p&gt;Power-On-Connect Feature in Windows Virtual Desktop
+Power-on-connect is in preview for assigned session hosts and pooled session hosts (multi-user host pool). With the new feature, users are triggering the start of the assigned session hosts or of a pooled on demand. That allows scaling up from zero hosts. Shutting down is omitted, but you can check my upcoming project to use power-on-connect with predictive autoscaling, including the shutdown of the hosts (and many other features). Check out my “preview” project “Hydra” at &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;You can enable power-on-connect for private host pools in the Azure Portal or with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;. &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; also allows enabling power-on-connect for pooled/multi-user host pools.&lt;/p&gt;
+&lt;p&gt;To use power-on-connect, you have to allow Microsoft to start virtual machines. To do that, create a custom role with the following link and add the &lt;em&gt;user&lt;/em&gt; “Windows Virtual Desktop” with this role to the resource group containing the virtual machines.&lt;/p&gt;
+&lt;p&gt;Install the power-on-connect role
+&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWVD-Role-PowerOnConnect-preview.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Learn more at:
+&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/start-virtual-machine-connect&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/start-virtual-machine-connect&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 24 May 2021 00:00:00 +0200</pubDate>
+        <link>/Custom-Role-for-Power-On-Connect-Preview/</link>
+        <guid isPermaLink="true">/Custom-Role-for-Power-On-Connect-Preview/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master</title>
+        <description>&lt;p&gt;A Windows 10 image from the marketplace has a size of &lt;strong&gt;128 Gbyte&lt;/strong&gt;. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a &lt;strong&gt;64 Gbyte&lt;/strong&gt; OS disk is usually sufficient - even if FSLogix is used to store personal data.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;But what are the advantages of smaller disks? First, they are some reason to use smaller disks, like:
+A smaller disk costs less. Usually 50% less and with the same performance for HDD and standard SSD (the premium disk has more IOPS for the larger size)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Ephemeral disks for smaller VM sizes: Ephemeral disks are really good for VM without local user data - like session hosts using FSLogix. VMs with ephemeral disks living on the Azure hypervisor without a network-attached disk - the OS disks are created directly in the cache of the hypervisor.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Advantages:
+No costs for the disk and high performance.
+Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyte Windows, (e.g.) a D8ds_v4 (8 cores, 32 Gbyte RAM, 200 GiB cache) is needed. That is maybe not attractive for a single user session host. If we go with a 64 Gbyte disk image, a D4ds_v4 can be used (4 cores, 16 Gbyte, 100GiB cache), which costs half.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;My favorite is the ephemeral disk approach for some environments because this offers high performance for a low price and often fits Windows Virtual Desktop.&lt;/p&gt;
+&lt;h2 id=&quot;the-challenge&quot;&gt;The challenge&lt;/h2&gt;
+&lt;p&gt;The challenge is to resize the Golden Master. There are some good posts about doing that, but it’s not easy and needs many different steps. Therefore, I added this as a feature in WVDAdmin from the release of today. So feel free to resize your Golden Master to 64 Gbyte, grab an image and deploy smaller session hosts - may be as ephemeral with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;#WVDAdmin&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I recommend making a snapshot first and keep in mind that the process takes a while (between 20 and 60 minutes). But you only have to do it once.&lt;/p&gt;
+&lt;p&gt;What happens in the background:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The Windows partition will be resized to 31 Gbyte&lt;/li&gt;
+&lt;li&gt;The disk is uploaded to a temporary created storage account (that takes a while)&lt;/li&gt;
+&lt;li&gt;The disk is resized, and the signature for a 32 Gbyte disk is written&lt;/li&gt;
+&lt;li&gt;A new 32 Gbyte managed disk is created&lt;/li&gt;
+&lt;li&gt;The disk is attached to the VM&lt;/li&gt;
+&lt;li&gt;The temporary storage account is deleted&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;site-node-how-to-use-ephemeral-vms-in-a-very-cool-way&quot;&gt;Site node: How to use ephemeral VMs in a very cool way?&lt;/h2&gt;
+&lt;p&gt;I’m currently working on the following solution called “Project Hydra” to managed WVD. In addition, I added an “Autoscale” feature that is going hand-in-hand with Microsoft’s “Power-on-Connect”:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;In the morning, a bunch of ephemeral session hosts are automatically created to handle the first user storm&lt;/li&gt;
+&lt;li&gt;Some stand-by session hosts (deallocated) with standard SSD are then started with Power-On-Connect if a user tries to log in, and all of the ephemeral hosts are in use&lt;/li&gt;
+&lt;li&gt;And for sure: Deallocation of the “normal” hosts and deletion of the ephemeral hosts are part of the autoscaling&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;preqersits-to-shrink-a-disk&quot;&gt;Preqersits to shrink a disk:&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Windows operating system installed on a 128 Gbyte disk or greater&lt;/li&gt;
+&lt;li&gt;Only drive C: (exact two partitions: recovery partition and C-drive - default)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Check out the newest version of &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;#WVDAdmin&lt;/a&gt; and check a short demo video about resizing a disk on &lt;a href=&quot;https://youtu.be/Qb9CRHytXv0&quot;&gt;YouTube (external Link)&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin-Shrink-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 18 May 2021 00:00:00 +0200</pubDate>
+        <link>/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/</link>
+        <guid isPermaLink="true">/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/</guid>
         
         
         <category>Windows Virtual Desktop</category>
