@@ -142,6 +142,57 @@
 					
 					
 				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (25)</a>
+						</li>
+					
+				  
 				
 				  
 					
@@ -157,48 +208,6 @@
 					
 						<li class="nav-item">
 						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (8)</a>
-						</li>
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-				
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-						<li class="nav-item">
-						<a class="nav-link" href="/categories#PowerShell">PowerShell (7)</a>
 						</li>
 					
 				  
@@ -338,7 +347,7 @@
       </h1>
     
 <p>From version 1.6.15,  <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> supports custom scripts to run administrative tasks simultaneously on different session hosts. And that is easy to use and to extend. Let me show it with the challenge to enable <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath#:~:text=RDP%20Shortpath%20is%20a%20feature,better%20reliability%20and%20consistent%20latency">RDP Shortpath</a> on existing session hosts.</p>
-<p>In this <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath#:~:text=RDP%20Shortpath%20is%20a%20feature,better%20reliability%20and%20consistent%20latency">post</a>, Microsoft describes how to enable this preview feature for WVD to connect to a WVD session without crossing the internet.</p>
+<p>In this <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath#:~:text=RDP%20Shortpath%20is%20a%20feature,better%20reliability%20and%20consistent%20latency">post</a>, Microsoft describes how to enable this preview feature for WVD/AVD to connect to a WVD/AVD session without crossing the internet.</p>
 <p>Start copying the file [C:\Program Files\ITProCloud.de\WVDAdmin\CustomScript.ps1](C:\Program Files\ITProCloud.de\WVDAdmin\CustomScript.ps1) to a new name into the same directory. For example EnableRDPShortPath.ps1</p>
 <p><img src="../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-01.png" alt="documentation-001" /></p>
 <p>Open the file with notepad or  the editor of your choice. Edit the first line to give your script a name (that is visible in the drop-down list in WVDAdmin) and a description. The description is shown in the message box where you have to consent to run on the selected session hosts.</p>
@@ -360,7 +369,7 @@ param(
 	[string]$paramString=&quot;&quot;
 );
 
-# This powershell script is part of WVD Admin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
+# This powershell script is part of WVDAdmin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
 # Current Version of this script: 1.0 - Custom Script Extension
 # Write a return string to WVDAdmin with the example in the last line
 
@@ -391,11 +400,11 @@ Write-host(&quot;ScriptReturnMessage:{RDP Shortpath enabled - reboot the session
 <p>To run the script on multiple hosts, go to a host pool, expand the node and click the “Session hosts” container.  Select the hosts, select your script “Enable RDP Shortpath” and click on “Run script”. After clicking OK, the script will be run in the system context on the session hosts. This will take a few minutes.</p>
 <p><img src="../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-03.png" alt="documentation-001" /></p>
 <p><img src="../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-04.png" alt="documentation-001" /></p>
-<p>After that - and in this case, after the next reboot - RDP Shortpath should be available for WVD users in directly connected networks.</p>
+<p>After that - and in this case, after the next reboot - RDP Shortpath should be available for WVD/AVD users in directly connected networks.</p>
 
 		<!--<h1 id="custom-scripts-with-wvdadmin">Custom Scripts with WVDAdmin</h1>
 <p>From version 1.6.15,  <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> supports custom scripts to run administrative tasks simultaneously on different session hosts. And that is easy to use and to extend. Let me show it with the challenge to enable <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath#:~:text=RDP%20Shortpath%20is%20a%20feature,better%20reliability%20and%20consistent%20latency">RDP Shortpath</a> on existing session hosts.</p>
-<p>In this <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath#:~:text=RDP%20Shortpath%20is%20a%20feature,better%20reliability%20and%20consistent%20latency">post</a>, Microsoft describes how to enable this preview feature for WVD to connect to a WVD session without crossing the internet.</p>
+<p>In this <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath#:~:text=RDP%20Shortpath%20is%20a%20feature,better%20reliability%20and%20consistent%20latency">post</a>, Microsoft describes how to enable this preview feature for WVD/AVD to connect to a WVD/AVD session without crossing the internet.</p>
 <p>Start copying the file [C:\Program Files\ITProCloud.de\WVDAdmin\CustomScript.ps1](C:\Program Files\ITProCloud.de\WVDAdmin\CustomScript.ps1) to a new name into the same directory. For example EnableRDPShortPath.ps1</p>
 <p><img src="../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-01.png" alt="documentation-001" /></p>
 <p>Open the file with notepad or  the editor of your choice. Edit the first line to give your script a name (that is visible in the drop-down list in WVDAdmin) and a description. The description is shown in the message box where you have to consent to run on the selected session hosts.</p>
@@ -417,7 +426,7 @@ param(
 	[string]$paramString=&quot;&quot;
 );
 
-# This powershell script is part of WVD Admin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
+# This powershell script is part of WVDAdmin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
 # Current Version of this script: 1.0 - Custom Script Extension
 # Write a return string to WVDAdmin with the example in the last line
 
@@ -448,7 +457,7 @@ Write-host(&quot;ScriptReturnMessage:{RDP Shortpath enabled - reboot the session
 <p>To run the script on multiple hosts, go to a host pool, expand the node and click the “Session hosts” container.  Select the hosts, select your script “Enable RDP Shortpath” and click on “Run script”. After clicking OK, the script will be run in the system context on the session hosts. This will take a few minutes.</p>
 <p><img src="../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-03.png" alt="documentation-001" /></p>
 <p><img src="../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-04.png" alt="documentation-001" /></p>
-<p>After that - and in this case, after the next reboot - RDP Shortpath should be available for WVD users in directly connected networks.</p>
+<p>After that - and in this case, after the next reboot - RDP Shortpath should be available for WVD/AVD users in directly connected networks.</p>
 -->
 	
     
@@ -497,6 +506,8 @@ Write-host(&quot;ScriptReturnMessage:{RDP Shortpath enabled - reboot the session
                     <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (26)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (25)</a>
                 
             
             

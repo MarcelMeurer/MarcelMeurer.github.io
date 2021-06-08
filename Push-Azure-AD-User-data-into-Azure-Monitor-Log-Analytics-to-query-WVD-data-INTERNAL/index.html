@@ -142,6 +142,57 @@
 					
 					
 				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (25)</a>
+						</li>
+					
+				  
 				
 				  
 					
@@ -157,48 +208,6 @@
 					
 						<li class="nav-item">
 						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (8)</a>
-						</li>
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-				
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-						<li class="nav-item">
-						<a class="nav-link" href="/categories#PowerShell">PowerShell (7)</a>
 						</li>
 					
 				  
@@ -410,7 +419,7 @@
                 
                 <!-- End Toc -->
                 <p>Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Windows Virtual Desktop (WVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance.</p>
-<p>I do that using Azure Monitor for WVD (<a href="https://www.sepago.de/en/azure-monitor-en/">https://www.sepago.de/en/azure-monitor-en/</a>) from sepago, which is also included in Nerdio Manager for WVD (<a href="https://getnerdio.com/nerdio-manager-for-wvd/">https://getnerdio.com/nerdio-manager-for-wvd/</a>).</p>
+<p>I do that using Azure Monitor for WVD/AVD (<a href="https://www.sepago.de/en/azure-monitor-en/">https://www.sepago.de/en/azure-monitor-en/</a>) from sepago, which is also included in Nerdio Manager for WVD (<a href="https://getnerdio.com/nerdio-manager-for-wvd/">https://getnerdio.com/nerdio-manager-for-wvd/</a>).</p>
 <p>The solution gives you insight into the performance of the apps and hosts and allows you to build a cost calculation on a per-user base. If you want to query and analyze data by other properties - like the department - you have to include these properties from Azure AD into your log analytics workspace.</p>
 <p>I found an easy solution doing that with an Azure logic app. The logic app access the Azure AD tenant and queries the users and some defined properties and send it to log analytics. A challenge was to handle the challenge that you have to query multiple times to get all users from Azure AD (a single query gives you only a specific amount of users -&gt; Paging). I solved this using an “Until-loop” to get all users. The logic app pushed the users and their properties to the defined log analytics workspace. After this, the users and properties can be used in a KUSTO query. For example: To query the over-all session runtime by the department.</p>
 <h2 id="installation-and-configuration">Installation and configuration</h2>
@@ -500,7 +509,7 @@
             <!-- Prev/Next -->
             <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
             
-            <a class="prev d-block col-md-6" href="/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/"> &laquo; Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these</a>
+            <a class="prev d-block col-md-6" href="/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/"> &laquo; Push Azure AD User properties into Azure Monitor Log Analytics to build Azure Windows Virtual Desktop (WVD) performance data based on these</a>
             
             
             <a class="next d-block col-md-6 text-lg-right" href="/Windows-Virtual-Desktop-Admin-CustomScripts/">WVD Admin - Custom Scripts to run administrative tasks &raquo; </a>
@@ -571,6 +580,8 @@ https://search.google.com/structured-data/testing-tool/u/0/
                     <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (26)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (25)</a>
                 
             
             

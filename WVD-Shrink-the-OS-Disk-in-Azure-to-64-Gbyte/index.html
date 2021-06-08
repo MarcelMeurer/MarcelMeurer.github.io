@@ -14,8 +14,8 @@
 <meta property="og:title" content="Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A Windows 10 image from the marketplace has a size of 128 Gbyte. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a 64 Gbyte OS disk is usually sufficient - even if FSLogix is used to store personal data." />
-<meta property="og:description" content="A Windows 10 image from the marketplace has a size of 128 Gbyte. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a 64 Gbyte OS disk is usually sufficient - even if FSLogix is used to store personal data." />
+<meta name="description" content="A Windows 10 image from the marketplace has a size of 128 Gbyte. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Azure Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a 64 Gbyte OS disk is usually sufficient - even if FSLogix is used to store personal data." />
+<meta property="og:description" content="A Windows 10 image from the marketplace has a size of 128 Gbyte. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Azure Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a 64 Gbyte OS disk is usually sufficient - even if FSLogix is used to store personal data." />
 <meta property="og:site_name" content="ITProCloud Blog" />
 <meta property="og:image" content="/assets/images/WVDAdmin-Shrink-01.png" />
 <meta property="og:type" content="article" />
@@ -24,7 +24,7 @@
 <meta property="twitter:image" content="/assets/images/WVDAdmin-Shrink-01.png" />
 <meta property="twitter:title" content="Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master" />
 <script type="application/ld+json">
-{"url":"/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master","dateModified":"2021-05-18T00:00:00+02:00","datePublished":"2021-05-18T00:00:00+02:00","description":"A Windows 10 image from the marketplace has a size of 128 Gbyte. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a 64 Gbyte OS disk is usually sufficient - even if FSLogix is used to store personal data.","author":{"@type":"Person","name":"mm"},"mainEntityOfPage":{"@type":"WebPage","@id":"/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/"},"image":"/assets/images/WVDAdmin-Shrink-01.png","@type":"BlogPosting","@context":"https://schema.org"}</script>
+{"url":"/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"headline":"Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master","dateModified":"2021-05-18T00:00:00+02:00","datePublished":"2021-05-18T00:00:00+02:00","description":"A Windows 10 image from the marketplace has a size of 128 Gbyte. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Azure Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a 64 Gbyte OS disk is usually sufficient - even if FSLogix is used to store personal data.","author":{"@type":"Person","name":"mm"},"mainEntityOfPage":{"@type":"WebPage","@id":"/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/"},"image":"/assets/images/WVDAdmin-Shrink-01.png","@type":"BlogPosting","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -142,6 +142,57 @@
 					
 					
 				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (25)</a>
+						</li>
+					
+				  
 				
 				  
 					
@@ -157,48 +208,6 @@
 					
 						<li class="nav-item">
 						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (8)</a>
-						</li>
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-				  
-				
-				  
-					
-					
-				  
-					
-					
-				  
-					
-					
-						<li class="nav-item">
-						<a class="nav-link" href="/categories#PowerShell">PowerShell (7)</a>
 						</li>
 					
 				  
@@ -409,7 +418,7 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>A Windows 10 image from the marketplace has a size of <strong>128 Gbyte</strong>. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a <strong>64 Gbyte</strong> OS disk is usually sufficient - even if FSLogix is used to store personal data.</p>
+                <p>A Windows 10 image from the marketplace has a size of <strong>128 Gbyte</strong>. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Azure Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a <strong>64 Gbyte</strong> OS disk is usually sufficient - even if FSLogix is used to store personal data.</p>
 <ul>
 <li>
 <p>But what are the advantages of smaller disks? First, they are some reason to use smaller disks, like:
@@ -426,7 +435,7 @@ Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyt
 </ul>
 <p>My favorite is the ephemeral disk approach for some environments because this offers high performance for a low price and often fits Windows Virtual Desktop.</p>
 <h2 id="the-challenge">The challenge</h2>
-<p>The challenge is to resize the Golden Master. There are some good posts about doing that, but it’s not easy and needs many different steps. Therefore, I added this as a feature in WVDAdmin from the release of today. So feel free to resize your Golden Master to 64 Gbyte, grab an image and deploy smaller session hosts - may be as ephemeral with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">#WVDAdmin</a></p>
+<p>The challenge is to resize the Golden Master. There are some good posts about doing that, but it’s not easy and needs many different steps. Therefore, I added this as a feature in WVDAdmin from the release of today. So feel free to resize your Golden Master to 64 Gbyte, grab an image and deploy smaller session hosts - may be as ephemeral with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">#WVDAdmin / #AVDAdmin</a></p>
 <p>I recommend making a snapshot first and keep in mind that the process takes a while (between 20 and 60 minutes). But you only have to do it once.</p>
 <p>What happens in the background:</p>
 <ul>
@@ -449,7 +458,7 @@ Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyt
 <li>Windows operating system installed on a 128 Gbyte disk or greater</li>
 <li>Only drive C: (exact two partitions: recovery partition and C-drive - default)</li>
 </ul>
-<p>Check out the newest version of <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">#WVDAdmin</a> and check a short demo video about resizing a disk on <a href="https://youtu.be/Qb9CRHytXv0">YouTube (external Link)</a>.</p>
+<p>Check out the newest version of <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">#WVDAdmin / #AVDAdmin</a> and check a short demo video about resizing a disk on <a href="https://youtu.be/Qb9CRHytXv0">YouTube (external Link)</a>.</p>
 <p><img src="../assets/images/WVDAdmin-Shrink-01.png" alt="" /></p>
 
             </div>
@@ -471,6 +480,10 @@ Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyt
                     
                     
                     <li>
+                        <a class="smoothscroll" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop</a>
+                    </li>
+                    
+                    <li>
                         <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
                     </li>
                     
@@ -490,10 +503,10 @@ Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyt
             <!-- Prev/Next -->
             <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
             
-            <a class="prev d-block col-md-6" href="/WVD-Fileupload-HTML5/"> &laquo; Windows Virtual Desktop Fileupload with the HTML5 client</a>
+            <a class="prev d-block col-md-6" href="/WVD-Fileupload-HTML5/"> &laquo; Azure Windows Virtual Desktop Fileupload with the HTML5 client</a>
             
             
-            <a class="next d-block col-md-6 text-lg-right" href="/Custom-Role-for-Power-On-Connect-Preview/">Power-On-Connect Feature in Windows Virtual Desktop and custom role for Power On Connect preview &raquo; </a>
+            <a class="next d-block col-md-6 text-lg-right" href="/Custom-Role-for-Power-On-Connect-Preview/">Power-On-Connect Feature in Azure Windows Virtual Desktop and custom role for Power On Connect preview &raquo; </a>
             
             <div class="clearfix"></div>
             </div>
@@ -561,6 +574,8 @@ https://search.google.com/structured-data/testing-tool/u/0/
                     <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (26)</a>
                 
                     <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (25)</a>
                 
             
             
