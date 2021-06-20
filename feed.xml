@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 20 Jun 2021 16:22:32 +0200</pubDate>
-    <lastBuildDate>Sun, 20 Jun 2021 16:22:32 +0200</lastBuildDate>
+    <pubDate>Sun, 20 Jun 2021 18:52:38 +0200</pubDate>
+    <lastBuildDate>Sun, 20 Jun 2021 18:52:38 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -647,6 +647,38 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
       </item>
     
       <item>
+        <title>Hydra: Automize, scale and manage Windows Virtual Desktop / Azure Virtual Desktop like a pro - including multi-tenancy</title>
+        <description>&lt;p&gt;Project Hydra for Azure Virtual Desktop
+Six months ago, I started a new project to provide a solution to manage Azure Virtual Desktop / Windows Virtual Desktop in an automated way. It was thought of as a complement to #WVDAdmin and focused on doing some tasks automatically. For example:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Autoscale
+– Multi-Session hosts
+– Power-on-connect support
+– Schedules
+– Autopilot: Automatically scales up/down/create/remove based on the usage of a host pool
+– Deploy hosts on-demand - including ephemeral VMs based on a custom image&lt;/li&gt;
+&lt;li&gt;VDI
+– Auto deallocate session hosts&lt;/li&gt;
+&lt;li&gt;Granular session timeouts&lt;/li&gt;
+&lt;li&gt;Auto Health&lt;/li&gt;
+&lt;li&gt;and a lot more&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Even the autoscaling part works very well. It goes hand-in-hand with Power-On-Connect and can pre-provide temporary session hosts with ephemeral disks. And for sure: It down-scales the environment.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/Hydra/Autoscaling-Example.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;More about my project “Hydra”: &lt;a href=&quot;https://github.com/marcelmeurer/wvd-hydra&quot;&gt;https://github.com/marcelmeurer/wvd-hydra&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 01 Jun 2021 00:00:00 +0200</pubDate>
+        <link>/Announcement-of-my-project-Hydra-for-Azure-Windows-Virtual-Desktop-Scale,-Autopilot,-Multi-tenant-and-more/</link>
+        <guid isPermaLink="true">/Announcement-of-my-project-Hydra-for-Azure-Windows-Virtual-Desktop-Scale,-Autopilot,-Multi-tenant-and-more/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
         <title>Power-On-Connect Feature in Azure Windows Virtual Desktop and custom role for Power On Connect preview</title>
         <description>&lt;p&gt;Power-On-Connect Feature in Windows Virtual Desktop
 Power-on-connect is in preview for assigned session hosts and pooled session hosts (multi-user host pool). With the new feature, users are triggering the start of the assigned session hosts or of a pooled on demand. That allows scaling up from zero hosts. Shutting down is omitted, but you can check my upcoming project to use power-on-connect with predictive autoscaling, including the shutdown of the hosts (and many other features). Check out my “preview” project “Hydra” at &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
@@ -903,76 +935,6 @@ HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\Sysprep	SysprepCorrupt&lt;
         <pubDate>Mon, 11 Jan 2021 00:00:00 +0100</pubDate>
         <link>/Custom-Role-for-Power-On-Connect-Schedules-Preview/</link>
         <guid isPermaLink="true">/Custom-Role-for-Power-On-Connect-Schedules-Preview/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>WVD Admin - Custom Scripts to run administrative tasks</title>
-        <description>&lt;h1 id=&quot;custom-scripts-with-wvdadmin&quot;&gt;Custom Scripts with WVDAdmin&lt;/h1&gt;
-&lt;p&gt;From version 1.6.15,  &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; supports custom scripts to run administrative tasks simultaneously on different session hosts. And that is easy to use and to extend. Let me show it with the challenge to enable &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath#:~:text=RDP%20Shortpath%20is%20a%20feature,better%20reliability%20and%20consistent%20latency&quot;&gt;RDP Shortpath&lt;/a&gt; on existing session hosts.&lt;/p&gt;
-&lt;p&gt;In this &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath#:~:text=RDP%20Shortpath%20is%20a%20feature,better%20reliability%20and%20consistent%20latency&quot;&gt;post&lt;/a&gt;, Microsoft describes how to enable this preview feature for WVD/AVD to connect to a WVD/AVD session without crossing the internet.&lt;/p&gt;
-&lt;p&gt;Start copying the file [C:\Program Files\ITProCloud.de\WVDAdmin\CustomScript.ps1](C:\Program Files\ITProCloud.de\WVDAdmin\CustomScript.ps1) to a new name into the same directory. For example EnableRDPShortPath.ps1&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-01.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Open the file with notepad or  the editor of your choice. Edit the first line to give your script a name (that is visible in the drop-down list in WVDAdmin) and a description. The description is shown in the message box where you have to consent to run on the selected session hosts.&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# {&amp;quot;Name&amp;quot;: &amp;quot;Enable RDP Shortpath&amp;quot;,&amp;quot;Description&amp;quot;:&amp;quot;This script enables the preview function for RDP Shortpath on the selected session hosts&amp;quot;}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;After that, you can copy the code between lines 22 and 23 (LogWriter(“Custom script start”) and LogWriter(“Custom script end”)). I re-used the example code from Microsoft:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;LogWriter(&amp;quot;Custom script start&amp;quot;)
-$WinstationsKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations'
-New-ItemProperty -Path $WinstationsKey -Name 'fUseUdpPortRedirector' -ErrorAction:SilentlyContinue -PropertyType:dword -Value 1 -Force
-New-ItemProperty -Path $WinstationsKey -Name 'UdpPortNumber' -ErrorAction:SilentlyContinue -PropertyType:dword -Value 3390 -Force
-
-New-NetFirewallRule -DisplayName 'Remote Desktop - Shortpath (UDP-In)'  -Action Allow -Description 'Inbound rule for the Remote Desktop service to allow RDP traffic. [UDP 3390]' -Group '@FirewallAPI.dll,-28752' -Name 'RemoteDesktop-UserMode-In-Shortpath-UDP'  -PolicyStore PersistentStore -Profile Domain, Private -Service TermService -Protocol udp -LocalPort 3390 -Program '%SystemRoot%\system32\svchost.exe' -Enabled:True
-LogWriter(&amp;quot;Custom script end&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The full script should look like this:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# {&amp;quot;Name&amp;quot;: &amp;quot;Enable RDP Shortpath&amp;quot;,&amp;quot;Description&amp;quot;:&amp;quot;This script enables the preview function for RDP Shortpath on the selected session hosts&amp;quot;}
-param(
-    [string]$paramLogFileName=&amp;quot;WVD.Custom.log&amp;quot;,
-	[string]$paramString=&amp;quot;&amp;quot;
-);
-
-# This powershell script is part of WVDAdmin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
-# Current Version of this script: 1.0 - Custom Script Extension
-# Write a return string to WVDAdmin with the example in the last line
-
-# Define logfilen and dir
-$LogDir=&amp;quot;$env:windir\system32\logfiles&amp;quot;
-$LogFile=&amp;quot;$LogDir\$paramLogFileName&amp;quot;
-
-function LogWriter($message)
-{
-    $message=&amp;quot;$(Get-Date ([datetime]::UtcNow) -Format &amp;quot;o&amp;quot;) $message&amp;quot;
-	write-host($message)
-	if ([System.IO.Directory]::Exists($LogDir)) {write-output($message) | Out-File $LogFile -Append}
-}
-
-LogWriter(&amp;quot;Custom script start&amp;quot;)
-$WinstationsKey = 'HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations'
-New-ItemProperty -Path $WinstationsKey -Name 'fUseUdpPortRedirector' -ErrorAction:SilentlyContinue -PropertyType:dword -Value 1 -Force
-New-ItemProperty -Path $WinstationsKey -Name 'UdpPortNumber' -ErrorAction:SilentlyContinue -PropertyType:dword -Value 3390 -Force
-
-New-NetFirewallRule -DisplayName 'Remote Desktop - Shortpath (UDP-In)'  -Action Allow -Description 'Inbound rule for the Remote Desktop service to allow RDP traffic. [UDP 3390]' -Group '@FirewallAPI.dll,-28752' -Name 'RemoteDesktop-UserMode-In-Shortpath-UDP'  -PolicyStore PersistentStore -Profile Domain, Private -Service TermService -Protocol udp -LocalPort 3390 -Program '%SystemRoot%\system32\svchost.exe' -Enabled:True
-LogWriter(&amp;quot;Custom script end&amp;quot;)
-
-Write-host(&amp;quot;ScriptReturnMessage:{RDP Shortpath enabled - reboot the session hosts(s) to take effect}:ScriptReturnMessage&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Alternatively, you can load the script from &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/EnableRDPShortPath.ps1&quot;&gt;here&lt;/a&gt; and copy it into WVDAdmin’s program file folder.&lt;/p&gt;
-&lt;p&gt;To load the scripts, restart WVDAdmin. You will see multiple “Information Adding scripts for session host management in the log windows: xxxx.ps1” messages, including your new EnableRDPShortPath.ps.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-02.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;To run the script on multiple hosts, go to a host pool, expand the node and click the “Session hosts” container.  Select the hosts, select your script “Enable RDP Shortpath” and click on “Run script”. After clicking OK, the script will be run in the system context on the session hosts. This will take a few minutes.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-03.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/WVDAdmin-CustomScripts-ShortPath-04.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;After that - and in this case, after the next reboot - RDP Shortpath should be available for WVD/AVD users in directly connected networks.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 18 Nov 2020 00:00:00 +0100</pubDate>
-        <link>/Windows-Virtual-Desktop-Admin-CustomScripts/</link>
-        <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin-CustomScripts/</guid>
         
         
         <category>Windows Virtual Desktop</category>
