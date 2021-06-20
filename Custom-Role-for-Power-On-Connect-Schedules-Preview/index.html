@@ -6,20 +6,25 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>Azure AD | ITProCloud Blog</title>
+<title>Custom Role for Power On Connect preview | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Azure AD | ITProCloud Blog</title>
+<title>Custom Role for Power On Connect preview | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Azure AD" />
+<meta property="og:title" content="Custom Role for Power On Connect preview" />
+<meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense." />
-<meta property="og:description" content="This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense." />
+<meta name="description" content="Power-On-Connect Role" />
+<meta property="og:description" content="Power-On-Connect Role" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Azure AD" />
+<meta property="og:image" content="/assets/images/WVD-CustomRoles.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-01-11T00:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/assets/images/WVD-CustomRoles.png" />
+<meta property="twitter:title" content="Custom Role for Power On Connect preview" />
 <script type="application/ld+json">
-{"@type":"WebPage","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"}},"url":"/category/azure-ad/","headline":"Azure AD","description":"This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.","@context":"https://schema.org"}</script>
+{"image":"/assets/images/WVD-CustomRoles.png","@type":"BlogPosting","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"/Custom-Role-for-Power-On-Connect-Schedules-Preview/","headline":"Custom Role for Power On Connect preview","dateModified":"2021-01-11T00:00:00+01:00","datePublished":"2021-01-11T00:00:00+01:00","author":{"@type":"Person","name":"mm"},"mainEntityOfPage":{"@type":"WebPage","@id":"/Custom-Role-for-Power-On-Connect-Schedules-Preview/"},"description":"Power-On-Connect Role","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -39,7 +44,7 @@
 
 
 
-<body class="layout-archive">
+<body class="layout-post">
 	<!-- defer loading of font and font awesome -->
 	<noscript id="deferred-styles">
 		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
@@ -325,204 +330,167 @@
 <!-- Content
 ================================================== -->
 <div class="main-content">
-    <!-- Begin List Posts
+    <!-- Begin Article
 ================================================== -->
-<section class="recent-posts">
-<div class="section-title">
-    <h2>Archive of posts with <span>category 'Azure AD'</span></h2>
-</div>
-<div class="row listrecent">
+<div class="container">
+    <div class="row">
 
-
-
-    <!-- begin post -->
-
-
-<div class="col-lg-4 col-md-6 mb-30px card-group">
-    <div class="card h-100">
-        <div class="maxthumb">
-            <a href="/Why-configuring-Azure-AD-authentication-with-an-Azure-Web-App-fails/">
-                
-
-                    
-                        <img class="img-fluid" src="/wp-content/uploads/2019/02/01-1024x703.png" alt="Why configuring Azure AD authentication with an Azure Web App fails"> 
-                    
-
-                
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Custom Role for Power On Connect preview&url=https://blog.itprocloud.de/Custom-Role-for-Power-On-Connect-Schedules-Preview/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
             </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Custom-Role-for-Power-On-Connect-Schedules-Preview/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Custom-Role-for-Power-On-Connect-Schedules-Preview/&title=Custom Role for Power On Connect preview" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+    </ul>
+    
+    <div class="sep">
+    </div>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
+    
+</div>
+
         </div>
-        <div class="card-body">
-            <h2 class="card-title">
-                <a class="text-dark" href="/Why-configuring-Azure-AD-authentication-with-an-Azure-Web-App-fails/">Why configuring Azure AD authentication with an Azure Web App fails</a>
+
+        <!-- Post -->
+        
+
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
+
+                <!-- Author Box -->
                 
-            </h2>
-            <h4 class="card-text">I spent hours today adding Azure AD authentication to an Azure MVC web application with Visual Studio. I always got the same error while adding the preconfigured AD application:
-</h4>
-        </div>
-        <div class="card-footer bg-white">
-            <div class="wrapfooter">
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                        
+                        <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
+                        
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href="https://blog.itprocloud.de">Marcel</a><a target="_blank" href="https://twitter.com/MarcelMeurer" class="btn follow">Follow</a>
+                        <span class="author-description">That's me: Marcel</span>
+                    </div>
+                </div>
                 
-                <span class="meta-footer-thumb">
-                
-                <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
-                
-                </span>
-                <span class="author-meta">
-                <span class="post-name"><a target="_blank" href="https://blog.itprocloud.de">Marcel</a></span><br/>
-                
-                <span class="post-date">09 Feb 2019</span>
-                </span>
-                <span class="post-read-more"><a href="/Why-configuring-Azure-AD-authentication-with-an-Azure-Web-App-fails/" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
-                <div class="clearfix"></div>
+
+                <!-- Post Title -->
+                <h1 class="posttitle">Custom Role for Power On Connect preview</h1>
+
             </div>
+
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
+
+            <!-- Post Featured Image -->
+            
+
+            
+            <img class="featured-image img-fluid" src="/assets/images/WVD-CustomRoles.png" alt="Custom Role for Power On Connect preview">
+            
+
+            
+            <!-- End Featured Image -->
+
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <p>Power-On-Connect Role
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWVD-Role-PowerOnConnect-preview.json"><img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" /></a></p>
+<p>Schedule-Role
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWVD-Schedules-preview.json"><img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" /></a></p>
+
+            </div>
+
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2021-01-11">11 Jan 2021</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            <a class="prev d-block col-md-6" href="/Windows-Virtual-Desktop-Admin-CustomScripts/"> &laquo; WVD Admin - Custom Scripts to run administrative tasks</a>
+            
+            
+            <a class="next d-block col-md-6 text-lg-right" href="/WVDAdmin-for-WVD-management-and-roll-out-videos-on-Youtube/">WVDAdmin videos on YouTube &raquo; </a>
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
         </div>
+        <!-- End Post -->
+
     </div>
 </div>
-<!-- end post -->
+<!-- End Article
+================================================== -->
 
+<!-- Begin Comments
+================================================== -->
 
+<!--End Comments
+================================================== -->
 
-    <!-- begin post -->
-
-
-<div class="col-lg-4 col-md-6 mb-30px card-group">
-    <div class="card h-100">
-        <div class="maxthumb">
-            <a href="/Working-with-the-OneDrive-PowerShell-Module/">
-                
-
-                    
-                        <img class="img-fluid" src="/wp-content/uploads/2018/09/OD-00001.png" alt="Working with the OneDrive PowerShell Module"> 
-                    
-
-                
-            </a>
-        </div>
-        <div class="card-body">
-            <h2 class="card-title">
-                <a class="text-dark" href="/Working-with-the-OneDrive-PowerShell-Module/">Working with the OneDrive PowerShell Module</a>
-                
-            </h2>
-            <h4 class="card-text">Recently I got some questions on how to work with my PowerShell module for OneDrive. Therefore, I put together some examples.
-</h4>
-        </div>
-        <div class="card-footer bg-white">
-            <div class="wrapfooter">
-                
-                <span class="meta-footer-thumb">
-                
-                <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
-                
-                </span>
-                <span class="author-meta">
-                <span class="post-name"><a target="_blank" href="https://blog.itprocloud.de">Marcel</a></span><br/>
-                
-                <span class="post-date">29 Sep 2018</span>
-                </span>
-                <span class="post-read-more"><a href="/Working-with-the-OneDrive-PowerShell-Module/" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
-                <div class="clearfix"></div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end post -->
-
-
-
-    <!-- begin post -->
-
-
-<div class="col-lg-4 col-md-6 mb-30px card-group">
-    <div class="card h-100">
-        <div class="maxthumb">
-            <a href="/Adding-Guest-Users-to-Azure-AD-from-Excel-with-PowerShell/">
-                
-
-                    
-                        <img class="img-fluid" src="/wp-content/uploads/2018/07/excel01-1-1024x260.png" alt="Adding Guest Users to Azure AD from Excel with PowerShell"> 
-                    
-
-                
-            </a>
-        </div>
-        <div class="card-body">
-            <h2 class="card-title">
-                <a class="text-dark" href="/Adding-Guest-Users-to-Azure-AD-from-Excel-with-PowerShell/">Adding Guest Users to Azure AD from Excel with PowerShell</a>
-                
-            </h2>
-            <h4 class="card-text">Sharing access across different tenants in one of the key benefits of Azure AD. My customers appreciate that they can provide Azure-based solution to their cooperated users and to guest...</h4>
-        </div>
-        <div class="card-footer bg-white">
-            <div class="wrapfooter">
-                
-                <span class="meta-footer-thumb">
-                
-                <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
-                
-                </span>
-                <span class="author-meta">
-                <span class="post-name"><a target="_blank" href="https://blog.itprocloud.de">Marcel</a></span><br/>
-                
-                <span class="post-date">13 Jul 2018</span>
-                </span>
-                <span class="post-read-more"><a href="/Adding-Guest-Users-to-Azure-AD-from-Excel-with-PowerShell/" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
-                <div class="clearfix"></div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end post -->
-
-
-
-    <!-- begin post -->
-
-
-<div class="col-lg-4 col-md-6 mb-30px card-group">
-    <div class="card h-100">
-        <div class="maxthumb">
-            <a href="/Enumerating-Azure-AD-administrative-accounts-with-PowerShell/">
-                
-
-                    
-                        <img class="img-fluid" src="/wp-content/uploads/2018/07/EnumAdAdminRoles01-300x153.png" alt="Enumerating Azure AD administrative accounts with PowerShell"> 
-                    
-
-                
-            </a>
-        </div>
-        <div class="card-body">
-            <h2 class="card-title">
-                <a class="text-dark" href="/Enumerating-Azure-AD-administrative-accounts-with-PowerShell/">Enumerating Azure AD administrative accounts with PowerShell</a>
-                
-            </h2>
-            <h4 class="card-text">Users can have different administrative roles in Azure Ad. Azure Portal can show these roles and members. Sometimes it can be favorable to get roles and members in a PowerShell...</h4>
-        </div>
-        <div class="card-footer bg-white">
-            <div class="wrapfooter">
-                
-                <span class="meta-footer-thumb">
-                
-                <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
-                
-                </span>
-                <span class="author-meta">
-                <span class="post-name"><a target="_blank" href="https://blog.itprocloud.de">Marcel</a></span><br/>
-                
-                <span class="post-date">22 Jun 2018</span>
-                </span>
-                <span class="post-read-more"><a href="/Enumerating-Azure-AD-administrative-accounts-with-PowerShell/" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
-                <div class="clearfix"></div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end post -->
-
-
-
-</div>
-</section>
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
 
 </div>
 
@@ -614,6 +582,8 @@
 
 <script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
 
+
+<script id="dsq-count-scr" src="//.disqus.com/count.js"></script>
 
 
 <!-- Start Cookie Plugin -->

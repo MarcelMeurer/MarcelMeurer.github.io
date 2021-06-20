@@ -5,9 +5,9 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 10 Jun 2021 18:48:35 +0200</pubDate>
-    <lastBuildDate>Thu, 10 Jun 2021 18:48:35 +0200</lastBuildDate>
-    <generator>Jekyll v4.1.1</generator>
+    <pubDate>Sun, 20 Jun 2021 16:22:32 +0200</pubDate>
+    <lastBuildDate>Sun, 20 Jun 2021 16:22:32 +0200</lastBuildDate>
+    <generator>Jekyll v4.2.0</generator>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -901,8 +901,8 @@ HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\Sysprep	SysprepCorrupt&lt;
 &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWVD-Schedules-preview.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Mon, 11 Jan 2021 00:00:00 +0100</pubDate>
-        <link>/Custom-Role-for-Power-On-Connect-Preview/</link>
-        <guid isPermaLink="true">/Custom-Role-for-Power-On-Connect-Preview/</guid>
+        <link>/Custom-Role-for-Power-On-Connect-Schedules-Preview/</link>
+        <guid isPermaLink="true">/Custom-Role-for-Power-On-Connect-Schedules-Preview/</guid>
         
         
         <category>Windows Virtual Desktop</category>
