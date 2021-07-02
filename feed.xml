@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 01 Jul 2021 12:33:15 +0200</pubDate>
-    <lastBuildDate>Thu, 01 Jul 2021 12:33:15 +0200</lastBuildDate>
+    <pubDate>Fri, 02 Jul 2021 09:45:07 +0200</pubDate>
+    <lastBuildDate>Fri, 02 Jul 2021 09:45:07 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -45,6 +45,10 @@
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6.97.0&lt;/td&gt;
+&lt;td&gt;Add: Remove a Customer Managed Key (CMK) from a VM / Disk&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.96.0&lt;/td&gt;
 &lt;td&gt;Add: Support for the Edv4- and Edsv4-Serie&lt;/td&gt;
