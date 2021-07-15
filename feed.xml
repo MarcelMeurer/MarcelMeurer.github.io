@@ -5,8 +5,8 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 15 Jul 2021 14:35:35 +0200</pubDate>
-    <lastBuildDate>Thu, 15 Jul 2021 14:35:35 +0200</lastBuildDate>
+    <pubDate>Thu, 15 Jul 2021 14:36:52 +0200</pubDate>
+    <lastBuildDate>Thu, 15 Jul 2021 14:36:52 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -689,7 +689,7 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;p&gt;To rollout a session host AAD only tick “AAD only” in the rollout tab. OU, domain user and password are not needed.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/assets/images/WVDAdmin/AADOnlyJoin.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;An AAD-only session host shows up with the host name in the session host list - the domain suffix is missing. You can also check Azure AD to verify the connection to the AAD domain.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/assets/images/Hydra/AADOnlyJoin-Hosts01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/WVDAdmin/AADOnlyJoin-Hosts01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;WVDAdmin: &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;What’s about #Hydra? Hydra auto-scales and manages even AAD only joined session host. Early next week, you can deploy AAD only hosts even with #Hydra&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/assets/images/Hydra/Hydra-120.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
