@@ -14,6 +14,7 @@ param(
 	[string] $DomainJoinUserName='',
 	[string] $DomainJoinUserPassword='',
 	[string] $DomainJoinOU='',
+	[string] $AadOnly='0',
 	[string] $DomainFqdn='',
 	[string] $WvdRegistrationKey='',
 	[string] $LogDir="$env:windir\system32\logfiles"
@@ -66,11 +67,11 @@ if ((Test-Path ($LocalConfig+"\ITPC-WVD-Image-Processing.ps1")) -eq $false) {
 	} else {Copy-Item "${PSScriptRoot}\ITPC-WVD-Image-Processing.ps1" -Destination ($LocalConfig+"\")}
 
 
-	if ((Test-Path ("${PSScriptRoot}\Microsoft.RDInfra.RDAgent.msi")) -eq $false) {
+	if ((Test-Path ($ScriptRoot+"\Microsoft.RDInfra.RDAgent.msi")) -eq $false) {
 		LogWriter("Downloading RDAgent")
 		Invoke-WebRequest -Uri "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv" -OutFile ($LocalConfig+"\Microsoft.RDInfra.RDAgent.msi")
 	} else {Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgent.msi" -Destination ($LocalConfig+"\")}
-	if ((Test-Path ("${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi")) -eq $false) {
+	if ((Test-Path ($ScriptRoot+"\Microsoft.RDInfra.RDAgentBootLoader.msi ")) -eq $false) {
 		LogWriter("Downloading RDBootloader")
 		Invoke-WebRequest -Uri "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH" -OutFile ($LocalConfig+"\Microsoft.RDInfra.RDAgentBootLoader.msi")
 	} else {Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi" -Destination ($LocalConfig+"\")}
@@ -208,7 +209,7 @@ if ($mode -eq "Generalize") {
 		}
 	}
 		
-	if ($DomainJoinUserName -ne "") {
+	if ($DomainJoinUserName -ne "" -and $AadOnly -ne "1") {
 		LogWriter("Joining domain")
 		$psc = New-Object System.Management.Automation.PSCredential($DomainJoinUserName, (ConvertTo-SecureString $DomainJoinUserPassword -AsPlainText -Force))
 		if ($DomainJoinOU -eq "")
@@ -219,6 +220,10 @@ if ($mode -eq "Generalize") {
 		{
 			Add-Computer -DomainName $DomainFqdn -OUPath $DomainJoinOU -Credential $psc -Force -ErrorAction Stop
 		}
+	} else {
+		LogWriter("AAD only is selected. Skipping joining to a native AD, joining AAD")
+		$aadPath=@(Get-ChildItem -Directory  "C:\Packages\Plugins\Microsoft.Azure.ActiveDirectory.AADLoginForWindows")[@(Get-ChildItem -Directory  "C:\Packages\Plugins\Microsoft.Azure.ActiveDirectory.AADLoginForWindows").count-1].fullname
+		Start-Process -wait -FilePath "$aadPath\AADLoginForWindowsHandler.exe" -WorkingDirectory $aadPath -ArgumentList 'enable' -RedirectStandardOutput "$($LogDir)\Avd.AadJoin.Out.txt" -RedirectStandardError "$($LogDir)\Avd.AadJoin.Warning.txt"
 	}
 	
 	# check for disk handling
@@ -266,23 +271,23 @@ if ($mode -eq "Generalize") {
 	# install WVD Agent if a registration key given
 	if ($WvdRegistrationKey -ne "") {
 		if ([System.Environment]::OSVersion.Version.Major -gt 6) {
-			LogWriter("Installing WVD boot loader - current path is ${PSScriptRoot}")
-			Start-Process -wait -FilePath "${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi" -ArgumentList "/q"
+			LogWriter("Installing WVD boot loader - current path is ${LocalConfig}")
+			Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgentBootLoader.msi" -ArgumentList "/q"
 			LogWriter("Installing WVD agent")
-			Start-Process -wait -FilePath "${PSScriptRoot}\Microsoft.RDInfra.RDAgent.msi" -ArgumentList "/q RegistrationToken=${WvdRegistrationKey}"
+			Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgent.msi" -ArgumentList "/q RegistrationToken=${WvdRegistrationKey}"
 		} else {
-			if ((Test-Path "${PSScriptRoot}\Microsoft.RDInfra.WVDAgent.msi") -eq $false) {
+			if ((Test-Path "${LocalConfig}\Microsoft.RDInfra.WVDAgent.msi") -eq $false) {
 				LogWriter("Downloading Microsoft.RDInfra.WVDAgent.msi")
-				Invoke-WebRequest -Uri 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE3JZCm' -OutFile "${PSScriptRoot}\Microsoft.RDInfra.WVDAgent.msi"
+				Invoke-WebRequest -Uri 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE3JZCm' -OutFile "${LocalConfig}\Microsoft.RDInfra.WVDAgent.msi"
 			}
-			if ((Test-Path "${PSScriptRoot}\Microsoft.RDInfra.WVDAgentManager.msi") -eq $false) {
+			if ((Test-Path "${LocalConfig}\Microsoft.RDInfra.WVDAgentManager.msi") -eq $false) {
 				LogWriter("Downloading Microsoft.RDInfra.WVDAgentManager.msi")
-				Invoke-WebRequest -Uri 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE3K2e3' -OutFile "${PSScriptRoot}\Microsoft.RDInfra.WVDAgentManager.msi"
+				Invoke-WebRequest -Uri 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE3K2e3' -OutFile "${LocalConfig}\Microsoft.RDInfra.WVDAgentManager.msi"
 			}
 			LogWriter("Installing WVDAgent")
-			Start-Process -wait -FilePath "${PSScriptRoot}\Microsoft.RDInfra.WVDAgent.msi" -ArgumentList "/q RegistrationToken=${WvdRegistrationKey}"
+			Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.WVDAgent.msi" -ArgumentList "/q RegistrationToken=${WvdRegistrationKey}"
 			LogWriter("Installing WVDAgentManager")
-			Start-Process -wait -FilePath "${PSScriptRoot}\Microsoft.RDInfra.WVDAgentManager.msi" -ArgumentList '/q'
+			Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.WVDAgentManager.msi" -ArgumentList '/q'
 		}
 	}
 
@@ -393,8 +398,8 @@ elseif ($Mode -eq "DataPartition") {
 # SIG # Begin signature block
 # MIIZdAYJKoZIhvcNAQcCoIIZZTCCGWECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUBT0DfKYHxhdoOC/Se4yrJWhl
-# 7ZWgghSCMIIE/jCCA+agAwIBAgIQDUJK4L46iP9gQCHOFADw3TANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUU3vJcc8R/uxqMdZooBgz0fUA
+# Uk2gghSCMIIE/jCCA+agAwIBAgIQDUJK4L46iP9gQCHOFADw3TANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgVGltZXN0YW1waW5nIENBMB4XDTIxMDEwMTAwMDAwMFoXDTMxMDEw
@@ -508,23 +513,23 @@ elseif ($Mode -eq "DataPartition") {
 # ZXJ0LmNvbTExMC8GA1UEAxMoRGlnaUNlcnQgU0hBMiBBc3N1cmVkIElEIENvZGUg
 # U2lnbmluZyBDQQIQAs5KUttbmmyoHluSw+u3hTAJBgUrDgMCGgUAoHgwGAYKKwYB
 # BAGCNwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIBBDAc
-# BgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUUkSK
-# uWkiJQ3QutpIHiKt80C8QwAwDQYJKoZIhvcNAQEBBQAEggEAHMzF/EsG+p705H2j
-# yGvzmmzONnAjlULZPWdMU7xwYeXJu4V1rSHKy1k/3MtowPoYy/nQbuedA2g5Vvco
-# MmIbxjzMYCzQkVMkMpcbzdFRR87DZ4w9STLwSGlDmScOHf5IgjXAcH2NoWxAVFi1
-# KCiav7My2TkDDSSGnv/auMEbZsyYCHGVJYCL/A0WAUHVknvnKNfhXaHiKT4ZRzuY
-# PQ/K1BCYU7kOAUm8pxNc56QrfncGeFY1+Tbvg/Am1+4G6lCgpBiOKlQo0w9zRqvb
-# mRqGIg842m20J7UrpxGe08UjG5N/bdu918EYfldPiJqdGXx+AIMkW2jvf4/P75Ri
-# rjltBaGCAjAwggIsBgkqhkiG9w0BCQYxggIdMIICGQIBATCBhjByMQswCQYDVQQG
+# BgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUC2qO
+# ZKgPEcelYvzzToR4Iq3xJkowDQYJKoZIhvcNAQEBBQAEggEAwrId9V/HTdU8hMHu
+# SwD40okX436K3BA/oKHauNyBgl1qwOg4W0N9oD/Xxq83Dg6R3W6HqzeZtdQPN3LW
+# mTMuS3FHhKOFabEGLl7zOlUYJzbvR3BEgsVouz8E0XirKXGsIvMduZk/Gc9b8jDz
+# psWBvRaLGSkXJOtv1nfbBMPzBNCXftEobKR1/My5xhMXC7L7ei/0NlE1/PPYavvm
+# 0+W/yzGEi7SmbolGdcj9LQAaxWg05e4bq/UEId+Z5RSc4jsjOwdbgyD8IKQ8wI3e
+# E01e8MitOwDVRd+chNeEzWWZlqjJro+i1MIPz2QPr2LhmmAzylmFfu5vD84Tgr+b
+# 7mjcyaGCAjAwggIsBgkqhkiG9w0BCQYxggIdMIICGQIBATCBhjByMQswCQYDVQQG
 # EwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNl
 # cnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFzc3VyZWQgSUQgVGltZXN0
 # YW1waW5nIENBAhANQkrgvjqI/2BAIc4UAPDdMA0GCWCGSAFlAwQCAQUAoGkwGAYJ
-# KoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjEwNzE0MTcx
-# NjE0WjAvBgkqhkiG9w0BCQQxIgQg7WYLXd9JKMj3uwZAZ7rkiPWCSn3BCrMBkbU0
-# Lv93tmswDQYJKoZIhvcNAQEBBQAEggEAbYm212CPbXPdUjhHXba2ShtIdfAAFiIs
-# Z+0PENYzQRwisZ0yI7//K2cESCmGNxBlesJLHCPosoQxwiLIt+eNmaiJzIXtd45e
-# kzNb2Q8sACBxB3TW1f1N9mnuWCGEnnkFwHCeIIzMKKrL/hUvie+AZI20n0ZAKkhy
-# skN24D8eZc3yxckxM+QhXEX0pFyYI1qdf0lHUNI4Tg8dcfhvtI9eIImi91Ntqep+
-# ljM/BCL/vyMi7QoEq34piAn5Rpr5sjkrVq5DzJHKrmbzIe2ZhJyrmpNhhlO5+kux
-# bP2uUCK4mymbBCP0RVojkACU4JZqF6M40NseoiCIZYL1zahaNbQC3g==
+# KoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjEwNzE1MTEz
+# ODQ0WjAvBgkqhkiG9w0BCQQxIgQgye6YCjtlU8TGqOGEaPyDpTpU4UPs+Uf8mU4R
+# n4/wDKkwDQYJKoZIhvcNAQEBBQAEggEATeq2/1us5Jd1n+oBGoZ6UbFZwHLhl2K5
+# KTAyvk/K3aik92rmUVuRNL6fwv3wFRhYGBGwTWPJAyZZTrdc5gTLtX2VI2PSM4Sb
+# W+A6U/1WIPCeA/U0an3XiBKCla4jlrDcvJiR2IXSRwaesyGWOtySzxMX0hkqT6LM
+# ogMeJdyNsyuS9lNKJ9i5E4B3h9ny9k0/xkV25u8sjTEv39q7utvIUiETxiwyoqSe
+# CJ7Wrl+nUd5fTqF/stfiXCS2+d16DoU4jY1FHM8qJ1DhPq19x88Qk6pQmD+HSo4j
+# 9NFtxgjHlg7ml1KKyeJJWKBbFwRiddEa4783eEMnMKJiSuS0XgNx0g==
 # SIG # End signature block

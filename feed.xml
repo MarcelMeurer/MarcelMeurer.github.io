@@ -5,15 +5,15 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 14 Jul 2021 19:24:17 +0200</pubDate>
-    <lastBuildDate>Wed, 14 Jul 2021 19:24:17 +0200</lastBuildDate>
+    <pubDate>Thu, 15 Jul 2021 14:31:48 +0200</pubDate>
+    <lastBuildDate>Thu, 15 Jul 2021 14:31:48 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/14/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/15/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Add, edit and delete host pools&lt;/li&gt;
@@ -35,7 +35,7 @@
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/14/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/15/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -45,6 +45,10 @@
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6.100.0&lt;/td&gt;
+&lt;td&gt;Add: Support to deploy AAD-only session hosts&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.99.0&lt;/td&gt;
 &lt;td&gt;Add: Meta-data location for Canada and the UK&lt;/td&gt;
@@ -657,11 +661,43 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/14/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/15/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Wed, 14 Jul 2021 00:00:00 +0200</pubDate>
+        <pubDate>Thu, 15 Jul 2021 00:00:00 +0200</pubDate>
         <link>/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>WVDAdmin supports AAD only deployments for AVD / WVD - AAD: Azure AD</title>
+        <description>&lt;p&gt;One of the announcements of the Microsoft Inspire 2021 was the option to join session hosts #AAD only. I’m happy to have the implementation also ready in #WVDAdmin.&lt;/p&gt;
+&lt;p&gt;There are some prerequisites for AAD joined session hosts:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Host pool in a validation environment&lt;/li&gt;
+&lt;li&gt;RDP settings contains &lt;em&gt;targetisaadjoined:i:1&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;User must have RBAC with role &lt;strong&gt;Virtual Machine User Login&lt;/strong&gt; or &lt;strong&gt;Virtual Machine Administrator Login&lt;/strong&gt; to the VM or resource group&lt;/li&gt;
+&lt;li&gt;Client device must be AAD joined (or use the web interface)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Even FSLogix cannot be used.&lt;/p&gt;
+&lt;p&gt;Check the full description here: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/deploy-azure-ad-joined-vm&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/deploy-azure-ad-joined-vm&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;To rollout a session host AAD only tick “AAD only” in the rollout tab. OU, domain user and password are not needed.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/WVDAdmin/AADOnlyJoin.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;An AAD-only session host shows up with the host name in the session host list - the domain suffix is missing. You can also check Azure AD to verify the connection to the AAD domain.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/Hydra/AADOnlyJoin-Hosts01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;WVDAdmin: &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;What’s about #Hydra? Hydra auto-scales and manages even AAD only joined session host. Early next week, you can deploy AAD only hosts even with #Hydra&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/Hydra/Hydra-120.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;More about my project “Hydra”:&lt;/strong&gt; &lt;a href=&quot;https://github.com/marcelmeurer/wvd-hydra&quot;&gt;https://github.com/marcelmeurer/wvd-hydra&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 15 Jul 2021 00:00:00 +0200</pubDate>
+        <link>/Azure-AD-only-for-AVD-session-hosts/</link>
+        <guid isPermaLink="true">/Azure-AD-only-for-AVD-session-hosts/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -941,24 +977,6 @@ HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\Sysprep	SysprepCorrupt&lt;
         <pubDate>Mon, 11 Jan 2021 00:00:00 +0100</pubDate>
         <link>/WVDAdmin-for-WVD-management-and-roll-out-videos-on-Youtube/</link>
         <guid isPermaLink="true">/WVDAdmin-for-WVD-management-and-roll-out-videos-on-Youtube/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Custom Role for Power On Connect preview</title>
-        <description>&lt;p&gt;Power-On-Connect Role
-&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWVD-Role-PowerOnConnect-preview.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Schedule-Role
-&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWVD-Schedules-preview.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Mon, 11 Jan 2021 00:00:00 +0100</pubDate>
-        <link>/Custom-Role-for-Power-On-Connect-Schedules-Preview/</link>
-        <guid isPermaLink="true">/Custom-Role-for-Power-On-Connect-Schedules-Preview/</guid>
         
         
         <category>Windows Virtual Desktop</category>
