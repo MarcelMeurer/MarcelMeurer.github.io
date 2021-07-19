@@ -1,5 +1,5 @@
 # This powershell script is part of WVD Admin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
-# Current Version of this script: 3.0
+# Current Version of this script: 3.2
 
 param(
 
@@ -15,6 +15,7 @@ param(
 	[string] $DomainJoinUserPassword='',
 	[string] $DomainJoinOU='',
 	[string] $AadOnly='0',
+	[string] $JoinMem='0',
 	[string] $DomainFqdn='',
 	[string] $WvdRegistrationKey='',
 	[string] $LogDir="$env:windir\system32\logfiles"
@@ -54,7 +55,7 @@ $LogFile=$LogDir+"\WVD.Customizing.log"
 LogWriter("Starting ITPC-WVD-Image-Processing in mode ${Mode}")
 
 
-# check for the existend of the helper scripts
+# check for the existend of the helper scripts and folders
 if ((Test-Path ($LocalConfig+"\ITPC-WVD-Image-Processing.ps1")) -eq $false) {
 	# Create local directory for script(s) and copy files (including the RD agent and boot loader - rename it to the specified name)
 	LogWriter("Copy files to local session host or downloading files from Microsoft")
@@ -77,10 +78,12 @@ if ((Test-Path ($LocalConfig+"\ITPC-WVD-Image-Processing.ps1")) -eq $false) {
 	} else {Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi" -Destination ($LocalConfig+"\")}
 }
 
-if ($mode -eq "Generalize") {
-	# updating local script (from maybe an older version from the last image process)
+# updating local script (from maybe an older version from the last image process)
+if ($LocalConfig -ne PSScriptRoot) {
 	Copy-Item "$($MyInvocation.InvocationName)" -Destination ($LocalConfig+"\ITPC-WVD-Image-Processing.ps1")
+}
 
+if ($mode -eq "Generalize") {
 	LogWriter("Removing existing Remote Desktop Agent Boot Loader")
 	$app=Get-WmiObject -Class Win32_Product | Where-Object {$_.Name -match "Remote Desktop Agent Boot Loader"}
 	if ($app -ne $null) {$app.uninstall()}
@@ -398,8 +401,8 @@ elseif ($Mode -eq "DataPartition") {
 # SIG # Begin signature block
 # MIIZdAYJKoZIhvcNAQcCoIIZZTCCGWECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUU3vJcc8R/uxqMdZooBgz0fUA
-# Uk2gghSCMIIE/jCCA+agAwIBAgIQDUJK4L46iP9gQCHOFADw3TANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUWPno6D7o5vXSoe2GB5b6Mhi3
+# gxOgghSCMIIE/jCCA+agAwIBAgIQDUJK4L46iP9gQCHOFADw3TANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgVGltZXN0YW1waW5nIENBMB4XDTIxMDEwMTAwMDAwMFoXDTMxMDEw
@@ -513,23 +516,23 @@ elseif ($Mode -eq "DataPartition") {
 # ZXJ0LmNvbTExMC8GA1UEAxMoRGlnaUNlcnQgU0hBMiBBc3N1cmVkIElEIENvZGUg
 # U2lnbmluZyBDQQIQAs5KUttbmmyoHluSw+u3hTAJBgUrDgMCGgUAoHgwGAYKKwYB
 # BAGCNwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIBBDAc
-# BgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUC2qO
-# ZKgPEcelYvzzToR4Iq3xJkowDQYJKoZIhvcNAQEBBQAEggEAwrId9V/HTdU8hMHu
-# SwD40okX436K3BA/oKHauNyBgl1qwOg4W0N9oD/Xxq83Dg6R3W6HqzeZtdQPN3LW
-# mTMuS3FHhKOFabEGLl7zOlUYJzbvR3BEgsVouz8E0XirKXGsIvMduZk/Gc9b8jDz
-# psWBvRaLGSkXJOtv1nfbBMPzBNCXftEobKR1/My5xhMXC7L7ei/0NlE1/PPYavvm
-# 0+W/yzGEi7SmbolGdcj9LQAaxWg05e4bq/UEId+Z5RSc4jsjOwdbgyD8IKQ8wI3e
-# E01e8MitOwDVRd+chNeEzWWZlqjJro+i1MIPz2QPr2LhmmAzylmFfu5vD84Tgr+b
-# 7mjcyaGCAjAwggIsBgkqhkiG9w0BCQYxggIdMIICGQIBATCBhjByMQswCQYDVQQG
+# BgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQUu1Dr
+# TefJFk3sfssvPtula/qcjgkwDQYJKoZIhvcNAQEBBQAEggEAzzxXrM/4xiRE3V4a
+# QVH5ue1rng4/+++49EtDaLy89pSZNHst8Ck9CnG0afZwwIX9sDCmcQ5yGmHSgsf6
+# U0ZPpwDdU9LPqivs/ewXYE55y4ZqJ5Dmnrp7ks5gCwnBWGw/r/tbqstqbIr5u5F9
+# pfdx91uTvC2eY2QGNU6Fce9faAxjPlHCNtdQ9aBgji/uf8/25e3HhtjwKqTqH+kK
+# 8C0q5UMs8kWwScNEq9SRUlwHi2ULnU8BbJTOPPPCcERv/etwpAAw8kgmwDdvDq+M
+# rn8tgRqMcq9XyzKCEKkHSxlsf6PrHKf1xswspfZfGhV3CjiqpAfznq+DCN9fLFI0
+# uordOKGCAjAwggIsBgkqhkiG9w0BCQYxggIdMIICGQIBATCBhjByMQswCQYDVQQG
 # EwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNl
 # cnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFzc3VyZWQgSUQgVGltZXN0
 # YW1waW5nIENBAhANQkrgvjqI/2BAIc4UAPDdMA0GCWCGSAFlAwQCAQUAoGkwGAYJ
-# KoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjEwNzE4MTM1
-# MjI0WjAvBgkqhkiG9w0BCQQxIgQgye6YCjtlU8TGqOGEaPyDpTpU4UPs+Uf8mU4R
-# n4/wDKkwDQYJKoZIhvcNAQEBBQAEggEAUNWyshBWtFI/54fppYtR4xi6Qux0BOid
-# 77n2Vt8tpdUntNGEdMAbjJKXGEBx+XY43YYkqhij76lF9gW26GVibT0zDo0APEdi
-# j5G3NG2S96n6FC+hkR68Edzm+3kci/tnn0qFNAY52P3P8nygqScQP3kUsnKsnDrC
-# Hy/4rzeKYoN5gq7bVTN1T5O+QL6Vxzt36JfNtWA2Sh9I0fEZW6Sg8ahkHyQpZ78J
-# ORjGESEGbIZtqyB9AXfqf4JjbYbXzlB/PrHbzGsHbfotIFUNaRlxJVbiBeVuambA
-# FPiv74aJRXjqTvMN67MulU720J8Zs/LmsS5wxAG23ys2nux5MLw5FA==
+# KoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjEwNzE5MTg0
+# NzUyWjAvBgkqhkiG9w0BCQQxIgQgHOYyMMvjCKWqoMU0UKzWfdtBPtV4onIJ7Wek
+# woUWD8AwDQYJKoZIhvcNAQEBBQAEggEATVNe81YkF0CnrXHw+17RklQ2Xa3U5Ule
+# DdtqhfnteIyg5tNnLc/59gGz0ZOfUcoQNXULcdH/ugSx1rpnfSqORQiZ9FoXKM2J
+# 6dyt27wgbSwVYXarmKpZvK1xjyQj61UhLQ8VkhkfObfvhgdnN6ebukCN5Rqg9w29
+# XJju3LOCjEVUQ/QcUOkvbPxhAJddAHSnPeSTWqxNoma2Qbyea6dvXP5D31Wj/S3B
+# 2tu+x+ylFyE3sNAI/JuDdGRz0V+Vu3B+dFjyJYCwcnRKJMnb0awfH2g4Sa2mSrrH
+# /vs03/smFlV7fecu7ruFf6rLq3Opa3K/kKvw5j2LQd4pusR0Zr2ZXw==
 # SIG # End signature block
