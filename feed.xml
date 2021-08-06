@@ -5,9 +5,70 @@
     <description>This is my personal website, which I maintain to support the cloud community. ITProCloud.de is the label I use for tests and demonstrations. ITProCloud.de is not a company in the business sense.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 05 Aug 2021 20:27:35 +0200</pubDate>
-    <lastBuildDate>Thu, 05 Aug 2021 20:27:35 +0200</lastBuildDate>
+    <pubDate>Fri, 06 Aug 2021 18:41:26 +0200</pubDate>
+    <lastBuildDate>Fri, 06 Aug 2021 18:41:26 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Hydra: Scripts and Script Collections for the operation and automation of Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
+        <description>&lt;h2 id=&quot;intro&quot;&gt;Intro&lt;/h2&gt;
+&lt;p&gt;Project Hydra for Azure Virtual Desktop
+Six months ago, I started a new project to provide a solution to manage Azure Virtual Desktop / Windows Virtual Desktop in an automated way. It was thought of as a complement to #WVDAdmin and focused on doing some tasks automatically. For example:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Autoscale
+– Multi-Session hosts
+– Power-on-connect support
+– Schedules
+– Autopilot: Automatically scales up/down/create/remove based on the usage of a host pool
+– Deploy hosts on-demand - including ephemeral VMs based on a custom image&lt;/li&gt;
+&lt;li&gt;VDI
+– Auto deallocate session hosts&lt;/li&gt;
+&lt;li&gt;Granular session timeouts&lt;/li&gt;
+&lt;li&gt;Auto Health&lt;/li&gt;
+&lt;li&gt;and a lot more&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The last days, I added another essential feature to the project Hydra: Scripts and script collections. Both are intended to automize Azure VMs, and Azure Virtual Desktop (AVD) from the management perspective.&lt;/p&gt;
+&lt;h2 id=&quot;scripts-and-script-collections&quot;&gt;Scripts and Script Collections&lt;/h2&gt;
+&lt;p&gt;Scripts and script collections. Both are intended to automize Azure VMs, and Azure Virtual Desktop (AVD) from the management perspective.&lt;/p&gt;
+&lt;h3 id=&quot;script&quot;&gt;Script&lt;/h3&gt;
+&lt;p&gt;A Powershell script for a session host. The script runs in the system context with system permissions, variables containing data about the host pool, session hosts, etc. Optionally, a Powershell credential object (PSC) can be used to connect to other services, like files shares (the service account can be configured on the host pool level).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Hydra/Script-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;script-collections&quot;&gt;Script Collections&lt;/h3&gt;
+&lt;p&gt;A script collection is a collection of scripts and tasks in any sequence. E.g.: Drain mode on -&amp;gt; Logoff users -&amp;gt; Start the VM -&amp;gt; Run a script -&amp;gt; Restart -&amp;gt; Drain mode off&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Hydra/ScriptCollection-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Additionally, parameters can be set for a script, and error handling is built-in. Script collections are very useful to orchestrate several tasks and scripts to session hosts.&lt;/p&gt;
+&lt;p&gt;Both can be assigned/triggered in different ways:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Directly in the session host list&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Hydra/ScriptCollectionAssign-SessionHosts-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Automatically after the rollout of a new session host
+&lt;img src=&quot;../assets/images/Hydra/ScriptCollectionAssign-Rollout-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;By a schedule (coming next)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;built-in-scripts-and-collections&quot;&gt;Built-in scripts and collections&lt;/h3&gt;
+&lt;p&gt;There are several built-in scripts and collections, and new scripts and collections are provided continuously. Built-in scripts can be updated with the “Update” button in the upper-right corner.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Hydra/ScriptCollectionSync-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Scripts and script collections can be triggered by &lt;em&gt;Host pool administrators&lt;/em&gt; and edited by &lt;em&gt;Full administrators&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;To add a custom script or script collection, copy the &lt;em&gt;“BuiltIn: 1st Template Script”&lt;/em&gt; or &lt;em&gt;“BuiltIn: 1st Template Script Collection”&lt;/em&gt;. Then start building the new one. Make sure to save the new script/collection with a click of the disk symbol. There is no warning right now if you close the browser or if you navigate to another site.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Hydra/ScriptCollectionSaveBar-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Install Project Hydra in your subscription: &lt;a href=&quot;https://github.com/marcelmeurer/wvd-hydra&quot;&gt;https://github.com/marcelmeurer/wvd-hydra&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 06 Aug 2021 00:00:00 +0200</pubDate>
+        <link>/Scripts-and-Script-Collections-available-in-Hydra-for-the-automation-of-Windows-Azure-Virtual-Desktop-AVD-WVD/</link>
+        <guid isPermaLink="true">/Scripts-and-Script-Collections-available-in-Hydra-for-the-automation-of-Windows-Azure-Virtual-Desktop-AVD-WVD/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -968,28 +1029,6 @@ HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\Sysprep	SysprepCorrupt&lt;
         <category>Azure Virtual Desktop</category>
         
         <category>Azure Monitor</category>
-        
-      </item>
-    
-      <item>
-        <title>WVDAdmin videos on YouTube</title>
-        <description>&lt;p&gt;WVDAdmin is my free community solution to manage and work with WVD/AVD / Windows Virtual Desktop. Mainly, building images and rolling out session hosts are key-value-adds. But you can also run parallel tasks on VMs and session hosts.&lt;/p&gt;
-&lt;p&gt;Learn how to use and some tips &amp;amp; tricks showing my &lt;a href=&quot;https://www.youtube.com/playlist?list=PLOhYYkRGNEImaVBZKBI-24MB-iytsCgsA&quot;&gt;YouTube channel&lt;/a&gt; about WVDAdmin - I’m continuously  adding more videos to the channel.&lt;/p&gt;
-&lt;h4 id=&quot;wvdadmin---configuring-wvdadmin&quot;&gt;01: WVDAdmin - Configuring WVDAdmin&lt;/h4&gt;
-&lt;iframe width=&quot;1280&quot; height=&quot;720&quot; src=&quot;https://www.youtube.com/embed/z8yWPoEDzZg?list=PLOhYYkRGNEImaVBZKBI-24MB-iytsCgsA&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
-&lt;h4 id=&quot;wvdadmin---building-a-template-image-for-session-hosts&quot;&gt;02: WVDAdmin - Building a template image for session hosts&lt;/h4&gt;
-&lt;iframe width=&quot;1280&quot; height=&quot;720&quot; src=&quot;https://www.youtube.com/embed/ehnsUvXYYjc?list=PLOhYYkRGNEImaVBZKBI-24MB-iytsCgsA&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
-&lt;h4 id=&quot;wvdadmin---rollout-multiple-session-hosts&quot;&gt;03: WVDAdmin - Rollout multiple session hosts&lt;/h4&gt;
-&lt;iframe width=&quot;1280&quot; height=&quot;720&quot; src=&quot;https://www.youtube.com/embed/od7FA7vQWcs?list=PLOhYYkRGNEImaVBZKBI-24MB-iytsCgsA&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture&quot; allowfullscreen&gt;&lt;/iframe&gt;
-</description>
-        <pubDate>Mon, 11 Jan 2021 00:00:00 +0100</pubDate>
-        <link>/WVDAdmin-for-WVD-management-and-roll-out-videos-on-Youtube/</link>
-        <guid isPermaLink="true">/WVDAdmin-for-WVD-management-and-roll-out-videos-on-Youtube/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
         
       </item>
     
