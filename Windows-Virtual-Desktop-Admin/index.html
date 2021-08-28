@@ -353,24 +353,62 @@
 <p>Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.</p>
 <p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 08/27/2021</strong></a></p>
 <p>The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:</p>
-<ul>
-<li>Add, edit and delete host pools</li>
-<li>Add, edit and delete application groups</li>
-<li>Add, edit and delete application and desktop (you can add a new app with the Windows file-open-dialog)</li>
-<li>Add a list of users to applications or a desktop (separated by ;)</li>
-<li>Send messages to a single user and users on a specific session host</li>
-<li>Logoff single users or all users of a specific session host</li>
-<li>Start and deallocate session hosts (the Azure VM behind)</li>
-<li>Delete session hosts and the VMs in Azure, including disks and nics</li>
-<li>Run commands and scripts on multiple session hosts (trigger Windows updates, enable RDP Shortpath, …)</li>
-<li>Create an image from a template VM without destroying the template VM (golden image approach)</li>
-<li>Rollout several new session hosts based on a template image - including domain join and WVD/AVD installation and registration (comparable to Citrix MCS)</li>
-<li>Rollout VM Scale Sets</li>
-<li>Start and deallocate Scale Set instances</li>
-<li>Re-image Scale Set instances</li>
-<li>Add or remove Scale Set instances</li>
-<li>and some more things</li>
-</ul>
+<details><summary>
+- Imaging
+  - Create images from golden masters (without destroying the master)
+  - Handle sysprep and modern app
+  - Clean-up
+  - Use of shared image gallery definitions
+- Rollout
+  - Rollout of multiple session hosts
+  - Store some base settings encrypted for reuse (domain join name, password, ...)
+  - Select VM type for each rollout (is not fixed to the host pool)
+  - Use of ephemeral disks
+  - Support of a second partition from the master VM (D:)
+  - Azure Monitor
+  - AAD only, join to MEM/intune
+- AVD Support
+  - Classic AVD
+  - ARM AVD (Spring Update)
+  - Migration of resources and session hosts</summary>
+- Working with AVD resources
+  - Add/create/delete
+    - Host Pools
+    - Application groups
+    - Workspaces
+    - Session hosts
+  - Working with user sessions
+    - Disconnect
+    - Logoff
+    - Send message
+    - Shadow
+- Session hosts
+  - Move between host pools
+  - Start/Stop/Restart
+  - Delete - with VM, disk, and nic
+  - Get error report from AVD agent
+  - Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, ...)
+  - Change drain-mode
+  - Change disk type, e.g.: on-start -> to Premium, after deallocation -> to HDD(for cost savings)
+  - Remove user assignment
+- Virtual machine
+  - List all VMs with power state in all subscriptions
+  - Start/Stop/Restart
+  - Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, ...)
+  - Shrink disk to 64 or 32 GByte (to create small images for ephemeral hosts)
+  - Change disk type, e.g.: on-start -> to premium, after deallocation -> to HDD (for cost savings)
+  - Create and restore snapshots with a click
+  - Add an existing domain-joined VM as a session host
+- Others
+  - Multi-Tenant switch
+  - Split-Tenant mode
+  - Search for unused disks and nics
+  - Rollout VM Scale Sets
+  - Start and deallocate Scale Set instances
+  - Re-image Scale Set instances
+  - Remove customer-managed key (CMK)
+- ...
+</details>
       <h1 id="installation">
         
         
@@ -959,9 +997,9 @@ In some cases, where virtual machines don’t have access to the internet to dow
 <li>Network access: Let Everyone permissions apply to anonymous users: Enabled</li>
 <li>Network access: Do not allow anonymous enumeration of SAM accounts and shares: Disabled</li>
 </ul>
+</details><br/>
 </li>
 </ul>
-</details><br/>
       <h1 id="configure-wvdadmin">
         
         
@@ -1038,9 +1076,9 @@ From version 1.2.5, WVDAdmin support VM Scale Sets. A Scale Set can have several
 <li>If no user logged on to the ancient Scale Set, remove all instances from the Scale Set (this deletes the session hosts in WVD/AVD as well)</li>
 <li>Remove the Scale Set</li>
 </ul>
+</details><br/>
 </li>
 </ul>
-</details><br/>
       <h2 id="ephemeral--disks">
         
         
@@ -1221,24 +1259,62 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <p>Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.</p>
 <p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 08/27/2021</strong></a></p>
 <p>The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:</p>
-<ul>
-<li>Add, edit and delete host pools</li>
-<li>Add, edit and delete application groups</li>
-<li>Add, edit and delete application and desktop (you can add a new app with the Windows file-open-dialog)</li>
-<li>Add a list of users to applications or a desktop (separated by ;)</li>
-<li>Send messages to a single user and users on a specific session host</li>
-<li>Logoff single users or all users of a specific session host</li>
-<li>Start and deallocate session hosts (the Azure VM behind)</li>
-<li>Delete session hosts and the VMs in Azure, including disks and nics</li>
-<li>Run commands and scripts on multiple session hosts (trigger Windows updates, enable RDP Shortpath, …)</li>
-<li>Create an image from a template VM without destroying the template VM (golden image approach)</li>
-<li>Rollout several new session hosts based on a template image - including domain join and WVD/AVD installation and registration (comparable to Citrix MCS)</li>
-<li>Rollout VM Scale Sets</li>
-<li>Start and deallocate Scale Set instances</li>
-<li>Re-image Scale Set instances</li>
-<li>Add or remove Scale Set instances</li>
-<li>and some more things</li>
-</ul>
+<details><summary>
+- Imaging
+  - Create images from golden masters (without destroying the master)
+  - Handle sysprep and modern app
+  - Clean-up
+  - Use of shared image gallery definitions
+- Rollout
+  - Rollout of multiple session hosts
+  - Store some base settings encrypted for reuse (domain join name, password, ...)
+  - Select VM type for each rollout (is not fixed to the host pool)
+  - Use of ephemeral disks
+  - Support of a second partition from the master VM (D:)
+  - Azure Monitor
+  - AAD only, join to MEM/intune
+- AVD Support
+  - Classic AVD
+  - ARM AVD (Spring Update)
+  - Migration of resources and session hosts</summary>
+- Working with AVD resources
+  - Add/create/delete
+    - Host Pools
+    - Application groups
+    - Workspaces
+    - Session hosts
+  - Working with user sessions
+    - Disconnect
+    - Logoff
+    - Send message
+    - Shadow
+- Session hosts
+  - Move between host pools
+  - Start/Stop/Restart
+  - Delete - with VM, disk, and nic
+  - Get error report from AVD agent
+  - Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, ...)
+  - Change drain-mode
+  - Change disk type, e.g.: on-start -> to Premium, after deallocation -> to HDD(for cost savings)
+  - Remove user assignment
+- Virtual machine
+  - List all VMs with power state in all subscriptions
+  - Start/Stop/Restart
+  - Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, ...)
+  - Shrink disk to 64 or 32 GByte (to create small images for ephemeral hosts)
+  - Change disk type, e.g.: on-start -> to premium, after deallocation -> to HDD (for cost savings)
+  - Create and restore snapshots with a click
+  - Add an existing domain-joined VM as a session host
+- Others
+  - Multi-Tenant switch
+  - Split-Tenant mode
+  - Search for unused disks and nics
+  - Rollout VM Scale Sets
+  - Start and deallocate Scale Set instances
+  - Re-image Scale Set instances
+  - Remove customer-managed key (CMK)
+- ...
+</details>
 <h1 id="installation">Installation</h1>
 <h2 id="release-history">Release History</h2>
 <p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 08/27/2021</strong></a></p>
@@ -1757,9 +1833,9 @@ In some cases, where virtual machines don’t have access to the internet to dow
 <li>Network access: Let Everyone permissions apply to anonymous users: Enabled</li>
 <li>Network access: Do not allow anonymous enumeration of SAM accounts and shares: Disabled</li>
 </ul>
+</details><br/>
 </li>
 </ul>
-</details><br/>
 <h1 id="configure-wvdadmin">Configure WVDAdmin</h1>
 <p>Please start WVDAdmin. Before you load WVD/AVD and Azure data, copy the Azure tenant id, service principal id, and service principal key into the welcome tab. Press save and load the data by clicking “Reload all”.</p>
 <p>You are now able to administrate WVD, create images from template VMs and rollout new session hosts.</p>
@@ -1808,9 +1884,9 @@ From version 1.2.5, WVDAdmin support VM Scale Sets. A Scale Set can have several
 <li>If no user logged on to the ancient Scale Set, remove all instances from the Scale Set (this deletes the session hosts in WVD/AVD as well)</li>
 <li>Remove the Scale Set</li>
 </ul>
+</details><br/>
 </li>
 </ul>
-</details><br/>
 <h2 id="ephemeral--disks">Ephemeral  disks</h2>
 <p>Ephemeral disks are awesome. They give you a high performance free of charge. Especially in a WVD/AVD multiuser environment where no data a stored permanently on the session hosts, this kind of disk can give you some value add.</p>
 <details><summary>Read more</summary><br/>
