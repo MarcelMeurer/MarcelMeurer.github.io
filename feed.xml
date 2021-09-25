@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 25 Sep 2021 20:28:51 +0200</pubDate>
-    <lastBuildDate>Sat, 25 Sep 2021 20:28:51 +0200</lastBuildDate>
+    <pubDate>Sat, 25 Sep 2021 20:34:31 +0200</pubDate>
+    <lastBuildDate>Sat, 25 Sep 2021 20:34:31 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -29,7 +29,7 @@ Having the host target “A single host in the pool” Hydra version 1.0.1.16 is
 &lt;p&gt;Make a first test for shrinking the profile disk from the session host view. Select one session host -&amp;gt; Run script or collection -&amp;gt; BuiltIn: Shrink FSLogix Disk
 &lt;img src=&quot;../assets/images/Hydra/FSLogixShrink-Disk-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;h2 id=&quot;create-a-script-schedule-to-shrink-the-disks-automatically&quot;&gt;Create a script schedule to shrink the disks automatically.&lt;/h2&gt;
-&lt;p&gt;If everything works fine, a script schedule can be configured to run the optimization maybe every week. It’s important to run the script only on a single host.
+&lt;p&gt;If everything works fine, a script schedule can be configured to run the optimization maybe every week. &lt;strong&gt;It’s important to run the script only on a single host.&lt;/strong&gt;
 &lt;img src=&quot;../assets/images/Hydra/FSLogixShrink-Disk-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Get Hydra: &lt;a href=&quot;https://azuremarketplace.microsoft.com/marketplace/apps/itprocloudgmbh1628775137215.hydra-deploy-d1&quot;&gt;Azure Marketplace&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 </description>
