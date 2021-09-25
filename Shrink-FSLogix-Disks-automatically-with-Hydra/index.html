@@ -6,20 +6,25 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>Events | ITProCloud Blog</title>
+<title>Shrink FSLogix profiles automatically with Hydra | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Events | ITProCloud Blog</title>
+<title>Shrink FSLogix profiles automatically with Hydra | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Events" />
+<meta property="og:title" content="Shrink FSLogix profiles automatically with Hydra" />
+<meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Welcome to my blog. I’m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH." />
-<meta property="og:description" content="Welcome to my blog. I’m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH." />
+<meta name="description" content="Intro" />
+<meta property="og:description" content="Intro" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Events" />
+<meta property="og:image" content="/assets/images/Hydra/FSLogixShrink-Disk-00.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-09-25T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="/assets/images/Hydra/FSLogixShrink-Disk-00.png" />
+<meta property="twitter:title" content="Shrink FSLogix profiles automatically with Hydra" />
 <script type="application/ld+json">
-{"@type":"WebPage","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"}},"url":"/category/events/","headline":"Events","description":"Welcome to my blog. I’m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"/assets/images/Hydra/FSLogixShrink-Disk-00.png","datePublished":"2021-09-25T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"/Shrink-FSLogix-Disks-automatically-with-Hydra/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"/Shrink-FSLogix-Disks-automatically-with-Hydra/","author":{"@type":"Person","name":"mm"},"headline":"Shrink FSLogix profiles automatically with Hydra","dateModified":"2021-09-25T00:00:00+02:00","description":"Intro","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -39,7 +44,7 @@
 
 
 
-<body class="layout-archive">
+<body class="layout-page">
 	<!-- defer loading of font and font awesome -->
 	<noscript id="deferred-styles">
 		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
@@ -325,111 +330,96 @@
 <!-- Content
 ================================================== -->
 <div class="main-content">
-    <!-- Begin List Posts
-================================================== -->
-<section class="recent-posts">
-<div class="section-title">
-    <h2>Archive of posts with <span>category 'Events'</span></h2>
-</div>
-<div class="row listrecent">
-
-
-
-    <!-- begin post -->
-
-
-<div class="col-lg-4 col-md-6 mb-30px card-group">
-    <div class="card h-100">
-        <div class="maxthumb">
-            <a href="/Speaking-update/">
-                
-
-                    
-                        <img class="img-fluid" src="/assets/images/journey.jpg" alt="On the road - My next speaking engagements"> 
-                    
-
-                
-            </a>
-        </div>
-        <div class="card-body">
-            <h2 class="card-title">
-                <a class="text-dark" href="/Speaking-update/">On the road - My next speaking engagements</a>
-                
-            </h2>
-            <h4 class="card-text">I’m happy to be a part of a great community. On my journey, I have the possibility to speak at some conferences, meetups and other events. And I loved it....</h4>
-        </div>
-        <div class="card-footer bg-white">
-            <div class="wrapfooter">
-                
-                <span class="meta-footer-thumb">
-                
-                <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
-                
-                </span>
-                <span class="author-meta">
-                <span class="post-name"><a target="_blank" href="https://blog.itprocloud.de">Marcel</a></span><br/>
-                
-                <span class="post-date">07 Sep 2019</span>
-                </span>
-                <span class="post-read-more"><a href="/Speaking-update/" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
-                <div class="clearfix"></div>
-            </div>
-        </div>
+    <section>
+    <div class="section-title">
+        <h2><span>Shrink FSLogix profiles automatically with Hydra</span></h2>
     </div>
-</div>
-<!-- end post -->
 
+    <div class="article-post">
+	
+		<!-- change content to anchor styled output -->
+		<h2 id="intro">
+        
+        
+          Intro <a href="#intro"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>FSLogix profile disks increase their size over time - even if a user deletes data and the data amount goes down. Like <a href="https://twitter.com/jimmoyle">Jim Moyle</a> wrote: “Dynamically Expanding disks do not natively shrink when the volume of data within them reduces, they stay at the ‘High water mark’ of historical data volume within them.”</p>
+<p>While you are paying for usage or allocated storage, having the profile disk small is a good way to go.</p>
+<p>Jim provides a <a href="https://github.com/FSLogix/Invoke-FslShrinkDisk">script</a> to shrink the FSLogix profiles. Excellent work from Jim.</p>
+<p>I added a script in Hydra to download and run the script from Jim to shrink FSLogix disk. This script can be used in a script schedule on a host pool to shrink the disk maybe one time a week.</p>
+<p>Update Hydra to the newest version
+Having the host target “A single host in the pool” Hydra version 1.0.1.16 is needed. You can update Hydra in the Azure portal -&gt; Your Hydra web app -&gt; Deployment Center -&gt; Sync
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-01.png" alt="" /></p>
+      <h2 id="download-the-newest-build-in-scripts">
+        
+        
+          Download the newest build-in scripts <a href="#download-the-newest-build-in-scripts"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>Open the Hydra portal -&gt; Scripts -&gt; Click the button in the upper right corner:
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-02.png" alt="" /></p>
+      <h2 id="service-account">
+        
+        
+          Service Account <a href="#service-account"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>Like the feature deleting FSLogix profile, the shrink method needs a service account configured on the host pool level. The account must have read/write permission to the FSLogix file share:
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-03.png" alt="" /></p>
+      <h2 id="test-shrinking">
+        
+        
+          Test shrinking <a href="#test-shrinking"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>Make a first test for shrinking the profile disk from the session host view. Select one session host -&gt; Run script or collection -&gt; BuiltIn: Shrink FSLogix Disk
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-04.png" alt="" /></p>
+      <h2 id="create-a-script-schedule-to-shrink-the-disks-automatically">
+        
+        
+          Create a script schedule to shrink the disks automatically. <a href="#create-a-script-schedule-to-shrink-the-disks-automatically"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>If everything works fine, a script schedule can be configured to run the optimization maybe every week. It’s important to run the script only on a single host.
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-05.png" alt="" /></p>
+<p><strong>Get Hydra: <a href="https://azuremarketplace.microsoft.com/marketplace/apps/itprocloudgmbh1628775137215.hydra-deploy-d1">Azure Marketplace</a></strong></p>
 
-
-    <!-- begin post -->
-
-
-<div class="col-lg-4 col-md-6 mb-30px card-group">
-    <div class="card h-100">
-        <div class="maxthumb">
-            <a href="/CDC-Germany-RDS-&-Windows-Virtual-Desktop-Desktops-in-2019/">
-                
-
-                    
-                        <img class="img-fluid" src="/wp-content/uploads/2019/05/cdc-1024x558.png" alt="CDC Germany: RDS and Windows Virtual Desktop – Desktops in the year 2019 and beyond"> 
-                    
-
-                
-            </a>
-        </div>
-        <div class="card-body">
-            <h2 class="card-title">
-                <a class="text-dark" href="/CDC-Germany-RDS-&-Windows-Virtual-Desktop-Desktops-in-2019/">CDC Germany: RDS and Windows Virtual Desktop – Desktops in the year 2019 and beyond</a>
-                
-            </h2>
-            <h4 class="card-text">From 21. to 22. April 2019 the annual Cloud and Datacenter Conference took place in Hanau/Frankfurt in Germany. It’s one of my favorite community events in Germany. This year I...</h4>
-        </div>
-        <div class="card-footer bg-white">
-            <div class="wrapfooter">
-                
-                <span class="meta-footer-thumb">
-                
-                <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
-                
-                </span>
-                <span class="author-meta">
-                <span class="post-name"><a target="_blank" href="https://blog.itprocloud.de">Marcel</a></span><br/>
-                
-                <span class="post-date">23 May 2019</span>
-                </span>
-                <span class="post-read-more"><a href="/CDC-Germany-RDS-&-Windows-Virtual-Desktop-Desktops-in-2019/" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
-                <div class="clearfix"></div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end post -->
-
-
-
-</div>
+		<!--<h2 id="intro">Intro</h2>
+<p>FSLogix profile disks increase their size over time - even if a user deletes data and the data amount goes down. Like <a href="https://twitter.com/jimmoyle">Jim Moyle</a> wrote: “Dynamically Expanding disks do not natively shrink when the volume of data within them reduces, they stay at the ‘High water mark’ of historical data volume within them.”</p>
+<p>While you are paying for usage or allocated storage, having the profile disk small is a good way to go.</p>
+<p>Jim provides a <a href="https://github.com/FSLogix/Invoke-FslShrinkDisk">script</a> to shrink the FSLogix profiles. Excellent work from Jim.</p>
+<p>I added a script in Hydra to download and run the script from Jim to shrink FSLogix disk. This script can be used in a script schedule on a host pool to shrink the disk maybe one time a week.</p>
+<p>Update Hydra to the newest version
+Having the host target “A single host in the pool” Hydra version 1.0.1.16 is needed. You can update Hydra in the Azure portal -&gt; Your Hydra web app -&gt; Deployment Center -&gt; Sync
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-01.png" alt="" /></p>
+<h2 id="download-the-newest-build-in-scripts">Download the newest build-in scripts</h2>
+<p>Open the Hydra portal -&gt; Scripts -&gt; Click the button in the upper right corner:
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-02.png" alt="" /></p>
+<h2 id="service-account">Service Account</h2>
+<p>Like the feature deleting FSLogix profile, the shrink method needs a service account configured on the host pool level. The account must have read/write permission to the FSLogix file share:
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-03.png" alt="" /></p>
+<h2 id="test-shrinking">Test shrinking</h2>
+<p>Make a first test for shrinking the profile disk from the session host view. Select one session host -&gt; Run script or collection -&gt; BuiltIn: Shrink FSLogix Disk
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-04.png" alt="" /></p>
+<h2 id="create-a-script-schedule-to-shrink-the-disks-automatically">Create a script schedule to shrink the disks automatically.</h2>
+<p>If everything works fine, a script schedule can be configured to run the optimization maybe every week. It’s important to run the script only on a single host.
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-05.png" alt="" /></p>
+<p><strong>Get Hydra: <a href="https://azuremarketplace.microsoft.com/marketplace/apps/itprocloudgmbh1628775137215.hydra-deploy-d1">Azure Marketplace</a></strong></p>
+-->
+	
+    
 </section>
-
 </div>
 
 
