@@ -5,50 +5,15 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 25 Sep 2021 20:34:31 +0200</pubDate>
-    <lastBuildDate>Sat, 25 Sep 2021 20:34:31 +0200</lastBuildDate>
+    <pubDate>Thu, 30 Sep 2021 09:07:55 +0200</pubDate>
+    <lastBuildDate>Thu, 30 Sep 2021 09:07:55 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
-    
-      <item>
-        <title>Shrink FSLogix profiles automatically with Hydra</title>
-        <description>&lt;h2 id=&quot;intro&quot;&gt;Intro&lt;/h2&gt;
-&lt;p&gt;FSLogix profile disks increase their size over time - even if a user deletes data and the data amount goes down. Like &lt;a href=&quot;https://twitter.com/jimmoyle&quot;&gt;Jim Moyle&lt;/a&gt; wrote: “Dynamically Expanding disks do not natively shrink when the volume of data within them reduces, they stay at the ‘High water mark’ of historical data volume within them.”&lt;/p&gt;
-&lt;p&gt;While you are paying for usage or allocated storage, having the profile disk small is a good way to go.&lt;/p&gt;
-&lt;p&gt;Jim provides a &lt;a href=&quot;https://github.com/FSLogix/Invoke-FslShrinkDisk&quot;&gt;script&lt;/a&gt; to shrink the FSLogix profiles. Excellent work from Jim.&lt;/p&gt;
-&lt;p&gt;I added a script in Hydra to download and run the script from Jim to shrink FSLogix disk. This script can be used in a script schedule on a host pool to shrink the disk maybe one time a week.&lt;/p&gt;
-&lt;p&gt;Update Hydra to the newest version
-Having the host target “A single host in the pool” Hydra version 1.0.1.16 is needed. You can update Hydra in the Azure portal -&amp;gt; Your Hydra web app -&amp;gt; Deployment Center -&amp;gt; Sync
-&lt;img src=&quot;../assets/images/Hydra/FSLogixShrink-Disk-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h2 id=&quot;download-the-newest-build-in-scripts&quot;&gt;Download the newest build-in scripts&lt;/h2&gt;
-&lt;p&gt;Open the Hydra portal -&amp;gt; Scripts -&amp;gt; Click the button in the upper right corner:
-&lt;img src=&quot;../assets/images/Hydra/FSLogixShrink-Disk-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h2 id=&quot;service-account&quot;&gt;Service Account&lt;/h2&gt;
-&lt;p&gt;Like the feature deleting FSLogix profile, the shrink method needs a service account configured on the host pool level. The account must have read/write permission to the FSLogix file share:
-&lt;img src=&quot;../assets/images/Hydra/FSLogixShrink-Disk-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h2 id=&quot;test-shrinking&quot;&gt;Test shrinking&lt;/h2&gt;
-&lt;p&gt;Make a first test for shrinking the profile disk from the session host view. Select one session host -&amp;gt; Run script or collection -&amp;gt; BuiltIn: Shrink FSLogix Disk
-&lt;img src=&quot;../assets/images/Hydra/FSLogixShrink-Disk-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h2 id=&quot;create-a-script-schedule-to-shrink-the-disks-automatically&quot;&gt;Create a script schedule to shrink the disks automatically.&lt;/h2&gt;
-&lt;p&gt;If everything works fine, a script schedule can be configured to run the optimization maybe every week. &lt;strong&gt;It’s important to run the script only on a single host.&lt;/strong&gt;
-&lt;img src=&quot;../assets/images/Hydra/FSLogixShrink-Disk-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Get Hydra: &lt;a href=&quot;https://azuremarketplace.microsoft.com/marketplace/apps/itprocloudgmbh1628775137215.hydra-deploy-d1&quot;&gt;Azure Marketplace&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sat, 25 Sep 2021 00:00:00 +0200</pubDate>
-        <link>/Shrink-FSLogix-Disks-automatically-with-Hydra/</link>
-        <guid isPermaLink="true">/Shrink-FSLogix-Disks-automatically-with-Hydra/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/06/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/30/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Imaging
@@ -135,7 +100,7 @@ Having the host target “A single host in the pool” Hydra version 1.0.1.16 is
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/06/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/30/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -145,6 +110,10 @@ Having the host target “A single host in the pool” Hydra version 1.0.1.16 is
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7.17.0&lt;/td&gt;
+&lt;td&gt;Change: The API permission for Azure AD Graph is no longer needed for the service principal if you are using WVDAdmin for AVD (spring edition)&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.7.16.0&lt;/td&gt;
 &lt;td&gt;Add: Session host rollout will set an additional tag to VM, Nic and Disk: WVD.Host=&lt;Name of session host&gt;&lt;/td&gt;
@@ -590,10 +559,10 @@ Having the host target “A single host in the pool” Hydra version 1.0.1.16 is
 &lt;p&gt;Copy the generated key directly - it will never be displayed again. Note the key for later.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-003.png&quot; alt=&quot;documentation-003&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;To assign users to app groups, the service principal needs two API permissions to get the users and groups from Azure AD:&lt;/p&gt;
-&lt;p&gt;API Permissions: Add the permission “Azure Active Directory Graph” -&amp;gt; Application Permission -&amp;gt; Directory.Read.All&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;Add the permission “Microsoft Graph” -&amp;gt; Application Permission -&amp;gt; Directory.Read.All&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;For version 1.7.17 and AVD (spring version) you can skip this permission (is no longer available in Azure for new installations):&lt;/strong&gt; API Permissions: Add the permission “Azure Active Directory Graph” -&amp;gt; Application Permission -&amp;gt; Directory.Read.All&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;To consent, the permission and administrator of Azure AD have to grant this:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;Go to “Overview”. Note the “Application (client) ID” and the “Directory (tenant) ID” as well.&lt;/p&gt;
@@ -793,11 +762,46 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/06/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/30/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Mon, 06 Sep 2021 00:00:00 +0200</pubDate>
+        <pubDate>Thu, 30 Sep 2021 00:00:00 +0200</pubDate>
         <link>/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Shrink FSLogix profiles automatically with Hydra</title>
+        <description>&lt;h2 id=&quot;intro&quot;&gt;Intro&lt;/h2&gt;
+&lt;p&gt;FSLogix profile disks increase their size over time - even if a user deletes data and the data amount goes down. Like &lt;a href=&quot;https://twitter.com/jimmoyle&quot;&gt;Jim Moyle&lt;/a&gt; wrote: “Dynamically Expanding disks do not natively shrink when the volume of data within them reduces, they stay at the ‘High water mark’ of historical data volume within them.”&lt;/p&gt;
+&lt;p&gt;While you are paying for usage or allocated storage, having the profile disk small is a good way to go.&lt;/p&gt;
+&lt;p&gt;Jim provides a &lt;a href=&quot;https://github.com/FSLogix/Invoke-FslShrinkDisk&quot;&gt;script&lt;/a&gt; to shrink the FSLogix profiles. Excellent work from Jim.&lt;/p&gt;
+&lt;p&gt;I added a script in Hydra to download and run the script from Jim to shrink FSLogix disk. This script can be used in a script schedule on a host pool to shrink the disk maybe one time a week.&lt;/p&gt;
+&lt;p&gt;Update Hydra to the newest version
+Having the host target “A single host in the pool” Hydra version 1.0.1.16 is needed. You can update Hydra in the Azure portal -&amp;gt; Your Hydra web app -&amp;gt; Deployment Center -&amp;gt; Sync
+&lt;img src=&quot;../assets/images/Hydra/FSLogixShrink-Disk-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;download-the-newest-build-in-scripts&quot;&gt;Download the newest build-in scripts&lt;/h2&gt;
+&lt;p&gt;Open the Hydra portal -&amp;gt; Scripts -&amp;gt; Click the button in the upper right corner:
+&lt;img src=&quot;../assets/images/Hydra/FSLogixShrink-Disk-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;service-account&quot;&gt;Service Account&lt;/h2&gt;
+&lt;p&gt;Like the feature deleting FSLogix profile, the shrink method needs a service account configured on the host pool level. The account must have read/write permission to the FSLogix file share:
+&lt;img src=&quot;../assets/images/Hydra/FSLogixShrink-Disk-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;test-shrinking&quot;&gt;Test shrinking&lt;/h2&gt;
+&lt;p&gt;Make a first test for shrinking the profile disk from the session host view. Select one session host -&amp;gt; Run script or collection -&amp;gt; BuiltIn: Shrink FSLogix Disk
+&lt;img src=&quot;../assets/images/Hydra/FSLogixShrink-Disk-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;create-a-script-schedule-to-shrink-the-disks-automatically&quot;&gt;Create a script schedule to shrink the disks automatically.&lt;/h2&gt;
+&lt;p&gt;If everything works fine, a script schedule can be configured to run the optimization maybe every week. &lt;strong&gt;It’s important to run the script only on a single host.&lt;/strong&gt;
+&lt;img src=&quot;../assets/images/Hydra/FSLogixShrink-Disk-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Get Hydra: &lt;a href=&quot;https://azuremarketplace.microsoft.com/marketplace/apps/itprocloudgmbh1628775137215.hydra-deploy-d1&quot;&gt;Azure Marketplace&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 25 Sep 2021 00:00:00 +0200</pubDate>
+        <link>/Shrink-FSLogix-Disks-automatically-with-Hydra/</link>
+        <guid isPermaLink="true">/Shrink-FSLogix-Disks-automatically-with-Hydra/</guid>
         
         
         <category>Windows Virtual Desktop</category>
