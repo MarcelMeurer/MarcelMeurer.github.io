@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>/</link>
     <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Sep 2021 09:07:55 +0200</pubDate>
-    <lastBuildDate>Thu, 30 Sep 2021 09:07:55 +0200</lastBuildDate>
+    <pubDate>Thu, 30 Sep 2021 12:49:08 +0200</pubDate>
+    <lastBuildDate>Thu, 30 Sep 2021 12:49:08 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -561,7 +561,7 @@
 &lt;p&gt;To assign users to app groups, the service principal needs two API permissions to get the users and groups from Azure AD:&lt;/p&gt;
 &lt;p&gt;Add the permission “Microsoft Graph” -&amp;gt; Application Permission -&amp;gt; Directory.Read.All&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;For version 1.7.17 and AVD (spring version) you can skip this permission (is no longer available in Azure for new installations):&lt;/strong&gt; API Permissions: Add the permission “Azure Active Directory Graph” -&amp;gt; Application Permission -&amp;gt; Directory.Read.All&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;From version 1.7.17 and AVD (spring version) you can skip this permission (is no longer available in Azure for new installations):&lt;/strong&gt; API Permissions: Add the permission “Azure Active Directory Graph” -&amp;gt; Application Permission -&amp;gt; Directory.Read.All&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;To consent, the permission and administrator of Azure AD have to grant this:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
