@@ -3,10 +3,10 @@
   <channel>
     <title>ITProCloud Blog</title>
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
-    <link>/</link>
-    <atom:link href="/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Sep 2021 12:49:08 +0200</pubDate>
-    <lastBuildDate>Thu, 30 Sep 2021 12:49:08 +0200</lastBuildDate>
+    <link>https://blog.itprocloud.de/</link>
+    <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Thu, 07 Oct 2021 22:54:06 +0200</pubDate>
+    <lastBuildDate>Thu, 07 Oct 2021 22:54:06 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -765,8 +765,8 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/30/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 30 Sep 2021 00:00:00 +0200</pubDate>
-        <link>/Windows-Virtual-Desktop-Admin/</link>
-        <guid isPermaLink="true">/Windows-Virtual-Desktop-Admin/</guid>
+        <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -800,8 +800,8 @@ Having the host target “A single host in the pool” Hydra version 1.0.1.16 is
 &lt;p&gt;&lt;strong&gt;Get Hydra: &lt;a href=&quot;https://azuremarketplace.microsoft.com/marketplace/apps/itprocloudgmbh1628775137215.hydra-deploy-d1&quot;&gt;Azure Marketplace&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 </description>
         <pubDate>Sat, 25 Sep 2021 00:00:00 +0200</pubDate>
-        <link>/Shrink-FSLogix-Disks-automatically-with-Hydra/</link>
-        <guid isPermaLink="true">/Shrink-FSLogix-Disks-automatically-with-Hydra/</guid>
+        <link>https://blog.itprocloud.de/Shrink-FSLogix-Disks-automatically-with-Hydra/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Shrink-FSLogix-Disks-automatically-with-Hydra/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -821,8 +821,8 @@ Hydra is the solution to manage Azure Virtual Desktop for one or more tenants. H
 &lt;p&gt;&lt;a href=&quot;https://www.itprocloud.de/hydra/&quot;&gt;More about Hydra&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 02 Sep 2021 00:00:00 +0200</pubDate>
-        <link>/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/</link>
-        <guid isPermaLink="true">/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/</guid>
+        <link>https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -900,8 +900,8 @@ Six months ago, I started a new project to provide a solution to manage Azure Vi
 &lt;p&gt;&lt;strong&gt;Install Project Hydra in your subscription: &lt;a href=&quot;https://github.com/marcelmeurer/wvd-hydra&quot;&gt;https://github.com/marcelmeurer/wvd-hydra&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 </description>
         <pubDate>Tue, 10 Aug 2021 00:00:00 +0200</pubDate>
-        <link>/Scripts-and-Script-Collections-available-in-Hydra-for-the-automation-of-Windows-Azure-Virtual-Desktop-AVD-WVD/</link>
-        <guid isPermaLink="true">/Scripts-and-Script-Collections-available-in-Hydra-for-the-automation-of-Windows-Azure-Virtual-Desktop-AVD-WVD/</guid>
+        <link>https://blog.itprocloud.de/Scripts-and-Script-Collections-available-in-Hydra-for-the-automation-of-Windows-Azure-Virtual-Desktop-AVD-WVD/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Scripts-and-Script-Collections-available-in-Hydra-for-the-automation-of-Windows-Azure-Virtual-Desktop-AVD-WVD/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -932,8 +932,8 @@ Six months ago, I started a new project to provide a solution to manage Azure Vi
 &lt;p&gt;&lt;strong&gt;More about my project “Hydra”:&lt;/strong&gt; &lt;a href=&quot;https://github.com/marcelmeurer/wvd-hydra&quot;&gt;https://github.com/marcelmeurer/wvd-hydra&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 15 Jul 2021 00:00:00 +0200</pubDate>
-        <link>/Azure-AD-only-for-AVD-session-hosts/</link>
-        <guid isPermaLink="true">/Azure-AD-only-for-AVD-session-hosts/</guid>
+        <link>https://blog.itprocloud.de/Azure-AD-only-for-AVD-session-hosts/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-AD-only-for-AVD-session-hosts/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -964,8 +964,8 @@ Six months ago, I started a new project to provide a solution to manage Azure Vi
 &lt;p&gt;&lt;strong&gt;More about my project “Hydra”: &lt;a href=&quot;https://github.com/marcelmeurer/wvd-hydra&quot;&gt;https://github.com/marcelmeurer/wvd-hydra&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 </description>
         <pubDate>Tue, 01 Jun 2021 00:00:00 +0200</pubDate>
-        <link>/Announcement-of-my-project-Hydra-for-Azure-Windows-Virtual-Desktop-Scale,-Autopilot,-Multi-tenant-and-more/</link>
-        <guid isPermaLink="true">/Announcement-of-my-project-Hydra-for-Azure-Windows-Virtual-Desktop-Scale,-Autopilot,-Multi-tenant-and-more/</guid>
+        <link>https://blog.itprocloud.de/Announcement-of-my-project-Hydra-for-Azure-Windows-Virtual-Desktop-Scale,-Autopilot,-Multi-tenant-and-more/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Announcement-of-my-project-Hydra-for-Azure-Windows-Virtual-Desktop-Scale,-Autopilot,-Multi-tenant-and-more/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -986,8 +986,8 @@ Power-on-connect is in preview for assigned session hosts and pooled session hos
 &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/start-virtual-machine-connect&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/start-virtual-machine-connect&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Mon, 24 May 2021 00:00:00 +0200</pubDate>
-        <link>/Custom-Role-for-Power-On-Connect-Preview/</link>
-        <guid isPermaLink="true">/Custom-Role-for-Power-On-Connect-Preview/</guid>
+        <link>https://blog.itprocloud.de/Custom-Role-for-Power-On-Connect-Preview/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Custom-Role-for-Power-On-Connect-Preview/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -1042,8 +1042,8 @@ Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyt
 &lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin-Shrink-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Tue, 18 May 2021 00:00:00 +0200</pubDate>
-        <link>/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/</link>
-        <guid isPermaLink="true">/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/</guid>
+        <link>https://blog.itprocloud.de/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -1060,8 +1060,8 @@ Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyt
 &lt;pre&gt;&lt;code&gt;Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session\Device and Resource\Do not allow drive redirection
 &lt;/code&gt;&lt;/pre&gt;</description>
         <pubDate>Tue, 04 May 2021 00:00:00 +0200</pubDate>
-        <link>/WVD-Fileupload-HTML5/</link>
-        <guid isPermaLink="true">/WVD-Fileupload-HTML5/</guid>
+        <link>https://blog.itprocloud.de/WVD-Fileupload-HTML5/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/WVD-Fileupload-HTML5/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -1090,8 +1090,8 @@ Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyt
 &lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt; Keep in mind that change the disk type on the fly only works in WVDAdmin. If you start/stop a VM in the Azure Portal (or with an autoscaling engine), the disk type will not change.&lt;/p&gt;
 </description>
         <pubDate>Sat, 27 Feb 2021 00:00:00 +0100</pubDate>
-        <link>/Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD/</link>
-        <guid isPermaLink="true">/Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD/</guid>
+        <link>https://blog.itprocloud.de/Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD/</guid>
         
         
         <category>Windows Virtual Desktop</category>

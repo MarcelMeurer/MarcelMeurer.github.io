@@ -1,1 +1,1 @@
-Sitemap: /sitemap.xml
+Sitemap: https://blog.itprocloud.de/sitemap.xml
