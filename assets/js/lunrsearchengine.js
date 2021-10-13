@@ -128,7 +128,7 @@ var documents = [{
     "id": 25,
     "url": "https://blog.itprocloud.de/Custom-Role-for-Power-On-Connect-Schedules-Preview/",
     "title": "Custom Role for Power On Connect preview",
-    "body": "2021/01/11 - Power-On-Connect Role Schedule-Role "
+    "body": "2021/01/11 - Power-On-Connect Role Schedule-Role Hydra-Role "
     }, {
     "id": 26,
     "url": "https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin-CustomScripts/",
