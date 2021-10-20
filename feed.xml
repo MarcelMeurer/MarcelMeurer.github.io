@@ -5,9 +5,60 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 13 Oct 2021 19:42:58 +0200</pubDate>
-    <lastBuildDate>Wed, 13 Oct 2021 19:42:58 +0200</lastBuildDate>
+    <pubDate>Wed, 20 Oct 2021 18:13:37 +0200</pubDate>
+    <lastBuildDate>Wed, 20 Oct 2021 18:13:37 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>The secret about disappearing appx / UWP applications in an environment using FSLogix</title>
+        <description>&lt;h2 id=&quot;intro&quot;&gt;Intro&lt;/h2&gt;
+&lt;p&gt;A few weeks ago, a customer told me about a particular behavior in their Azure Virtual Desktop environment. The users are using a dedicated session host, and the profile is managed with FSLogix to save user data on a file server additionally.
+Some of the users install applications from the Windows Store (Appx, Universal Apps). If the user logs off at the end of the day and logs in the next day, the applications are gone, and only a dead item is left in the start menu. The users have to install the app again from the Windows Store. Luckily, the applications settings are in the user profiles, so the applications are still configured after reinstallation.&lt;/p&gt;
+&lt;p&gt;What does this cause? If a user installs an application from the Windows Store, the binaries are saved in “&lt;em&gt;C:\Program Files\WindowsApps&lt;/em&gt;”.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;If the user logs off in a non-FSLogix environment, the users’ profile stays on the computer and binaries as well.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If the user logs off in an FSLogix environment, the users’ profile is removed from the computer. While apparently, no user is using the application, Windows removes the binaries. This exactly happens in the customers’ environment.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;workaround&quot;&gt;Workaround&lt;/h2&gt;
+&lt;p&gt;But how to deal with it? First: If anybody has a better solution as my workaround, please let me know.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Install the application from the Windows Store. E.g., WhatsApp&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Launch the application&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Pin the icon to the taskbar&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Figure out the full package name using PowerShell:&lt;/p&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Get-AppxPackage&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Where-Object&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;$_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-like&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;*WhatsApp*&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;For this case: 5319275A.WhatsAppDesktop_2.2140.5.0_x64__cv1g1gvanyjgm
+If you don’t find the app, check the full list of Get-AppxPackage&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Add the full package name as a key to: &lt;em&gt;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Applications&lt;/em&gt;
+&lt;img src=&quot;/assets/images/Secret-Appx-Regedit.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;After that, you can log off and log in without reinstalling the application. Unfortunately, the pinned icon is invisible as long as you click it.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 20 Oct 2021 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/The-secret-about-disappearing-appx-UWP-applications-in-an-environment-using-FSLogix/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/The-secret-about-disappearing-appx-UWP-applications-in-an-environment-using-FSLogix/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -1062,36 +1113,6 @@ Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyt
         <pubDate>Tue, 04 May 2021 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/WVD-Fileupload-HTML5/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/WVD-Fileupload-HTML5/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Changing the disk type automatically while starting or deallocating a session host / VM for WVD</title>
-        <description>&lt;p&gt;The costs of running virtual machines in Azure summarize the costs of their components like VM type (compute), storage, network, and some other parts. While the spendings for the compute stops after deallocating VMs, Microsoft continues charging for the storage (the virtual disks). These make sense while the disks continue using the underlying storage.&lt;/p&gt;
-&lt;p&gt;There are three main types of storage for managed disks with different prices: E.g 128 GByte costs between $5.89 to $19.71 per disk per month.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/VMTag-WVD.AdvDiskType-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;If you have many VMs, the disks’ costs become more important while you have to pay for the disk while the VM is running or not.&lt;/p&gt;
-&lt;p&gt;If you run Windows Virtual Desktops, your session hosts don’t run 24/7 (the same happens for test and demo environments). So, you start and stop the virtual machines to your needs. This lowers the compute costs, but the costs for the disks continue. But if a virtual machine is deallocated, the storage performance is unimportant. Why don’t we change the disk type to the cheapest after deallocating and bringing it back to a higher performance before starting the VM? That is absolutely possible and can be done through the Azure Portal - or using WVDAdmin.&lt;/p&gt;
-&lt;p&gt;With the current version of WVDAdmin you can tag a VM / session host to change the disk type on start and after the deallocation. Simply add a tag to the VMs with the name “&lt;em&gt;WVD.AdvDiskType&lt;/em&gt;” and one of the following values:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;em&gt;StandardSSD_LRS&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Premium_LRS&lt;/em&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;After this, refresh WVDAdmin, and the disk type changes on start to the named type and goes to standard HDD (the cheapest) after the deallocation.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/VMTag-WVD.AdvDiskType-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;PS: You can add the tags automatically using the “Custom Tags” tab in WVDAdmin:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/VMTag-WVD.AdvDiskType-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/VMTag-WVD.AdvDiskType-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt; Keep in mind that change the disk type on the fly only works in WVDAdmin. If you start/stop a VM in the Azure Portal (or with an autoscaling engine), the disk type will not change.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 27 Feb 2021 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD/</guid>
         
         
         <category>Windows Virtual Desktop</category>

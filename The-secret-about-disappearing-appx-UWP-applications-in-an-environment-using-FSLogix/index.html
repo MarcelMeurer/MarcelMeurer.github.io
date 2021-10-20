@@ -6,27 +6,27 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>On the road - My next speaking engagements | ITProCloud Blog</title>
+<title>The secret about disappearing appx / UWP applications in an environment using FSLogix | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>On the road - My next speaking engagements | ITProCloud Blog</title>
+<title>The secret about disappearing appx / UWP applications in an environment using FSLogix | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="On the road - My next speaking engagements" />
+<meta property="og:title" content="The secret about disappearing appx / UWP applications in an environment using FSLogix" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="I’m happy to be a part of a great community. On my journey, I have the possibility to speak at some conferences, meetups and other events. And I loved it. Especially, if I can talk about Azure, IoT, Machine Learning, AI, Azure Monitor, etc." />
-<meta property="og:description" content="I’m happy to be a part of a great community. On my journey, I have the possibility to speak at some conferences, meetups and other events. And I loved it. Especially, if I can talk about Azure, IoT, Machine Learning, AI, Azure Monitor, etc." />
-<link rel="canonical" href="https://blog.itprocloud.de/Speaking-update/" />
-<meta property="og:url" content="https://blog.itprocloud.de/Speaking-update/" />
+<meta name="description" content="Intro" />
+<meta property="og:description" content="Intro" />
+<link rel="canonical" href="https://blog.itprocloud.de/The-secret-about-disappearing-appx-UWP-applications-in-an-environment-using-FSLogix/" />
+<meta property="og:url" content="https://blog.itprocloud.de/The-secret-about-disappearing-appx-UWP-applications-in-an-environment-using-FSLogix/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="https://blog.itprocloud.de/assets/images/journey.jpg" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/Secret-Appx-WhatsApp.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2019-09-07T00:00:00+02:00" />
+<meta property="article:published_time" content="2021-10-20T00:00:00+02:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/journey.jpg" />
-<meta property="twitter:title" content="On the road - My next speaking engagements" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Secret-Appx-WhatsApp.png" />
+<meta property="twitter:title" content="The secret about disappearing appx / UWP applications in an environment using FSLogix" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/journey.jpg","datePublished":"2019-09-07T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Speaking-update/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Speaking-update/","author":{"@type":"Person","name":"mm"},"headline":"On the road - My next speaking engagements","dateModified":"2019-09-07T00:00:00+02:00","description":"I’m happy to be a part of a great community. On my journey, I have the possibility to speak at some conferences, meetups and other events. And I loved it. Especially, if I can talk about Azure, IoT, Machine Learning, AI, Azure Monitor, etc.","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/Secret-Appx-WhatsApp.png","datePublished":"2021-10-20T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/The-secret-about-disappearing-appx-UWP-applications-in-an-environment-using-FSLogix/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/The-secret-about-disappearing-appx-UWP-applications-in-an-environment-using-FSLogix/","author":{"@type":"Person","name":"mm"},"headline":"The secret about disappearing appx / UWP applications in an environment using FSLogix","dateModified":"2021-10-20T00:00:00+02:00","description":"Intro","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -334,19 +334,101 @@
 <div class="main-content">
     <section>
     <div class="section-title">
-        <h2><span>On the road - My next speaking engagements</span></h2>
+        <h2><span>The secret about disappearing appx / UWP applications in an environment using FSLogix</span></h2>
     </div>
 
     <div class="article-post">
 	
 		<!-- change content to anchor styled output -->
-		<p>I’m happy to be a part of a great community.  On my journey, I have the possibility to speak at some conferences, meetups and other events. And I loved it. Especially, if I can talk about Azure, IoT, Machine Learning, AI, Azure Monitor, etc.</p>
-<p>Maybe we will meet personally at one of the next events:</p>
-<script type="text/javascript" src="https://sessionize.com/api/speaker/events/9c778515-935a-46b1-ad39-3740c5b0afcf/0x0x3fb393x"></script><br/>
+		<h2 id="intro">
+        
+        
+          Intro <a href="#intro"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>A few weeks ago, a customer told me about a particular behavior in their Azure Virtual Desktop environment. The users are using a dedicated session host, and the profile is managed with FSLogix to save user data on a file server additionally.
+Some of the users install applications from the Windows Store (Appx, Universal Apps). If the user logs off at the end of the day and logs in the next day, the applications are gone, and only a dead item is left in the start menu. The users have to install the app again from the Windows Store. Luckily, the applications settings are in the user profiles, so the applications are still configured after reinstallation.</p>
+<p>What does this cause? If a user installs an application from the Windows Store, the binaries are saved in “<em>C:\Program Files\WindowsApps</em>”.</p>
+<ul>
+<li>
+<p>If the user logs off in a non-FSLogix environment, the users’ profile stays on the computer and binaries as well.</p>
+</li>
+<li>
+<p>If the user logs off in an FSLogix environment, the users’ profile is removed from the computer. While apparently, no user is using the application, Windows removes the binaries. This exactly happens in the customers’ environment.</p>
+</li>
+</ul>
+      <h2 id="workaround">
+        
+        
+          Workaround <a href="#workaround"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>But how to deal with it? First: If anybody has a better solution as my workaround, please let me know.</p>
+<ul>
+<li>
+<p>Install the application from the Windows Store. E.g., WhatsApp</p>
+</li>
+<li>
+<p>Launch the application</p>
+</li>
+<li>
+<p>Pin the icon to the taskbar</p>
+</li>
+<li>
+<p>Figure out the full package name using PowerShell:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-AppxPackage</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Where-Object</span><span class="w"> </span><span class="p">{</span><span class="bp">$_</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="o">-like</span><span class="w"> </span><span class="s2">"*WhatsApp*"</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>For this case: 5319275A.WhatsAppDesktop_2.2140.5.0_x64__cv1g1gvanyjgm
+If you don’t find the app, check the full list of Get-AppxPackage</p>
+</li>
+<li>
+<p>Add the full package name as a key to: <em>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Applications</em>
+<img src="/assets/images/Secret-Appx-Regedit.png" alt="" /></p>
+</li>
+</ul>
+<p>After that, you can log off and log in without reinstalling the application. Unfortunately, the pinned icon is invisible as long as you click it.</p>
 
-		<!--<p>I’m happy to be a part of a great community.  On my journey, I have the possibility to speak at some conferences, meetups and other events. And I loved it. Especially, if I can talk about Azure, IoT, Machine Learning, AI, Azure Monitor, etc.</p>
-<p>Maybe we will meet personally at one of the next events:</p>
-<script type="text/javascript" src="https://sessionize.com/api/speaker/events/9c778515-935a-46b1-ad39-3740c5b0afcf/0x0x3fb393x"></script><br/>
+		<!--<h2 id="intro">Intro</h2>
+<p>A few weeks ago, a customer told me about a particular behavior in their Azure Virtual Desktop environment. The users are using a dedicated session host, and the profile is managed with FSLogix to save user data on a file server additionally.
+Some of the users install applications from the Windows Store (Appx, Universal Apps). If the user logs off at the end of the day and logs in the next day, the applications are gone, and only a dead item is left in the start menu. The users have to install the app again from the Windows Store. Luckily, the applications settings are in the user profiles, so the applications are still configured after reinstallation.</p>
+<p>What does this cause? If a user installs an application from the Windows Store, the binaries are saved in “<em>C:\Program Files\WindowsApps</em>”.</p>
+<ul>
+<li>
+<p>If the user logs off in a non-FSLogix environment, the users’ profile stays on the computer and binaries as well.</p>
+</li>
+<li>
+<p>If the user logs off in an FSLogix environment, the users’ profile is removed from the computer. While apparently, no user is using the application, Windows removes the binaries. This exactly happens in the customers’ environment.</p>
+</li>
+</ul>
+<h2 id="workaround">Workaround</h2>
+<p>But how to deal with it? First: If anybody has a better solution as my workaround, please let me know.</p>
+<ul>
+<li>
+<p>Install the application from the Windows Store. E.g., WhatsApp</p>
+</li>
+<li>
+<p>Launch the application</p>
+</li>
+<li>
+<p>Pin the icon to the taskbar</p>
+</li>
+<li>
+<p>Figure out the full package name using PowerShell:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-AppxPackage</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Where-Object</span><span class="w"> </span><span class="p">{</span><span class="bp">$_</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="o">-like</span><span class="w"> </span><span class="s2">"*WhatsApp*"</span><span class="p">}</span><span class="w">
+</span></code></pre></div></div>
+<p>For this case: 5319275A.WhatsAppDesktop_2.2140.5.0_x64__cv1g1gvanyjgm
+If you don’t find the app, check the full list of Get-AppxPackage</p>
+</li>
+<li>
+<p>Add the full package name as a key to: <em>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Applications</em>
+<img src="/assets/images/Secret-Appx-Regedit.png" alt="" /></p>
+</li>
+</ul>
+<p>After that, you can log off and log in without reinstalling the application. Unfortunately, the pinned icon is invisible as long as you click it.</p>
 -->
 	
     
