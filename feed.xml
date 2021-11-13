@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 13 Nov 2021 16:15:10 +0100</pubDate>
-    <lastBuildDate>Sat, 13 Nov 2021 16:15:10 +0100</lastBuildDate>
+    <pubDate>Sat, 13 Nov 2021 16:25:30 +0100</pubDate>
+    <lastBuildDate>Sat, 13 Nov 2021 16:25:30 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -29,16 +29,16 @@
 &lt;li&gt;Premium
 &lt;ul&gt;
 &lt;li&gt;18.70 € per month&lt;/li&gt;
-&lt;li&gt;0.25972 € per hour (with 30 days a month)&lt;/li&gt;
+&lt;li&gt;0.025972 € per hour (with 30 days a month)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;If all of the 89 hosts in the pool use Premium Disks, the customer must pay &lt;strong&gt;3,883.34 €&lt;/strong&gt; a week.&lt;/p&gt;
+&lt;p&gt;If all of the 89 hosts in the pool use Premium Disks, the customer must pay &lt;strong&gt;388.34 €&lt;/strong&gt; a week.&lt;/p&gt;
 &lt;p&gt;We know that not all hosts are running 24h, which means that even the disks are not Premium the whole time. With log analytics, we can measure the runtime in hours overall hosts in the pool:
 &lt;img src=&quot;../assets/images/Hydra/SwitchDisks-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;For the whole week, the runtime for the hosts (and Premium Disks) was 4,998 hours. The rest of the time, the disks type are the cheaper HHD.&lt;/p&gt;
-&lt;p&gt;With this number we can calculate the real disk costs for the pool for a week: 4,998h * 0.25972 €/h + (14,952h - 4,998h) * 0.007 €/h = &lt;strong&gt;1,367.76 €&lt;/strong&gt; a week.&lt;/p&gt;
-&lt;p&gt;And that is more than interesting: In this real case scenario, the customer only saves at least 2,515.58 € a week for the disks. That is tremendous and results in a saving of &lt;strong&gt;65%&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;With this number we can calculate the real disk costs for the pool for a week: 4,998h * 0.025972 €/h + (14,952h - 4,998h) * 0.007 €/h = &lt;strong&gt;199.49 €&lt;/strong&gt; a week.&lt;/p&gt;
+&lt;p&gt;And that is more than interesting: In this real case scenario, the customer only saves at least 188.85 € a week for the disks - more then 800 € a month. That is tremendous and results in a saving of &lt;strong&gt;49%&lt;/strong&gt;.&lt;/p&gt;
 &lt;p&gt;PS: The saving is higher while more than 89 hosts are in the pool to handle more users.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Check-out Hydra: &lt;a href=&quot;https://azuremarketplace.microsoft.com/marketplace/apps/itprocloudgmbh1628775137215.hydra-deploy-d1&quot;&gt;Azure Marketplace&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 </description>
