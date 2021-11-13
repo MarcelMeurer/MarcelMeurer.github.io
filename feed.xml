@@ -5,9 +5,53 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 09 Nov 2021 09:13:07 +0100</pubDate>
-    <lastBuildDate>Tue, 09 Nov 2021 09:13:07 +0100</lastBuildDate>
+    <pubDate>Sat, 13 Nov 2021 16:15:10 +0100</pubDate>
+    <lastBuildDate>Sat, 13 Nov 2021 16:15:10 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Why switching disk types can save a bunch of money running Azure Virtual Desktop</title>
+        <description>&lt;p&gt;In March 2021, I introduced a new feature for #WVDAdmin to change the disk type of a VM to &lt;em&gt;automatically change the disk type&lt;/em&gt; before starting a VM and after the deallocation of a VM. The purpose was clear: Having a more expensive high-performance disk for the runtime of a VM and a cheap disk while the VM is off. This is especially important because hard disks always cost - regardless of whether the associated VM is on or off.&lt;/p&gt;
+&lt;p&gt;The implementation was straightforward, while changing the disk type takes only a few seconds. I guess that Microsoft only regulates the performance of disks and is not copying the disks from one storage to another.&lt;/p&gt;
+&lt;p&gt;I use the same feature in my #AVD solution, “Hydra”. If configured, Hydra changes the disk type on start and stop, triggered by an administrator or Hydras’ autoscaling. But what does this saves in a real-world scenario? I used the data from a deployment serving more than 400 concurrent users per day.&lt;/p&gt;
+&lt;p&gt;The charts below show the data of a host pool for seven days. Less load on the weekend and more than 400 user sessions on the weekdays:
+&lt;img src=&quot;../assets/images/Hydra/SwitchDisks-01.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/Hydra/SwitchDisks-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The maximum number of running hosts was 89 on Thursday. So I have at least 89 disks for the hosts. 89 exiting disks for seven days results that I have to pay for 14,952 hours of disks (89 disks * 24h/day * 7day).&lt;/p&gt;
+&lt;p&gt;As known, it makes a difference if you have to pay for cheap HDD or high-performance Premium Disks like recommended for AVD. Today the costs of a 128 GByte managed disk are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;HHD
+&lt;ul&gt;
+&lt;li&gt;5.04 € per month&lt;/li&gt;
+&lt;li&gt;0.007 € per hour (with 30 days a month)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Premium
+&lt;ul&gt;
+&lt;li&gt;18.70 € per month&lt;/li&gt;
+&lt;li&gt;0.25972 € per hour (with 30 days a month)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If all of the 89 hosts in the pool use Premium Disks, the customer must pay &lt;strong&gt;3,883.34 €&lt;/strong&gt; a week.&lt;/p&gt;
+&lt;p&gt;We know that not all hosts are running 24h, which means that even the disks are not Premium the whole time. With log analytics, we can measure the runtime in hours overall hosts in the pool:
+&lt;img src=&quot;../assets/images/Hydra/SwitchDisks-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;For the whole week, the runtime for the hosts (and Premium Disks) was 4,998 hours. The rest of the time, the disks type are the cheaper HHD.&lt;/p&gt;
+&lt;p&gt;With this number we can calculate the real disk costs for the pool for a week: 4,998h * 0.25972 €/h + (14,952h - 4,998h) * 0.007 €/h = &lt;strong&gt;1,367.76 €&lt;/strong&gt; a week.&lt;/p&gt;
+&lt;p&gt;And that is more than interesting: In this real case scenario, the customer only saves at least 2,515.58 € a week for the disks. That is tremendous and results in a saving of &lt;strong&gt;65%&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;PS: The saving is higher while more than 89 hosts are in the pool to handle more users.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Check-out Hydra: &lt;a href=&quot;https://azuremarketplace.microsoft.com/marketplace/apps/itprocloudgmbh1628775137215.hydra-deploy-d1&quot;&gt;Azure Marketplace&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 13 Nov 2021 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -1103,24 +1147,6 @@ Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyt
         <pubDate>Tue, 18 May 2021 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Azure Windows Virtual Desktop Fileupload with the HTML5 client</title>
-        <description>&lt;p&gt;Microsoft is extending the HTML5 web client. Today (May 2021), there is a new function to allow uploading files directly into the session. The user can select the feature while starting a connection. Inside the HTML5 client, the user can upload a file with the icon in the upper right corner. The file is saved into the virtual drive: &lt;em&gt;\\tsclient\Remote Desktop Virtual Drive\Uploads&lt;/em&gt; (the drive only exist in the current session)&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/FileUpload01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;An administrator can avoid storing files into the virtual drive setting the group policy (per user or per machine) to “Enabled”:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session\Device and Resource\Do not allow drive redirection
-&lt;/code&gt;&lt;/pre&gt;</description>
-        <pubDate>Tue, 04 May 2021 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/WVD-Fileupload-HTML5/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/WVD-Fileupload-HTML5/</guid>
         
         
         <category>Windows Virtual Desktop</category>
