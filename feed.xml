@@ -5,9 +5,105 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 16 Nov 2021 13:10:25 +0100</pubDate>
-    <lastBuildDate>Tue, 16 Nov 2021 13:10:25 +0100</lastBuildDate>
+    <pubDate>Wed, 17 Nov 2021 12:39:45 +0100</pubDate>
+    <lastBuildDate>Wed, 17 Nov 2021 12:39:45 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Directly connect session hosts with a 3rd party management environment</title>
+        <description>&lt;p&gt;While working with Azure Virtual Desktop, I still miss some features that seem unavailable through Microsoft or maybe a 3rd party vendor. One of the features is that an admin/helpdesk can see the users’ processes, CPU, and memory usage and terminate a hanging or crazy process. To build this feature, a fast connection to the session host from the management platform (in my case, Hydra) is needed. The approach using the RunCommandExtension is not fast enough and doesn’t allow duplex communication.&lt;/p&gt;
+&lt;p&gt;While web-based management platforms normally do not have a direct IP connection to the session hosts, the typical remote administration approaches won’t work. Therefore, I see no other way to have a small agent running on the session hosts connecting to the web-based management platform. One approach is that the agents connect via https to the management platform - the better way is using Web-Sockets to connect. &lt;em&gt;Websockets&lt;/em&gt; (WS) are faster and scale better than sending an http-request each second from each host to the platform. WS also directly supports a communication strategy.&lt;/p&gt;
+&lt;p&gt;In the preview version of Hydra, the agents connect securely (via a secret) to the platform and identify themselves via the FQDN and VM resource Id. That allows being referenced as a session host as well.&lt;/p&gt;
+&lt;p&gt;In my case, only the platform can ask the client (session host). For that, I build several classes. In each case, the platform asked a specific client for information (GetProcessList for session “2”), and the client response after a short time with the data (SetProcessList and SessionHostProcess[] as JSON in the content property).&lt;/p&gt;
+&lt;p&gt;For this example, asking for the process list is initiated by a management platform admin with the right permissions. The admin can also initiate a kill process to stop a process. While this works fast, the process list can be refreshed every few seconds automatically and shown on the website of the management platform.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The fast communication between the platform and session hosts allows additional or improved features:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Showing CPU/MEM per session host faster than using the Azure API (Azure agent)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A general fast monitoring&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;De-prioritized processes&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Fast chat with the user&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Improve scaling: Avoid logging off a disconnected session if a particular application is running (Excel, SAP - may be based on the CPU usage)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Improve scaling: Avoid logoff VIP users&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Get more data from the native AD via this connection&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Join computer objects fast into groups in a native AD&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Trigger a garbage collector&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Running scripts on the hosts - concurrently with duplex communication (to show a now written log file)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Configure application&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Get data about FSLogix issues&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Get data about FSLogix disk sizes&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;…&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Using WS makes a solution more flexible and avoids the limits of the RunCommandAPI. The price for this is another agent (not a service), which must be deployed during the rollout or afterward. From the first researches and implementation, there is no low limit regarding the number of hosts.&lt;/p&gt;
+&lt;p&gt;The current version of Hydra has the preview feature (to be released) showing the process list if an admin clicks on the user name in the session list. While this feature is in preview, test users must ask to switch on this feature for a specific Hydra instance).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The final question:&lt;/strong&gt; Are the features worth that an agent is needed?&lt;/p&gt;
+&lt;p&gt;First classes for the duplex-communication:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class Communication
+  {
+​    public CommunicationType Type { get; set; }
+​    public string Content { get; set; }
+  }
+
+public enum CommunicationType
+  {
+​    GetHostIdentifier,
+​    SetHostIdentifier,
+​    GetProcessList,
+​    SetProcessList,
+​	KillProcess,
+  }
+
+public class HostIdentifier
+  {
+​    public string SessionHostResourceId { get; set; }
+  }
+
+public class SessionHostProcess
+  { 
+​    public int ProcesId { get; set; }
+​    public string  Caption{ get; set; }
+​    public int SessionId { get; set; }
+​    public long WorkingSet { get; set; }
+​    public double CpuPercent{ get; set; }
+  }
+&lt;/code&gt;&lt;/pre&gt;</description>
+        <pubDate>Wed, 17 Nov 2021 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/Upcoming-features-of-Hydra-or-other-3rd-AVD-solutions/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Upcoming-features-of-Hydra-or-other-3rd-AVD-solutions/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>AVD issue: SessionHost unhealthy SxsStack listener is not ready - Code -2147467259</title>
@@ -21,8 +117,8 @@
 &lt;p&gt;The short script can be deployed with #WVDAdmin, #Hydra, or any other solution having access to the hosts.&lt;/p&gt;
 </description>
         <pubDate>Tue, 16 Nov 2021 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259/</guid>
+        <link>https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259-Copy/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259-Copy/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -1096,28 +1192,6 @@ Six months ago, I started a new project to provide a solution to manage Azure Vi
         <pubDate>Tue, 01 Jun 2021 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Announcement-of-my-project-Hydra-for-Azure-Windows-Virtual-Desktop-Scale,-Autopilot,-Multi-tenant-and-more/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Announcement-of-my-project-Hydra-for-Azure-Windows-Virtual-Desktop-Scale,-Autopilot,-Multi-tenant-and-more/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Power-On-Connect Feature in Azure Windows Virtual Desktop and custom role for Power On Connect preview</title>
-        <description>&lt;p&gt;Power-On-Connect Feature in Windows Virtual Desktop
-Power-on-connect is in preview for assigned session hosts and pooled session hosts (multi-user host pool). With the new feature, users are triggering the start of the assigned session hosts or of a pooled on demand. That allows scaling up from zero hosts. Shutting down is omitted, but you can check my upcoming project to use power-on-connect with predictive autoscaling, including the shutdown of the hosts (and many other features). Check out my “preview” project “Hydra” at &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;You can enable power-on-connect for private host pools in the Azure Portal or with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;. &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; also allows enabling power-on-connect for pooled/multi-user host pools.&lt;/p&gt;
-&lt;p&gt;To use power-on-connect, you have to allow Microsoft to start virtual machines. To do that, create a custom role with the following link and add the &lt;em&gt;user&lt;/em&gt; “Windows Virtual Desktop” with this role to the resource group containing the virtual machines.&lt;/p&gt;
-&lt;p&gt;Install the power-on-connect role
-&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWVD-Role-PowerOnConnect-preview.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Learn more at:
-&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/start-virtual-machine-connect&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/start-virtual-machine-connect&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Mon, 24 May 2021 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Custom-Role-for-Power-On-Connect-Preview/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Custom-Role-for-Power-On-Connect-Preview/</guid>
         
         
         <category>Windows Virtual Desktop</category>
