@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 17 Nov 2021 12:39:45 +0100</pubDate>
-    <lastBuildDate>Wed, 17 Nov 2021 12:39:45 +0100</lastBuildDate>
+    <pubDate>Thu, 18 Nov 2021 09:42:42 +0100</pubDate>
+    <lastBuildDate>Thu, 18 Nov 2021 09:42:42 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -117,8 +117,8 @@ public class SessionHostProcess
 &lt;p&gt;The short script can be deployed with #WVDAdmin, #Hydra, or any other solution having access to the hosts.&lt;/p&gt;
 </description>
         <pubDate>Tue, 16 Nov 2021 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259-Copy/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259-Copy/</guid>
+        <link>https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259/</guid>
         
         
         <category>Windows Virtual Desktop</category>
