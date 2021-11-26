@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logos/icon.png">
+
+<title>How to use MSIX AppAttach without having computer accounts synced for Azure Virtual Desktop (AD synced and Azure Files) | ITProCloud Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>How to use MSIX AppAttach without having computer accounts synced for Azure Virtual Desktop (AD synced and Azure Files) | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="How to use MSIX AppAttach without having computer accounts synced for Azure Virtual Desktop (AD synced and Azure Files)" />
+<meta name="author" content="mm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Using MSIX AppAttach in Azure Virtual Desktop is great. To stage the MSIX AppAttach packages, the session host needs permission to read the package. If the package is placed on a “normal” file server, everything works as expected. But if the image on an Azure Files share, it would not work directly. In this case, the computer object has no permission to read data. You got the following error message:" />
+<meta property="og:description" content="Using MSIX AppAttach in Azure Virtual Desktop is great. To stage the MSIX AppAttach packages, the session host needs permission to read the package. If the package is placed on a “normal” file server, everything works as expected. But if the image on an Azure Files share, it would not work directly. In this case, the computer object has no permission to read data. You got the following error message:" />
+<link rel="canonical" href="https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/" />
+<meta property="og:url" content="https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/" />
+<meta property="og:site_name" content="ITProCloud Blog" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/StageMsix.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-11-26T00:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/StageMsix.png" />
+<meta property="twitter:title" content="How to use MSIX AppAttach without having computer accounts synced for Azure Virtual Desktop (AD synced and Azure Files)" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/StageMsix.png","datePublished":"2021-11-26T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/","author":{"@type":"Person","name":"mm"},"headline":"How to use MSIX AppAttach without having computer accounts synced for Azure Virtual Desktop (AD synced and Azure Files)","dateModified":"2021-11-26T00:00:00+01:00","description":"Using MSIX AppAttach in Azure Virtual Desktop is great. To stage the MSIX AppAttach packages, the session host needs permission to read the package. If the package is placed on a “normal” file server, everything works as expected. But if the image on an Azure Files share, it would not work directly. In this case, the computer object has no permission to read data. You got the following error message:","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<!--- cookie banner --->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-page">
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logos/itpc-logo-bottom-text.png" alt="ITProCloud Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
+                </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (36)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (35)</a>
+						</li>
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (8)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+	
+				<!-- Original tag list (unsorted) 
+				
+				
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-VM">Azure VM (2)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (7)</a>
+						</li>
+						
+					
+				
+				-->
+								
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://twitter.com/MarcelMeurer"><i class="fab fa-twitter"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/marcel-meurer-15b46b98"><i class="fab fa-linkedin"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://github.com/MarcelMeurer"><i class="fab fa-github"></i></a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="mailto:marcel.meurer@itprocloud.com?subject=Request%20from%20ITProCloud.de"><i class="far fa-envelope"></i></a>
+                </li>
+
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">ITProCloud Blog</h1>
+    <p class="lead">
+        Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <section>
+    <div class="section-title">
+        <h2><span>How to use MSIX AppAttach without having computer accounts synced for Azure Virtual Desktop (AD synced and Azure Files)</span></h2>
+    </div>
+
+    <div class="article-post">
+	
+		<!-- change content to anchor styled output -->
+		<p>Using MSIX AppAttach in Azure Virtual Desktop is great. To stage the MSIX AppAttach packages, the session host needs permission to read the package. If the package is placed on a “normal” file server, everything works as expected. But if the image on an Azure Files share, it would not work directly. In this case, the computer object has no permission to read data. You got the following error message:</p>
+<blockquote>
+<p><em><strong>SessionHost unhealthy: The following MSIX packages have failed to properly stage: [xxxxxxxxxxxx_yyyyyy, System.IO.FileNotFoundException: File not found.</strong></em></p>
+</blockquote>
+      <h3 id="the-default-approach">
+        
+        
+          The default approach <a href="#the-default-approach"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h3>
+    
+<ul>
+<li>Add the AVD computer objects in a global group</li>
+<li>Sync the group and the computer objects for the hosts</li>
+<li>Add the group with the RBAC Role “Storage File Data SMB Share Contributor” to the file share or storage account</li>
+<li>Give the global group NTFS read permission</li>
+</ul>
+<p>After that, the hosts can access with their computer account the share.</p>
+<p>The disadvantage is that if you deploy a new host, you have to add the computer object to the group and wait for the synchronization to AAD (for the group and the computer object). Meanwhile, the host cannot stage the package and cannot provide the application to the users :-(</p>
+      <h3 id="another-approach-or-workaround">
+        
+        
+          Another approach or workaround <a href="#another-approach-or-workaround"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h3>
+    
+<p>The issue is that the computer/system account cannot access the share. Another approach is to convince the system account to use a domain user for accessing Azure Files.</p>
+<ul>
+<li>Create a user account in AD and wait for replication</li>
+<li>Add the user with the RBAC Role “Storage File Data SMB Share Contributor” to the file share or storage account</li>
+<li>Give the user NTFS read permission</li>
+</ul>
+<p>To convince the system account to use a specific user account accessing a specific Azure Files storage account. That can be tested with these two lines:</p>
+<pre><code>psexec -s cmd
+
+cmdkey /add:[wvdmsixdata.file.core.windows.net](http://wvduserdata.file.core.windows.net/) /user:[msix@itprocloud.de](mailto:msix@itprocloud.de) /pass:passwordOfMsixUser
+</code></pre>
+<p>Now, every time the host access <a href="wvdmsixdata.file.core.windows.net">wvdmsixdata.file.core.windows.net</a> in the system context, the named user account is used - even for staging the MSIX AppAttach packages.</p>
+<p>This step can be automized via a script directly after the rollout of a new session host. This allows the host to stage the packages directly.</p>
+<p>You could use <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>, modify the deployment script, and run the cmdkey part after the domain join (psexec is not needed).</p>
+<p>Another way to go is using <a href="https://www.itprocloud.de/hydra/">Hydra</a> with a script after the deployment. In this case, you could use the service account on a host pool level. Example script:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Check, if service account is available</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">Hydra_ServiceAccount_PSC</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="bp">$null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="kr">throw</span><span class="w"> </span><span class="s2">"Failed: Service account missing - The script needs a configured service account."</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="nv">$fileServer</span><span class="o">=</span><span class="s2">"wvdmsixdata.file.core.windows.net"</span><span class="w">
+
+</span><span class="nv">$secret</span><span class="o">=</span><span class="p">[</span><span class="n">System.Net.NetworkCredential</span><span class="p">]::</span><span class="n">new</span><span class="p">(</span><span class="s2">""</span><span class="p">,</span><span class="err">$</span><span class="p">(</span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">Hydra_ServiceAccount_PSC</span><span class="o">.</span><span class="nf">Password</span><span class="p">))</span><span class="o">.</span><span class="nf">Password</span><span class="w">
+</span><span class="n">cmdkey.exe</span><span class="w"> </span><span class="nx">/add:</span><span class="nv">$fileServer</span><span class="w"> </span><span class="nx">/user:</span><span class="err">$</span><span class="p">(</span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">Hydra_ServiceAccount_PSC</span><span class="o">.</span><span class="nf">UserName</span><span class="p">)</span><span class="w"> </span><span class="n">/pass:</span><span class="err">$</span><span class="p">(</span><span class="nv">$secret</span><span class="p">)</span><span class="w">
+
+</span><span class="nv">$count</span><span class="o">=</span><span class="p">(</span><span class="n">Get-ChildItem</span><span class="w"> </span><span class="s2">"\\wvduserdata.file.core.windows.net\msix"</span><span class="p">)</span><span class="o">.</span><span class="nf">Count</span><span class="w">
+</span><span class="n">OutputWriter</span><span class="p">(</span><span class="s2">"The script has finished. Existing files: </span><span class="nv">$count</span><span class="s2">"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+<p>Note:</p>
+<ul>
+<li>This is a workaround!</li>
+<li>Make sure that the users’ password does not expire.</li>
+</ul>
+
+		<!--<p>Using MSIX AppAttach in Azure Virtual Desktop is great. To stage the MSIX AppAttach packages, the session host needs permission to read the package. If the package is placed on a “normal” file server, everything works as expected. But if the image on an Azure Files share, it would not work directly. In this case, the computer object has no permission to read data. You got the following error message:</p>
+<blockquote>
+<p><em><strong>SessionHost unhealthy: The following MSIX packages have failed to properly stage: [xxxxxxxxxxxx_yyyyyy, System.IO.FileNotFoundException: File not found.</strong></em></p>
+</blockquote>
+<h3 id="the-default-approach">The default approach</h3>
+<ul>
+<li>Add the AVD computer objects in a global group</li>
+<li>Sync the group and the computer objects for the hosts</li>
+<li>Add the group with the RBAC Role “Storage File Data SMB Share Contributor” to the file share or storage account</li>
+<li>Give the global group NTFS read permission</li>
+</ul>
+<p>After that, the hosts can access with their computer account the share.</p>
+<p>The disadvantage is that if you deploy a new host, you have to add the computer object to the group and wait for the synchronization to AAD (for the group and the computer object). Meanwhile, the host cannot stage the package and cannot provide the application to the users :-(</p>
+<h3 id="another-approach-or-workaround">Another approach or workaround</h3>
+<p>The issue is that the computer/system account cannot access the share. Another approach is to convince the system account to use a domain user for accessing Azure Files.</p>
+<ul>
+<li>Create a user account in AD and wait for replication</li>
+<li>Add the user with the RBAC Role “Storage File Data SMB Share Contributor” to the file share or storage account</li>
+<li>Give the user NTFS read permission</li>
+</ul>
+<p>To convince the system account to use a specific user account accessing a specific Azure Files storage account. That can be tested with these two lines:</p>
+<pre><code>psexec -s cmd
+
+cmdkey /add:[wvdmsixdata.file.core.windows.net](http://wvduserdata.file.core.windows.net/) /user:[msix@itprocloud.de](mailto:msix@itprocloud.de) /pass:passwordOfMsixUser
+</code></pre>
+<p>Now, every time the host access <a href="wvdmsixdata.file.core.windows.net">wvdmsixdata.file.core.windows.net</a> in the system context, the named user account is used - even for staging the MSIX AppAttach packages.</p>
+<p>This step can be automized via a script directly after the rollout of a new session host. This allows the host to stage the packages directly.</p>
+<p>You could use <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>, modify the deployment script, and run the cmdkey part after the domain join (psexec is not needed).</p>
+<p>Another way to go is using <a href="https://www.itprocloud.de/hydra/">Hydra</a> with a script after the deployment. In this case, you could use the service account on a host pool level. Example script:</p>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Check, if service account is available</span><span class="w">
+</span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">Hydra_ServiceAccount_PSC</span><span class="w"> </span><span class="o">-eq</span><span class="w"> </span><span class="bp">$null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">
+  </span><span class="kr">throw</span><span class="w"> </span><span class="s2">"Failed: Service account missing - The script needs a configured service account."</span><span class="w">
+</span><span class="p">}</span><span class="w">
+
+</span><span class="nv">$fileServer</span><span class="o">=</span><span class="s2">"wvdmsixdata.file.core.windows.net"</span><span class="w">
+
+</span><span class="nv">$secret</span><span class="o">=</span><span class="p">[</span><span class="n">System.Net.NetworkCredential</span><span class="p">]::</span><span class="n">new</span><span class="p">(</span><span class="s2">""</span><span class="p">,</span><span class="err">$</span><span class="p">(</span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">Hydra_ServiceAccount_PSC</span><span class="o">.</span><span class="nf">Password</span><span class="p">))</span><span class="o">.</span><span class="nf">Password</span><span class="w">
+</span><span class="n">cmdkey.exe</span><span class="w"> </span><span class="nx">/add:</span><span class="nv">$fileServer</span><span class="w"> </span><span class="nx">/user:</span><span class="err">$</span><span class="p">(</span><span class="nv">$</span><span class="nn">global</span><span class="p">:</span><span class="nv">Hydra_ServiceAccount_PSC</span><span class="o">.</span><span class="nf">UserName</span><span class="p">)</span><span class="w"> </span><span class="n">/pass:</span><span class="err">$</span><span class="p">(</span><span class="nv">$secret</span><span class="p">)</span><span class="w">
+
+</span><span class="nv">$count</span><span class="o">=</span><span class="p">(</span><span class="n">Get-ChildItem</span><span class="w"> </span><span class="s2">"\\wvduserdata.file.core.windows.net\msix"</span><span class="p">)</span><span class="o">.</span><span class="nf">Count</span><span class="w">
+</span><span class="n">OutputWriter</span><span class="p">(</span><span class="s2">"The script has finished. Existing files: </span><span class="nv">$count</span><span class="s2">"</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+<p>Note:</p>
+<ul>
+<li>This is a workaround!</li>
+<li>Make sure that the users’ password does not expire.</li>
+</ul>
+-->
+	
+    
+</section>
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div id="allTags" class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore by tags <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-VM">Azure VM (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (7)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (8)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (5)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-AD">Azure AD (4)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#OneDrive">OneDrive (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-IoT">Azure IoT (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Functions">Azure Functions (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Marketplace">Azure Marketplace (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (36)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (35)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 text-center text-lg-left">
+                Copyright © 2021 ITProCloud Blog 
+            </div>
+            <div class="col-md-4 col-sm-4 text-center text-lg-left">
+                <a href="/Impressum">Impressum</a>/<a href="/ImpressumEn">Imprint</a> - 
+                <a href="/privacyDe">Datenschutz</a> - 
+				<a href="/privacyEn">Privacy</a>
+            </div>
+            <div class="col-md-3 col-sm-3 text-center text-lg-right">    
+                <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+
+<!-- Start Cookie Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#eaf7f7",
+      "text": "#5c7291"
+    },
+    "button": {
+      "background": "#56cbdb",
+      "text": "#ffffff"
+    }
+  },
+  "position": "bottom-right",
+  "content": {
+    "message": 'This website uses cookies to ensure you get the best experience on our website.<br/><a href="/privacyEn">Privacy policy</a><br/><br/>Diese Website verwendet Cookies, um dir mehr Benutzerfreundlichkeit zu bieten. Mit der Nutzung dieser Website stimmst du der Verwendung von Cookies zu.<br/><a href="/privacyDe">Datenschutzerklärung</a><br/><br/> ',
+    "href": "/privacyEn"
+  }
+});
+</script>
+<!-- End Cookie Plugin -->
+
+</body>
+</html>

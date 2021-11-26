@@ -5,9 +5,70 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 22 Nov 2021 15:36:57 +0100</pubDate>
-    <lastBuildDate>Mon, 22 Nov 2021 15:36:57 +0100</lastBuildDate>
+    <pubDate>Fri, 26 Nov 2021 18:33:55 +0100</pubDate>
+    <lastBuildDate>Fri, 26 Nov 2021 18:33:55 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>How to use MSIX AppAttach without having computer accounts synced for Azure Virtual Desktop (AD synced and Azure Files)</title>
+        <description>&lt;p&gt;Using MSIX AppAttach in Azure Virtual Desktop is great. To stage the MSIX AppAttach packages, the session host needs permission to read the package. If the package is placed on a “normal” file server, everything works as expected. But if the image on an Azure Files share, it would not work directly. In this case, the computer object has no permission to read data. You got the following error message:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;SessionHost unhealthy: The following MSIX packages have failed to properly stage: [xxxxxxxxxxxx_yyyyyy, System.IO.FileNotFoundException: File not found.&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;the-default-approach&quot;&gt;The default approach&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Add the AVD computer objects in a global group&lt;/li&gt;
+&lt;li&gt;Sync the group and the computer objects for the hosts&lt;/li&gt;
+&lt;li&gt;Add the group with the RBAC Role “Storage File Data SMB Share Contributor” to the file share or storage account&lt;/li&gt;
+&lt;li&gt;Give the global group NTFS read permission&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;After that, the hosts can access with their computer account the share.&lt;/p&gt;
+&lt;p&gt;The disadvantage is that if you deploy a new host, you have to add the computer object to the group and wait for the synchronization to AAD (for the group and the computer object). Meanwhile, the host cannot stage the package and cannot provide the application to the users :-(&lt;/p&gt;
+&lt;h3 id=&quot;another-approach-or-workaround&quot;&gt;Another approach or workaround&lt;/h3&gt;
+&lt;p&gt;The issue is that the computer/system account cannot access the share. Another approach is to convince the system account to use a domain user for accessing Azure Files.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a user account in AD and wait for replication&lt;/li&gt;
+&lt;li&gt;Add the user with the RBAC Role “Storage File Data SMB Share Contributor” to the file share or storage account&lt;/li&gt;
+&lt;li&gt;Give the user NTFS read permission&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To convince the system account to use a specific user account accessing a specific Azure Files storage account. That can be tested with these two lines:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;psexec -s cmd
+
+cmdkey /add:[wvdmsixdata.file.core.windows.net](http://wvduserdata.file.core.windows.net/) /user:[msix@itprocloud.de](mailto:msix@itprocloud.de) /pass:passwordOfMsixUser
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, every time the host access &lt;a href=&quot;wvdmsixdata.file.core.windows.net&quot;&gt;wvdmsixdata.file.core.windows.net&lt;/a&gt; in the system context, the named user account is used - even for staging the MSIX AppAttach packages.&lt;/p&gt;
+&lt;p&gt;This step can be automized via a script directly after the rollout of a new session host. This allows the host to stage the packages directly.&lt;/p&gt;
+&lt;p&gt;You could use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, modify the deployment script, and run the cmdkey part after the domain join (psexec is not needed).&lt;/p&gt;
+&lt;p&gt;Another way to go is using &lt;a href=&quot;https://www.itprocloud.de/hydra/&quot;&gt;Hydra&lt;/a&gt; with a script after the deployment. In this case, you could use the service account on a host pool level. Example script:&lt;/p&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Check, if service account is available&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;global&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Hydra_ServiceAccount_PSC&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-eq&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;$null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;throw&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Failed: Service account missing - The script needs a configured service account.&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fileServer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;wvdmsixdata.file.core.windows.net&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$secret&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;System.Net.NetworkCredential&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;global&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Hydra_ServiceAccount_PSC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Password&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cmdkey.exe&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/add:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fileServer&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/user:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;global&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Hydra_ServiceAccount_PSC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;UserName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;/pass:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$secret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Get-ChildItem&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;\\wvduserdata.file.core.windows.net\msix&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Count&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OutputWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;The script has finished. Existing files: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$count&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Note:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;This is a workaround!&lt;/li&gt;
+&lt;li&gt;Make sure that the users’ password does not expire.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Fri, 26 Nov 2021 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>Directly connect session hosts with a 3rd party management environment</title>
@@ -1160,38 +1221,6 @@ Six months ago, I started a new project to provide a solution to manage Azure Vi
         <pubDate>Thu, 15 Jul 2021 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Azure-AD-only-for-AVD-session-hosts/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Azure-AD-only-for-AVD-session-hosts/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Hydra: Automize, scale and manage Windows Virtual Desktop / Azure Virtual Desktop like a pro - including multi-tenancy</title>
-        <description>&lt;p&gt;Project Hydra for Azure Virtual Desktop
-Six months ago, I started a new project to provide a solution to manage Azure Virtual Desktop / Windows Virtual Desktop in an automated way. It was thought of as a complement to #WVDAdmin and focused on doing some tasks automatically. For example:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Autoscale
-– Multi-Session hosts
-– Power-on-connect support
-– Schedules
-– Autopilot: Automatically scales up/down/create/remove based on the usage of a host pool
-– Deploy hosts on-demand - including ephemeral VMs based on a custom image&lt;/li&gt;
-&lt;li&gt;VDI
-– Auto deallocate session hosts&lt;/li&gt;
-&lt;li&gt;Granular session timeouts&lt;/li&gt;
-&lt;li&gt;Auto Health&lt;/li&gt;
-&lt;li&gt;and a lot more&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Even the autoscaling part works very well. It goes hand-in-hand with Power-On-Connect and can pre-provide temporary session hosts with ephemeral disks. And for sure: It down-scales the environment.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/assets/images/Hydra/Autoscaling-Example.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;More about my project “Hydra”: &lt;a href=&quot;https://github.com/marcelmeurer/wvd-hydra&quot;&gt;https://github.com/marcelmeurer/wvd-hydra&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-</description>
-        <pubDate>Tue, 01 Jun 2021 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Announcement-of-my-project-Hydra-for-Azure-Windows-Virtual-Desktop-Scale,-Autopilot,-Multi-tenant-and-more/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Announcement-of-my-project-Hydra-for-Azure-Windows-Virtual-Desktop-Scale,-Autopilot,-Multi-tenant-and-more/</guid>
         
         
         <category>Windows Virtual Desktop</category>
