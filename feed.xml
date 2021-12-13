@@ -5,9 +5,39 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 26 Nov 2021 18:33:55 +0100</pubDate>
-    <lastBuildDate>Fri, 26 Nov 2021 18:33:55 +0100</lastBuildDate>
+    <pubDate>Mon, 13 Dec 2021 19:44:34 +0100</pubDate>
+    <lastBuildDate>Mon, 13 Dec 2021 19:44:34 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Azure Virtual Desktop: Reserved Instances or Scaling</title>
+        <description>&lt;p&gt;A while ago, I wrote a blog post about saving money by smartly &lt;a href=&quot;https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/&quot;&gt;switching the disk types&lt;/a&gt; of Azure VMs. But what’s about using reserved instances instead of switching VMs on or off (autoscaling)?&lt;/p&gt;
+&lt;p&gt;I used the same &lt;a href=&quot;https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/&quot;&gt;data&lt;/a&gt; as in the previews blog post to figure out the best amount of reserved instances for this specific customer environment.&lt;/p&gt;
+&lt;p&gt;The charts below show the data of a host pool for seven days. Less load on the weekend and more than 400 user sessions on the weekdays:
+&lt;img src=&quot;../assets/images/Hydra/SwitchDisks-01.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/Hydra/SwitchDisks-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The maximum number of running hosts was 89 on Thursday.&lt;/p&gt;
+&lt;p&gt;The VM types are D4 v4, and the current costs in west europe for one hour are:&lt;/p&gt;
+&lt;p&gt;Pay-as-you-go: € 0.201315
+Reserved (1y): € 0.121219
+Reserved (1y): € 0.078055&lt;/p&gt;
+&lt;p&gt;I calculated the costs for this week for different numbers of reserved instances: From 0% to 100% in 5% steps. The results are surprising:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/ReservedOrNot-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The best value is with 5% reserved instances: €      981.77&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/ReservedOrNot-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The best value is with 25% reserved instances: €      886.42&lt;/p&gt;
+&lt;p&gt;So, in this case, 25% reserved instances (23 hosts) are an excellent way to go. But it can change from customer to customer even if people work in a shift.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 13 Dec 2021 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>How to use MSIX AppAttach without having computer accounts synced for Azure Virtual Desktop (AD synced and Azure Files)</title>
@@ -1189,38 +1219,6 @@ Six months ago, I started a new project to provide a solution to manage Azure Vi
         <pubDate>Tue, 10 Aug 2021 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Scripts-and-Script-Collections-available-in-Hydra-for-the-automation-of-Windows-Azure-Virtual-Desktop-AVD-WVD/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Scripts-and-Script-Collections-available-in-Hydra-for-the-automation-of-Windows-Azure-Virtual-Desktop-AVD-WVD/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>WVDAdmin supports AAD only deployments for AVD / WVD - AAD: Azure AD</title>
-        <description>&lt;p&gt;One of the announcements of the Microsoft Inspire 2021 was the option to join session hosts #AAD only. I’m happy to have the implementation also ready in #WVDAdmin.&lt;/p&gt;
-&lt;p&gt;There are some prerequisites for AAD joined session hosts:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Host pool in a validation environment&lt;/li&gt;
-&lt;li&gt;RDP settings contains &lt;em&gt;targetisaadjoined:i:1&lt;/em&gt;&lt;/li&gt;
-&lt;li&gt;User must have RBAC with role &lt;strong&gt;Virtual Machine User Login&lt;/strong&gt; or &lt;strong&gt;Virtual Machine Administrator Login&lt;/strong&gt; to the VM or resource group&lt;/li&gt;
-&lt;li&gt;Client device must be AAD joined (or use the web interface)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Even FSLogix cannot be used.&lt;/p&gt;
-&lt;p&gt;Check the full description here: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/deploy-azure-ad-joined-vm&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/deploy-azure-ad-joined-vm&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;To rollout a session host AAD only tick “AAD only” in the rollout tab. OU, domain user and password are not needed.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/assets/images/WVDAdmin/AADOnlyJoin.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;An AAD-only session host shows up with the host name in the session host list - the domain suffix is missing. You can also check Azure AD to verify the connection to the AAD domain.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/assets/images/WVDAdmin/AADOnlyJoin-Hosts01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;WVDAdmin: &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;What’s about #Hydra? Hydra auto-scales and manages even AAD only joined session host. Early next week, you can deploy AAD only hosts even with #Hydra&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/assets/images/Hydra/Hydra-120.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;More about my project “Hydra”:&lt;/strong&gt; &lt;a href=&quot;https://github.com/marcelmeurer/wvd-hydra&quot;&gt;https://github.com/marcelmeurer/wvd-hydra&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Thu, 15 Jul 2021 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Azure-AD-only-for-AVD-session-hosts/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-AD-only-for-AVD-session-hosts/</guid>
         
         
         <category>Windows Virtual Desktop</category>

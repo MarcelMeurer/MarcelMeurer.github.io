@@ -6,22 +6,27 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>Azure Functions | ITProCloud Blog</title>
+<title>Azure Virtual Desktop: Reserved Instances or Scaling | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Azure Functions | ITProCloud Blog</title>
+<title>Azure Virtual Desktop: Reserved Instances or Scaling | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Azure Functions" />
+<meta property="og:title" content="Azure Virtual Desktop: Reserved Instances or Scaling" />
+<meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Welcome to my blog. I’m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH." />
-<meta property="og:description" content="Welcome to my blog. I’m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH." />
-<link rel="canonical" href="https://blog.itprocloud.de/category/azure-functions/" />
-<meta property="og:url" content="https://blog.itprocloud.de/category/azure-functions/" />
+<meta name="description" content="A while ago, I wrote a blog post about saving money by smartly switching the disk types of Azure VMs. But what’s about using reserved instances instead of switching VMs on or off (autoscaling)?" />
+<meta property="og:description" content="A while ago, I wrote a blog post about saving money by smartly switching the disk types of Azure VMs. But what’s about using reserved instances instead of switching VMs on or off (autoscaling)?" />
+<link rel="canonical" href="https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling/" />
+<meta property="og:url" content="https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Azure Functions" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/ReservedOrNot-02.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2021-12-13T00:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/ReservedOrNot-02.png" />
+<meta property="twitter:title" content="Azure Virtual Desktop: Reserved Instances or Scaling" />
 <script type="application/ld+json">
-{"@type":"WebPage","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"}},"url":"https://blog.itprocloud.de/category/azure-functions/","headline":"Azure Functions","description":"Welcome to my blog. I’m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/ReservedOrNot-02.png","datePublished":"2021-12-13T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling/","author":{"@type":"Person","name":"mm"},"headline":"Azure Virtual Desktop: Reserved Instances or Scaling","dateModified":"2021-12-13T00:00:00+01:00","description":"A while ago, I wrote a blog post about saving money by smartly switching the disk types of Azure VMs. But what’s about using reserved instances instead of switching VMs on or off (autoscaling)?","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -41,7 +46,7 @@
 
 
 
-<body class="layout-archive">
+<body class="layout-page">
 	<!-- defer loading of font and font awesome -->
 	<noscript id="deferred-styles">
 		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
@@ -327,66 +332,51 @@
 <!-- Content
 ================================================== -->
 <div class="main-content">
-    <!-- Begin List Posts
-================================================== -->
-<section class="recent-posts">
-<div class="section-title">
-    <h2>Archive of posts with <span>category 'Azure Functions'</span></h2>
-</div>
-<div class="row listrecent">
-
-
-
-    <!-- begin post -->
-
-
-<div class="col-lg-4 col-md-6 mb-30px card-group">
-    <div class="card h-100">
-        <div class="maxthumb">
-            <a href="/Deploy-an-Azure-Functional-App-as-an-interface-to-Log-Analytics-Azure-Monitor/">
-                
-
-                    
-                        <img class="img-fluid" src="/wp-content/uploads/2019/01/StreamAnalytics-Query-1024x395.png" alt="Deploy an Azure Functional App as an interface to Log Analytics / Azure Monitor"> 
-                    
-
-                
-            </a>
-        </div>
-        <div class="card-body">
-            <h2 class="card-title">
-                <a class="text-dark" href="/Deploy-an-Azure-Functional-App-as-an-interface-to-Log-Analytics-Azure-Monitor/">Deploy an Azure Functional App as an interface to Log Analytics / Azure Monitor</a>
-                
-            </h2>
-            <h4 class="card-text">Introduction
-</h4>
-        </div>
-        <div class="card-footer bg-white">
-            <div class="wrapfooter">
-                
-                <span class="meta-footer-thumb">
-                
-                <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
-                
-                </span>
-                <span class="author-meta">
-                <span class="post-name"><a target="_blank" href="https://blog.itprocloud.de">Marcel</a></span><br/>
-                
-                <span class="post-date">13 Jan 2019</span>
-                </span>
-                <span class="post-read-more"><a href="/Deploy-an-Azure-Functional-App-as-an-interface-to-Log-Analytics-Azure-Monitor/" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
-                <div class="clearfix"></div>
-            </div>
-        </div>
+    <section>
+    <div class="section-title">
+        <h2><span>Azure Virtual Desktop: Reserved Instances or Scaling</span></h2>
     </div>
-</div>
-<!-- end post -->
 
+    <div class="article-post">
+	
+		<!-- change content to anchor styled output -->
+		<p>A while ago, I wrote a blog post about saving money by smartly <a href="https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/">switching the disk types</a> of Azure VMs. But what’s about using reserved instances instead of switching VMs on or off (autoscaling)?</p>
+<p>I used the same <a href="https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/">data</a> as in the previews blog post to figure out the best amount of reserved instances for this specific customer environment.</p>
+<p>The charts below show the data of a host pool for seven days. Less load on the weekend and more than 400 user sessions on the weekdays:
+<img src="../assets/images/Hydra/SwitchDisks-01.png" alt="" />
+<img src="../assets/images/Hydra/SwitchDisks-02.png" alt="" /></p>
+<p>The maximum number of running hosts was 89 on Thursday.</p>
+<p>The VM types are D4 v4, and the current costs in west europe for one hour are:</p>
+<p>Pay-as-you-go: € 0.201315
+Reserved (1y): € 0.121219
+Reserved (1y): € 0.078055</p>
+<p>I calculated the costs for this week for different numbers of reserved instances: From 0% to 100% in 5% steps. The results are surprising:</p>
+<p><img src="../assets/images/ReservedOrNot-01.png" alt="" /></p>
+<p>The best value is with 5% reserved instances: €      981.77</p>
+<p><img src="../assets/images/ReservedOrNot-02.png" alt="" /></p>
+<p>The best value is with 25% reserved instances: €      886.42</p>
+<p>So, in this case, 25% reserved instances (23 hosts) are an excellent way to go. But it can change from customer to customer even if people work in a shift.</p>
 
-
-</div>
+		<!--<p>A while ago, I wrote a blog post about saving money by smartly <a href="https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/">switching the disk types</a> of Azure VMs. But what’s about using reserved instances instead of switching VMs on or off (autoscaling)?</p>
+<p>I used the same <a href="https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/">data</a> as in the previews blog post to figure out the best amount of reserved instances for this specific customer environment.</p>
+<p>The charts below show the data of a host pool for seven days. Less load on the weekend and more than 400 user sessions on the weekdays:
+<img src="../assets/images/Hydra/SwitchDisks-01.png" alt="" />
+<img src="../assets/images/Hydra/SwitchDisks-02.png" alt="" /></p>
+<p>The maximum number of running hosts was 89 on Thursday.</p>
+<p>The VM types are D4 v4, and the current costs in west europe for one hour are:</p>
+<p>Pay-as-you-go: € 0.201315
+Reserved (1y): € 0.121219
+Reserved (1y): € 0.078055</p>
+<p>I calculated the costs for this week for different numbers of reserved instances: From 0% to 100% in 5% steps. The results are surprising:</p>
+<p><img src="../assets/images/ReservedOrNot-01.png" alt="" /></p>
+<p>The best value is with 5% reserved instances: €      981.77</p>
+<p><img src="../assets/images/ReservedOrNot-02.png" alt="" /></p>
+<p>The best value is with 25% reserved instances: €      886.42</p>
+<p>So, in this case, 25% reserved instances (23 hosts) are an excellent way to go. But it can change from customer to customer even if people work in a shift.</p>
+-->
+	
+    
 </section>
-
 </div>
 
 
