@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 13 Dec 2021 19:44:34 +0100</pubDate>
-    <lastBuildDate>Mon, 13 Dec 2021 19:44:34 +0100</lastBuildDate>
+    <pubDate>Tue, 14 Dec 2021 10:34:50 +0100</pubDate>
+    <lastBuildDate>Tue, 14 Dec 2021 10:34:50 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -20,7 +20,7 @@
 &lt;p&gt;The VM types are D4 v4, and the current costs in west europe for one hour are:&lt;/p&gt;
 &lt;p&gt;Pay-as-you-go: € 0.201315
 Reserved (1y): € 0.121219
-Reserved (1y): € 0.078055&lt;/p&gt;
+Reserved (3y): € 0.078055&lt;/p&gt;
 &lt;p&gt;I calculated the costs for this week for different numbers of reserved instances: From 0% to 100% in 5% steps. The results are surprising:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/ReservedOrNot-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;The best value is with 5% reserved instances: €      981.77&lt;/p&gt;
