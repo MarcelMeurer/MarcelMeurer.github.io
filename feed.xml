@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 14 Dec 2021 10:34:50 +0100</pubDate>
-    <lastBuildDate>Tue, 14 Dec 2021 10:34:50 +0100</lastBuildDate>
+    <pubDate>Tue, 04 Jan 2022 13:26:49 +0100</pubDate>
+    <lastBuildDate>Tue, 04 Jan 2022 13:26:49 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -155,6 +155,7 @@ cmdkey /add:[wvdmsixdata.file.core.windows.net](http://wvduserdata.file.core.win
 &lt;p&gt;Using WS makes a solution more flexible and avoids the limits of the RunCommandAPI. The price for this is another agent (not a service), which must be deployed during the rollout or afterward. From the first researches and implementation, there is no low limit regarding the number of hosts.&lt;/p&gt;
 &lt;p&gt;The current version of Hydra has the preview feature (to be released) showing the process list if an admin clicks on the user name in the session list. While this feature is in preview, test users must ask to switch on this feature for a specific Hydra instance). Check out the video on YouTube: &lt;a href=&quot;https://youtu.be/aNiNbEukVVc&quot;&gt;https://youtu.be/aNiNbEukVVc&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;The final question:&lt;/strong&gt; Are the features worth that an agent is needed?&lt;/p&gt;
+&lt;p&gt;Update from 4/1/2022: Using an agent would be perfect to manage Windows 365 as well. W365 is missing some API to work directly with the VM (like the RunCommandAPI). An agent would solve the missing APIs and would allows to manage W365 users and hosts with some features mentioned above.&lt;/p&gt;
 &lt;p&gt;First classes for the duplex-communication:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;public class Communication
   {
