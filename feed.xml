@@ -5,9 +5,72 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 04 Jan 2022 13:26:49 +0100</pubDate>
-    <lastBuildDate>Tue, 04 Jan 2022 13:26:49 +0100</lastBuildDate>
+    <pubDate>Fri, 07 Jan 2022 15:56:35 +0100</pubDate>
+    <lastBuildDate>Fri, 07 Jan 2022 15:56:35 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Azure Trusted Launch and Custom Images - even for AVD</title>
+        <description>&lt;p&gt;Trusted launch for Azure virtual machines is currently in public preview (&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch&lt;/a&gt;). The trusted launch has some benefits, like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Securely deploy virtual machines with verified boot loaders, OS kernels, and drivers.&lt;/li&gt;
+&lt;li&gt;Securely protect keys, certificates, and secrets in virtual machines.&lt;/li&gt;
+&lt;li&gt;Gain insights and confidence in the entire boot chain’s integrity.&lt;/li&gt;
+&lt;li&gt;Ensure workloads are trusted and verifiable.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;(Source: Microsoft website)&lt;/p&gt;
+&lt;p&gt;Technology-based, the trusted launch cannot be activated on existing VMs. Additionally, the VM size must support this feature. More importantly, a trusted launch VM can only be created from vanilla Microsoft Marketplace images. Deployment from a custom image is not working and is not supported.&lt;/p&gt;
+&lt;p&gt;That’s not pretty, while in AVD, most deployments are based on images from Golden Masters. That is also the approach I’m using with my solutions (like &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Rolling out a Windows 10/11 VM&lt;/li&gt;
+&lt;li&gt;Domain join the VM&lt;/li&gt;
+&lt;li&gt;Update the VM and install applications&lt;/li&gt;
+&lt;li&gt;Grabbing an image (with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, the Master survives)&lt;/li&gt;
+&lt;li&gt;Rolling out session hosts based on the image&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I spent some time finding a workaround for deploying session hosts based on a Golden Master with secure boot enabled. I was successful, and I built this as an experimental feature into &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; (v1.7.20).&lt;/p&gt;
+&lt;p&gt;How does it work:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Preparing the Golden Master&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;Rolling out a Windows 10/11 VM from the marketplace and configuring the secure boot feature&lt;/li&gt;
+&lt;li&gt;Domain join the VM&lt;/li&gt;
+&lt;li&gt;Update the VM and install applications&lt;/li&gt;
+&lt;li&gt;Shutdown the VM&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Creating session hosts from the Master&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;Navigate in &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to the VM (Azure -&amp;gt; Virtual Machines -&amp;gt; Resource Group -&amp;gt; VM)&lt;/li&gt;
+&lt;li&gt;Right-click the VM and select: “Instantly build session hosts (experimental)”&lt;/li&gt;
+&lt;li&gt;Configure the settings for the deployment (VM size, host pool, etc.)&lt;/li&gt;
+&lt;li&gt;Start the rollout&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;After a while, session hosts with secure boot enabled are part of the host pool. While the rollout process is more complex, it will take longer than the classic approach (the new approach is based on a snap-shot technology).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/InstantBuild-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/InstantBuild-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/InstantBuild-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; This feature is very &lt;em&gt;experimental&lt;/em&gt;, and I’m looking forward to a native and supported way to deploy secure boot hosts based on a custom image. Please use it at your own risk.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; If anybody finds an easier way - please let me know&lt;/p&gt;
+</description>
+        <pubDate>Fri, 07 Jan 2022 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>Azure Virtual Desktop: Reserved Instances or Scaling</title>
@@ -29,8 +92,8 @@ Reserved (3y): € 0.078055&lt;/p&gt;
 &lt;p&gt;So, in this case, 25% reserved instances (23 hosts) are an excellent way to go. But it can change from customer to customer even if people work in a shift.&lt;/p&gt;
 </description>
         <pubDate>Mon, 13 Dec 2021 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling/</guid>
+        <link>https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling-Copy/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling-Copy/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -369,6 +432,10 @@ public class SessionHostProcess
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7.20.0&lt;/td&gt;
+&lt;td&gt;Experimental support for building session hosts based on a secure boot Golden Master&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.7.19.0&lt;/td&gt;
 &lt;td&gt;Add: VM sizes for D and E series V5&lt;/td&gt;
@@ -815,7 +882,7 @@ public class SessionHostProcess
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;/details&gt;&lt;br/&gt;
+&lt;/details&gt;&lt;br/&gt;|
 &lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
 &lt;h2 id=&quot;service-principal-functional-account&quot;&gt;Service principal (functional account)&lt;/h2&gt;
 &lt;p&gt;To work with the GUI, you need a service principal (function account) with permission to administrate access to the WVD/AVD and Azure resources. I decide to use a service principal to avoid confusion if my Azure AD user is only a guest account in the WVD/AVD tenant I have to administrate and easily switch between different tenants.&lt;/p&gt;
@@ -1141,85 +1208,6 @@ Hydra is the solution to manage Azure Virtual Desktop for one or more tenants. H
         <pubDate>Thu, 02 Sep 2021 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Hydra: Scripts and Script Collections for the operation and automation of Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
-        <description>&lt;h2 id=&quot;intro&quot;&gt;Intro&lt;/h2&gt;
-&lt;p&gt;Project Hydra for Azure Virtual Desktop
-Six months ago, I started a new project to provide a solution to manage Azure Virtual Desktop / Windows Virtual Desktop in an automated way. It was thought of as a complement to #WVDAdmin and focused on doing some tasks automatically. For example:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Autoscale
-– Multi-Session hosts
-– Power-on-connect support
-– Schedules
-– Autopilot: Automatically scales up/down/create/remove based on the usage of a host pool
-– Deploy hosts on-demand - including ephemeral VMs based on a custom image&lt;/li&gt;
-&lt;li&gt;VDI
-– Auto deallocate session hosts&lt;/li&gt;
-&lt;li&gt;Granular session timeouts&lt;/li&gt;
-&lt;li&gt;Auto Health&lt;/li&gt;
-&lt;li&gt;and a lot more&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The last days, I added another essential feature to the project Hydra: Scripts and script collections. Both are intended to automize Azure VMs, and Azure Virtual Desktop (AVD) from the management perspective.&lt;/p&gt;
-&lt;h2 id=&quot;scripts-and-script-collections-updated&quot;&gt;Scripts and Script Collections (Updated)&lt;/h2&gt;
-&lt;p&gt;Scripts and script collections. Both are intended to automize Azure VMs, and Azure Virtual Desktop (AVD) from the management perspective.&lt;/p&gt;
-&lt;h3 id=&quot;script&quot;&gt;Script&lt;/h3&gt;
-&lt;p&gt;A Powershell script for a session host. The script runs in the system context with system permissions, variables containing data about the host pool, session hosts, etc. Optionally, a Powershell credential object (PSC) can be used to connect to other services, like files shares (the service account can be configured on the host pool level).&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Hydra/Script-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;script-collections&quot;&gt;Script Collections&lt;/h3&gt;
-&lt;p&gt;A script collection is a collection of scripts and tasks in any sequence. E.g.: Drain mode on -&amp;gt; Logoff users -&amp;gt; Start the VM -&amp;gt; Run a script -&amp;gt; Restart -&amp;gt; Drain mode off&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Hydra/ScriptCollection-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Additionally, parameters can be set for a script, and error handling is built-in. Script collections are very useful to orchestrate several tasks and scripts to session hosts.&lt;/p&gt;
-&lt;h3 id=&quot;built-in-scripts-and-collections&quot;&gt;Built-in scripts and collections&lt;/h3&gt;
-&lt;p&gt;There are several built-in scripts and collections, and new scripts and collections are provided continuously. Built-in scripts can be updated with the “Update” button in the upper-right corner.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Hydra/ScriptCollectionSync-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;To add a custom script or script collection, copy the &lt;em&gt;“BuiltIn: 1st Template Script”&lt;/em&gt; or &lt;em&gt;“BuiltIn: 1st Template Script Collection”&lt;/em&gt;. Then start building the new one. Make sure to save the new script/collection with a click of the disk symbol. There is no warning right now if you close the browser or if you navigate to another site.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Hydra/ScriptCollectionSaveBar-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;triggering-a-script-or-script-collection&quot;&gt;Triggering a script or script collection&lt;/h3&gt;
-&lt;p&gt;Scripts and script collections can be triggered by &lt;em&gt;Host pool administrators&lt;/em&gt; and edited by &lt;em&gt;Full administrators&lt;/em&gt;.&lt;/p&gt;
-&lt;p&gt;Both can be assigned/triggered in different ways:&lt;/p&gt;
-&lt;h4 id=&quot;for-selected-hosts&quot;&gt;For selected hosts&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Hydra/ScriptCollectionAssign-SessionHosts-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h4 id=&quot;automatically-after-the-rollout-of-a-new-session-host&quot;&gt;Automatically after the rollout of a new session host&lt;/h4&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Hydra/ScriptCollectionAssign-Rollout-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h4 id=&quot;by-a-schedule&quot;&gt;By a schedule&lt;/h4&gt;
-&lt;p&gt;Schedules can be used on a host pool level to run a script or collection unattended on session hosts of the pool. Comparable to other schedules, weekday(s) and start time define the plan. The following parameters can be used to fine-tune the schedule:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Hosts&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;ul&gt;
-&lt;li&gt;Run on all hosts&lt;/li&gt;
-&lt;li&gt;Run only on hosts without user sessions&lt;/li&gt;
-&lt;li&gt;Run only on hosts in drain-mode&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Simultaneously&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;ul&gt;
-&lt;li&gt;Starts directly on all hosts&lt;/li&gt;
-&lt;li&gt;Start on max. 5 session hosts at the same time (if one finished, the script/collection will be started on the next host)&lt;/li&gt;
-&lt;li&gt;…&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Hydra/ScriptCollectionAssign-Schedule-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;This example runs Windows Update on all session hosts Sunday, 1:00 am. Including drain mode, start, update, restart, drain mode off.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Install Project Hydra in your subscription: &lt;a href=&quot;https://github.com/marcelmeurer/wvd-hydra&quot;&gt;https://github.com/marcelmeurer/wvd-hydra&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-</description>
-        <pubDate>Tue, 10 Aug 2021 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Scripts-and-Script-Collections-available-in-Hydra-for-the-automation-of-Windows-Azure-Virtual-Desktop-AVD-WVD/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Scripts-and-Script-Collections-available-in-Hydra-for-the-automation-of-Windows-Azure-Virtual-Desktop-AVD-WVD/</guid>
         
         
         <category>Windows Virtual Desktop</category>
