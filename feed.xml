@@ -5,337 +5,15 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 11 Jan 2022 10:28:03 +0100</pubDate>
-    <lastBuildDate>Tue, 11 Jan 2022 10:28:03 +0100</lastBuildDate>
+    <pubDate>Tue, 11 Jan 2022 10:37:19 +0100</pubDate>
+    <lastBuildDate>Tue, 11 Jan 2022 10:37:19 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
-    
-      <item>
-        <title>Azure Trusted Launch and Custom Images - even for AVD</title>
-        <description>&lt;p&gt;Trusted launch for Azure virtual machines is currently in public preview (&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch&lt;/a&gt;). The trusted launch has some benefits, like:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Securely deploy virtual machines with verified boot loaders, OS kernels, and drivers.&lt;/li&gt;
-&lt;li&gt;Securely protect keys, certificates, and secrets in virtual machines.&lt;/li&gt;
-&lt;li&gt;Gain insights and confidence in the entire boot chain’s integrity.&lt;/li&gt;
-&lt;li&gt;Ensure workloads are trusted and verifiable.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;(Source: Microsoft website)&lt;/p&gt;
-&lt;p&gt;Technology-based, the trusted launch cannot be activated on existing VMs. Additionally, the VM size must support this feature. More importantly, a trusted launch VM can only be created from vanilla Microsoft Marketplace images. Deployment from a custom image is not working and is not supported.&lt;/p&gt;
-&lt;p&gt;That’s not pretty, while in AVD, most deployments are based on images from Golden Masters. That is also the approach I’m using with my solutions (like &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;):&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Rolling out a Windows 10/11 VM&lt;/li&gt;
-&lt;li&gt;Domain join the VM&lt;/li&gt;
-&lt;li&gt;Update the VM and install applications&lt;/li&gt;
-&lt;li&gt;Grabbing an image (with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, the Master survives)&lt;/li&gt;
-&lt;li&gt;Rolling out session hosts based on the image&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;I spent some time finding a workaround for deploying session hosts based on a Golden Master with secure boot enabled. I was successful, and I built this as an experimental feature into &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; (v1.7.20).&lt;/p&gt;
-&lt;p&gt;How does it work:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Preparing the Golden Master&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;ul&gt;
-&lt;li&gt;Rolling out a Windows 10/11 VM from the marketplace and configuring the secure boot feature&lt;/li&gt;
-&lt;li&gt;Domain join the VM&lt;/li&gt;
-&lt;li&gt;Update the VM and install applications&lt;/li&gt;
-&lt;li&gt;Shutdown the VM&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Creating session hosts from the Master&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;ul&gt;
-&lt;li&gt;Navigate in &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to the VM (Azure -&amp;gt; Virtual Machines -&amp;gt; Resource Group -&amp;gt; VM)&lt;/li&gt;
-&lt;li&gt;Right-click the VM and select: “Instantly build session hosts (experimental)”&lt;/li&gt;
-&lt;li&gt;Configure the settings for the deployment (VM size, host pool, etc.)&lt;/li&gt;
-&lt;li&gt;Start the rollout&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;After a while, session hosts with secure boot enabled are part of the host pool. While the rollout process is more complex, it will take longer than the classic approach (the new approach is based on a snap-shot technology).&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/InstantBuild-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/InstantBuild-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/InstantBuild-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; This feature is very &lt;em&gt;experimental&lt;/em&gt;, and I’m looking forward to a native and supported way to deploy secure boot hosts based on a custom image. Please use it at your own risk.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; If anybody finds an easier way - please let me know&lt;/p&gt;
-</description>
-        <pubDate>Fri, 07 Jan 2022 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Azure Virtual Desktop: Reserved Instances or Scaling</title>
-        <description>&lt;p&gt;A while ago, I wrote a blog post about saving money by smartly &lt;a href=&quot;https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/&quot;&gt;switching the disk types&lt;/a&gt; of Azure VMs. But what’s about using reserved instances instead of switching VMs on or off (autoscaling)?&lt;/p&gt;
-&lt;p&gt;I used the same &lt;a href=&quot;https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/&quot;&gt;data&lt;/a&gt; as in the previews blog post to figure out the best amount of reserved instances for this specific customer environment.&lt;/p&gt;
-&lt;p&gt;The charts below show the data of a host pool for seven days. Less load on the weekend and more than 400 user sessions on the weekdays:
-&lt;img src=&quot;../assets/images/Hydra/SwitchDisks-01.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/Hydra/SwitchDisks-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The maximum number of running hosts was 89 on Thursday.&lt;/p&gt;
-&lt;p&gt;The VM types are D4 v4, and the current costs in west europe for one hour are:&lt;/p&gt;
-&lt;p&gt;Pay-as-you-go: € 0.201315
-Reserved (1y): € 0.121219
-Reserved (3y): € 0.078055&lt;/p&gt;
-&lt;p&gt;I calculated the costs for this week for different numbers of reserved instances: From 0% to 100% in 5% steps. The results are surprising:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/ReservedOrNot-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The best value is with 5% reserved instances: €      981.77&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/ReservedOrNot-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The best value is with 25% reserved instances: €      886.42&lt;/p&gt;
-&lt;p&gt;So, in this case, 25% reserved instances (23 hosts) are an excellent way to go. But it can change from customer to customer even if people work in a shift.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 13 Dec 2021 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling-Copy/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling-Copy/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>How to use MSIX AppAttach without having computer accounts synced for Azure Virtual Desktop (AD synced and Azure Files)</title>
-        <description>&lt;p&gt;Using MSIX AppAttach in Azure Virtual Desktop is great. To stage the MSIX AppAttach packages, the session host needs permission to read the package. If the package is placed on a “normal” file server, everything works as expected. But if the image on an Azure Files share, it would not work directly. In this case, the computer object has no permission to read data. You got the following error message:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;em&gt;&lt;strong&gt;SessionHost unhealthy: The following MSIX packages have failed to properly stage: [xxxxxxxxxxxx_yyyyyy, System.IO.FileNotFoundException: File not found.&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3 id=&quot;the-default-approach&quot;&gt;The default approach&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Add the AVD computer objects in a global group&lt;/li&gt;
-&lt;li&gt;Sync the group and the computer objects for the hosts&lt;/li&gt;
-&lt;li&gt;Add the group with the RBAC Role “Storage File Data SMB Share Contributor” to the file share or storage account&lt;/li&gt;
-&lt;li&gt;Give the global group NTFS read permission&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;After that, the hosts can access with their computer account the share.&lt;/p&gt;
-&lt;p&gt;The disadvantage is that if you deploy a new host, you have to add the computer object to the group and wait for the synchronization to AAD (for the group and the computer object). Meanwhile, the host cannot stage the package and cannot provide the application to the users :-(&lt;/p&gt;
-&lt;h3 id=&quot;another-approach-or-workaround&quot;&gt;Another approach or workaround&lt;/h3&gt;
-&lt;p&gt;The issue is that the computer/system account cannot access the share. Another approach is to convince the system account to use a domain user for accessing Azure Files.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Create a user account in AD and wait for replication&lt;/li&gt;
-&lt;li&gt;Add the user with the RBAC Role “Storage File Data SMB Share Contributor” to the file share or storage account&lt;/li&gt;
-&lt;li&gt;Give the user NTFS read permission&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;To convince the system account to use a specific user account accessing a specific Azure Files storage account. That can be tested with these two lines:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;psexec -s cmd
-
-cmdkey /add:[wvdmsixdata.file.core.windows.net](http://wvduserdata.file.core.windows.net/) /user:[msix@itprocloud.de](mailto:msix@itprocloud.de) /pass:passwordOfMsixUser
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now, every time the host access &lt;a href=&quot;wvdmsixdata.file.core.windows.net&quot;&gt;wvdmsixdata.file.core.windows.net&lt;/a&gt; in the system context, the named user account is used - even for staging the MSIX AppAttach packages.&lt;/p&gt;
-&lt;p&gt;This step can be automized via a script directly after the rollout of a new session host. This allows the host to stage the packages directly.&lt;/p&gt;
-&lt;p&gt;You could use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, modify the deployment script, and run the cmdkey part after the domain join (psexec is not needed).&lt;/p&gt;
-&lt;p&gt;Another way to go is using &lt;a href=&quot;https://www.itprocloud.de/hydra/&quot;&gt;Hydra&lt;/a&gt; with a script after the deployment. In this case, you could use the service account on a host pool level. Example script:&lt;/p&gt;
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Check, if service account is available&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;global&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Hydra_ServiceAccount_PSC&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-eq&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;$null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;throw&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Failed: Service account missing - The script needs a configured service account.&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fileServer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;wvdmsixdata.file.core.windows.net&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$secret&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;System.Net.NetworkCredential&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;global&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Hydra_ServiceAccount_PSC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Password&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cmdkey.exe&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/add:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fileServer&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/user:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;global&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Hydra_ServiceAccount_PSC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;UserName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;/pass:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$secret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Get-ChildItem&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;\\wvduserdata.file.core.windows.net\msix&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Count&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OutputWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;The script has finished. Existing files: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$count&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Note:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;This is a workaround!&lt;/li&gt;
-&lt;li&gt;Make sure that the users’ password does not expire.&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Fri, 26 Nov 2021 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Directly connect session hosts with a 3rd party management environment</title>
-        <description>&lt;p&gt;While working with Azure Virtual Desktop, I still miss some features that seem unavailable through Microsoft or maybe a 3rd party vendor. One of the features is that an admin/helpdesk can see the users’ processes, CPU, and memory usage and terminate a hanging or crazy process. To build this feature, a fast connection to the session host from the management platform (in my case, Hydra) is needed. The approach using the RunCommandExtension is not fast enough and doesn’t allow duplex communication.&lt;/p&gt;
-&lt;p&gt;While web-based management platforms normally do not have a direct IP connection to the session hosts, the typical remote administration approaches won’t work. Therefore, I see no other way to have a small agent running on the session hosts connecting to the web-based management platform. One approach is that the agents connect via https to the management platform - the better way is using Web-Sockets to connect. &lt;em&gt;Websockets&lt;/em&gt; (WS) are faster and scale better than sending an http-request each second from each host to the platform. WS also directly supports a communication strategy.&lt;/p&gt;
-&lt;p&gt;In the preview version of Hydra, the agents connect securely (via a secret) to the platform and identify themselves via the FQDN and VM resource Id. That allows being referenced as a session host as well.&lt;/p&gt;
-&lt;p&gt;In my case, only the platform can ask the client (session host). For that, I build several classes. In each case, the platform asked a specific client for information (GetProcessList for session “2”), and the client response after a short time with the data (SetProcessList and SessionHostProcess[] as JSON in the content property).&lt;/p&gt;
-&lt;p&gt;For this example, asking for the process list is initiated by a management platform admin with the right permissions. The admin can also initiate a kill process to stop a process. While this works fast, the process list can be refreshed every few seconds automatically and shown on the website of the management platform.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;The fast communication between the platform and session hosts allows additional or improved features:&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Showing CPU/MEM per session host faster than using the Azure API (Azure agent)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;A general fast monitoring&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;De-prioritized processes&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Fast chat with the user&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Improve scaling: Avoid logging off a disconnected session if a particular application is running (Excel, SAP - may be based on the CPU usage)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Improve scaling: Avoid logoff VIP users&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Get more data from the native AD via this connection&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Join computer objects fast into groups in a native AD&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Trigger a garbage collector&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Running scripts on the hosts - concurrently with duplex communication (to show a now written log file)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Configure application&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Get data about FSLogix issues&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Get data about FSLogix disk sizes&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;…&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Using WS makes a solution more flexible and avoids the limits of the RunCommandAPI. The price for this is another agent (not a service), which must be deployed during the rollout or afterward. From the first researches and implementation, there is no low limit regarding the number of hosts.&lt;/p&gt;
-&lt;p&gt;The current version of Hydra has the preview feature (to be released) showing the process list if an admin clicks on the user name in the session list. While this feature is in preview, test users must ask to switch on this feature for a specific Hydra instance). Check out the video on YouTube: &lt;a href=&quot;https://youtu.be/aNiNbEukVVc&quot;&gt;https://youtu.be/aNiNbEukVVc&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;The final question:&lt;/strong&gt; Are the features worth that an agent is needed?&lt;/p&gt;
-&lt;p&gt;Update from 4/1/2022: Using an agent would be perfect to manage Windows 365 as well. W365 is missing some API to work directly with the VM (like the RunCommandAPI). An agent would solve the missing APIs and would allows to manage W365 users and hosts with some features mentioned above.&lt;/p&gt;
-&lt;p&gt;First classes for the duplex-communication:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public class Communication
-  {
-​    public CommunicationType Type { get; set; }
-​    public string Content { get; set; }
-  }
-
-public enum CommunicationType
-  {
-​    GetHostIdentifier,
-​    SetHostIdentifier,
-​    GetProcessList,
-​    SetProcessList,
-​	KillProcess,
-  }
-
-public class HostIdentifier
-  {
-​    public string SessionHostResourceId { get; set; }
-  }
-
-public class SessionHostProcess
-  { 
-​    public int ProcesId { get; set; }
-​    public string  Caption{ get; set; }
-​    public int SessionId { get; set; }
-​    public long WorkingSet { get; set; }
-​    public double CpuPercent{ get; set; }
-  }
-&lt;/code&gt;&lt;/pre&gt;</description>
-        <pubDate>Wed, 17 Nov 2021 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/Upcoming-features-of-Hydra-or-other-3rd-AVD-solutions/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Upcoming-features-of-Hydra-or-other-3rd-AVD-solutions/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>AVD issue: SessionHost unhealthy SxsStack listener is not ready - Code -2147467259</title>
-        <description>&lt;p&gt;A few days ago, I got an email from a customer concerning that a lot of Azure Virtual Desktop (AVD) session hosts showing an error message from the internal health check:&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;SessionHost unhealthy SxSStack listener is not ready - Code -2147467259&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Unfortunately, there was no failed event log from the WVDAgent in the application log. But the RemoteDesktopServices log shows some issues with the SxSStack as expected. Reinstalling the AVD agents doesn’t resolve the issue. But we found an easier way to bring the hosts back to life: Uninstalling the SxS Stack package and rebooting the host.&lt;/p&gt;
-&lt;p&gt;We used PowerShell to create a single-line script and Hydra to execute it on all affected session host:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Uninstall-Package -Name &amp;quot;Remote Desktop Services SxS Network Stack&amp;quot; -AllVersions -Force
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Hydra/SxsIssue-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The short script can be deployed with #WVDAdmin, #Hydra, or any other solution having access to the hosts.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 16 Nov 2021 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Why switching disk types can save a bunch of money running Azure Virtual Desktop</title>
-        <description>&lt;p&gt;In March 2021, I introduced a new feature for #WVDAdmin to change the disk type of a VM to &lt;em&gt;automatically change the disk type&lt;/em&gt; before starting a VM and after the deallocation of a VM. The purpose was clear: Having a more expensive high-performance disk for the runtime of a VM and a cheap disk while the VM is off. This is especially important because hard disks always cost - regardless of whether the associated VM is on or off.&lt;/p&gt;
-&lt;p&gt;The implementation was straightforward, while changing the disk type takes only a few seconds. I guess that Microsoft only regulates the performance of disks and is not copying the disks from one storage to another.&lt;/p&gt;
-&lt;p&gt;I use the same feature in my #AVD solution, “Hydra”. If configured, Hydra changes the disk type on start and stop, triggered by an administrator or Hydras’ autoscaling. But what does this saves in a real-world scenario? I used the data from a deployment serving more than 400 concurrent users per day.&lt;/p&gt;
-&lt;p&gt;The charts below show the data of a host pool for seven days. Less load on the weekend and more than 400 user sessions on the weekdays:
-&lt;img src=&quot;../assets/images/Hydra/SwitchDisks-01.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/Hydra/SwitchDisks-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The maximum number of running hosts was 89 on Thursday. So I have at least 89 disks for the hosts. 89 exiting disks for seven days results that I have to pay for 14,952 hours of disks (89 disks * 24h/day * 7day).&lt;/p&gt;
-&lt;p&gt;As known, it makes a difference if you have to pay for cheap HDD or high-performance Premium Disks like recommended for AVD. Today the costs of a 128 GByte managed disk are:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;HHD
-&lt;ul&gt;
-&lt;li&gt;5.04 € per month&lt;/li&gt;
-&lt;li&gt;0.007 € per hour (with 30 days a month)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Premium
-&lt;ul&gt;
-&lt;li&gt;18.70 € per month&lt;/li&gt;
-&lt;li&gt;0.025972 € per hour (with 30 days a month)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;If all of the 89 hosts in the pool use Premium Disks, the customer must pay &lt;strong&gt;388.34 €&lt;/strong&gt; a week.&lt;/p&gt;
-&lt;p&gt;We know that not all hosts are running 24h, which means that even the disks are not Premium the whole time. With log analytics, we can measure the runtime in hours overall hosts in the pool:
-&lt;img src=&quot;../assets/images/Hydra/SwitchDisks-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;For the whole week, the runtime for the hosts (and Premium Disks) was 4,998 hours. The rest of the time, the disks type are the cheaper HHD.&lt;/p&gt;
-&lt;p&gt;With this number we can calculate the real disk costs for the pool for a week: 4,998h * 0.025972 €/h + (14,952h - 4,998h) * 0.007 €/h = &lt;strong&gt;199.49 €&lt;/strong&gt; a week.&lt;/p&gt;
-&lt;p&gt;And that is more than interesting: In this real case scenario, the customer only saves at least 188.85 € a week for the disks - more then 800 € a month. That is tremendous and results in a saving of &lt;strong&gt;49%&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;PS: The saving is higher while more than 89 hosts are in the pool to handle more users.&lt;/p&gt;
-&lt;p&gt;Additional strategies to save money while using AVD:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Automatic provisioning of new hosts in the morning to handle the first logon storm (scheduled)&lt;/li&gt;
-&lt;li&gt;Usage of ephemeral disks&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Check-out Hydra: &lt;a href=&quot;https://azuremarketplace.microsoft.com/marketplace/apps/itprocloudgmbh1628775137215.hydra-deploy-d1&quot;&gt;Azure Marketplace&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sat, 13 Nov 2021 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/09/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 01/11/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Imaging
@@ -422,7 +100,7 @@ public class SessionHostProcess
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/09/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 01/11/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -886,7 +564,7 @@ public class SessionHostProcess
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;/details&gt;&lt;br/&gt;|
+&lt;/details&gt;&lt;br/&gt;
 &lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
 &lt;h2 id=&quot;service-principal-functional-account&quot;&gt;Service principal (functional account)&lt;/h2&gt;
 &lt;p&gt;To work with the GUI, you need a service principal (function account) with permission to administrate access to the WVD/AVD and Azure resources. I decide to use a service principal to avoid confusion if my Azure AD user is only a guest account in the WVD/AVD tenant I have to administrate and easily switch between different tenants.&lt;/p&gt;
@@ -1100,11 +778,333 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/09/2021&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 01/11/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Tue, 09 Nov 2021 00:00:00 +0100</pubDate>
+        <pubDate>Tue, 11 Jan 2022 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Azure Trusted Launch and Custom Images - even for AVD</title>
+        <description>&lt;p&gt;Trusted launch for Azure virtual machines is currently in public preview (&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch&lt;/a&gt;). The trusted launch has some benefits, like:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Securely deploy virtual machines with verified boot loaders, OS kernels, and drivers.&lt;/li&gt;
+&lt;li&gt;Securely protect keys, certificates, and secrets in virtual machines.&lt;/li&gt;
+&lt;li&gt;Gain insights and confidence in the entire boot chain’s integrity.&lt;/li&gt;
+&lt;li&gt;Ensure workloads are trusted and verifiable.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;(Source: Microsoft website)&lt;/p&gt;
+&lt;p&gt;Technology-based, the trusted launch cannot be activated on existing VMs. Additionally, the VM size must support this feature. More importantly, a trusted launch VM can only be created from vanilla Microsoft Marketplace images. Deployment from a custom image is not working and is not supported.&lt;/p&gt;
+&lt;p&gt;That’s not pretty, while in AVD, most deployments are based on images from Golden Masters. That is also the approach I’m using with my solutions (like &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Rolling out a Windows 10/11 VM&lt;/li&gt;
+&lt;li&gt;Domain join the VM&lt;/li&gt;
+&lt;li&gt;Update the VM and install applications&lt;/li&gt;
+&lt;li&gt;Grabbing an image (with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, the Master survives)&lt;/li&gt;
+&lt;li&gt;Rolling out session hosts based on the image&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I spent some time finding a workaround for deploying session hosts based on a Golden Master with secure boot enabled. I was successful, and I built this as an experimental feature into &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; (v1.7.20).&lt;/p&gt;
+&lt;p&gt;How does it work:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Preparing the Golden Master&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;Rolling out a Windows 10/11 VM from the marketplace and configuring the secure boot feature&lt;/li&gt;
+&lt;li&gt;Domain join the VM&lt;/li&gt;
+&lt;li&gt;Update the VM and install applications&lt;/li&gt;
+&lt;li&gt;Shutdown the VM&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Creating session hosts from the Master&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;ul&gt;
+&lt;li&gt;Navigate in &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to the VM (Azure -&amp;gt; Virtual Machines -&amp;gt; Resource Group -&amp;gt; VM)&lt;/li&gt;
+&lt;li&gt;Right-click the VM and select: “Instantly build session hosts (experimental)”&lt;/li&gt;
+&lt;li&gt;Configure the settings for the deployment (VM size, host pool, etc.)&lt;/li&gt;
+&lt;li&gt;Start the rollout&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;After a while, session hosts with secure boot enabled are part of the host pool. While the rollout process is more complex, it will take longer than the classic approach (the new approach is based on a snap-shot technology).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/InstantBuild-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/InstantBuild-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/InstantBuild-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; This feature is very &lt;em&gt;experimental&lt;/em&gt;, and I’m looking forward to a native and supported way to deploy secure boot hosts based on a custom image. Please use it at your own risk.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; If anybody finds an easier way - please let me know&lt;/p&gt;
+</description>
+        <pubDate>Fri, 07 Jan 2022 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Azure Virtual Desktop: Reserved Instances or Scaling</title>
+        <description>&lt;p&gt;A while ago, I wrote a blog post about saving money by smartly &lt;a href=&quot;https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/&quot;&gt;switching the disk types&lt;/a&gt; of Azure VMs. But what’s about using reserved instances instead of switching VMs on or off (autoscaling)?&lt;/p&gt;
+&lt;p&gt;I used the same &lt;a href=&quot;https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/&quot;&gt;data&lt;/a&gt; as in the previews blog post to figure out the best amount of reserved instances for this specific customer environment.&lt;/p&gt;
+&lt;p&gt;The charts below show the data of a host pool for seven days. Less load on the weekend and more than 400 user sessions on the weekdays:
+&lt;img src=&quot;../assets/images/Hydra/SwitchDisks-01.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/Hydra/SwitchDisks-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The maximum number of running hosts was 89 on Thursday.&lt;/p&gt;
+&lt;p&gt;The VM types are D4 v4, and the current costs in west europe for one hour are:&lt;/p&gt;
+&lt;p&gt;Pay-as-you-go: € 0.201315
+Reserved (1y): € 0.121219
+Reserved (3y): € 0.078055&lt;/p&gt;
+&lt;p&gt;I calculated the costs for this week for different numbers of reserved instances: From 0% to 100% in 5% steps. The results are surprising:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/ReservedOrNot-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The best value is with 5% reserved instances: €      981.77&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/ReservedOrNot-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The best value is with 25% reserved instances: €      886.42&lt;/p&gt;
+&lt;p&gt;So, in this case, 25% reserved instances (23 hosts) are an excellent way to go. But it can change from customer to customer even if people work in a shift.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 13 Dec 2021 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling-Copy/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling-Copy/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>How to use MSIX AppAttach without having computer accounts synced for Azure Virtual Desktop (AD synced and Azure Files)</title>
+        <description>&lt;p&gt;Using MSIX AppAttach in Azure Virtual Desktop is great. To stage the MSIX AppAttach packages, the session host needs permission to read the package. If the package is placed on a “normal” file server, everything works as expected. But if the image on an Azure Files share, it would not work directly. In this case, the computer object has no permission to read data. You got the following error message:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;em&gt;&lt;strong&gt;SessionHost unhealthy: The following MSIX packages have failed to properly stage: [xxxxxxxxxxxx_yyyyyy, System.IO.FileNotFoundException: File not found.&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;the-default-approach&quot;&gt;The default approach&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Add the AVD computer objects in a global group&lt;/li&gt;
+&lt;li&gt;Sync the group and the computer objects for the hosts&lt;/li&gt;
+&lt;li&gt;Add the group with the RBAC Role “Storage File Data SMB Share Contributor” to the file share or storage account&lt;/li&gt;
+&lt;li&gt;Give the global group NTFS read permission&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;After that, the hosts can access with their computer account the share.&lt;/p&gt;
+&lt;p&gt;The disadvantage is that if you deploy a new host, you have to add the computer object to the group and wait for the synchronization to AAD (for the group and the computer object). Meanwhile, the host cannot stage the package and cannot provide the application to the users :-(&lt;/p&gt;
+&lt;h3 id=&quot;another-approach-or-workaround&quot;&gt;Another approach or workaround&lt;/h3&gt;
+&lt;p&gt;The issue is that the computer/system account cannot access the share. Another approach is to convince the system account to use a domain user for accessing Azure Files.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a user account in AD and wait for replication&lt;/li&gt;
+&lt;li&gt;Add the user with the RBAC Role “Storage File Data SMB Share Contributor” to the file share or storage account&lt;/li&gt;
+&lt;li&gt;Give the user NTFS read permission&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To convince the system account to use a specific user account accessing a specific Azure Files storage account. That can be tested with these two lines:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;psexec -s cmd
+
+cmdkey /add:[wvdmsixdata.file.core.windows.net](http://wvduserdata.file.core.windows.net/) /user:[msix@itprocloud.de](mailto:msix@itprocloud.de) /pass:passwordOfMsixUser
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Now, every time the host access &lt;a href=&quot;wvdmsixdata.file.core.windows.net&quot;&gt;wvdmsixdata.file.core.windows.net&lt;/a&gt; in the system context, the named user account is used - even for staging the MSIX AppAttach packages.&lt;/p&gt;
+&lt;p&gt;This step can be automized via a script directly after the rollout of a new session host. This allows the host to stage the packages directly.&lt;/p&gt;
+&lt;p&gt;You could use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, modify the deployment script, and run the cmdkey part after the domain join (psexec is not needed).&lt;/p&gt;
+&lt;p&gt;Another way to go is using &lt;a href=&quot;https://www.itprocloud.de/hydra/&quot;&gt;Hydra&lt;/a&gt; with a script after the deployment. In this case, you could use the service account on a host pool level. Example script:&lt;/p&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Check, if service account is available&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;global&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Hydra_ServiceAccount_PSC&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-eq&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;$null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;throw&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Failed: Service account missing - The script needs a configured service account.&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fileServer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;wvdmsixdata.file.core.windows.net&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$secret&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;System.Net.NetworkCredential&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;global&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Hydra_ServiceAccount_PSC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Password&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cmdkey.exe&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/add:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fileServer&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/user:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;global&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Hydra_ServiceAccount_PSC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;UserName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;/pass:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$secret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Get-ChildItem&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;\\wvduserdata.file.core.windows.net\msix&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Count&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OutputWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;The script has finished. Existing files: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$count&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Note:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;This is a workaround!&lt;/li&gt;
+&lt;li&gt;Make sure that the users’ password does not expire.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Fri, 26 Nov 2021 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Directly connect session hosts with a 3rd party management environment</title>
+        <description>&lt;p&gt;While working with Azure Virtual Desktop, I still miss some features that seem unavailable through Microsoft or maybe a 3rd party vendor. One of the features is that an admin/helpdesk can see the users’ processes, CPU, and memory usage and terminate a hanging or crazy process. To build this feature, a fast connection to the session host from the management platform (in my case, Hydra) is needed. The approach using the RunCommandExtension is not fast enough and doesn’t allow duplex communication.&lt;/p&gt;
+&lt;p&gt;While web-based management platforms normally do not have a direct IP connection to the session hosts, the typical remote administration approaches won’t work. Therefore, I see no other way to have a small agent running on the session hosts connecting to the web-based management platform. One approach is that the agents connect via https to the management platform - the better way is using Web-Sockets to connect. &lt;em&gt;Websockets&lt;/em&gt; (WS) are faster and scale better than sending an http-request each second from each host to the platform. WS also directly supports a communication strategy.&lt;/p&gt;
+&lt;p&gt;In the preview version of Hydra, the agents connect securely (via a secret) to the platform and identify themselves via the FQDN and VM resource Id. That allows being referenced as a session host as well.&lt;/p&gt;
+&lt;p&gt;In my case, only the platform can ask the client (session host). For that, I build several classes. In each case, the platform asked a specific client for information (GetProcessList for session “2”), and the client response after a short time with the data (SetProcessList and SessionHostProcess[] as JSON in the content property).&lt;/p&gt;
+&lt;p&gt;For this example, asking for the process list is initiated by a management platform admin with the right permissions. The admin can also initiate a kill process to stop a process. While this works fast, the process list can be refreshed every few seconds automatically and shown on the website of the management platform.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The fast communication between the platform and session hosts allows additional or improved features:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Showing CPU/MEM per session host faster than using the Azure API (Azure agent)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;A general fast monitoring&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;De-prioritized processes&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Fast chat with the user&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Improve scaling: Avoid logging off a disconnected session if a particular application is running (Excel, SAP - may be based on the CPU usage)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Improve scaling: Avoid logoff VIP users&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Get more data from the native AD via this connection&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Join computer objects fast into groups in a native AD&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Trigger a garbage collector&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Running scripts on the hosts - concurrently with duplex communication (to show a now written log file)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Configure application&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Get data about FSLogix issues&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Get data about FSLogix disk sizes&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;…&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Using WS makes a solution more flexible and avoids the limits of the RunCommandAPI. The price for this is another agent (not a service), which must be deployed during the rollout or afterward. From the first researches and implementation, there is no low limit regarding the number of hosts.&lt;/p&gt;
+&lt;p&gt;The current version of Hydra has the preview feature (to be released) showing the process list if an admin clicks on the user name in the session list. While this feature is in preview, test users must ask to switch on this feature for a specific Hydra instance). Check out the video on YouTube: &lt;a href=&quot;https://youtu.be/aNiNbEukVVc&quot;&gt;https://youtu.be/aNiNbEukVVc&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The final question:&lt;/strong&gt; Are the features worth that an agent is needed?&lt;/p&gt;
+&lt;p&gt;Update from 4/1/2022: Using an agent would be perfect to manage Windows 365 as well. W365 is missing some API to work directly with the VM (like the RunCommandAPI). An agent would solve the missing APIs and would allows to manage W365 users and hosts with some features mentioned above.&lt;/p&gt;
+&lt;p&gt;First classes for the duplex-communication:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public class Communication
+  {
+​    public CommunicationType Type { get; set; }
+​    public string Content { get; set; }
+  }
+
+public enum CommunicationType
+  {
+​    GetHostIdentifier,
+​    SetHostIdentifier,
+​    GetProcessList,
+​    SetProcessList,
+​	KillProcess,
+  }
+
+public class HostIdentifier
+  {
+​    public string SessionHostResourceId { get; set; }
+  }
+
+public class SessionHostProcess
+  { 
+​    public int ProcesId { get; set; }
+​    public string  Caption{ get; set; }
+​    public int SessionId { get; set; }
+​    public long WorkingSet { get; set; }
+​    public double CpuPercent{ get; set; }
+  }
+&lt;/code&gt;&lt;/pre&gt;</description>
+        <pubDate>Wed, 17 Nov 2021 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/Upcoming-features-of-Hydra-or-other-3rd-AVD-solutions/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Upcoming-features-of-Hydra-or-other-3rd-AVD-solutions/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>AVD issue: SessionHost unhealthy SxsStack listener is not ready - Code -2147467259</title>
+        <description>&lt;p&gt;A few days ago, I got an email from a customer concerning that a lot of Azure Virtual Desktop (AVD) session hosts showing an error message from the internal health check:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;SessionHost unhealthy SxSStack listener is not ready - Code -2147467259&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Unfortunately, there was no failed event log from the WVDAgent in the application log. But the RemoteDesktopServices log shows some issues with the SxSStack as expected. Reinstalling the AVD agents doesn’t resolve the issue. But we found an easier way to bring the hosts back to life: Uninstalling the SxS Stack package and rebooting the host.&lt;/p&gt;
+&lt;p&gt;We used PowerShell to create a single-line script and Hydra to execute it on all affected session host:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Uninstall-Package -Name &amp;quot;Remote Desktop Services SxS Network Stack&amp;quot; -AllVersions -Force
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Hydra/SxsIssue-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The short script can be deployed with #WVDAdmin, #Hydra, or any other solution having access to the hosts.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 16 Nov 2021 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Why switching disk types can save a bunch of money running Azure Virtual Desktop</title>
+        <description>&lt;p&gt;In March 2021, I introduced a new feature for #WVDAdmin to change the disk type of a VM to &lt;em&gt;automatically change the disk type&lt;/em&gt; before starting a VM and after the deallocation of a VM. The purpose was clear: Having a more expensive high-performance disk for the runtime of a VM and a cheap disk while the VM is off. This is especially important because hard disks always cost - regardless of whether the associated VM is on or off.&lt;/p&gt;
+&lt;p&gt;The implementation was straightforward, while changing the disk type takes only a few seconds. I guess that Microsoft only regulates the performance of disks and is not copying the disks from one storage to another.&lt;/p&gt;
+&lt;p&gt;I use the same feature in my #AVD solution, “Hydra”. If configured, Hydra changes the disk type on start and stop, triggered by an administrator or Hydras’ autoscaling. But what does this saves in a real-world scenario? I used the data from a deployment serving more than 400 concurrent users per day.&lt;/p&gt;
+&lt;p&gt;The charts below show the data of a host pool for seven days. Less load on the weekend and more than 400 user sessions on the weekdays:
+&lt;img src=&quot;../assets/images/Hydra/SwitchDisks-01.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/Hydra/SwitchDisks-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The maximum number of running hosts was 89 on Thursday. So I have at least 89 disks for the hosts. 89 exiting disks for seven days results that I have to pay for 14,952 hours of disks (89 disks * 24h/day * 7day).&lt;/p&gt;
+&lt;p&gt;As known, it makes a difference if you have to pay for cheap HDD or high-performance Premium Disks like recommended for AVD. Today the costs of a 128 GByte managed disk are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;HHD
+&lt;ul&gt;
+&lt;li&gt;5.04 € per month&lt;/li&gt;
+&lt;li&gt;0.007 € per hour (with 30 days a month)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Premium
+&lt;ul&gt;
+&lt;li&gt;18.70 € per month&lt;/li&gt;
+&lt;li&gt;0.025972 € per hour (with 30 days a month)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If all of the 89 hosts in the pool use Premium Disks, the customer must pay &lt;strong&gt;388.34 €&lt;/strong&gt; a week.&lt;/p&gt;
+&lt;p&gt;We know that not all hosts are running 24h, which means that even the disks are not Premium the whole time. With log analytics, we can measure the runtime in hours overall hosts in the pool:
+&lt;img src=&quot;../assets/images/Hydra/SwitchDisks-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;For the whole week, the runtime for the hosts (and Premium Disks) was 4,998 hours. The rest of the time, the disks type are the cheaper HHD.&lt;/p&gt;
+&lt;p&gt;With this number we can calculate the real disk costs for the pool for a week: 4,998h * 0.025972 €/h + (14,952h - 4,998h) * 0.007 €/h = &lt;strong&gt;199.49 €&lt;/strong&gt; a week.&lt;/p&gt;
+&lt;p&gt;And that is more than interesting: In this real case scenario, the customer only saves at least 188.85 € a week for the disks - more then 800 € a month. That is tremendous and results in a saving of &lt;strong&gt;49%&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;PS: The saving is higher while more than 89 hosts are in the pool to handle more users.&lt;/p&gt;
+&lt;p&gt;Additional strategies to save money while using AVD:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Automatic provisioning of new hosts in the morning to handle the first logon storm (scheduled)&lt;/li&gt;
+&lt;li&gt;Usage of ephemeral disks&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Check-out Hydra: &lt;a href=&quot;https://azuremarketplace.microsoft.com/marketplace/apps/itprocloudgmbh1628775137215.hydra-deploy-d1&quot;&gt;Azure Marketplace&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 13 Nov 2021 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/</guid>
         
         
         <category>Windows Virtual Desktop</category>
