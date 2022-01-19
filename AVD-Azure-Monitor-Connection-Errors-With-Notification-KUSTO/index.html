@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logos/icon.png">
+
+<title>Get alerted if Azure Virtual Desktop fails - AVD Monitoring and alerting with Loganalytics / Azure Monitor | ITProCloud Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Get alerted if Azure Virtual Desktop fails - AVD Monitoring and alerting with Loganalytics / Azure Monitor | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Get alerted if Azure Virtual Desktop fails - AVD Monitoring and alerting with Loganalytics / Azure Monitor" />
+<meta name="author" content="mm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Monitoring Azure Virtual Desktop is important to get insights into the performance and resource usage and alert if something generally goes wrong. Especially, getting alerted if something goes wrong is essential - independent from the cause. If I get an alert, I can directly start to find the root cause and resolve or workaround it." />
+<meta property="og:description" content="Monitoring Azure Virtual Desktop is important to get insights into the performance and resource usage and alert if something generally goes wrong. Especially, getting alerted if something goes wrong is essential - independent from the cause. If I get an alert, I can directly start to find the root cause and resolve or workaround it." />
+<link rel="canonical" href="https://blog.itprocloud.de/AVD-Azure-Monitor-Connection-Errors-With-Notification-KUSTO/" />
+<meta property="og:url" content="https://blog.itprocloud.de/AVD-Azure-Monitor-Connection-Errors-With-Notification-KUSTO/" />
+<meta property="og:site_name" content="ITProCloud Blog" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/Avd-Error-Monitoring-11.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-01-19T00:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Avd-Error-Monitoring-11.png" />
+<meta property="twitter:title" content="Get alerted if Azure Virtual Desktop fails - AVD Monitoring and alerting with Loganalytics / Azure Monitor" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/Avd-Error-Monitoring-11.png","datePublished":"2022-01-19T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Azure-Monitor-Connection-Errors-With-Notification-KUSTO/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Azure-Monitor-Connection-Errors-With-Notification-KUSTO/","author":{"@type":"Person","name":"mm"},"headline":"Get alerted if Azure Virtual Desktop fails - AVD Monitoring and alerting with Loganalytics / Azure Monitor","dateModified":"2022-01-19T00:00:00+01:00","description":"Monitoring Azure Virtual Desktop is important to get insights into the performance and resource usage and alert if something generally goes wrong. Especially, getting alerted if something goes wrong is essential - independent from the cause. If I get an alert, I can directly start to find the root cause and resolve or workaround it.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<!--- cookie banner --->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-page">
+	<!-- defer loading of font and font awesome -->
+	<noscript id="deferred-styles">
+		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+	</noscript>
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logos/itpc-logo-bottom-text.png" alt="ITProCloud Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
+                </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (39)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (38)</a>
+						</li>
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (9)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+	
+				<!-- Original tag list (unsorted) 
+				
+				
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-VM">Azure VM (2)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (7)</a>
+						</li>
+						
+					
+				
+				-->
+								
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://twitter.com/MarcelMeurer"><i class="fab fa-twitter"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/marcel-meurer-15b46b98"><i class="fab fa-linkedin"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://github.com/MarcelMeurer"><i class="fab fa-github"></i></a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="mailto:marcel.meurer@itprocloud.com?subject=Request%20from%20ITProCloud.de"><i class="far fa-envelope"></i></a>
+                </li>
+
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">ITProCloud Blog</h1>
+    <p class="lead">
+        Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <section>
+    <div class="section-title">
+        <h2><span>Get alerted if Azure Virtual Desktop fails - AVD Monitoring and alerting with Loganalytics / Azure Monitor</span></h2>
+    </div>
+
+    <div class="article-post">
+	
+		<!-- change content to anchor styled output -->
+		<p>Monitoring Azure Virtual Desktop is important to get insights into the performance and resource usage and alert if something generally goes wrong. Especially, getting alerted if something goes wrong is essential - independent from the cause. If I get an alert, I can directly start to find the root cause and resolve or workaround it.</p>
+<p>For that reason, I implement a general alerting in my projects. And that is very easy: I measure specific error messages from the AVD platform service and send an alert if the number of errors exceeds a particular limit (e.g., &gt;5 error messages per 10 minutes).</p>
+<p>Important to know is that not all error messages in the platform service are “errors”. For example, Microsoft records the disconnection of a session as an error (<em>ConnectionFailedClientDisconnect</em>) - what happens very often in the evening. Other examples are <em>AuthenticationLogonFailed</em>, <em>PasswordExpired</em>, and much more. We have to exclude the non-issue error messages and count the others for an alert.</p>
+<p>If we have done this, we are alerted in many cases - independent of the root cause. These could be:</p>
+<ul>
+<li>Autoscaling or Power-On-Connect is not working for reasons (<em>ConnectionFailedNoHealthyRdshAvailable</em>)</li>
+<li>Automatic deployment of session hosts is not working (<em>ConnectionFailedNoHealthyRdshAvailable</em>)</li>
+<li>Domain Controller not reachable or computer object was overwritten (<em>ConnectionFailedAdTrustedRelationshipFailure</em>)</li>
+<li>Session Host is not available - maybe a broken resource id (<em>SessionHostResourceNotAvailable</em>)</li>
+<li>Orphan sessions (<em>ConnectionFailedUserHasValidSessionButRdshIsUnhealthy</em>)</li>
+<li>…</li>
+</ul>
+<p>This alerting helped me a lot in the past to get notified when a problem occurs (especially in the morning if many people try to log on ;-).</p>
+      <h3 id="build-the-alert">
+        
+        
+          Build the alert <a href="#build-the-alert"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h3>
+    
+<p>First, configure all host pools’ diagnostic settings to store their logs into a log analytics workspace:
+<img src="../assets/images/Avd-Error-Monitoring-01.png" alt="" /></p>
+<p>Alternatively, you can use <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> to do that:
+<img src="../assets/images/Avd-Error-Monitoring-02.png" alt="" /></p>
+<p>Open the log analytics workspace -&gt; Alerts and create an action group. Action groups are used to define what should happen in an alert. In our case, we configure to get alerted by mail.
+<img src="../assets/images/Avd-Error-Monitoring-03.png" alt="" /></p>
+<p>Give the action group a name:
+<img src="../assets/images/Avd-Error-Monitoring-04.png" alt="" /></p>
+<p>Configure the notification type, including the recipients of the mail:
+<img src="../assets/images/Avd-Error-Monitoring-05.png" alt="" /></p>
+<p>Configure the alert. Select “Log Query” to enter a custom search query to filter for the errors causing issues. Use the following parameters:
+Query:</p>
+<pre><code class="language-kusto">>WVDErrors | where not(CodeSymbolic in~(&quot;ActivityTimeout&quot;,&quot;ConnectionFailedClientDisconnect&quot;,&quot;SavedCredentialsNotAllowed&quot;,&quot;ConnectionBrokenMissedHeartbeatThresholdExceeded&quot;,&quot;AuthenticationLogonFailed&quot;,&quot;FreshCredsRequired&quot;,&quot;CM_ERR_MISSED_HEARTBEAT_THRESHOLD_EXCEEDED&quot;,&quot;NL_DISCONNECT_ERROR&quot;,&quot;PasswordExpired&quot;,&quot;AccountLockedOut&quot;,&quot;AccountExpired&quot;,&quot;InvalidCredentials&quot;,&quot;AutoReconnectNoCookie&quot;,&quot;LogonFailed&quot;))
+</code></pre><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Measure</td>
+<td>Table rows</td>
+</tr>
+<tr>
+<td>Aggregation type</td>
+<td>Count</td>
+</tr>
+<tr>
+<td>Aggregation granularity</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Alert logic</td>
+<td>Greater than</td>
+</tr>
+<tr>
+<td>Threshold</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Frequency of evaluation</td>
+<td>10 minutes</td>
+</tr>
+</tbody>
+</table>
+<p>This configuration sends an alert if the number of filtered errors is higher than five over the last 10 minutes. Correct this for your environment (threshold and maybe exclude other non-issue errors):
+<img src="../assets/images/Avd-Error-Monitoring-06.png" alt="" />
+<img src="../assets/images/Avd-Error-Monitoring-07.png" alt="" />
+<img src="../assets/images/Avd-Error-Monitoring-08.png" alt="" /></p>
+<p>Add the action group:
+<img src="../assets/images/Avd-Error-Monitoring-09.png" alt="" /></p>
+<p>Give the alert rule a severity and a name:
+<img src="../assets/images/Avd-Error-Monitoring-10.png" alt="" /></p>
+<p>Done.</p>
+<p><img src="../assets/images/Avd-Error-Monitoring-11.png" alt="" /></p>
+<p>If an alert is triggered, you will get a mail like this:
+<img src="../assets/images/Avd-Error-Monitoring-12.png" alt="" /></p>
+<p>I plan to have this alerting soon available in <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> to show on <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydras’</a> dashboard if host pools are having trouble.</p>
+<p><strong>Tip:</strong> You can count all the errors in your environment with a KUSTO query. This is very useful to figure out other non-issue error messages:</p>
+<pre><code>WVDErrors
+| summarize count() by CodeSymbolic, Message
+| order by count_ desc
+</code></pre>
+
+		<!--<p>Monitoring Azure Virtual Desktop is important to get insights into the performance and resource usage and alert if something generally goes wrong. Especially, getting alerted if something goes wrong is essential - independent from the cause. If I get an alert, I can directly start to find the root cause and resolve or workaround it.</p>
+<p>For that reason, I implement a general alerting in my projects. And that is very easy: I measure specific error messages from the AVD platform service and send an alert if the number of errors exceeds a particular limit (e.g., &gt;5 error messages per 10 minutes).</p>
+<p>Important to know is that not all error messages in the platform service are “errors”. For example, Microsoft records the disconnection of a session as an error (<em>ConnectionFailedClientDisconnect</em>) - what happens very often in the evening. Other examples are <em>AuthenticationLogonFailed</em>, <em>PasswordExpired</em>, and much more. We have to exclude the non-issue error messages and count the others for an alert.</p>
+<p>If we have done this, we are alerted in many cases - independent of the root cause. These could be:</p>
+<ul>
+<li>Autoscaling or Power-On-Connect is not working for reasons (<em>ConnectionFailedNoHealthyRdshAvailable</em>)</li>
+<li>Automatic deployment of session hosts is not working (<em>ConnectionFailedNoHealthyRdshAvailable</em>)</li>
+<li>Domain Controller not reachable or computer object was overwritten (<em>ConnectionFailedAdTrustedRelationshipFailure</em>)</li>
+<li>Session Host is not available - maybe a broken resource id (<em>SessionHostResourceNotAvailable</em>)</li>
+<li>Orphan sessions (<em>ConnectionFailedUserHasValidSessionButRdshIsUnhealthy</em>)</li>
+<li>…</li>
+</ul>
+<p>This alerting helped me a lot in the past to get notified when a problem occurs (especially in the morning if many people try to log on ;-).</p>
+<h3 id="build-the-alert">Build the alert</h3>
+<p>First, configure all host pools’ diagnostic settings to store their logs into a log analytics workspace:
+<img src="../assets/images/Avd-Error-Monitoring-01.png" alt="" /></p>
+<p>Alternatively, you can use <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> to do that:
+<img src="../assets/images/Avd-Error-Monitoring-02.png" alt="" /></p>
+<p>Open the log analytics workspace -&gt; Alerts and create an action group. Action groups are used to define what should happen in an alert. In our case, we configure to get alerted by mail.
+<img src="../assets/images/Avd-Error-Monitoring-03.png" alt="" /></p>
+<p>Give the action group a name:
+<img src="../assets/images/Avd-Error-Monitoring-04.png" alt="" /></p>
+<p>Configure the notification type, including the recipients of the mail:
+<img src="../assets/images/Avd-Error-Monitoring-05.png" alt="" /></p>
+<p>Configure the alert. Select “Log Query” to enter a custom search query to filter for the errors causing issues. Use the following parameters:
+Query:</p>
+<pre><code class="language-kusto">>WVDErrors | where not(CodeSymbolic in~(&quot;ActivityTimeout&quot;,&quot;ConnectionFailedClientDisconnect&quot;,&quot;SavedCredentialsNotAllowed&quot;,&quot;ConnectionBrokenMissedHeartbeatThresholdExceeded&quot;,&quot;AuthenticationLogonFailed&quot;,&quot;FreshCredsRequired&quot;,&quot;CM_ERR_MISSED_HEARTBEAT_THRESHOLD_EXCEEDED&quot;,&quot;NL_DISCONNECT_ERROR&quot;,&quot;PasswordExpired&quot;,&quot;AccountLockedOut&quot;,&quot;AccountExpired&quot;,&quot;InvalidCredentials&quot;,&quot;AutoReconnectNoCookie&quot;,&quot;LogonFailed&quot;))
+</code></pre><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Measure</td>
+<td>Table rows</td>
+</tr>
+<tr>
+<td>Aggregation type</td>
+<td>Count</td>
+</tr>
+<tr>
+<td>Aggregation granularity</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Alert logic</td>
+<td>Greater than</td>
+</tr>
+<tr>
+<td>Threshold</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Frequency of evaluation</td>
+<td>10 minutes</td>
+</tr>
+</tbody>
+</table>
+<p>This configuration sends an alert if the number of filtered errors is higher than five over the last 10 minutes. Correct this for your environment (threshold and maybe exclude other non-issue errors):
+<img src="../assets/images/Avd-Error-Monitoring-06.png" alt="" />
+<img src="../assets/images/Avd-Error-Monitoring-07.png" alt="" />
+<img src="../assets/images/Avd-Error-Monitoring-08.png" alt="" /></p>
+<p>Add the action group:
+<img src="../assets/images/Avd-Error-Monitoring-09.png" alt="" /></p>
+<p>Give the alert rule a severity and a name:
+<img src="../assets/images/Avd-Error-Monitoring-10.png" alt="" /></p>
+<p>Done.</p>
+<p><img src="../assets/images/Avd-Error-Monitoring-11.png" alt="" /></p>
+<p>If an alert is triggered, you will get a mail like this:
+<img src="../assets/images/Avd-Error-Monitoring-12.png" alt="" /></p>
+<p>I plan to have this alerting soon available in <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> to show on <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydras’</a> dashboard if host pools are having trouble.</p>
+<p><strong>Tip:</strong> You can count all the errors in your environment with a KUSTO query. This is very useful to figure out other non-issue error messages:</p>
+<pre><code>WVDErrors
+| summarize count() by CodeSymbolic, Message
+| order by count_ desc
+</code></pre>-->
+	
+    
+</section>
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div id="allTags" class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore by tags <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-VM">Azure VM (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (7)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (9)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (6)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-AD">Azure AD (4)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#OneDrive">OneDrive (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-IoT">Azure IoT (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Functions">Azure Functions (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Marketplace">Azure Marketplace (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (39)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (38)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 text-center text-lg-left">
+                Copyright © 2022 ITProCloud Blog 
+            </div>
+            <div class="col-md-4 col-sm-4 text-center text-lg-left">
+                <a href="/Impressum">Impressum</a>/<a href="/ImpressumEn">Imprint</a> - 
+                <a href="/privacyDe">Datenschutz</a> - 
+				<a href="/privacyEn">Privacy</a>
+            </div>
+            <div class="col-md-3 col-sm-3 text-center text-lg-right">    
+                <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+
+<!-- Start Cookie Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#eaf7f7",
+      "text": "#5c7291"
+    },
+    "button": {
+      "background": "#56cbdb",
+      "text": "#ffffff"
+    }
+  },
+  "position": "bottom-right",
+  "content": {
+    "message": 'This website uses cookies to ensure you get the best experience on our website.<br/><a href="/privacyEn">Privacy policy</a><br/><br/>Diese Website verwendet Cookies, um dir mehr Benutzerfreundlichkeit zu bieten. Mit der Nutzung dieser Website stimmst du der Verwendung von Cookies zu.<br/><a href="/privacyDe">Datenschutzerklärung</a><br/><br/> ',
+    "href": "/privacyEn"
+  }
+});
+</script>
+<!-- End Cookie Plugin -->
+
+</body>
+</html>
