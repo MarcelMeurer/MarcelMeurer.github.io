@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 19 Jan 2022 18:40:46 +0100</pubDate>
-    <lastBuildDate>Wed, 19 Jan 2022 18:40:46 +0100</lastBuildDate>
+    <pubDate>Thu, 20 Jan 2022 08:26:25 +0100</pubDate>
+    <lastBuildDate>Thu, 20 Jan 2022 08:26:25 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -27,8 +27,8 @@
 &lt;h3 id=&quot;build-the-alert&quot;&gt;Build the alert&lt;/h3&gt;
 &lt;p&gt;First, configure all host pools’ diagnostic settings to store their logs into a log analytics workspace:
 &lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that:
-&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;Open the log analytics workspace -&amp;gt; Alerts and create an action group. Action groups are used to define what should happen in an alert. In our case, we configure to get alerted by mail.
 &lt;img src=&quot;../assets/images/Avd-Error-Monitoring-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;Give the action group a name:
@@ -82,8 +82,8 @@ Query:&lt;/p&gt;
 &lt;img src=&quot;../assets/images/Avd-Error-Monitoring-10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;Done.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;If an alert is triggered, you will get a mail like this:
-&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;If an alert is triggered, you will get a mail like this:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;I plan to have this alerting soon available in &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; to show on &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydras’&lt;/a&gt; dashboard if host pools are having trouble.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Tip:&lt;/strong&gt; You can count all the errors in your environment with a KUSTO query. This is very useful to figure out other non-issue error messages:&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;WVDErrors
@@ -898,6 +898,7 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;p&gt;(Source: Microsoft website)&lt;/p&gt;
 &lt;p&gt;Technology-based, the trusted launch cannot be activated on existing VMs. Additionally, the VM size must support this feature. More importantly, a trusted launch VM can only be created from vanilla Microsoft Marketplace images. Deployment from a custom image is not working and is not supported.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update 20/01/2022:&lt;/strong&gt; A native and supported process to rollout VMs and session hosts based on a custom image is expected in Feburary 2022 and will be added to &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; to show on &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydras’&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;That’s not pretty, while in AVD, most deployments are based on images from Golden Masters. That is also the approach I’m using with my solutions (like &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;):&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Rolling out a Windows 10/11 VM&lt;/li&gt;
