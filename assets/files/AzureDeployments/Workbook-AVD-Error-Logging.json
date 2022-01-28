@@ -24,7 +24,6 @@
       },
       {
          "name":"750ec0fd-74d1-4e80-be97-3001485303e8",
-		 "author": "ITProCloud GmbH",
          "type":"microsoft.insights/workbooktemplates",
          "location":"[resourceGroup().location]",
          "apiVersion":"2020-11-20",
