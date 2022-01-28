@@ -6,27 +6,27 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>The secret about disappearing appx / UWP applications in an environment using FSLogix | ITProCloud Blog</title>
+<title>Debugging Azure Virtual Desktop errors/issues with an interactive Workbook | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>The secret about disappearing appx / UWP applications in an environment using FSLogix | ITProCloud Blog</title>
+<title>Debugging Azure Virtual Desktop errors/issues with an interactive Workbook | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="The secret about disappearing appx / UWP applications in an environment using FSLogix" />
+<meta property="og:title" content="Debugging Azure Virtual Desktop errors/issues with an interactive Workbook" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Intro" />
-<meta property="og:description" content="Intro" />
-<link rel="canonical" href="https://blog.itprocloud.de/The-secret-about-disappearing-appx-UWP-applications-in-an-environment-using-FSLogix/" />
-<meta property="og:url" content="https://blog.itprocloud.de/The-secret-about-disappearing-appx-UWP-applications-in-an-environment-using-FSLogix/" />
+<meta name="description" content="Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:" />
+<meta property="og:description" content="Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:" />
+<link rel="canonical" href="https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/" />
+<meta property="og:url" content="https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="https://blog.itprocloud.de/assets/images/Secret-Appx-WhatsApp.png" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/AVD-Monitoring-Workbook-Errors.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2021-10-20T00:00:00+02:00" />
+<meta property="article:published_time" content="2022-01-28T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Secret-Appx-WhatsApp.png" />
-<meta property="twitter:title" content="The secret about disappearing appx / UWP applications in an environment using FSLogix" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/AVD-Monitoring-Workbook-Errors.png" />
+<meta property="twitter:title" content="Debugging Azure Virtual Desktop errors/issues with an interactive Workbook" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/Secret-Appx-WhatsApp.png","datePublished":"2021-10-20T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/The-secret-about-disappearing-appx-UWP-applications-in-an-environment-using-FSLogix/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/The-secret-about-disappearing-appx-UWP-applications-in-an-environment-using-FSLogix/","author":{"@type":"Person","name":"mm"},"headline":"The secret about disappearing appx / UWP applications in an environment using FSLogix","dateModified":"2021-10-20T00:00:00+02:00","description":"Intro","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/AVD-Monitoring-Workbook-Errors.png","datePublished":"2022-01-28T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/","author":{"@type":"Person","name":"mm"},"headline":"Debugging Azure Virtual Desktop errors/issues with an interactive Workbook","dateModified":"2022-01-28T00:00:00+01:00","description":"Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -334,101 +334,143 @@
 <div class="main-content">
     <section>
     <div class="section-title">
-        <h2><span>The secret about disappearing appx / UWP applications in an environment using FSLogix</span></h2>
+        <h2><span>Debugging Azure Virtual Desktop errors/issues with an interactive Workbook</span></h2>
     </div>
 
     <div class="article-post">
 	
 		<!-- change content to anchor styled output -->
-		<h2 id="intro">
-        
-        
-          Intro <a href="#intro"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
-        
-        
-      </h2>
-    
-<p>A few weeks ago, a customer told me about a particular behavior in their Azure Virtual Desktop environment. The users are using a dedicated session host, and the profile is managed with FSLogix to save user data on a file server additionally.
-Some of the users install applications from the Windows Store (Appx, Universal Apps). If the user logs off at the end of the day and logs in the next day, the applications are gone, and only a dead item is left in the start menu. The users have to install the app again from the Windows Store. Luckily, the applications settings are in the user profiles, so the applications are still configured after reinstallation.</p>
-<p>What does this cause? If a user installs an application from the Windows Store, the binaries are saved in “<em>C:\Program Files\WindowsApps</em>”.</p>
-<ul>
-<li>
-<p>If the user logs off in a non-FSLogix environment, the users’ profile stays on the computer and binaries as well.</p>
-</li>
-<li>
-<p>If the user logs off in an FSLogix environment, the users’ profile is removed from the computer. While apparently, no user is using the application, Windows removes the binaries. This exactly happens in the customers’ environment.</p>
-</li>
-</ul>
-      <h2 id="workaround">
-        
-        
-          Workaround <a href="#workaround"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
-        
-        
-      </h2>
-    
-<p>But how to deal with it? First: If anybody has a better solution as my workaround, please let me know.</p>
-<ul>
-<li>
-<p>Install the application from the Windows Store. E.g., WhatsApp</p>
-</li>
-<li>
-<p>Launch the application</p>
-</li>
-<li>
-<p>Pin the icon to the taskbar</p>
-</li>
-<li>
-<p>Figure out the full package name using PowerShell:</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-AppxPackage</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Where-Object</span><span class="w"> </span><span class="p">{</span><span class="bp">$_</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="o">-like</span><span class="w"> </span><span class="s2">"*WhatsApp*"</span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
-<p>For this case: 5319275A.WhatsAppDesktop_2.2140.5.0_x64__cv1g1gvanyjgm
-If you don’t find the app, check the full list of Get-AppxPackage</p>
-</li>
-<li>
-<p>Add the full package name as a key to: <em>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Applications</em>
-<img src="/assets/images/Secret-Appx-Regedit.png" alt="" /></p>
-</li>
-</ul>
-<p>After that, you can log off and log in without reinstalling the application. Unfortunately, the pinned icon is invisible as long as you click it.</p>
+		<p>Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:</p>
+<table>
+<thead>
+<tr>
+<th>Log Type</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WVDAgentHealthStatus</td>
+<td>Details about the session hosts</td>
+</tr>
+<tr>
+<td>WVDConnections</td>
+<td>All about connections from a user to a session host</td>
+</tr>
+<tr>
+<td>WVDErrors</td>
+<td>Error message from different sources (client, RDGateway, Loadbalancer, …)</td>
+</tr>
+<tr>
+<td>WVDFeeds</td>
+<td>Log about clients downloading information about the AVD resources</td>
+</tr>
+<tr>
+<td>WVDHostRegistrations</td>
+<td>Logs if a host tries to register to a host pool</td>
+</tr>
+<tr>
+<td>WVDManagement</td>
+<td>Log about administrative tasks</td>
+</tr>
+<tr>
+<td>WVDCheckpoints</td>
+<td>Detailed information related to logins, errors, …</td>
+</tr>
+</tbody>
+</table>
+<p>To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&gt; Diagnostic settings -&gt; Add diagnostic settings -&gt; Select all Logs and target a log analytics workspace.</p>
+<p><img src="../assets/images/Avd-Error-Monitoring-01.png" alt="" /></p>
+<p>Alternatively, you can use <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> to do that:</p>
+<p><img src="../assets/images/Avd-Error-Monitoring-02.png" alt="" /></p>
+<p>It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.</p>
+<p>You can install the workbook directly as a template into your subscription: <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json">Install the workbook</a></p>
+<p>After a while, the workbook is visible as a new template in Log Analytics -&gt; Workbooks.</p>
+<p>You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “ConnectionFailedClientDisconnected” occurs if a session goes in the disconnected mode while the users close its notebook).</p>
+<p>Please let me know if you have ideas to extend the workbook.</p>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.1</td>
+<td>1/28/2022</td>
+<td>Initial</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json">Install the workbook</a></p>
 
-		<!--<h2 id="intro">Intro</h2>
-<p>A few weeks ago, a customer told me about a particular behavior in their Azure Virtual Desktop environment. The users are using a dedicated session host, and the profile is managed with FSLogix to save user data on a file server additionally.
-Some of the users install applications from the Windows Store (Appx, Universal Apps). If the user logs off at the end of the day and logs in the next day, the applications are gone, and only a dead item is left in the start menu. The users have to install the app again from the Windows Store. Luckily, the applications settings are in the user profiles, so the applications are still configured after reinstallation.</p>
-<p>What does this cause? If a user installs an application from the Windows Store, the binaries are saved in “<em>C:\Program Files\WindowsApps</em>”.</p>
-<ul>
-<li>
-<p>If the user logs off in a non-FSLogix environment, the users’ profile stays on the computer and binaries as well.</p>
-</li>
-<li>
-<p>If the user logs off in an FSLogix environment, the users’ profile is removed from the computer. While apparently, no user is using the application, Windows removes the binaries. This exactly happens in the customers’ environment.</p>
-</li>
-</ul>
-<h2 id="workaround">Workaround</h2>
-<p>But how to deal with it? First: If anybody has a better solution as my workaround, please let me know.</p>
-<ul>
-<li>
-<p>Install the application from the Windows Store. E.g., WhatsApp</p>
-</li>
-<li>
-<p>Launch the application</p>
-</li>
-<li>
-<p>Pin the icon to the taskbar</p>
-</li>
-<li>
-<p>Figure out the full package name using PowerShell:</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-AppxPackage</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Where-Object</span><span class="w"> </span><span class="p">{</span><span class="bp">$_</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="o">-like</span><span class="w"> </span><span class="s2">"*WhatsApp*"</span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
-<p>For this case: 5319275A.WhatsAppDesktop_2.2140.5.0_x64__cv1g1gvanyjgm
-If you don’t find the app, check the full list of Get-AppxPackage</p>
-</li>
-<li>
-<p>Add the full package name as a key to: <em>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Applications</em>
-<img src="/assets/images/Secret-Appx-Regedit.png" alt="" /></p>
-</li>
-</ul>
-<p>After that, you can log off and log in without reinstalling the application. Unfortunately, the pinned icon is invisible as long as you click it.</p>
+		<!--<p>Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:</p>
+<table>
+<thead>
+<tr>
+<th>Log Type</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WVDAgentHealthStatus</td>
+<td>Details about the session hosts</td>
+</tr>
+<tr>
+<td>WVDConnections</td>
+<td>All about connections from a user to a session host</td>
+</tr>
+<tr>
+<td>WVDErrors</td>
+<td>Error message from different sources (client, RDGateway, Loadbalancer, …)</td>
+</tr>
+<tr>
+<td>WVDFeeds</td>
+<td>Log about clients downloading information about the AVD resources</td>
+</tr>
+<tr>
+<td>WVDHostRegistrations</td>
+<td>Logs if a host tries to register to a host pool</td>
+</tr>
+<tr>
+<td>WVDManagement</td>
+<td>Log about administrative tasks</td>
+</tr>
+<tr>
+<td>WVDCheckpoints</td>
+<td>Detailed information related to logins, errors, …</td>
+</tr>
+</tbody>
+</table>
+<p>To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&gt; Diagnostic settings -&gt; Add diagnostic settings -&gt; Select all Logs and target a log analytics workspace.</p>
+<p><img src="../assets/images/Avd-Error-Monitoring-01.png" alt="" /></p>
+<p>Alternatively, you can use <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> to do that:</p>
+<p><img src="../assets/images/Avd-Error-Monitoring-02.png" alt="" /></p>
+<p>It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.</p>
+<p>You can install the workbook directly as a template into your subscription: <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json">Install the workbook</a></p>
+<p>After a while, the workbook is visible as a new template in Log Analytics -&gt; Workbooks.</p>
+<p>You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “ConnectionFailedClientDisconnected” occurs if a session goes in the disconnected mode while the users close its notebook).</p>
+<p>Please let me know if you have ideas to extend the workbook.</p>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.1</td>
+<td>1/28/2022</td>
+<td>Initial</td>
+</tr>
+</tbody>
+</table>
+<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json">Install the workbook</a></p>
 -->
 	
     
