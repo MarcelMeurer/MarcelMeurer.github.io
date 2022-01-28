@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 28 Jan 2022 10:34:35 +0100</pubDate>
-    <lastBuildDate>Fri, 28 Jan 2022 10:34:35 +0100</lastBuildDate>
+    <pubDate>Fri, 28 Jan 2022 10:51:32 +0100</pubDate>
+    <lastBuildDate>Fri, 28 Jan 2022 10:51:32 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -57,7 +57,7 @@
 &lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
 &lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;After a while, the workbook is visible as a new template in Log Analytics -&amp;gt; Workbooks.&lt;/p&gt;
-&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “ConnectionFailedClientDisconnected” occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
+&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;” occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
 &lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -75,7 +75,7 @@
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Fri, 28 Jan 2022 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
