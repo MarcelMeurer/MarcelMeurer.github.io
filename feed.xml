@@ -5,195 +5,15 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 31 Jan 2022 10:52:27 +0100</pubDate>
-    <lastBuildDate>Mon, 31 Jan 2022 10:52:27 +0100</lastBuildDate>
+    <pubDate>Thu, 03 Feb 2022 13:00:47 +0100</pubDate>
+    <lastBuildDate>Thu, 03 Feb 2022 13:00:47 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
-    
-      <item>
-        <title>Debugging Azure Virtual Desktop errors/issues with an interactive Workbook</title>
-        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Log Type&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
-&lt;td&gt;Details about the session hosts&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDConnections&lt;/td&gt;
-&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDErrors&lt;/td&gt;
-&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, …)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDFeeds&lt;/td&gt;
-&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
-&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDManagement&lt;/td&gt;
-&lt;td&gt;Log about administrative tasks&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDCheckpoints&lt;/td&gt;
-&lt;td&gt;Detailed information related to logins, errors, …&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;After a while, the workbook is visible as a new template in Log Analytics -&amp;gt; Workbooks.&lt;/p&gt;
-&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;” occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
-&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Version&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1&lt;/td&gt;
-&lt;td&gt;1/28/2022&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Fri, 28 Jan 2022 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Azure Monitor</category>
-        
-        <category>Log Analytics</category>
-        
-      </item>
-    
-      <item>
-        <title>Get alerted if Azure Virtual Desktop fails - AVD Monitoring and alerting with Loganalytics / Azure Monitor</title>
-        <description>&lt;p&gt;Monitoring Azure Virtual Desktop is important to get insights into the performance and resource usage and alert if something generally goes wrong. Especially, getting alerted if something goes wrong is essential - independent from the cause. If I get an alert, I can directly start to find the root cause and resolve or workaround it.&lt;/p&gt;
-&lt;p&gt;For that reason, I implement a general alerting in my projects. And that is very easy: I measure specific error messages from the AVD platform service and send an alert if the number of errors exceeds a particular limit (e.g., &amp;gt;5 error messages per 10 minutes).&lt;/p&gt;
-&lt;p&gt;Important to know is that not all error messages in the platform service are “errors”. For example, Microsoft records the disconnection of a session as an error (&lt;em&gt;ConnectionFailedClientDisconnect&lt;/em&gt;) - what happens very often in the evening. Other examples are &lt;em&gt;AuthenticationLogonFailed&lt;/em&gt;, &lt;em&gt;PasswordExpired&lt;/em&gt;, and much more. We have to exclude the non-issue error messages and count the others for an alert.&lt;/p&gt;
-&lt;p&gt;If we have done this, we are alerted in many cases - independent of the root cause. These could be:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Autoscaling or Power-On-Connect is not working for reasons (&lt;em&gt;ConnectionFailedNoHealthyRdshAvailable&lt;/em&gt;)&lt;/li&gt;
-&lt;li&gt;Automatic deployment of session hosts is not working (&lt;em&gt;ConnectionFailedNoHealthyRdshAvailable&lt;/em&gt;)&lt;/li&gt;
-&lt;li&gt;Domain Controller not reachable or computer object was overwritten (&lt;em&gt;ConnectionFailedAdTrustedRelationshipFailure&lt;/em&gt;)&lt;/li&gt;
-&lt;li&gt;Session Host is not available - maybe a broken resource id (&lt;em&gt;SessionHostResourceNotAvailable&lt;/em&gt;)&lt;/li&gt;
-&lt;li&gt;Orphan sessions (&lt;em&gt;ConnectionFailedUserHasValidSessionButRdshIsUnhealthy&lt;/em&gt;)&lt;/li&gt;
-&lt;li&gt;…&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;This alerting helped me a lot in the past to get notified when a problem occurs (especially in the morning if many people try to log on ;-).&lt;/p&gt;
-&lt;h3 id=&quot;build-the-alert&quot;&gt;Build the alert&lt;/h3&gt;
-&lt;p&gt;First, configure all host pools’ diagnostic settings to store their logs into a log analytics workspace:
-&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Open the log analytics workspace -&amp;gt; Alerts and create an action group. Action groups are used to define what should happen in an alert. In our case, we configure to get alerted by mail.
-&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Give the action group a name:
-&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Configure the notification type, including the recipients of the mail:
-&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Configure the alert. Select “Log Query” to enter a custom search query to filter for the errors causing issues. Use the following parameters:
-Query:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-kusto&quot;&gt;&gt;WVDErrors | where not(CodeSymbolic in~(&amp;quot;ActivityTimeout&amp;quot;,&amp;quot;ConnectionFailedClientDisconnect&amp;quot;,&amp;quot;SavedCredentialsNotAllowed&amp;quot;,&amp;quot;ConnectionBrokenMissedHeartbeatThresholdExceeded&amp;quot;,&amp;quot;AuthenticationLogonFailed&amp;quot;,&amp;quot;FreshCredsRequired&amp;quot;,&amp;quot;CM_ERR_MISSED_HEARTBEAT_THRESHOLD_EXCEEDED&amp;quot;,&amp;quot;NL_DISCONNECT_ERROR&amp;quot;,&amp;quot;PasswordExpired&amp;quot;,&amp;quot;AccountLockedOut&amp;quot;,&amp;quot;AccountExpired&amp;quot;,&amp;quot;InvalidCredentials&amp;quot;,&amp;quot;AutoReconnectNoCookie&amp;quot;,&amp;quot;LogonFailed&amp;quot;))
-&lt;/code&gt;&lt;/pre&gt;&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Field&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Measure&lt;/td&gt;
-&lt;td&gt;Table rows&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Aggregation type&lt;/td&gt;
-&lt;td&gt;Count&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Aggregation granularity&lt;/td&gt;
-&lt;td&gt;10&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Alert logic&lt;/td&gt;
-&lt;td&gt;Greater than&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Threshold&lt;/td&gt;
-&lt;td&gt;5&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Frequency of evaluation&lt;/td&gt;
-&lt;td&gt;10 minutes&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;This configuration sends an alert if the number of filtered errors is higher than five over the last 10 minutes. Correct this for your environment (threshold and maybe exclude other non-issue errors):
-&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-06.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-07.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-08.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Add the action group:
-&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-09.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Give the alert rule a severity and a name:
-&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Done.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;If an alert is triggered, you will get a mail like this:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;I plan to have this alerting soon available in &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; to show on &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydras’&lt;/a&gt; dashboard if host pools are having trouble.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Tip:&lt;/strong&gt; You can count all the errors in your environment with a KUSTO query. This is very useful to figure out other non-issue error messages:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;WVDErrors
-| summarize count() by CodeSymbolic, Message
-| order by count_ desc
-&lt;/code&gt;&lt;/pre&gt;</description>
-        <pubDate>Wed, 19 Jan 2022 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Azure-Monitor-Connection-Errors-With-Notification-KUSTO/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Monitor-Connection-Errors-With-Notification-KUSTO/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Azure Monitor</category>
-        
-        <category>Log Analytics</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 01/11/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 02/03/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Imaging
@@ -280,7 +100,7 @@ Query:&lt;/p&gt;
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 01/11/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 02/03/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -290,6 +110,10 @@ Query:&lt;/p&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7.22.0&lt;/td&gt;
+&lt;td&gt;Fix: In some cases a VM-Scale-Set Instances where not shown and crashes the application&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.7.21.0&lt;/td&gt;
 &lt;td&gt;Fix: VM Scale Set rollout issue&lt;/td&gt;
@@ -958,9 +782,9 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 01/11/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 02/03/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Tue, 11 Jan 2022 00:00:00 +0100</pubDate>
+        <pubDate>Thu, 03 Feb 2022 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
         
@@ -968,6 +792,186 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
         <category>Windows Virtual Desktop</category>
         
         <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Debugging Azure Virtual Desktop errors/issues with an interactive Workbook</title>
+        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Log Type&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
+&lt;td&gt;Details about the session hosts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnections&lt;/td&gt;
+&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDErrors&lt;/td&gt;
+&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, …)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDFeeds&lt;/td&gt;
+&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
+&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDManagement&lt;/td&gt;
+&lt;td&gt;Log about administrative tasks&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDCheckpoints&lt;/td&gt;
+&lt;td&gt;Detailed information related to logins, errors, …&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;After a while, the workbook is visible as a new template in Log Analytics -&amp;gt; Workbooks.&lt;/p&gt;
+&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;” occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
+&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Version&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1&lt;/td&gt;
+&lt;td&gt;1/28/2022&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 28 Jan 2022 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Azure Monitor</category>
+        
+        <category>Log Analytics</category>
+        
+      </item>
+    
+      <item>
+        <title>Get alerted if Azure Virtual Desktop fails - AVD Monitoring and alerting with Loganalytics / Azure Monitor</title>
+        <description>&lt;p&gt;Monitoring Azure Virtual Desktop is important to get insights into the performance and resource usage and alert if something generally goes wrong. Especially, getting alerted if something goes wrong is essential - independent from the cause. If I get an alert, I can directly start to find the root cause and resolve or workaround it.&lt;/p&gt;
+&lt;p&gt;For that reason, I implement a general alerting in my projects. And that is very easy: I measure specific error messages from the AVD platform service and send an alert if the number of errors exceeds a particular limit (e.g., &amp;gt;5 error messages per 10 minutes).&lt;/p&gt;
+&lt;p&gt;Important to know is that not all error messages in the platform service are “errors”. For example, Microsoft records the disconnection of a session as an error (&lt;em&gt;ConnectionFailedClientDisconnect&lt;/em&gt;) - what happens very often in the evening. Other examples are &lt;em&gt;AuthenticationLogonFailed&lt;/em&gt;, &lt;em&gt;PasswordExpired&lt;/em&gt;, and much more. We have to exclude the non-issue error messages and count the others for an alert.&lt;/p&gt;
+&lt;p&gt;If we have done this, we are alerted in many cases - independent of the root cause. These could be:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Autoscaling or Power-On-Connect is not working for reasons (&lt;em&gt;ConnectionFailedNoHealthyRdshAvailable&lt;/em&gt;)&lt;/li&gt;
+&lt;li&gt;Automatic deployment of session hosts is not working (&lt;em&gt;ConnectionFailedNoHealthyRdshAvailable&lt;/em&gt;)&lt;/li&gt;
+&lt;li&gt;Domain Controller not reachable or computer object was overwritten (&lt;em&gt;ConnectionFailedAdTrustedRelationshipFailure&lt;/em&gt;)&lt;/li&gt;
+&lt;li&gt;Session Host is not available - maybe a broken resource id (&lt;em&gt;SessionHostResourceNotAvailable&lt;/em&gt;)&lt;/li&gt;
+&lt;li&gt;Orphan sessions (&lt;em&gt;ConnectionFailedUserHasValidSessionButRdshIsUnhealthy&lt;/em&gt;)&lt;/li&gt;
+&lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This alerting helped me a lot in the past to get notified when a problem occurs (especially in the morning if many people try to log on ;-).&lt;/p&gt;
+&lt;h3 id=&quot;build-the-alert&quot;&gt;Build the alert&lt;/h3&gt;
+&lt;p&gt;First, configure all host pools’ diagnostic settings to store their logs into a log analytics workspace:
+&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Open the log analytics workspace -&amp;gt; Alerts and create an action group. Action groups are used to define what should happen in an alert. In our case, we configure to get alerted by mail.
+&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Give the action group a name:
+&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Configure the notification type, including the recipients of the mail:
+&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Configure the alert. Select “Log Query” to enter a custom search query to filter for the errors causing issues. Use the following parameters:
+Query:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-kusto&quot;&gt;&gt;WVDErrors | where not(CodeSymbolic in~(&amp;quot;ActivityTimeout&amp;quot;,&amp;quot;ConnectionFailedClientDisconnect&amp;quot;,&amp;quot;SavedCredentialsNotAllowed&amp;quot;,&amp;quot;ConnectionBrokenMissedHeartbeatThresholdExceeded&amp;quot;,&amp;quot;AuthenticationLogonFailed&amp;quot;,&amp;quot;FreshCredsRequired&amp;quot;,&amp;quot;CM_ERR_MISSED_HEARTBEAT_THRESHOLD_EXCEEDED&amp;quot;,&amp;quot;NL_DISCONNECT_ERROR&amp;quot;,&amp;quot;PasswordExpired&amp;quot;,&amp;quot;AccountLockedOut&amp;quot;,&amp;quot;AccountExpired&amp;quot;,&amp;quot;InvalidCredentials&amp;quot;,&amp;quot;AutoReconnectNoCookie&amp;quot;,&amp;quot;LogonFailed&amp;quot;))
+&lt;/code&gt;&lt;/pre&gt;&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Field&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Measure&lt;/td&gt;
+&lt;td&gt;Table rows&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Aggregation type&lt;/td&gt;
+&lt;td&gt;Count&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Aggregation granularity&lt;/td&gt;
+&lt;td&gt;10&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Alert logic&lt;/td&gt;
+&lt;td&gt;Greater than&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Threshold&lt;/td&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Frequency of evaluation&lt;/td&gt;
+&lt;td&gt;10 minutes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;This configuration sends an alert if the number of filtered errors is higher than five over the last 10 minutes. Correct this for your environment (threshold and maybe exclude other non-issue errors):
+&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-06.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-07.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-08.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Add the action group:
+&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-09.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Give the alert rule a severity and a name:
+&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-10.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Done.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;If an alert is triggered, you will get a mail like this:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;I plan to have this alerting soon available in &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; to show on &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydras’&lt;/a&gt; dashboard if host pools are having trouble.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Tip:&lt;/strong&gt; You can count all the errors in your environment with a KUSTO query. This is very useful to figure out other non-issue error messages:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;WVDErrors
+| summarize count() by CodeSymbolic, Message
+| order by count_ desc
+&lt;/code&gt;&lt;/pre&gt;</description>
+        <pubDate>Wed, 19 Jan 2022 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Azure-Monitor-Connection-Errors-With-Notification-KUSTO/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Monitor-Connection-Errors-With-Notification-KUSTO/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Azure Monitor</category>
+        
+        <category>Log Analytics</category>
         
       </item>
     
