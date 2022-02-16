@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 16 Feb 2022 09:07:17 +0100</pubDate>
-    <lastBuildDate>Wed, 16 Feb 2022 09:07:17 +0100</lastBuildDate>
+    <pubDate>Wed, 16 Feb 2022 13:42:26 +0100</pubDate>
+    <lastBuildDate>Wed, 16 Feb 2022 13:42:26 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -110,6 +110,10 @@
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7.25.0&lt;/td&gt;
+&lt;td&gt;Change: Configure diagnostic settings now enables all logs&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.7.24.0&lt;/td&gt;
 &lt;td&gt;Add: You can directly re-assign a user to a VDI session host or delete an assignment (on the session host tab change or delete the user asssignment)&lt;/td&gt;
