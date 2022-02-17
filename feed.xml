@@ -5,12 +5,12 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 17 Feb 2022 13:52:04 +0100</pubDate>
-    <lastBuildDate>Thu, 17 Feb 2022 13:52:04 +0100</lastBuildDate>
+    <pubDate>Thu, 17 Feb 2022 14:25:39 +0100</pubDate>
+    <lastBuildDate>Thu, 17 Feb 2022 14:25:39 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
-        <title>Debugging Azure Virtual Desktop errors/issues with an interactive Workbook</title>
+        <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
         <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -48,16 +48,21 @@
 &lt;td&gt;WVDCheckpoints&lt;/td&gt;
 &lt;td&gt;Detailed information related to logins, errors, …&lt;/td&gt;
 &lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnectionNetworkData&lt;/td&gt;
+&lt;td&gt;Network information (bandwidth and RTT)&lt;/td&gt;
+&lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that:&lt;/p&gt;
+&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that (use version 1.7.25 or higher):&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;After a while, the workbook is visible as a new template in Log Analytics -&amp;gt; Workbooks.&lt;/p&gt;
+&lt;p&gt;After a while, the workbook is visible as a new template in: &lt;strong&gt;Log Analytics -&amp;gt; Workbooks -&amp;gt; Azure Virtual Desktop -&amp;gt; AVD - Deep-Insights&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;” occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
 &lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
 &lt;table&gt;
@@ -77,7 +82,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.2&lt;/td&gt;
 &lt;td&gt;02/17/2022&lt;/td&gt;
-&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); see &lt;a href=&quot;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&quot;&gt;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); see &lt;a href=&quot;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&quot;&gt;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&lt;/a&gt; &lt;br /&gt;&lt;br /&gt;Name changed to AVD - Deep-Insights&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
