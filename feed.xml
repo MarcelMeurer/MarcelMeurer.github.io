@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 18 Feb 2022 21:46:43 +0100</pubDate>
-    <lastBuildDate>Fri, 18 Feb 2022 21:46:43 +0100</lastBuildDate>
+    <pubDate>Fri, 18 Feb 2022 22:25:20 +0100</pubDate>
+    <lastBuildDate>Fri, 18 Feb 2022 22:25:20 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -111,7 +111,7 @@
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;1.7.27.0&lt;/td&gt;
+&lt;td&gt;1.7.28.0&lt;/td&gt;
 &lt;td&gt;Fix: Gettting the diagnostic setting on a host pool changed (updated API)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -584,7 +584,7 @@
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;/details&gt;&lt;br/&gt;
+&lt;/details&gt;&lt;br/&gt;|
 &lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
 &lt;h2 id=&quot;service-principal-functional-account&quot;&gt;Service principal (functional account)&lt;/h2&gt;
 &lt;p&gt;To work with the GUI, you need a service principal (function account) with permission to administrate access to the WVD/AVD and Azure resources. I decide to use a service principal to avoid confusion if my Azure AD user is only a guest account in the WVD/AVD tenant I have to administrate and easily switch between different tenants.&lt;/p&gt;
