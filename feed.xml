@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 18 Feb 2022 17:06:28 +0100</pubDate>
-    <lastBuildDate>Fri, 18 Feb 2022 17:06:28 +0100</lastBuildDate>
+    <pubDate>Fri, 18 Feb 2022 21:46:43 +0100</pubDate>
+    <lastBuildDate>Fri, 18 Feb 2022 21:46:43 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -111,7 +111,7 @@
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;1.7.26.0&lt;/td&gt;
+&lt;td&gt;1.7.27.0&lt;/td&gt;
 &lt;td&gt;Fix: Gettting the diagnostic setting on a host pool changed (updated API)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
