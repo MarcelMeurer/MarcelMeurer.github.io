@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 17 Mar 2022 16:52:45 +0100</pubDate>
-    <lastBuildDate>Thu, 17 Mar 2022 16:52:45 +0100</lastBuildDate>
+    <pubDate>Thu, 17 Mar 2022 16:58:40 +0100</pubDate>
+    <lastBuildDate>Thu, 17 Mar 2022 16:58:40 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -29,10 +29,10 @@ If you had already used WVDAdmin in the “normal” mode, you could copy the se
 &lt;p&gt;&lt;strong&gt;Don’t change&lt;/strong&gt; the AAD tenant while an operation is in progress. This could result in an error. If you change the AAD tenant, click “Reload all” to read the configuration for the new tenant.&lt;/p&gt;
 &lt;p&gt;The AAD multi-tenancy mode helps a lot if you have (like me) multiple clients you are working with.&lt;/p&gt;
 &lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVDAdmin” (AVDAdmin) from here: &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin Preview&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;#Update from version 1.7.34.0
-You can use a custom script file for imaging and deployment in the program files folder of WVDAdmin (optionally). Place a copy in the program files folder with the AAD tenant friendly name like this (v7 is the current highest version and itprocloud.de the friendly tenant name):
-ITPC-WVD-Image-Processing.&lt;em&gt;itprocloud.de&lt;/em&gt;.v7.ps1
-&lt;img src=&quot;../assets/images/WVDAdmin/MultiTenantScript.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;update-from-version-17340&quot;&gt;Update from version 1.7.34.0&lt;/h2&gt;
+&lt;p&gt;You can use a custom script file for imaging and deployment in the program files folder of WVDAdmin (optionally). Place a copy in the program files folder with the AAD tenant friendly name like this (v7 is the current highest version and itprocloud.de the friendly tenant name):
+ITPC-WVD-Image-Processing.&lt;em&gt;itprocloud.de&lt;/em&gt;.v7.ps1&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/MultiTenantScript.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;Read the original blog post about WVDAdmin here: &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 17 Mar 2022 00:00:00 +0100</pubDate>
