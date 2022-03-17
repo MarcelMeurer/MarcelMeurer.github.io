@@ -5,15 +5,52 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 16 Mar 2022 17:09:15 +0100</pubDate>
-    <lastBuildDate>Wed, 16 Mar 2022 17:09:15 +0100</lastBuildDate>
+    <pubDate>Thu, 17 Mar 2022 16:52:45 +0100</pubDate>
+    <lastBuildDate>Thu, 17 Mar 2022 16:52:45 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>WVDAdmin - Azure Windows Virtual Desktop Administration for CSP and Consulting Partners</title>
+        <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-for-csp-and-consulting-partners&quot;&gt;Azure Windows Virtual Desktop Administration for CSP and Consulting Partners&lt;/h1&gt;
+&lt;p&gt;Last year I released my windows-based GUI for administrating WVD/AVD to the community called WVDAdmin. I had a bunch of updates to share more features. This week I will release version 1.3.0 with will add another feature, especially for providers and consulting companies. From version 1.3.0 WVDAdmin will support a multi-AAD-tenancy mode allowing to switch the Azure AD tenant very easily.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin.MultiTenancy/WVDAdmin.Welcome.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;To enable the multi-AAD-tenancy mode, you must set a registry key. Add the following dword32 to your registry:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-registry&quot;&gt;&gt;HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin
+Name:	AadMultiTenant
+Type:	DWORD32
+Value:	1 (or 0 to disable this mode)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin.MultiTenancy/Registry1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;If you start WVDAdmin with this setting, a drop-down list will be visible at the welcome screen (see above). If you save a new service principal configuration, it happens to the drop-down list with the friendly name.
+All other settings for the image creation or rollout of new session hosts are saved to the context of the selected AAD tenant.&lt;/p&gt;
+&lt;p&gt;The authentication settings and other settings are saved in different trees in the registry starting from &lt;em&gt;HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin\AadMultiTenant&lt;/em&gt;
+If you had already used WVDAdmin in the “normal” mode, you could copy the settings from the root of the registry path to the new path for your AAD tenant. To delete a no longer needed AAD-tenant in WVDAdmin, remove the registry key of this one.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin.MultiTenancy/Registry2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Don’t change&lt;/strong&gt; the AAD tenant while an operation is in progress. This could result in an error. If you change the AAD tenant, click “Reload all” to read the configuration for the new tenant.&lt;/p&gt;
+&lt;p&gt;The AAD multi-tenancy mode helps a lot if you have (like me) multiple clients you are working with.&lt;/p&gt;
+&lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVDAdmin” (AVDAdmin) from here: &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin Preview&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;#Update from version 1.7.34.0
+You can use a custom script file for imaging and deployment in the program files folder of WVDAdmin (optionally). Place a copy in the program files folder with the AAD tenant friendly name like this (v7 is the current highest version and itprocloud.de the friendly tenant name):
+ITPC-WVD-Image-Processing.&lt;em&gt;itprocloud.de&lt;/em&gt;.v7.ps1
+&lt;img src=&quot;../assets/images/WVDAdmin/MultiTenantScript.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Read the original blog post about WVDAdmin here: &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 17 Mar 2022 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 03/16/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 03/17/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Imaging
@@ -100,7 +137,7 @@
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 03/16/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 03/17/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
 &lt;thead&gt;
@@ -110,6 +147,10 @@
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7.34.0&lt;/td&gt;
+&lt;td&gt;Add: Having custom script for imaging and deployment based on the tenant friendly name if running in the multi-AAD-tenancy mode &lt;a href=&quot;../Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners&quot;&gt;Follow this link&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.7.33.0&lt;/td&gt;
 &lt;td&gt;Add: Dark-mode. Set HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin\DarkMode to 1 (DarkMode is REG_DWORD32)&lt;/td&gt;
@@ -820,9 +861,9 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 03/16/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 03/17/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Wed, 16 Mar 2022 00:00:00 +0100</pubDate>
+        <pubDate>Thu, 17 Mar 2022 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
         
@@ -1344,57 +1385,6 @@ public class SessionHostProcess
         <pubDate>Sat, 13 Nov 2021 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>The secret about disappearing appx / UWP applications in an environment using FSLogix</title>
-        <description>&lt;h2 id=&quot;intro&quot;&gt;Intro&lt;/h2&gt;
-&lt;p&gt;A few weeks ago, a customer told me about a particular behavior in their Azure Virtual Desktop environment. The users are using a dedicated session host, and the profile is managed with FSLogix to save user data on a file server additionally.
-Some of the users install applications from the Windows Store (Appx, Universal Apps). If the user logs off at the end of the day and logs in the next day, the applications are gone, and only a dead item is left in the start menu. The users have to install the app again from the Windows Store. Luckily, the applications settings are in the user profiles, so the applications are still configured after reinstallation.&lt;/p&gt;
-&lt;p&gt;What does this cause? If a user installs an application from the Windows Store, the binaries are saved in “&lt;em&gt;C:\Program Files\WindowsApps&lt;/em&gt;”.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;If the user logs off in a non-FSLogix environment, the users’ profile stays on the computer and binaries as well.&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;If the user logs off in an FSLogix environment, the users’ profile is removed from the computer. While apparently, no user is using the application, Windows removes the binaries. This exactly happens in the customers’ environment.&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;workaround&quot;&gt;Workaround&lt;/h2&gt;
-&lt;p&gt;But how to deal with it? First: If anybody has a better solution as my workaround, please let me know.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Install the application from the Windows Store. E.g., WhatsApp&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Launch the application&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Pin the icon to the taskbar&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Figure out the full package name using PowerShell:&lt;/p&gt;
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;Get-AppxPackage&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Where-Object&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;$_&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-like&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;*WhatsApp*&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;For this case: 5319275A.WhatsAppDesktop_2.2140.5.0_x64__cv1g1gvanyjgm
-If you don’t find the app, check the full list of Get-AppxPackage&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Add the full package name as a key to: &lt;em&gt;HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Applications&lt;/em&gt;
-&lt;img src=&quot;/assets/images/Secret-Appx-Regedit.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;After that, you can log off and log in without reinstalling the application. Unfortunately, the pinned icon is invisible as long as you click it.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 20 Oct 2021 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/The-secret-about-disappearing-appx-UWP-applications-in-an-environment-using-FSLogix/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/The-secret-about-disappearing-appx-UWP-applications-in-an-environment-using-FSLogix/</guid>
         
         
         <category>Windows Virtual Desktop</category>
