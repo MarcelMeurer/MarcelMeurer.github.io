@@ -213,10 +213,6 @@
 <lastmod>2021-12-13T00:00:00+01:00</lastmod>
 </url>
 <url>
-<loc>https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/</loc>
-<lastmod>2022-01-07T00:00:00+01:00</lastmod>
-</url>
-<url>
 <loc>https://blog.itprocloud.de/AVD-Azure-Monitor-Connection-Errors-With-Notification-KUSTO/</loc>
 <lastmod>2022-01-19T00:00:00+01:00</lastmod>
 </url>
@@ -227,6 +223,10 @@
 <url>
 <loc>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</loc>
 <lastmod>2022-05-03T00:00:00+02:00</lastmod>
+</url>
+<url>
+<loc>https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/</loc>
+<lastmod>2022-05-13T00:00:00+02:00</lastmod>
 </url>
 <url>
 <loc>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</loc>

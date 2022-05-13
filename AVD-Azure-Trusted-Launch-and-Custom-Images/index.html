@@ -21,12 +21,12 @@
 <meta property="og:site_name" content="ITProCloud Blog" />
 <meta property="og:image" content="https://blog.itprocloud.de/assets/images/WVDAdmin/InstantBuild-01.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2022-01-07T00:00:00+01:00" />
+<meta property="article:published_time" content="2022-05-13T00:00:00+02:00" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/WVDAdmin/InstantBuild-01.png" />
 <meta property="twitter:title" content="Azure Trusted Launch and Custom Images - even for AVD" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/WVDAdmin/InstantBuild-01.png","datePublished":"2022-01-07T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/","author":{"@type":"Person","name":"mm"},"headline":"Azure Trusted Launch and Custom Images - even for AVD","dateModified":"2022-01-07T00:00:00+01:00","description":"Trusted launch for Azure virtual machines is currently in public preview (https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch). The trusted launch has some benefits, like:","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/WVDAdmin/InstantBuild-01.png","datePublished":"2022-05-13T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/","author":{"@type":"Person","name":"mm"},"headline":"Azure Trusted Launch and Custom Images - even for AVD","dateModified":"2022-05-13T00:00:00+02:00","description":"Trusted launch for Azure virtual machines is currently in public preview (https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch). The trusted launch has some benefits, like:","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -350,6 +350,8 @@
 <p>(Source: Microsoft website)</p>
 <p>Technology-based, the trusted launch cannot be activated on existing VMs. Additionally, the VM size must support this feature. More importantly, a trusted launch VM can only be created from vanilla Microsoft Marketplace images. Deployment from a custom image is not working and is not supported.</p>
 <p><strong>Update 20/01/2022:</strong> A native and supported process to rollout VMs and session hosts based on a custom image is expected in Feburary 2022 and will be added to <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> to show on <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydras’</a></p>
+<p><strong>Update 13/05/2022:</strong> You can enable “Secure Boot” for marketplace images and for Custom Images in an Azure Compute Gallery (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition). #WVDAdmin and #Hydra are supporting this new feature right now
+![](../assets/images/Custom-Images-with-WVDAdmin-and-Hydra-and-Secure Boot.png)</p>
 <p>That’s not pretty, while in AVD, most deployments are based on images from Golden Masters. That is also the approach I’m using with my solutions (like <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>):</p>
 <ul>
 <li>Rolling out a Windows 10/11 VM</li>
@@ -401,6 +403,8 @@
 <p>(Source: Microsoft website)</p>
 <p>Technology-based, the trusted launch cannot be activated on existing VMs. Additionally, the VM size must support this feature. More importantly, a trusted launch VM can only be created from vanilla Microsoft Marketplace images. Deployment from a custom image is not working and is not supported.</p>
 <p><strong>Update 20/01/2022:</strong> A native and supported process to rollout VMs and session hosts based on a custom image is expected in Feburary 2022 and will be added to <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> to show on <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydras’</a></p>
+<p><strong>Update 13/05/2022:</strong> You can enable “Secure Boot” for marketplace images and for Custom Images in an Azure Compute Gallery (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition). #WVDAdmin and #Hydra are supporting this new feature right now
+![](../assets/images/Custom-Images-with-WVDAdmin-and-Hydra-and-Secure Boot.png)</p>
 <p>That’s not pretty, while in AVD, most deployments are based on images from Golden Masters. That is also the approach I’m using with my solutions (like <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>):</p>
 <ul>
 <li>Rolling out a Windows 10/11 VM</li>
