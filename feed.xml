@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 13 May 2022 19:54:50 +0200</pubDate>
-    <lastBuildDate>Fri, 13 May 2022 19:54:50 +0200</lastBuildDate>
+    <pubDate>Fri, 13 May 2022 19:58:41 +0200</pubDate>
+    <lastBuildDate>Fri, 13 May 2022 19:58:41 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -867,7 +867,7 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;p&gt;(Source: Microsoft website)&lt;/p&gt;
 &lt;p&gt;Technology-based, the trusted launch cannot be activated on existing VMs. Additionally, the VM size must support this feature. More importantly, a trusted launch VM can only be created from vanilla Microsoft Marketplace images. Deployment from a custom image is not working and is not supported.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Update 20/01/2022:&lt;/strong&gt; A native and supported process to rollout VMs and session hosts based on a custom image is expected in Feburary 2022 and will be added to &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; to show on &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydras’&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Update 13/05/2022:&lt;/strong&gt; You can enable “Secure Boot” for marketplace images and for Custom Images in an Azure Compute Gallery (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition). #WVDAdmin and #Hydra are supporting this new feature right now
+&lt;p&gt;&lt;strong&gt;Update 13/05/2022:&lt;/strong&gt; You can enable “Secure Boot” for marketplace images and for Custom Images in an &lt;a href=&quot;https://azure.microsoft.com/en-gb/updates/trusted-launch-azure-compute-gallery-support/&quot;&gt;Azure Compute Gallery&lt;/a&gt; (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition). #WVDAdmin and #Hydra are supporting this new feature right now
 &lt;img src=&quot;../assets/images/Custom-Images-with-WVDAdmin-and-Hydra-and-Secure-Boot.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;If you use the current version of #WVDAdmin or #Hydra you can skip the next part&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;That’s not pretty, while in AVD, most deployments are based on images from Golden Masters. That is also the approach I’m using with my solutions (like &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;):&lt;/p&gt;
