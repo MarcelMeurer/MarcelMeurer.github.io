@@ -6,22 +6,27 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>Azure VM | ITProCloud Blog</title>
+<title>Securing an app service, a key vault, and a database with private endpoints | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Azure VM | ITProCloud Blog</title>
+<title>Securing an app service, a key vault, and a database with private endpoints | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Azure VM" />
+<meta property="og:title" content="Securing an app service, a key vault, and a database with private endpoints" />
+<meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Welcome to my blog. I’m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH." />
-<meta property="og:description" content="Welcome to my blog. I’m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH." />
-<link rel="canonical" href="https://blog.itprocloud.de/category/azure-vm/" />
-<meta property="og:url" content="https://blog.itprocloud.de/category/azure-vm/" />
+<meta name="description" content="A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Kommunikation is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string)." />
+<meta property="og:description" content="A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Kommunikation is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string)." />
+<link rel="canonical" href="https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/" />
+<meta property="og:url" content="https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta name="twitter:card" content="summary" />
-<meta property="twitter:title" content="Azure VM" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/SecureWebApp.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-05-30T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/SecureWebApp.png" />
+<meta property="twitter:title" content="Securing an app service, a key vault, and a database with private endpoints" />
 <script type="application/ld+json">
-{"@type":"WebPage","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"}},"url":"https://blog.itprocloud.de/category/azure-vm/","headline":"Azure VM","description":"Welcome to my blog. I’m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/SecureWebApp.png","datePublished":"2022-05-30T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/","author":{"@type":"Person","name":"mm"},"headline":"Securing an app service, a key vault, and a database with private endpoints","dateModified":"2022-05-30T00:00:00+02:00","description":"A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Kommunikation is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string).","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -41,7 +46,7 @@
 
 
 
-<body class="layout-archive">
+<body class="layout-page">
 	<!-- defer loading of font and font awesome -->
 	<noscript id="deferred-styles">
 		<link href="https://fonts.googleapis.com/css?family=Righteous%7CMerriweather:300,300i,400,400i,700,700i" rel="stylesheet">
@@ -336,112 +341,31 @@
 <!-- Content
 ================================================== -->
 <div class="main-content">
-    <!-- Begin List Posts
-================================================== -->
-<section class="recent-posts">
-<div class="section-title">
-    <h2>Archive of posts with <span>category 'Azure VM'</span></h2>
-</div>
-<div class="row listrecent">
-
-
-
-    <!-- begin post -->
-
-
-<div class="col-lg-4 col-md-6 mb-30px card-group">
-    <div class="card h-100">
-        <div class="maxthumb">
-            <a href="/Anouncing-Project-MySmartScale/">
-                
-
-                    
-                        <img class="img-fluid" src="/assets/images/MySmartScale-01.png" alt="Announcing the community version of "Project MySmartScale""> 
-                    
-
-                
-            </a>
-        </div>
-        <div class="card-body">
-            <h2 class="card-title">
-                <a class="text-dark" href="/Anouncing-Project-MySmartScale/">Announcing the community version of "Project MySmartScale"</a>
-                
-            </h2>
-            <h4 class="card-text">Windows Virtual Desktop is released and gateways around the world are available - even in Europe which cause in a low latency - perfect.
-</h4>
-        </div>
-        <div class="card-footer bg-white">
-            <div class="wrapfooter">
-                
-                <span class="meta-footer-thumb">
-                
-                <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
-                
-                </span>
-                <span class="author-meta">
-                <span class="post-name"><a target="_blank" href="https://blog.itprocloud.de">Marcel</a></span><br/>
-                
-                <span class="post-date">09 Oct 2019</span>
-                </span>
-                <span class="post-read-more"><a href="/Anouncing-Project-MySmartScale/" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
-                <div class="clearfix"></div>
-            </div>
-        </div>
+    <section>
+    <div class="section-title">
+        <h2><span>Securing an app service, a key vault, and a database with private endpoints</span></h2>
     </div>
-</div>
-<!-- end post -->
 
+    <div class="article-post">
+	
+		<!-- change content to anchor styled output -->
+		<p>A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Kommunikation is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string).</p>
+<p>The key vaults and database endpoints are reachable over the public internet. The strong authentication from the app services ensures that the app service gets access.</p>
+<p>In some cases, it’s mandatory to avoid public access to the vault and the database. Luckily, that can be easily done using private endpoints in Azure. Neither the application nor the configuration of the application needs to be adjusted. So, we can increase the security of any Azure app working with a vault and database (Azure SQL as a service).</p>
+<p>I recorded a short video to show the steps. Watch it to the end and avoid my mistake of putting the full IP-range into one subnet (you need two subnets: one for the vault and database and another for the app service).</p>
+<p>Check out the video on Youtube: <a href="https://youtu.be/2bf1yjoEk_A">How to secure the database and key vault of an app service / web app in Azure</a></p>
+<p><img src="../assets/images/SecureWebApp.png" alt="" /></p>
 
-
-    <!-- begin post -->
-
-
-<div class="col-lg-4 col-md-6 mb-30px card-group">
-    <div class="card h-100">
-        <div class="maxthumb">
-            <a href="/Deallocate-an-Azure-VM-from-itself/">
-                
-
-                    
-                        <img class="img-fluid" src="/wp-content/uploads/2018/04/de-alloc-01-.png" alt="Deallocate an Azure VM from itself"> 
-                    
-
-                
-            </a>
-        </div>
-        <div class="card-body">
-            <h2 class="card-title">
-                <a class="text-dark" href="/Deallocate-an-Azure-VM-from-itself/">Deallocate an Azure VM from itself</a>
-                
-            </h2>
-            <h4 class="card-text">These days I’m dealing with the automation of starting and stopping Azure virtual machines. I do this to avoid unnecessary costs for customers running Citrix or RDS workers on Azure....</h4>
-        </div>
-        <div class="card-footer bg-white">
-            <div class="wrapfooter">
-                
-                <span class="meta-footer-thumb">
-                
-                <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
-                
-                </span>
-                <span class="author-meta">
-                <span class="post-name"><a target="_blank" href="https://blog.itprocloud.de">Marcel</a></span><br/>
-                
-                <span class="post-date">16 Jan 2018</span>
-                </span>
-                <span class="post-read-more"><a href="/Deallocate-an-Azure-VM-from-itself/" title="Read Story"><svg class="svgIcon-use" width="25" height="25" viewbox="0 0 25 25"><path d="M19 6c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v14.66h.012c.01.103.045.204.12.285a.5.5 0 0 0 .706.03L12.5 16.85l5.662 4.126a.508.508 0 0 0 .708-.03.5.5 0 0 0 .118-.285H19V6zm-6.838 9.97L7 19.636V6c0-.55.45-1 1-1h9c.55 0 1 .45 1 1v13.637l-5.162-3.668a.49.49 0 0 0-.676 0z" fill-rule="evenodd"></path></svg></a></span>
-                <div class="clearfix"></div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- end post -->
-
-
-
-</div>
+		<!--<p>A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Kommunikation is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string).</p>
+<p>The key vaults and database endpoints are reachable over the public internet. The strong authentication from the app services ensures that the app service gets access.</p>
+<p>In some cases, it’s mandatory to avoid public access to the vault and the database. Luckily, that can be easily done using private endpoints in Azure. Neither the application nor the configuration of the application needs to be adjusted. So, we can increase the security of any Azure app working with a vault and database (Azure SQL as a service).</p>
+<p>I recorded a short video to show the steps. Watch it to the end and avoid my mistake of putting the full IP-range into one subnet (you need two subnets: one for the vault and database and another for the app service).</p>
+<p>Check out the video on Youtube: <a href="https://youtu.be/2bf1yjoEk_A">How to secure the database and key vault of an app service / web app in Azure</a></p>
+<p><img src="../assets/images/SecureWebApp.png" alt="" /></p>
+-->
+	
+    
 </section>
-
 </div>
 
 

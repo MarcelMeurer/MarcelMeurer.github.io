@@ -233,6 +233,10 @@
 <lastmod>2022-05-26T00:00:00+02:00</lastmod>
 </url>
 <url>
+<loc>https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/</loc>
+<lastmod>2022-05-30T00:00:00+02:00</lastmod>
+</url>
+<url>
 <loc>https://blog.itprocloud.de/about</loc>
 </url>
 <url>
@@ -297,6 +301,9 @@
 </url>
 <url>
 <loc>https://blog.itprocloud.de/category/azure-virtual-desktop/</loc>
+</url>
+<url>
+<loc>https://blog.itprocloud.de/category/azure-webapp/</loc>
 </url>
 <url>
 <loc>https://blog.itprocloud.de/page2/</loc>
