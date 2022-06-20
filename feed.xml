@@ -5,35 +5,15 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 30 May 2022 12:08:46 +0200</pubDate>
-    <lastBuildDate>Mon, 30 May 2022 12:08:46 +0200</lastBuildDate>
+    <pubDate>Mon, 20 Jun 2022 13:53:39 +0200</pubDate>
+    <lastBuildDate>Mon, 20 Jun 2022 13:53:39 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
-    
-      <item>
-        <title>Securing an app service, a key vault, and a database with private endpoints</title>
-        <description>&lt;p&gt;A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Kommunikation is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string).&lt;/p&gt;
-&lt;p&gt;The key vaults and database endpoints are reachable over the public internet. The strong authentication from the app services ensures that the app service gets access.&lt;/p&gt;
-&lt;p&gt;In some cases, it’s mandatory to avoid public access to the vault and the database. Luckily, that can be easily done using private endpoints in Azure. Neither the application nor the configuration of the application needs to be adjusted. So, we can increase the security of any Azure app working with a vault and database (Azure SQL as a service).&lt;/p&gt;
-&lt;p&gt;I recorded a short video to show the steps. Watch it to the end and avoid my mistake of putting the full IP-range into one subnet (you need two subnets: one for the vault and database and another for the app service).&lt;/p&gt;
-&lt;p&gt;Check out the video on Youtube: &lt;a href=&quot;https://youtu.be/2bf1yjoEk_A&quot;&gt;How to secure the database and key vault of an app service / web app in Azure&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/SecureWebApp.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Mon, 30 May 2022 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/</guid>
-        
-        
-        <category>Azure Webapp</category>
-        
-        <category>Azure</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/26/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 06/20/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
@@ -121,7 +101,7 @@
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/26/2022&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 06/20/2022&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
@@ -132,6 +112,10 @@
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7.43.0&lt;/td&gt;
+&lt;td&gt;Add: Support for FX-series VM size&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.7.42.0&lt;/td&gt;
 &lt;td&gt;Add: You can filter on the ‘Virtual Machines’ by the string ‘!orphanhosts’. That shows all VMs created by WVDAdmin or Hydra as a session host but currently not part of any seen host pool (used internally the tags WVD.Path or AVD.Path); Change: Modify WVD.Path/AVD.Path in another way while moving a session host to another host pool&lt;/td&gt;
@@ -874,9 +858,9 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/26/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 06/20/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Thu, 26 May 2022 00:00:00 +0200</pubDate>
+        <pubDate>Mon, 20 Jun 2022 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
         
@@ -884,6 +868,26 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
         <category>Windows Virtual Desktop</category>
         
         <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Securing an app service, a key vault, and a database with private endpoints</title>
+        <description>&lt;p&gt;A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Kommunikation is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string).&lt;/p&gt;
+&lt;p&gt;The key vaults and database endpoints are reachable over the public internet. The strong authentication from the app services ensures that the app service gets access.&lt;/p&gt;
+&lt;p&gt;In some cases, it’s mandatory to avoid public access to the vault and the database. Luckily, that can be easily done using private endpoints in Azure. Neither the application nor the configuration of the application needs to be adjusted. So, we can increase the security of any Azure app working with a vault and database (Azure SQL as a service).&lt;/p&gt;
+&lt;p&gt;I recorded a short video to show the steps. Watch it to the end and avoid my mistake of putting the full IP-range into one subnet (you need two subnets: one for the vault and database and another for the app service).&lt;/p&gt;
+&lt;p&gt;Check out the video on Youtube: &lt;a href=&quot;https://youtu.be/2bf1yjoEk_A&quot;&gt;How to secure the database and key vault of an app service / web app in Azure&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/SecureWebApp.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Mon, 30 May 2022 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/</guid>
+        
+        
+        <category>Azure Webapp</category>
+        
+        <category>Azure</category>
         
       </item>
     
