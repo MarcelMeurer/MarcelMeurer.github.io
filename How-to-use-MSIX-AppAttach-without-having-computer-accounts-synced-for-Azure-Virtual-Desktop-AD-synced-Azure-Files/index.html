@@ -386,7 +386,7 @@
 <p>To convince the system account to use a specific user account accessing a specific Azure Files storage account. That can be tested with these two lines:</p>
 <pre><code>psexec -s cmd
 
-cmdkey /add:[wvdmsixdata.file.core.windows.net](http://wvduserdata.file.core.windows.net/) /user:[msix@itprocloud.de](mailto:msix@itprocloud.de) /pass:passwordOfMsixUser
+cmdkey /add:wvdmsixdata.file.core.windows.net /user:[msix@itprocloud.de](mailto:msix@itprocloud.de) /pass:passwordOfMsixUser
 </code></pre>
 <p>Now, every time the host access <a href="wvdmsixdata.file.core.windows.net">wvdmsixdata.file.core.windows.net</a> in the system context, the named user account is used - even for staging the MSIX AppAttach packages.</p>
 <p>This step can be automized via a script directly after the rollout of a new session host. This allows the host to stage the packages directly.</p>
@@ -434,7 +434,7 @@ cmdkey /add:[wvdmsixdata.file.core.windows.net](http://wvduserdata.file.core.win
 <p>To convince the system account to use a specific user account accessing a specific Azure Files storage account. That can be tested with these two lines:</p>
 <pre><code>psexec -s cmd
 
-cmdkey /add:[wvdmsixdata.file.core.windows.net](http://wvduserdata.file.core.windows.net/) /user:[msix@itprocloud.de](mailto:msix@itprocloud.de) /pass:passwordOfMsixUser
+cmdkey /add:wvdmsixdata.file.core.windows.net /user:[msix@itprocloud.de](mailto:msix@itprocloud.de) /pass:passwordOfMsixUser
 </code></pre>
 <p>Now, every time the host access <a href="wvdmsixdata.file.core.windows.net">wvdmsixdata.file.core.windows.net</a> in the system context, the named user account is used - even for staging the MSIX AppAttach packages.</p>
 <p>This step can be automized via a script directly after the rollout of a new session host. This allows the host to stage the packages directly.</p>
