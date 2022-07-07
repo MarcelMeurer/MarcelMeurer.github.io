@@ -5,9 +5,58 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 22 Jun 2022 15:41:00 +0200</pubDate>
-    <lastBuildDate>Wed, 22 Jun 2022 15:41:00 +0200</lastBuildDate>
+    <pubDate>Thu, 07 Jul 2022 09:42:09 +0200</pubDate>
+    <lastBuildDate>Thu, 07 Jul 2022 09:42:09 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Honey-Potting in Azure and Unfavorable Account Names</title>
+        <description>&lt;p&gt;As everybody knows, running a Windows system in Azure unprotected is not a good idea. To get access to an Azure VM, Azure Bastion or VPN are recommended.&lt;/p&gt;
+&lt;p&gt;But what happens if you deploy a Windows VM in Azure with an unprotected public IP? Several bots try to log on to get access to the VM. For an experiment, I deployed a test VM to Azure with the public IP (my honey pot) to see what happens. Additionally, I wrote a short PowerShell script to search the security log for the logon attempts to get information about the used login names. It is interesting and good to avoid the (sometimes) common terms.&lt;/p&gt;
+&lt;p&gt;Script (must be run as a local administrator):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$table=@{}
+
+$ev=Get-EventLog -LogName Security -InstanceId 4625
+$ev | foreach {
+    $user=$_.ReplacementStrings[5]
+    $le=$table[$user]
+    if ($le -eq $null) {
+        $table.Add($user,1)
+    } else {
+        $table[$user]=$le+1
+    }
+}
+Write-Host &amp;quot;FAILED LOGONS&amp;quot;
+Write-Host &amp;quot;===========================================================&amp;quot;
+$table.GetEnumerator() | sort Value -Descending
+
+$table=@{}
+$ev=Get-EventLog -LogName Security -InstanceId 4624
+$ev | foreach {
+    $user=$_.ReplacementStrings[5]
+    $le=$table[$user]
+    if ($le -eq $null) {
+        $table.Add($user,1)
+    } else {
+        $table[$user]=$le+1
+    }
+}
+Write-Host &amp;quot;SUCCESSFUL LOGONS&amp;quot;
+Write-Host &amp;quot;===========================================================&amp;quot;
+$table.GetEnumerator() | sort Value -Descending
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here is the list of login attempts:
+![](../assets/images/Honey Pot.png)&lt;/p&gt;
+</description>
+        <pubDate>Thu, 07 Jul 2022 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/</guid>
+        
+        
+        <category>Azure</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -1387,28 +1436,6 @@ public class SessionHostProcess
         <pubDate>Wed, 17 Nov 2021 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Upcoming-features-of-Hydra-or-other-3rd-AVD-solutions/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Upcoming-features-of-Hydra-or-other-3rd-AVD-solutions/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>AVD issue: SessionHost unhealthy SxsStack listener is not ready - Code -2147467259</title>
-        <description>&lt;p&gt;A few days ago, I got an email from a customer concerning that a lot of Azure Virtual Desktop (AVD) session hosts showing an error message from the internal health check:&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;SessionHost unhealthy SxSStack listener is not ready - Code -2147467259&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;Unfortunately, there was no failed event log from the WVDAgent in the application log. But the RemoteDesktopServices log shows some issues with the SxSStack as expected. Reinstalling the AVD agents doesn’t resolve the issue. But we found an easier way to bring the hosts back to life: Uninstalling the SxS Stack package and rebooting the host.&lt;/p&gt;
-&lt;p&gt;We used PowerShell to create a single-line script and Hydra to execute it on all affected session host:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Uninstall-Package -Name &amp;quot;Remote Desktop Services SxS Network Stack&amp;quot; -AllVersions -Force
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Hydra/SxsIssue-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The short script can be deployed with #WVDAdmin, #Hydra, or any other solution having access to the hosts.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 16 Nov 2021 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259/</guid>
         
         
         <category>Windows Virtual Desktop</category>
