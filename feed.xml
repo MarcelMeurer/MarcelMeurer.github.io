@@ -5,64 +5,15 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 07 Jul 2022 09:45:39 +0200</pubDate>
-    <lastBuildDate>Thu, 07 Jul 2022 09:45:39 +0200</lastBuildDate>
+    <pubDate>Fri, 08 Jul 2022 11:26:22 +0200</pubDate>
+    <lastBuildDate>Fri, 08 Jul 2022 11:26:22 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
-    
-      <item>
-        <title>Honey-Potting in Azure and Unfavorable Account Names</title>
-        <description>&lt;p&gt;As everybody knows, running a Windows system in Azure unprotected is not a good idea. To get access to an Azure VM, Azure Bastion or VPN are recommended.&lt;/p&gt;
-&lt;p&gt;But what happens if you deploy a Windows VM in Azure with an unprotected public IP? Several bots try to log on to get access to the VM. For an experiment, I deployed a test VM to Azure with the public IP (my honey pot) to see what happens. Additionally, I wrote a short PowerShell script to search the security log for the logon attempts to get information about the used login names. It is interesting and good to avoid the (sometimes) common terms.&lt;/p&gt;
-&lt;p&gt;Script (must be run as a local administrator):&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$table=@{}
-
-$ev=Get-EventLog -LogName Security -InstanceId 4625
-$ev | foreach {
-    $user=$_.ReplacementStrings[5]
-    $le=$table[$user]
-    if ($le -eq $null) {
-        $table.Add($user,1)
-    } else {
-        $table[$user]=$le+1
-    }
-}
-Write-Host &amp;quot;FAILED LOGONS&amp;quot;
-Write-Host &amp;quot;===========================================================&amp;quot;
-$table.GetEnumerator() | sort Value -Descending
-
-$table=@{}
-$ev=Get-EventLog -LogName Security -InstanceId 4624
-$ev | foreach {
-    $user=$_.ReplacementStrings[5]
-    $le=$table[$user]
-    if ($le -eq $null) {
-        $table.Add($user,1)
-    } else {
-        $table[$user]=$le+1
-    }
-}
-Write-Host &amp;quot;SUCCESSFUL LOGONS&amp;quot;
-Write-Host &amp;quot;===========================================================&amp;quot;
-$table.GetEnumerator() | sort Value -Descending
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Here is the list of login attempts:
-&lt;img src=&quot;../assets/images/HoneyPot.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Thu, 07 Jul 2022 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/</guid>
-        
-        
-        <category>Azure</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 06/22/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/08/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
@@ -150,7 +101,7 @@ $table.GetEnumerator() | sort Value -Descending
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 06/22/2022&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/08/2022&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
@@ -161,6 +112,10 @@ $table.GetEnumerator() | sort Value -Descending
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7.45.0&lt;/td&gt;
+&lt;td&gt;Fix: Galley images are only shown if a custom image exist&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.7.44.0&lt;/td&gt;
 &lt;td&gt;Add: Australia East as meta-data location&lt;/td&gt;
@@ -911,9 +866,9 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 06/22/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/08/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Wed, 22 Jun 2022 00:00:00 +0200</pubDate>
+        <pubDate>Fri, 08 Jul 2022 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
         
@@ -921,6 +876,55 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
         <category>Windows Virtual Desktop</category>
         
         <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Honey-Potting in Azure and Unfavorable Account Names</title>
+        <description>&lt;p&gt;As everybody knows, running a Windows system in Azure unprotected is not a good idea. To get access to an Azure VM, Azure Bastion or VPN are recommended.&lt;/p&gt;
+&lt;p&gt;But what happens if you deploy a Windows VM in Azure with an unprotected public IP? Several bots try to log on to get access to the VM. For an experiment, I deployed a test VM to Azure with the public IP (my honey pot) to see what happens. Additionally, I wrote a short PowerShell script to search the security log for the logon attempts to get information about the used login names. It is interesting and good to avoid the (sometimes) common terms.&lt;/p&gt;
+&lt;p&gt;Script (must be run as a local administrator):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$table=@{}
+
+$ev=Get-EventLog -LogName Security -InstanceId 4625
+$ev | foreach {
+    $user=$_.ReplacementStrings[5]
+    $le=$table[$user]
+    if ($le -eq $null) {
+        $table.Add($user,1)
+    } else {
+        $table[$user]=$le+1
+    }
+}
+Write-Host &amp;quot;FAILED LOGONS&amp;quot;
+Write-Host &amp;quot;===========================================================&amp;quot;
+$table.GetEnumerator() | sort Value -Descending
+
+$table=@{}
+$ev=Get-EventLog -LogName Security -InstanceId 4624
+$ev | foreach {
+    $user=$_.ReplacementStrings[5]
+    $le=$table[$user]
+    if ($le -eq $null) {
+        $table.Add($user,1)
+    } else {
+        $table[$user]=$le+1
+    }
+}
+Write-Host &amp;quot;SUCCESSFUL LOGONS&amp;quot;
+Write-Host &amp;quot;===========================================================&amp;quot;
+$table.GetEnumerator() | sort Value -Descending
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here is the list of login attempts:
+&lt;img src=&quot;../assets/images/HoneyPot.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 07 Jul 2022 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/</guid>
+        
+        
+        <category>Azure</category>
         
       </item>
     
