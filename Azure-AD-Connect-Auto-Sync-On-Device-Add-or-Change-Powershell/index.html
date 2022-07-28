@@ -6,27 +6,27 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>Push Azure Windows Virtual Desktop (WVD) Session Host state to Log Analytics to create alerts if hosts become unavailable or failed | ITProCloud Blog</title>
+<title>Automatically add or change Azure Active Directory computer objects on-demand | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Push Azure Windows Virtual Desktop (WVD) Session Host state to Log Analytics to create alerts if hosts become unavailable or failed | ITProCloud Blog</title>
+<title>Automatically add or change Azure Active Directory computer objects on-demand | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Push Azure Windows Virtual Desktop (WVD) Session Host state to Log Analytics to create alerts if hosts become unavailable or failed" />
+<meta property="og:title" content="Automatically add or change Azure Active Directory computer objects on-demand" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Microsoft offers an easy way to monitor a WVD/AVD environment’s basic metrics directly integrated into the Azure portal. I mostly extend the monitoring using sepago’s Azure Monitor for WVD (https://www.sepago.de/en/azure-monitor-en/), which is also included in Nerdio Manager for WVD (https://getnerdio.com/nerdio-manager-for-wvd/)." />
-<meta property="og:description" content="Microsoft offers an easy way to monitor a WVD/AVD environment’s basic metrics directly integrated into the Azure portal. I mostly extend the monitoring using sepago’s Azure Monitor for WVD (https://www.sepago.de/en/azure-monitor-en/), which is also included in Nerdio Manager for WVD (https://getnerdio.com/nerdio-manager-for-wvd/)." />
-<link rel="canonical" href="https://blog.itprocloud.de/Push-WVD-Session-Hosts-data-and-status-into-Azure-Monitor-Log-Analytics-to-create-alerts/" />
-<meta property="og:url" content="https://blog.itprocloud.de/Push-WVD-Session-Hosts-data-and-status-into-Azure-Monitor-Log-Analytics-to-create-alerts/" />
+<meta name="description" content="Hybrid joined AVD session hosts are great for working with conditional access, Intune (MEM), access to Azure files, and other AAD integrated services." />
+<meta property="og:description" content="Hybrid joined AVD session hosts are great for working with conditional access, Intune (MEM), access to Azure files, and other AAD integrated services." />
+<link rel="canonical" href="https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/" />
+<meta property="og:url" content="https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="https://blog.itprocloud.de/assets/images/LogicApp-WVDSH-AzureMonitor-007.png" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/AADConnectOnDemant01.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2021-01-15T00:00:00+01:00" />
+<meta property="article:published_time" content="2022-07-28T00:00:00+02:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/LogicApp-WVDSH-AzureMonitor-007.png" />
-<meta property="twitter:title" content="Push Azure Windows Virtual Desktop (WVD) Session Host state to Log Analytics to create alerts if hosts become unavailable or failed" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/AADConnectOnDemant01.png" />
+<meta property="twitter:title" content="Automatically add or change Azure Active Directory computer objects on-demand" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/LogicApp-WVDSH-AzureMonitor-007.png","datePublished":"2021-01-15T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Push-WVD-Session-Hosts-data-and-status-into-Azure-Monitor-Log-Analytics-to-create-alerts/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Push-WVD-Session-Hosts-data-and-status-into-Azure-Monitor-Log-Analytics-to-create-alerts/","author":{"@type":"Person","name":"mm"},"headline":"Push Azure Windows Virtual Desktop (WVD) Session Host state to Log Analytics to create alerts if hosts become unavailable or failed","dateModified":"2021-01-15T00:00:00+01:00","description":"Microsoft offers an easy way to monitor a WVD/AVD environment’s basic metrics directly integrated into the Azure portal. I mostly extend the monitoring using sepago’s Azure Monitor for WVD (https://www.sepago.de/en/azure-monitor-en/), which is also included in Nerdio Manager for WVD (https://getnerdio.com/nerdio-manager-for-wvd/).","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/AADConnectOnDemant01.png","datePublished":"2022-07-28T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/","author":{"@type":"Person","name":"mm"},"headline":"Automatically add or change Azure Active Directory computer objects on-demand","dateModified":"2022-07-28T00:00:00+02:00","description":"Hybrid joined AVD session hosts are great for working with conditional access, Intune (MEM), access to Azure files, and other AAD integrated services.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -363,19 +363,19 @@
     </p>
     <ul>
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://twitter.com/intent/tweet?text=Push Azure Windows Virtual Desktop (WVD) Session Host state to Log Analytics to create alerts if hosts become unavailable or failed&url=https://blog.itprocloud.de/Push-WVD-Session-Hosts-data-and-status-into-Azure-Monitor-Log-Analytics-to-create-alerts/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Automatically add or change Azure Active Directory computer objects on-demand&url=https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                 <i class="fab fa-twitter"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Push-WVD-Session-Hosts-data-and-status-into-Azure-Monitor-Log-Analytics-to-create-alerts/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
                 <i class="fab fa-facebook-f"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Push-WVD-Session-Hosts-data-and-status-into-Azure-Monitor-Log-Analytics-to-create-alerts/&title=Push Azure Windows Virtual Desktop (WVD) Session Host state to Log Analytics to create alerts if hosts become unavailable or failed" onclick="window.open(this.href, 'width=550,height=435');return false;">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/&title=Automatically add or change Azure Active Directory computer objects on-demand" onclick="window.open(this.href, 'width=550,height=435');return false;">
                 <i class="fab fa-linkedin-in"></i>
             </a>
         </li>
@@ -415,7 +415,7 @@
                 
 
                 <!-- Post Title -->
-                <h1 class="posttitle">Push Azure Windows Virtual Desktop (WVD) Session Host state to Log Analytics to create alerts if hosts become unavailable or failed</h1>
+                <h1 class="posttitle">Automatically add or change Azure Active Directory computer objects on-demand</h1>
 
             </div>
 
@@ -427,7 +427,7 @@
             
 
             
-            <img class="featured-image img-fluid" src="/assets/images/LogicApp-WVDSH-AzureMonitor-007.png" alt="Push Azure Windows Virtual Desktop (WVD) Session Host state to Log Analytics to create alerts if hosts become unavailable or failed">
+            <img class="featured-image img-fluid" src="/assets/images/AADConnectOnDemant01.png" alt="Automatically add or change Azure Active Directory computer objects on-demand">
             
 
             
@@ -438,59 +438,117 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>Microsoft offers an easy way to monitor a WVD/AVD environment’s basic metrics directly integrated into the Azure portal. I mostly extend the monitoring using sepago’s Azure Monitor for WVD (<a href="https://www.sepago.de/en/azure-monitor-en/">https://www.sepago.de/en/azure-monitor-en/</a>), which is also included in Nerdio Manager for WVD (<a href="https://getnerdio.com/nerdio-manager-for-wvd/">https://getnerdio.com/nerdio-manager-for-wvd/</a>).</p>
-<p>The native Microsoft solution shows the session hosts’ state (available, unavailable, failed, …) in a workbook (insights) in the Azure Portal. Unfortunately, the way of showing this state cannot be used to create an alert in Azure Monitor and get notified.</p>
-<p>To solve this challenge, we have to put the session host states as a custom log into a Log Analytics workspace. The data can be queried and uploaded to Log Analytics with an Azure Logic App</p>
-<h2 id="installation-and-configuration">Installation and configuration</h2>
-<p>Deploy the prepared logic app into your subscription using the “Deploy to Azure” button.</p>
-<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FLA-SessionHostStatesToLogAnalytics.json"><img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" /></a></p>
-<p>To query the Azure Management API, you need a service principal (a function account) with the right permission. Create the service principal in the Azure Portal:</p>
-<ul>
-<li>Azure Active Directory -&gt; App registrations -&gt; New registration and give it a name (e.g. svc_AzureWvdSessionHostsAvailability4AzureMonitor) and press register
-<img src="../assets/images/LogicApp-WVDSH-AzureMonitor-001.png" alt="" /></li>
-<li>Go to Certificates and secrets -&gt; Add new client secret and type in a name (e.g. Key1) and expiration date (make a note into your calendar) and press add
-<img src="../assets/images/LogicApp-WVDSH-AzureMonitor-002.png" alt="" /></li>
-<li>Copy the generated secret for later use</li>
-<li>Go to overview and copy the application id and directory id for later use
-<img src="../assets/images/LogicApp-WVDSH-AzureMonitor-003.png" alt="" /></li>
-<li>Give the service principal permission to the subscription: Access control (IAM) -&gt; Add -&gt; Add role assignment -&gt; “Desktop Virtualization Host Pool Reader” and select the service principal
-<img src="../assets/images/LogicApp-WVDSH-AzureMonitor-004.png" alt="" /></li>
-</ul>
-<p>To upload the data to your Azure Monitor / log analytics workspace, you need the workspace id and key of an existing Log Analytics workspace.</p>
-<ul>
-<li>Go to your log analytics workspace -&gt; select Advanced settings -&gt; Agents management -&gt; copy the workspace id and primary key for later use
-<img src="../assets/images/LogicApp-AAD-AzureMonitor-005.png" alt="" /></li>
-</ul>
-<p>Go to your deployed logic app and click edit.</p>
-<ul>
-<li>
-<p>Edit the configuration of “Authentication: Tenant Id”, “Authentication: App Id”, “Authentication: App Password” and “Subscription Id”: Enter the data of the service principal and the subscription id (Guid)</p>
-</li>
-<li>
-<p>Expand “For each”, “Until” and open “Send Data (Preview)”</p>
-</li>
-<li>
-<p>Click on Connections and add a new one (Add new)</p>
-</li>
-<li>
-<p>Give a name (e.g. ToLogAnalytics), the primary key and workspace id from log analytics and press create
-<img src="../assets/images/LogicApp-WVDSH-AzureMonitor-005.png" alt="" /></p>
-</li>
-</ul>
-<p>Save the logic app and press run to test it.</p>
-<p>If everything looks good, our logic app will upload the  data to log analytics every 5 minutes (can be changed).</p>
-<p><img src="../assets/images/LogicApp-WVDSH-AzureMonitor-006.png" alt="" /></p>
-<h2 id="querying-data">Querying data</h2>
-<p>You can query the data from log analytics with <strong>WVDHostPoolStatistic_CL</strong>. Keep in mind that it takes a while (30 minutes) to build the first upload schema.</p>
-<p>To show the data in a list you can start with this query:</p>
-<pre><code>WVDHostPoolStatistic_CL
-| project TimeGenerated, SessionHost=name_s, properties_status_s, properties_allowNewSession_b, properties_updateState_s, properties_assignedUser_s
+                <p>Hybrid joined AVD session hosts are great for working with conditional access, Intune (MEM), access to Azure files, and other AAD integrated services.</p>
+<p>But there are some challenges: One challenge is that it takes a while to see new session hosts after the deployment in AAD - which avoids that AAD services (like ca) can be used directly. One reason for the delay is that AD objects are synced every 30 minutes by default using ADConnect. In the worst case, it takes 30 minutes before the computer object is visible in AAD.</p>
+<p>My approach to lowering the delay is to pimp ADConnect with a custom PowerShell tool (SyncOnDemand.ps1): The tool checks every 3 seconds for computer objects in AD. The tool triggers ADConnect to start a differential sync if a computer object is new or updated after the last 30 minutes. To avoid the sync being triggered for the same computer object multiple times, already detected computer objects are ignored for the next 30 minutes.</p>
+<p>This should bring down the time for a host before the host is also visible in AAD.</p>
+<p>How does it work? Copy the script to the ADConnect server. Modify line 31 ($OuPath = …) to match your OU and domain.</p>
+<p>Run the script in an administrative PowerShell. The script checks every 3 seconds for changed computer objects. Change one of the computer objects in the right OU to test it (e.g., change the description). The script detects the change and triggers a delta sync to AAD.</p>
+<p>If everything works as expected, you can install the script with:</p>
+<pre><code>SyncOnDemand.ps1 -Install
 </code></pre>
-<p><img src="../assets/images/LogicApp-WVDSH-AzureMonitor-007.png" alt="" /></p>
-<p>To create an alert you can add an alert to Log Analytics based on the following query (lists unavailable hosts):</p>
-<pre><code>WVDHostPoolStatistic_CL
-| project TimeGenerated, SessionHost=name_s, properties_status_s, properties_allowNewSession_b, properties_updateState_s, properties_assignedUser_s
-| where properties_status_s=~&quot;unavailable&quot;
+<p>That creates a scheduled task to run the script on the startup of the ADConnect server. The scheduled task is started directly and runs in the background.</p>
+<p><strong>Note:</strong> This is a workaround. Use at your own risk</p>
+<p>Script (must be run as an administrator):</p>
+<pre><code>param(
+    [Parameter(Mandatory=$false)]
+    [Switch]$Install
+)
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+
+if ($Install) {
+    Write-Host &quot;Installing script to $env:windir&quot;
+    Copy-Item &quot;$($MyInvocation.InvocationName)&quot; -Destination (&quot;$($env:windir)\SyncOnDemand.ps1&quot;)
+
+	$action = New-ScheduledTaskAction -Execute &quot;$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe&quot; -Argument &quot;-executionPolicy Unrestricted -File `&quot;$($env:windir)\SyncOnDemand.ps1`&quot;&quot;
+	$trigger = New-ScheduledTaskTrigger	-AtStartup
+	$principal = New-ScheduledTaskPrincipal 'NT Authority\SYSTEM'
+	$settingsSet = New-ScheduledTaskSettingsSet
+    $settingsSet.Enabled=$true
+    #$settingsSet.IdleSettings.IdleDuration=0
+    $settingsSet.StopIfGoingOnBatteries=$false
+    $settingsSet.DisallowStartIfOnBatteries=$false
+    $settingsSet.ExecutionTimeLimit=&quot;PT0H&quot;
+    
+	$task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
+	Register-ScheduledTask -TaskName 'ITPC-ADConnect-OnDemand' -InputObject $task -ErrorAction Ignore | Out-Null
+	Start-ScheduledTask -TaskName 'ITPC-ADConnect-OnDemand'
+    Write-Host &quot;Starting the task&quot;
+    return
+}
+
+
+# Parameter
+$OuPath = &quot;LDAP://OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test&quot;
+$AcceptChangesForTheLastMinutes=30
+$RunEachSeconds = 3
+
+# Initialize
+$cycle = Get-Date
+$table=@{}
+
+
+try {
+    Get-ADSyncScheduler | Out-Null
+} catch {
+    Write-Error &quot;Command Get-ADSyncScheduler not exist. Please check your configuration. This script must run on a computer with AD-Connect installed&quot;
+    return
+}
+
+
+do {
+    $lastStart = Get-Date
+    $dt=($lastStart.AddMinutes(-$AcceptChangesForTheLastMinutes)).ToUniversalTime().ToString(&quot;yyyyMMddHHmmss.0Z&quot;)
+    $newObjects=0
+    # cleanup ignore-list
+    $table.clone().GetEnumerator() | foreach {
+        if ($_.Value -le $lastStart.AddMinutes(-$AcceptChangesForTheLastMinutes)) {
+                Write-Host &quot;Removing computer from the ignore-list: $($_.Name)&quot;
+                $table.Remove($_.Name)
+            }
+    }
+
+    $search=[adsisearcher]&quot;(&amp;(ObjectCategory=computer)(|(whenchanged&gt;=$dt)(whencreated&gt;=$dt)))&quot;
+    $search.SearchScope = &quot;Subtree&quot;
+    $search.PageSize=150000
+    $search.SearchRoot = $OuPath
+
+    $obj2=$search.FindAll()
+    Write-Host &quot;Computer objects found: $($obj2.Count)&quot;
+    $obj2 | foreach {
+        $le=$table[$_.Path]
+        if ($le -eq $null) {
+            $table.Add($_.Path,$lastStart)
+            Write-Host &quot;Found an updated computer: $($_.Path)&quot;
+            $newObjects++
+        } else {
+            Write-Host &quot;Skipping computer while object is in the ignore-list for a while: $($_.Path)&quot;
+        }
+    }
+
+    Write-Host &quot;Ignore list: $($table.Count)&quot;
+    Write-Host &quot;New objects: $newObjects&quot;
+    if ($newObjects -gt 0) {
+        Write-Host &quot;Starting delta sync&quot;
+        try {
+            do {
+                Sleep -Seconds 1
+            } while ((Get-ADSyncScheduler).SyncCycleInProgress)
+            Start-ADSyncSyncCycle -PolicyType Delta | Out-Null
+        } catch {
+            Write-Error &quot;Delta sync failed&quot;
+            $table=@{}
+        }
+        do {
+            Sleep -Seconds 1
+        } while ((Get-ADSyncScheduler).SyncCycleInProgress)
+        Write-Host &quot;Delta sync done&quot;
+    }
+    Write-Host &quot;Waiting for the next cycle&quot;
+    Write-Host
+    Sleep -Seconds $RunEachSeconds
+} while ($true)
 </code></pre>
             </div>
 
@@ -500,7 +558,7 @@
             <!-- Post Date -->
             <p>
             <small>
-                <span class="post-date"><time class="post-date" datetime="2021-01-15">15 Jan 2021</time></span>           
+                <span class="post-date"><time class="post-date" datetime="2022-07-28">28 Jul 2022</time></span>           
                 
                 </small>
             </p>
@@ -511,15 +569,15 @@
                     
                     
                     <li>
-                        <a class="smoothscroll" href="/categories#Azure-Monitor">Azure Monitor</a>
+                        <a class="smoothscroll" href="/categories#ADConnect">ADConnect</a>
                     </li>
                     
                     <li>
-                        <a class="smoothscroll" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop</a>
+                        <a class="smoothscroll" href="/categories#Azure">Azure</a>
                     </li>
                     
                     <li>
-                        <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
+                        <a class="smoothscroll" href="/categories#PowerShell">PowerShell</a>
                     </li>
                     
                 </ul>
@@ -538,10 +596,10 @@
             <!-- Prev/Next -->
             <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
             
-            <a class="prev d-block col-md-6" href="/WVDAdmin-for-WVD-management-and-roll-out-videos-on-Youtube/"> &laquo; WVDAdmin videos on YouTube</a>
+            <a class="prev d-block col-md-6" href="/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/"> &laquo; Honey-Potting in Azure and Unfavorable Account Names</a>
             
             
-            <a class="next d-block col-md-6 text-lg-right" href="/Sysprep-Error-sysprep-data-was-marked-corrupt;-cannot-proceed/">Sysprep error: RunPlatformActions:Sysprep data was marked corrupt; cannot proceed &raquo; </a>
+            <a class="next d-block col-md-6 text-lg-right" href="/Windows-Virtual-Desktop-Admin/">WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD) &raquo; </a>
             
             <div class="clearfix"></div>
             </div>

@@ -237,6 +237,10 @@
 <lastmod>2022-07-07T00:00:00+02:00</lastmod>
 </url>
 <url>
+<loc>https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/</loc>
+<lastmod>2022-07-28T00:00:00+02:00</lastmod>
+</url>
+<url>
 <loc>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</loc>
 <lastmod>2022-07-28T00:00:00+02:00</lastmod>
 </url>
@@ -308,6 +312,9 @@
 </url>
 <url>
 <loc>https://blog.itprocloud.de/category/azure-webapp/</loc>
+</url>
+<url>
+<loc>https://blog.itprocloud.de/category/adconnect/</loc>
 </url>
 <url>
 <loc>https://blog.itprocloud.de/page2/</loc>

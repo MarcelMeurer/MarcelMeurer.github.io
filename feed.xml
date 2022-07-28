@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 28 Jul 2022 08:01:28 +0200</pubDate>
-    <lastBuildDate>Thu, 28 Jul 2022 08:01:28 +0200</lastBuildDate>
+    <pubDate>Thu, 28 Jul 2022 17:18:06 +0200</pubDate>
+    <lastBuildDate>Thu, 28 Jul 2022 17:18:06 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -888,6 +888,133 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
       </item>
     
       <item>
+        <title>Automatically add or change Azure Active Directory computer objects on-demand</title>
+        <description>&lt;p&gt;Hybrid joined AVD session hosts are great for working with conditional access, Intune (MEM), access to Azure files, and other AAD integrated services.&lt;/p&gt;
+&lt;p&gt;But there are some challenges: One challenge is that it takes a while to see new session hosts after the deployment in AAD - which avoids that AAD services (like ca) can be used directly. One reason for the delay is that AD objects are synced every 30 minutes by default using ADConnect. In the worst case, it takes 30 minutes before the computer object is visible in AAD.&lt;/p&gt;
+&lt;p&gt;My approach to lowering the delay is to pimp ADConnect with a custom PowerShell tool (SyncOnDemand.ps1): The tool checks every 3 seconds for computer objects in AD. The tool triggers ADConnect to start a differential sync if a computer object is new or updated after the last 30 minutes. To avoid the sync being triggered for the same computer object multiple times, already detected computer objects are ignored for the next 30 minutes.&lt;/p&gt;
+&lt;p&gt;This should bring down the time for a host before the host is also visible in AAD.&lt;/p&gt;
+&lt;p&gt;How does it work? Copy the script to the ADConnect server. Modify line 31 ($OuPath = …) to match your OU and domain.&lt;/p&gt;
+&lt;p&gt;Run the script in an administrative PowerShell. The script checks every 3 seconds for changed computer objects. Change one of the computer objects in the right OU to test it (e.g., change the description). The script detects the change and triggers a delta sync to AAD.&lt;/p&gt;
+&lt;p&gt;If everything works as expected, you can install the script with:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;SyncOnDemand.ps1 -Install
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;That creates a scheduled task to run the script on the startup of the ADConnect server. The scheduled task is started directly and runs in the background.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; This is a workaround. Use at your own risk&lt;/p&gt;
+&lt;p&gt;Script (must be run as an administrator):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;param(
+    [Parameter(Mandatory=$false)]
+    [Switch]$Install
+)
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+
+if ($Install) {
+    Write-Host &amp;quot;Installing script to $env:windir&amp;quot;
+    Copy-Item &amp;quot;$($MyInvocation.InvocationName)&amp;quot; -Destination (&amp;quot;$($env:windir)\SyncOnDemand.ps1&amp;quot;)
+
+	$action = New-ScheduledTaskAction -Execute &amp;quot;$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe&amp;quot; -Argument &amp;quot;-executionPolicy Unrestricted -File `&amp;quot;$($env:windir)\SyncOnDemand.ps1`&amp;quot;&amp;quot;
+	$trigger = New-ScheduledTaskTrigger	-AtStartup
+	$principal = New-ScheduledTaskPrincipal 'NT Authority\SYSTEM'
+	$settingsSet = New-ScheduledTaskSettingsSet
+    $settingsSet.Enabled=$true
+    #$settingsSet.IdleSettings.IdleDuration=0
+    $settingsSet.StopIfGoingOnBatteries=$false
+    $settingsSet.DisallowStartIfOnBatteries=$false
+    $settingsSet.ExecutionTimeLimit=&amp;quot;PT0H&amp;quot;
+    
+	$task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
+	Register-ScheduledTask -TaskName 'ITPC-ADConnect-OnDemand' -InputObject $task -ErrorAction Ignore | Out-Null
+	Start-ScheduledTask -TaskName 'ITPC-ADConnect-OnDemand'
+    Write-Host &amp;quot;Starting the task&amp;quot;
+    return
+}
+
+
+# Parameter
+$OuPath = &amp;quot;LDAP://OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test&amp;quot;
+$AcceptChangesForTheLastMinutes=30
+$RunEachSeconds = 3
+
+# Initialize
+$cycle = Get-Date
+$table=@{}
+
+
+try {
+    Get-ADSyncScheduler | Out-Null
+} catch {
+    Write-Error &amp;quot;Command Get-ADSyncScheduler not exist. Please check your configuration. This script must run on a computer with AD-Connect installed&amp;quot;
+    return
+}
+
+
+do {
+    $lastStart = Get-Date
+    $dt=($lastStart.AddMinutes(-$AcceptChangesForTheLastMinutes)).ToUniversalTime().ToString(&amp;quot;yyyyMMddHHmmss.0Z&amp;quot;)
+    $newObjects=0
+    # cleanup ignore-list
+    $table.clone().GetEnumerator() | foreach {
+        if ($_.Value -le $lastStart.AddMinutes(-$AcceptChangesForTheLastMinutes)) {
+                Write-Host &amp;quot;Removing computer from the ignore-list: $($_.Name)&amp;quot;
+                $table.Remove($_.Name)
+            }
+    }
+
+    $search=[adsisearcher]&amp;quot;(&amp;amp;(ObjectCategory=computer)(|(whenchanged&amp;gt;=$dt)(whencreated&amp;gt;=$dt)))&amp;quot;
+    $search.SearchScope = &amp;quot;Subtree&amp;quot;
+    $search.PageSize=150000
+    $search.SearchRoot = $OuPath
+
+    $obj2=$search.FindAll()
+    Write-Host &amp;quot;Computer objects found: $($obj2.Count)&amp;quot;
+    $obj2 | foreach {
+        $le=$table[$_.Path]
+        if ($le -eq $null) {
+            $table.Add($_.Path,$lastStart)
+            Write-Host &amp;quot;Found an updated computer: $($_.Path)&amp;quot;
+            $newObjects++
+        } else {
+            Write-Host &amp;quot;Skipping computer while object is in the ignore-list for a while: $($_.Path)&amp;quot;
+        }
+    }
+
+    Write-Host &amp;quot;Ignore list: $($table.Count)&amp;quot;
+    Write-Host &amp;quot;New objects: $newObjects&amp;quot;
+    if ($newObjects -gt 0) {
+        Write-Host &amp;quot;Starting delta sync&amp;quot;
+        try {
+            do {
+                Sleep -Seconds 1
+            } while ((Get-ADSyncScheduler).SyncCycleInProgress)
+            Start-ADSyncSyncCycle -PolicyType Delta | Out-Null
+        } catch {
+            Write-Error &amp;quot;Delta sync failed&amp;quot;
+            $table=@{}
+        }
+        do {
+            Sleep -Seconds 1
+        } while ((Get-ADSyncScheduler).SyncCycleInProgress)
+        Write-Host &amp;quot;Delta sync done&amp;quot;
+    }
+    Write-Host &amp;quot;Waiting for the next cycle&amp;quot;
+    Write-Host
+    Sleep -Seconds $RunEachSeconds
+} while ($true)
+&lt;/code&gt;&lt;/pre&gt;</description>
+        <pubDate>Thu, 28 Jul 2022 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/</guid>
+        
+        
+        <category>Azure</category>
+        
+        <category>PowerShell</category>
+        
+        <category>ADConnect</category>
+        
+      </item>
+    
+      <item>
         <title>Honey-Potting in Azure and Unfavorable Account Names</title>
         <description>&lt;p&gt;As everybody knows, running a Windows system in Azure unprotected is not a good idea. To get access to an Azure VM, Azure Bastion or VPN are recommended.&lt;/p&gt;
 &lt;p&gt;But what happens if you deploy a Windows VM in Azure with an unprotected public IP? Several bots try to log on to get access to the VM. For an experiment, I deployed a test VM to Azure with the public IP (my honey pot) to see what happens. Additionally, I wrote a short PowerShell script to search the security log for the logon attempts to get information about the used login names. It is interesting and good to avoid the (sometimes) common terms.&lt;/p&gt;
@@ -1351,103 +1478,6 @@ cmdkey /add:wvdmsixdata.file.core.windows.net /user:[msix@itprocloud.de](mailto:
         <pubDate>Fri, 26 Nov 2021 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Directly connect session hosts with a 3rd party management environment</title>
-        <description>&lt;p&gt;While working with Azure Virtual Desktop, I still miss some features that seem unavailable through Microsoft or maybe a 3rd party vendor. One of the features is that an admin/helpdesk can see the users’ processes, CPU, and memory usage and terminate a hanging or crazy process. To build this feature, a fast connection to the session host from the management platform (in my case, Hydra) is needed. The approach using the RunCommandExtension is not fast enough and doesn’t allow duplex communication.&lt;/p&gt;
-&lt;p&gt;While web-based management platforms normally do not have a direct IP connection to the session hosts, the typical remote administration approaches won’t work. Therefore, I see no other way to have a small agent running on the session hosts connecting to the web-based management platform. One approach is that the agents connect via https to the management platform - the better way is using Web-Sockets to connect. &lt;em&gt;Websockets&lt;/em&gt; (WS) are faster and scale better than sending an http-request each second from each host to the platform. WS also directly supports a communication strategy.&lt;/p&gt;
-&lt;p&gt;In the preview version of Hydra, the agents connect securely (via a secret) to the platform and identify themselves via the FQDN and VM resource Id. That allows being referenced as a session host as well.&lt;/p&gt;
-&lt;p&gt;In my case, only the platform can ask the client (session host). For that, I build several classes. In each case, the platform asked a specific client for information (GetProcessList for session “2”), and the client response after a short time with the data (SetProcessList and SessionHostProcess[] as JSON in the content property).&lt;/p&gt;
-&lt;p&gt;For this example, asking for the process list is initiated by a management platform admin with the right permissions. The admin can also initiate a kill process to stop a process. While this works fast, the process list can be refreshed every few seconds automatically and shown on the website of the management platform.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;The fast communication between the platform and session hosts allows additional or improved features:&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;Showing CPU/MEM per session host faster than using the Azure API (Azure agent)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;A general fast monitoring&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;De-prioritized processes&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Fast chat with the user&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Improve scaling: Avoid logging off a disconnected session if a particular application is running (Excel, SAP - may be based on the CPU usage)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Improve scaling: Avoid logoff VIP users&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Get more data from the native AD via this connection&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Join computer objects fast into groups in a native AD&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Trigger a garbage collector&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Running scripts on the hosts - concurrently with duplex communication (to show a now written log file)&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Configure application&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Get data about FSLogix issues&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;Get data about FSLogix disk sizes&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;…&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Using WS makes a solution more flexible and avoids the limits of the RunCommandAPI. The price for this is another agent (not a service), which must be deployed during the rollout or afterward. From the first researches and implementation, there is no low limit regarding the number of hosts.&lt;/p&gt;
-&lt;p&gt;The current version of Hydra has the preview feature (to be released) showing the process list if an admin clicks on the user name in the session list. While this feature is in preview, test users must ask to switch on this feature for a specific Hydra instance). Check out the video on YouTube: &lt;a href=&quot;https://youtu.be/aNiNbEukVVc&quot;&gt;https://youtu.be/aNiNbEukVVc&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;The final question:&lt;/strong&gt; Are the features worth that an agent is needed?&lt;/p&gt;
-&lt;p&gt;Update from 4/1/2022: Using an agent would be perfect to manage Windows 365 as well. W365 is missing some API to work directly with the VM (like the RunCommandAPI). An agent would solve the missing APIs and would allows to manage W365 users and hosts with some features mentioned above.&lt;/p&gt;
-&lt;p&gt;First classes for the duplex-communication:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;public class Communication
-  {
-​    public CommunicationType Type { get; set; }
-​    public string Content { get; set; }
-  }
-
-public enum CommunicationType
-  {
-​    GetHostIdentifier,
-​    SetHostIdentifier,
-​    GetProcessList,
-​    SetProcessList,
-​	KillProcess,
-  }
-
-public class HostIdentifier
-  {
-​    public string SessionHostResourceId { get; set; }
-  }
-
-public class SessionHostProcess
-  { 
-​    public int ProcesId { get; set; }
-​    public string  Caption{ get; set; }
-​    public int SessionId { get; set; }
-​    public long WorkingSet { get; set; }
-​    public double CpuPercent{ get; set; }
-  }
-&lt;/code&gt;&lt;/pre&gt;</description>
-        <pubDate>Wed, 17 Nov 2021 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/Upcoming-features-of-Hydra-or-other-3rd-AVD-solutions/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Upcoming-features-of-Hydra-or-other-3rd-AVD-solutions/</guid>
         
         
         <category>Windows Virtual Desktop</category>
