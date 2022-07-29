@@ -448,6 +448,7 @@
 <pre><code>SyncOnDemand.ps1 -Install
 </code></pre>
 <p>That creates a scheduled task to run the script on the startup of the ADConnect server. The scheduled task is started directly and runs in the background.</p>
+<p><strong>Update</strong>: To speed up the replication between AD sites, you can use (“Use Notify”)[https://social.technet.microsoft.com/wiki/contents/articles/16929.set-active-directory-to-use-notify-replication.aspx]</p>
 <p><strong>Note:</strong> This is a workaround. Use at your own risk</p>
 <p>Script (must be run as an administrator):</p>
 <pre><code>param(
