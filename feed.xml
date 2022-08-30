@@ -5,9 +5,46 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 28 Aug 2022 13:00:36 +0200</pubDate>
-    <lastBuildDate>Sun, 28 Aug 2022 13:00:36 +0200</lastBuildDate>
+    <pubDate>Tue, 30 Aug 2022 17:51:57 +0200</pubDate>
+    <lastBuildDate>Tue, 30 Aug 2022 17:51:57 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Azure Virtual Desktop Session Hosts with Azure Disk Encryption</title>
+        <description>&lt;p&gt;Hydra for Azure Virtual Desktop and WVDAdmin are supporting ADE for AVD Session Hosts.&lt;/p&gt;
+&lt;p&gt;Azure Disk Encryption (ADE) encrypts the OS and data disks of Azure virtual machines (VMs) inside your VMs by using BitLocker. ADE cannot be combined with a disk encryption set.&lt;/p&gt;
+&lt;p&gt;To roll out session hosts with ADE in Hydra, some resources must be prepared to work: Azure Key Vault with an encryption key, and Azure Key Vault to store the secrets of the disks (can be the same vault)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;First, create a Key Vault in the Azure Portal&lt;/li&gt;
+&lt;li&gt;Give the service principal (from the tenant configuration) contributor permission to the vault (access and control)&lt;/li&gt;
+&lt;li&gt;In Access Policies, give the service principal the following permissions:
+– Key permissions: Get, Encrypt, Wrap Key
+– Secret permissions: Set&lt;/li&gt;
+&lt;li&gt;Check the boxes: Azure Virtual Machines for deployment and Azure Disk Encryption for volume encryption&lt;/li&gt;
+&lt;li&gt;Give yourself permissions: Key and secret management&lt;/li&gt;
+&lt;li&gt;Go to Keys and click on Generate. Type a name and select RSA and 2048&lt;/li&gt;
+&lt;li&gt;Click on the generate key and on the current version. Copy the Key identifier (must include the version). E.g., https://&lt;my-vaul&gt;.vault.azure.net/keys/ADE-Encryption/bf270e977a574813a87bb637d57a6675&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In Hydra, configure “New Session Host Rollout”:
+In “Advanced settings” select the Key Vault  in ADE Key Vault
+Copy the Key Identifier to ADE Encryption Key Url&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;assets/images/ADE-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Do a deployment to verify that the disk is ADE encrypted:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;assets/images/ADE-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;To rollout hosts with ADE with WVDAdmin, add tags to the host pool:&lt;/p&gt;
+&lt;p&gt;WVD.Default.KeyVault.Id: resource id of the KeyVault (/subscriptions/&lt;GUID&gt;/resourceGroups/&lt;RG Name&gt;/providers/Microsoft.KeyVault/vaults/&lt;KV Name&gt;)
+WVD.Default.KeyVault.KeyUri: key for the vaul (https://&lt;my-vaul&gt;.vault.azure.net/keys/ADE-Encryption/bf270e977a574813a87bb637d57a6675)&lt;/p&gt;
+</description>
+        <pubDate>Tue, 30 Aug 2022 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -1422,67 +1459,6 @@ Reserved (3y): € 0.078055&lt;/p&gt;
         <pubDate>Mon, 13 Dec 2021 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling-Copy/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling-Copy/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>How to use MSIX AppAttach without having computer accounts synced for Azure Virtual Desktop (AD synced and Azure Files)</title>
-        <description>&lt;p&gt;Using MSIX AppAttach in Azure Virtual Desktop is great. To stage the MSIX AppAttach packages, the session host needs permission to read the package. If the package is placed on a “normal” file server, everything works as expected. But if the image on an Azure Files share, it would not work directly. In this case, the computer object has no permission to read data. You got the following error message:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;em&gt;&lt;strong&gt;SessionHost unhealthy: The following MSIX packages have failed to properly stage: [xxxxxxxxxxxx_yyyyyy, System.IO.FileNotFoundException: File not found.&lt;/strong&gt;&lt;/em&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3 id=&quot;the-default-approach&quot;&gt;The default approach&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Add the AVD computer objects in a global group&lt;/li&gt;
-&lt;li&gt;Sync the group and the computer objects for the hosts&lt;/li&gt;
-&lt;li&gt;Add the group with the RBAC Role “Storage File Data SMB Share Contributor” to the file share or storage account&lt;/li&gt;
-&lt;li&gt;Give the global group NTFS read permission&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;After that, the hosts can access with their computer account the share.&lt;/p&gt;
-&lt;p&gt;The disadvantage is that if you deploy a new host, you have to add the computer object to the group and wait for the synchronization to AAD (for the group and the computer object). Meanwhile, the host cannot stage the package and cannot provide the application to the users :-(&lt;/p&gt;
-&lt;h3 id=&quot;another-approach-or-workaround&quot;&gt;Another approach or workaround&lt;/h3&gt;
-&lt;p&gt;The issue is that the computer/system account cannot access the share. Another approach is to convince the system account to use a domain user for accessing Azure Files.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Create a user account in AD and wait for replication&lt;/li&gt;
-&lt;li&gt;Add the user with the RBAC Role “Storage File Data SMB Share Contributor” to the file share or storage account&lt;/li&gt;
-&lt;li&gt;Give the user NTFS read permission&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;To convince the system account to use a specific user account accessing a specific Azure Files storage account. That can be tested with these two lines:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;psexec -s cmd
-
-cmdkey /add:wvdmsixdata.file.core.windows.net /user:[msix@itprocloud.de](mailto:msix@itprocloud.de) /pass:passwordOfMsixUser
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Now, every time the host access &lt;a href=&quot;wvdmsixdata.file.core.windows.net&quot;&gt;wvdmsixdata.file.core.windows.net&lt;/a&gt; in the system context, the named user account is used - even for staging the MSIX AppAttach packages.&lt;/p&gt;
-&lt;p&gt;This step can be automized via a script directly after the rollout of a new session host. This allows the host to stage the packages directly.&lt;/p&gt;
-&lt;p&gt;You could use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, modify the deployment script, and run the cmdkey part after the domain join (psexec is not needed).&lt;/p&gt;
-&lt;p&gt;Another way to go is using &lt;a href=&quot;https://www.itprocloud.de/hydra/&quot;&gt;Hydra&lt;/a&gt; with a script after the deployment. In this case, you could use the service account on a host pool level. Example script:&lt;/p&gt;
-&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Check, if service account is available&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;global&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Hydra_ServiceAccount_PSC&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-eq&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;$null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-  &lt;/span&gt;&lt;span class=&quot;kr&quot;&gt;throw&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Failed: Service account missing - The script needs a configured service account.&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fileServer&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;wvdmsixdata.file.core.windows.net&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$secret&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;System.Net.NetworkCredential&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;global&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Hydra_ServiceAccount_PSC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Password&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Password&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cmdkey.exe&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/add:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$fileServer&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/user:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;global&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;Hydra_ServiceAccount_PSC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;UserName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;/pass:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$secret&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$count&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Get-ChildItem&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;\\wvduserdata.file.core.windows.net\msix&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Count&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;OutputWriter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;The script has finished. Existing files: &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$count&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Note:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;This is a workaround!&lt;/li&gt;
-&lt;li&gt;Make sure that the users’ password does not expire.&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Fri, 26 Nov 2021 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/</guid>
         
         
         <category>Windows Virtual Desktop</category>

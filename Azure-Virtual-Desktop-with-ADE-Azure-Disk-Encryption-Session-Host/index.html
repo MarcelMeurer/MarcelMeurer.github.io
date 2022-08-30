@@ -6,27 +6,27 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>Honey-Potting in Azure and Unfavorable Account Names | ITProCloud Blog</title>
+<title>Azure Virtual Desktop Session Hosts with Azure Disk Encryption | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Honey-Potting in Azure and Unfavorable Account Names | ITProCloud Blog</title>
+<title>Azure Virtual Desktop Session Hosts with Azure Disk Encryption | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Honey-Potting in Azure and Unfavorable Account Names" />
+<meta property="og:title" content="Azure Virtual Desktop Session Hosts with Azure Disk Encryption" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="As everybody knows, running a Windows system in Azure unprotected is not a good idea. To get access to an Azure VM, Azure Bastion or VPN are recommended." />
-<meta property="og:description" content="As everybody knows, running a Windows system in Azure unprotected is not a good idea. To get access to an Azure VM, Azure Bastion or VPN are recommended." />
-<link rel="canonical" href="https://blog.itprocloud.de/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/" />
-<meta property="og:url" content="https://blog.itprocloud.de/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/" />
+<meta name="description" content="Hydra for Azure Virtual Desktop and WVDAdmin are supporting ADE for AVD Session Hosts." />
+<meta property="og:description" content="Hydra for Azure Virtual Desktop and WVDAdmin are supporting ADE for AVD Session Hosts." />
+<link rel="canonical" href="https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/" />
+<meta property="og:url" content="https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="https://blog.itprocloud.de/assets/images/HoneyPot.png" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/ADE-01.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2022-07-07T00:00:00+02:00" />
+<meta property="article:published_time" content="2022-08-30T00:00:00+02:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/HoneyPot.png" />
-<meta property="twitter:title" content="Honey-Potting in Azure and Unfavorable Account Names" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/ADE-01.png" />
+<meta property="twitter:title" content="Azure Virtual Desktop Session Hosts with Azure Disk Encryption" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/HoneyPot.png","datePublished":"2022-07-07T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/","author":{"@type":"Person","name":"mm"},"headline":"Honey-Potting in Azure and Unfavorable Account Names","dateModified":"2022-07-07T00:00:00+02:00","description":"As everybody knows, running a Windows system in Azure unprotected is not a good idea. To get access to an Azure VM, Azure Bastion or VPN are recommended.","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/ADE-01.png","datePublished":"2022-08-30T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/","author":{"@type":"Person","name":"mm"},"headline":"Azure Virtual Desktop Session Hosts with Azure Disk Encryption","dateModified":"2022-08-30T00:00:00+02:00","description":"Hydra for Azure Virtual Desktop and WVDAdmin are supporting ADE for AVD Session Hosts.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -363,19 +363,19 @@
     </p>
     <ul>
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://twitter.com/intent/tweet?text=Honey-Potting in Azure and Unfavorable Account Names&url=https://blog.itprocloud.de/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Azure Virtual Desktop Session Hosts with Azure Disk Encryption&url=https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                 <i class="fab fa-twitter"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
                 <i class="fab fa-facebook-f"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/&title=Honey-Potting in Azure and Unfavorable Account Names" onclick="window.open(this.href, 'width=550,height=435');return false;">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/&title=Azure Virtual Desktop Session Hosts with Azure Disk Encryption" onclick="window.open(this.href, 'width=550,height=435');return false;">
                 <i class="fab fa-linkedin-in"></i>
             </a>
         </li>
@@ -415,7 +415,7 @@
                 
 
                 <!-- Post Title -->
-                <h1 class="posttitle">Honey-Potting in Azure and Unfavorable Account Names</h1>
+                <h1 class="posttitle">Azure Virtual Desktop Session Hosts with Azure Disk Encryption</h1>
 
             </div>
 
@@ -427,7 +427,7 @@
             
 
             
-            <img class="featured-image img-fluid" src="/assets/images/HoneyPot.png" alt="Honey-Potting in Azure and Unfavorable Account Names">
+            <img class="featured-image img-fluid" src="/assets/images/ADE-01.png" alt="Azure Virtual Desktop Session Hosts with Azure Disk Encryption">
             
 
             
@@ -438,43 +438,29 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>As everybody knows, running a Windows system in Azure unprotected is not a good idea. To get access to an Azure VM, Azure Bastion or VPN are recommended.</p>
-<p>But what happens if you deploy a Windows VM in Azure with an unprotected public IP? Several bots try to log on to get access to the VM. For an experiment, I deployed a test VM to Azure with the public IP (my honey pot) to see what happens. Additionally, I wrote a short PowerShell script to search the security log for the logon attempts to get information about the used login names. It is interesting and good to avoid the (sometimes) common terms.</p>
-<p>Script (must be run as a local administrator):</p>
-<pre><code>$table=@{}
-
-$ev=Get-EventLog -LogName Security -InstanceId 4625
-$ev | foreach {
-    $user=$_.ReplacementStrings[5]
-    $le=$table[$user]
-    if ($le -eq $null) {
-        $table.Add($user,1)
-    } else {
-        $table[$user]=$le+1
-    }
-}
-Write-Host &quot;FAILED LOGONS&quot;
-Write-Host &quot;===========================================================&quot;
-$table.GetEnumerator() | sort Value -Descending
-
-$table=@{}
-$ev=Get-EventLog -LogName Security -InstanceId 4624
-$ev | foreach {
-    $user=$_.ReplacementStrings[5]
-    $le=$table[$user]
-    if ($le -eq $null) {
-        $table.Add($user,1)
-    } else {
-        $table[$user]=$le+1
-    }
-}
-Write-Host &quot;SUCCESSFUL LOGONS&quot;
-Write-Host &quot;===========================================================&quot;
-$table.GetEnumerator() | sort Value -Descending
-
-</code></pre>
-<p>Here is the list of login attempts:
-<img src="../assets/images/HoneyPot.png" alt="" /></p>
+                <p>Hydra for Azure Virtual Desktop and WVDAdmin are supporting ADE for AVD Session Hosts.</p>
+<p>Azure Disk Encryption (ADE) encrypts the OS and data disks of Azure virtual machines (VMs) inside your VMs by using BitLocker. ADE cannot be combined with a disk encryption set.</p>
+<p>To roll out session hosts with ADE in Hydra, some resources must be prepared to work: Azure Key Vault with an encryption key, and Azure Key Vault to store the secrets of the disks (can be the same vault)</p>
+<ul>
+<li>First, create a Key Vault in the Azure Portal</li>
+<li>Give the service principal (from the tenant configuration) contributor permission to the vault (access and control)</li>
+<li>In Access Policies, give the service principal the following permissions:
+– Key permissions: Get, Encrypt, Wrap Key
+– Secret permissions: Set</li>
+<li>Check the boxes: Azure Virtual Machines for deployment and Azure Disk Encryption for volume encryption</li>
+<li>Give yourself permissions: Key and secret management</li>
+<li>Go to Keys and click on Generate. Type a name and select RSA and 2048</li>
+<li>Click on the generate key and on the current version. Copy the Key identifier (must include the version). E.g., https://<my-vaul>.vault.azure.net/keys/ADE-Encryption/bf270e977a574813a87bb637d57a6675</li>
+</ul>
+<p>In Hydra, configure “New Session Host Rollout”:
+In “Advanced settings” select the Key Vault  in ADE Key Vault
+Copy the Key Identifier to ADE Encryption Key Url</p>
+<p><img src="assets/images/ADE-01.png" alt="" /></p>
+<p>Do a deployment to verify that the disk is ADE encrypted:</p>
+<p><img src="assets/images/ADE-02.png" alt="" /></p>
+<p>To rollout hosts with ADE with WVDAdmin, add tags to the host pool:</p>
+<p>WVD.Default.KeyVault.Id: resource id of the KeyVault (/subscriptions/<GUID>/resourceGroups/<RG Name>/providers/Microsoft.KeyVault/vaults/<KV Name>)
+WVD.Default.KeyVault.KeyUri: key for the vaul (https://<my-vaul>.vault.azure.net/keys/ADE-Encryption/bf270e977a574813a87bb637d57a6675)</p>
 
             </div>
 
@@ -484,7 +470,7 @@ $table.GetEnumerator() | sort Value -Descending
             <!-- Post Date -->
             <p>
             <small>
-                <span class="post-date"><time class="post-date" datetime="2022-07-07">07 Jul 2022</time></span>           
+                <span class="post-date"><time class="post-date" datetime="2022-08-30">30 Aug 2022</time></span>           
                 
                 </small>
             </p>
@@ -495,7 +481,11 @@ $table.GetEnumerator() | sort Value -Descending
                     
                     
                     <li>
-                        <a class="smoothscroll" href="/categories#Azure">Azure</a>
+                        <a class="smoothscroll" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
                     </li>
                     
                 </ul>
@@ -514,10 +504,8 @@ $table.GetEnumerator() | sort Value -Descending
             <!-- Prev/Next -->
             <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
             
-            <a class="prev d-block col-md-6" href="/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/"> &laquo; Securing an app service, a key vault, and a database with private endpoints</a>
+            <a class="prev d-block col-md-6" href="/Windows-Virtual-Desktop-Admin/"> &laquo; WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</a>
             
-            
-            <a class="next d-block col-md-6 text-lg-right" href="/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/">Automatically add or change Azure Active Directory computer objects on-demand &raquo; </a>
             
             <div class="clearfix"></div>
             </div>
