@@ -1,41 +1,45 @@
-# This powershell script is part of WVD Admin - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
-# Current Version of this script: 3.2
+# This powershell script is part of WVDAdmin and Project Hydra - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
+# Current Version of this script: 4.7
 
 param(
-
-	[string] $Secret='',
-
 	[Parameter(Mandatory)]
 	[ValidateNotNullOrEmpty()]
-	[ValidateSet('Generalize','JoinDomain','DataPartition')]
+	[ValidateSet('Generalize','JoinDomain','DataPartition','RDAgentBootloader','RestartBootloader','StartBootloader','CleanFirstStart', 'RenameComputer')]
 	[string] $Mode,
-	[string] $LocalAdminName='localAdmin',
+	[string] $StrongGeneralize='0',
+	[string] $ComputerNewname='',						#Only for SecureBoot process (workaround, normaly not used)
+	[string] $LocalAdminName='localAdmin',				#Only for SecureBoot process (workaround, normaly not used)
 	[string] $LocalAdminPassword='',
 	[string] $DomainJoinUserName='',
 	[string] $DomainJoinUserPassword='',
+	[string] $LocalAdminName64='bG9jYWxBZG1pbg==',		#Base64-coding is used if not empty - providing the older parameters to be compatible
+	[string] $LocalAdminPassword64='',
+	[string] $DomainJoinUserName64='',
+	[string] $DomainJoinUserPassword64='',
 	[string] $DomainJoinOU='',
 	[string] $AadOnly='0',
 	[string] $JoinMem='0',
+	[string] $MovePagefileToC='0',
 	[string] $DomainFqdn='',
 	[string] $WvdRegistrationKey='',
-	[string] $LogDir="$env:windir\system32\logfiles"
+	[string] $LogDir="$env:windir\system32\logfiles",
+	[string] $HydraAgentUri='',							#Only used by Hydra
+	[string] $HydraAgentSecret='',						#Only used by Hydra
+	[string] $DownloadNewestAgent='0'					#Download the newes agent, event if a local agent exist
 )
 
 function LogWriter($message) {
-    $message="$(Get-Date ([datetime]::UtcNow) -Format "o") $message"
+	$message="$(Get-Date ([datetime]::UtcNow) -Format "o") $message"
 	write-host($message)
-	if ([System.IO.Directory]::Exists($LogDir)) {write-output($message) | Out-File $LogFile -Append}
+	if ([System.IO.Directory]::Exists($LogDir)) {try {write-output($message) | Out-File $LogFile -Append} catch {}}
 }
-
 function ShowDrives() {
 	$drives = Get-WmiObject -Class win32_volume -Filter "DriveType = 3"	
-
 	LogWriter("Drives:")
 	foreach ($drive in $drives) {
 		LogWriter("Name: '$($drive.Name)', Letter: '$($drive.DriveLetter)', Label: '$($drive.Label)'")
 	}
 }
-
 function ShowPageFiles() {
 	$pageFiles = Get-WmiObject -Class Win32_PageFileSetting	
 
@@ -44,18 +48,83 @@ function ShowPageFiles() {
 		LogWriter("Name: '$($pageFile.Name)', Maximum size: '$($pageFile.MaximumSize)'")
 	}
 }
+function RedirectPageFileToC() {
+		$CurrentPageFile = Get-WmiObject -Query 'select * from Win32_PageFileSetting'
+		LogWriter("Pagefile name: '$($CurrentPageFile.Name)', max size: $($CurrentPageFile.MaximumSize)")
+		$CurrentPageFile.delete()
+		LogWriter("Pagefile deleted")
+		$CurrentPageFile = Get-WmiObject -Query 'select * from Win32_PageFileSetting'
+		if ($null -eq $CurrentPageFile) {
+			LogWriter("Pagefile deletion successful")
+		}
+		else {
+			LogWriter("Pagefile deletion failed")
+		}
+		Set-WMIInstance -Class Win32_PageFileSetting -Arguments @{name='c:\pagefile.sys';InitialSize = 0; MaximumSize = 0}
+		$CurrentPageFile = Get-WmiObject -Query 'select * from Win32_PageFileSetting'
+		if ($null -eq $CurrentPageFile) {
+			LogWriter("Pagefile not found")
+		}
+		else {
+			LogWriter("New pagefile name: '$($CurrentPageFile.Name)', max size: $($CurrentPageFile.MaximumSize)")
+		}
+}
+function UnzipFile ($zipfile, $outdir)
+{
+    # Based on https://gist.github.com/nachivpn/3e53dd36120877d70aee
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $files = [System.IO.Compression.ZipFile]::OpenRead($zipfile)
+    foreach ($entry in $files.Entries)
+    {
+        $targetPath = [System.IO.Path]::Combine($outdir, $entry.FullName)
+        $directory = [System.IO.Path]::GetDirectoryName($targetPath)
+       
+        if(!(Test-Path $directory )){
+            New-Item -ItemType Directory -Path $directory | Out-Null 
+        }
+        if(!$targetPath.EndsWith("/")){
+            [System.IO.Compression.ZipFileExtensions]::ExtractToFile($entry, $targetPath, $true);
+        }
+    }
+}
+function DownloadFile ( $url, $outFile)
+{
+    $i=3
+    $ok=$false;
+    do {
+        try {
+            LogWriter("Try to download file")
+            Invoke-WebRequest -Uri $url -OutFile $outFile -UseBasicParsing
+            $ok=$true
+        } catch {
+            $i--;
+            if ($i -le 0) {
+                throw 
+            }
+            LogWriter("Re-trying download after 10 seconds")
+            Start-Sleep -Seconds 10
+		}
+    } while (!$ok)
+}
+
 
 # Define static variables
 $LocalConfig="C:\ITPC-WVD-PostCustomizing"
+$unattend="PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0ndXRmLTgnPz48dW5hdHRlbmQgeG1sbnM9InVybjpzY2hlbWFzLW1pY3Jvc29mdC1jb206dW5hdHRlbmQiPjxzZXR0aW5ncyBwYXNzPSJvb2JlU3lzdGVtIj48Y29tcG9uZW50IG5hbWU9Ik1pY3Jvc29mdC1XaW5kb3dzLVNoZWxsLVNldHVwIiBwcm9jZXNzb3JBcmNoaXRlY3R1cmU9ImFtZDY0IiBwdWJsaWNLZXlUb2tlbj0iMzFiZjM4NTZhZDM2NGUzNSIgbGFuZ3VhZ2U9Im5ldXRyYWwiIHZlcnNpb25TY29wZT0ibm9uU3hTIiB4bWxuczp3Y209Imh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vV01JQ29uZmlnLzIwMDIvU3RhdGUiIHhtbG5zOnhzaT0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEtaW5zdGFuY2UiPjxPT0JFPjxTa2lwTWFjaGluZU9PQkU+dHJ1ZTwvU2tpcE1hY2hpbmVPT0JFPjxTa2lwVXNlck9PQkU+dHJ1ZTwvU2tpcFVzZXJPT0JFPjwvT09CRT48L2NvbXBvbmVudD48L3NldHRpbmdzPjwvdW5hdHRlbmQ+"
 
 # Define logfile
-$LogFile=$LogDir+"\WVD.Customizing.log"
+$LogFile=$LogDir+"\AVD.Customizing.log"
 
 # Main
 LogWriter("Starting ITPC-WVD-Image-Processing in mode ${Mode}")
 
+# Generating variables from Base64-coding
+if ($LocalAdminName64) {$LocalAdminName=[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($LocalAdminName64))}
+if ($LocalAdminPassword64) {$LocalAdminPassword=[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($LocalAdminPassword64))}
+if ($DomainJoinUserName64) {$DomainJoinUserName=[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($DomainJoinUserName64))}
+if ($DomainJoinUserPassword64) {$DomainJoinUserPassword=[System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($DomainJoinUserPassword64))}
 
-# check for the existend of the helper scripts and folders
+# check for the existend of the helper scripts
 if ((Test-Path ($LocalConfig+"\ITPC-WVD-Image-Processing.ps1")) -eq $false) {
 	# Create local directory for script(s) and copy files (including the RD agent and boot loader - rename it to the specified name)
 	LogWriter("Copy files to local session host or downloading files from Microsoft")
@@ -66,30 +135,41 @@ if ((Test-Path ($LocalConfig+"\ITPC-WVD-Image-Processing.ps1")) -eq $false) {
 		LogWriter("Creating ITPC-WVD-Image-Processing.ps1")
 		Copy-Item "$($MyInvocation.InvocationName)" -Destination ($LocalConfig+"\ITPC-WVD-Image-Processing.ps1")
 	} else {Copy-Item "${PSScriptRoot}\ITPC-WVD-Image-Processing.ps1" -Destination ($LocalConfig+"\")}
-
-
-	if ((Test-Path ($ScriptRoot+"\Microsoft.RDInfra.RDAgent.msi")) -eq $false) {
-		LogWriter("Downloading RDAgent")
-		Invoke-WebRequest -Uri "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv" -OutFile ($LocalConfig+"\Microsoft.RDInfra.RDAgent.msi")
-	} else {Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgent.msi" -Destination ($LocalConfig+"\")}
-	if ((Test-Path ($ScriptRoot+"\Microsoft.RDInfra.RDAgentBootLoader.msi ")) -eq $false) {
-		LogWriter("Downloading RDBootloader")
-		Invoke-WebRequest -Uri "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH" -OutFile ($LocalConfig+"\Microsoft.RDInfra.RDAgentBootLoader.msi")
-	} else {Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi" -Destination ($LocalConfig+"\")}
+}
+if ($ComputerNewname -eq "" -or $DownloadNewestAgent -eq "1") {
+	if ((Test-Path ($LocalConfig+"\Microsoft.RDInfra.RDAgent.msi")) -eq $false -or $DownloadNewestAgent -eq "1") {
+		if ((Test-Path ($ScriptRoot+"\Microsoft.RDInfra.RDAgent.msi")) -eq $false -or $DownloadNewestAgent -eq "1") {
+			LogWriter("Downloading RDAgent")
+			DownloadFile "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv" ($LocalConfig+"\Microsoft.RDInfra.RDAgent.msi")
+			#Invoke-WebRequest -Uri "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv" -OutFile ($LocalConfig+"\Microsoft.RDInfra.RDAgent.msi")
+		} else {Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgent.msi" -Destination ($LocalConfig+"\")}
+	}
+	if ((Test-Path ($LocalConfig+"\Microsoft.RDInfra.RDAgentBootLoader.msi")) -eq $false -or $DownloadNewestAgent -eq "1") {
+		if ((Test-Path ($ScriptRoot+"\Microsoft.RDInfra.RDAgentBootLoader.msi ")) -eq $false -or $DownloadNewestAgent -eq "1") {
+			LogWriter("Downloading RDBootloader")
+			DownloadFile "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH" ($LocalConfig+"\Microsoft.RDInfra.RDAgentBootLoader.msi")
+			#Invoke-WebRequest -Uri "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH" -OutFile ($LocalConfig+"\Microsoft.RDInfra.RDAgentBootLoader.msi")
+		} else {Copy-Item "${PSScriptRoot}\Microsoft.RDInfra.RDAgentBootLoader.msi" -Destination ($LocalConfig+"\")}
+	}
 }
 
 # updating local script (from maybe an older version from the last image process)
-if ($LocalConfig -ne PSScriptRoot) {
-	Copy-Item "$($MyInvocation.InvocationName)" -Destination ($LocalConfig+"\ITPC-WVD-Image-Processing.ps1")
-}
+Copy-Item "$($MyInvocation.InvocationName)" -Destination ($LocalConfig+"\ITPC-WVD-Image-Processing.ps1") -Force -ErrorAction SilentlyContinue
 
+# check, if secure boot is enabled (used by the snapshot workaround)
+$isSecureBoot=$false
+try {
+	$isSecureBoot=Confirm-SecureBootUEFI
+}
+catch {}
+
+
+# Start script by mode
 if ($mode -eq "Generalize") {
 	LogWriter("Removing existing Remote Desktop Agent Boot Loader")
-	$app=Get-WmiObject -Class Win32_Product | Where-Object {$_.Name -match "Remote Desktop Agent Boot Loader"}
-	if ($app -ne $null) {$app.uninstall()}
+	Uninstall-Package -Name "Remote Desktop Agent Boot Loader" -AllVersions -Force -ErrorAction SilentlyContinue 
 	LogWriter("Removing existing Remote Desktop Services Infrastructure Agent")
-	$app=Get-WmiObject -Class Win32_Product | Where-Object {$_.Name -match "Remote Desktop Services Infrastructure Agent"}
-	if ($app -ne $null) {$app.uninstall()}
+	Uninstall-Package -Name "Remote Desktop Services Infrastructure Agent" -AllVersions -Force -ErrorAction SilentlyContinue 
 	Remove-Item -Path "HKLM:\SOFTWARE\Microsoft\RDMonitoringAgent" -Force -ErrorAction Ignore
 
 	LogWriter("Disabling ITPC-LogAnalyticAgent and MySmartScale if exist") 
@@ -103,6 +183,27 @@ if ($mode -eq "Generalize") {
 	Remove-ItemProperty -Path $key -Name "LastAliveStamp" -ErrorAction Ignore
 	Remove-ItemProperty -Path $key -Name "TimeStampInterval" -ErrorAction Ignore
 
+	# Triggering dotnet to execute queued items
+	$dotnetRoot="$env:windir\Microsoft.NET\Framework"
+	Get-ChildItem -Path $dotnetRoot -Directory | foreach {
+		if (Test-Path "$($_.FullName)\ngen.exe") {
+			LogWriter("Triggering dotnet to execute queued items in: $($_.FullName)")
+			Start-Process -FilePath "$($_.FullName)\ngen.exe" -Wait -ArgumentList "ExecuteQueuedItems" -ErrorAction SilentlyContinue
+		}
+	}
+
+	# Read property from registry (force imaging, like dism)
+	$force=$StrongGeneralize -eq "1"
+	if (Test-Path -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Force") {
+		$force=$true
+	}
+
+	# DISM cleanup
+	if ($force -and (Test-Path "$env:windir\system32\Dism.exe")) {
+		LogWriter("DISM cleanup")
+		Start-Process -FilePath "$env:windir\system32\Dism.exe" -Wait -ArgumentList "/online /cleanup-image /startcomponentcleanup /resetbase" -ErrorAction SilentlyContinue
+	}
+	
 	LogWriter("Modifying sysprep to avoid issues with AppXPackages - Start")
 	$sysPrepActionPath="$env:windir\System32\Sysprep\ActionFiles"
 	$sysPrepActionFile="Generalize.xml"
@@ -125,10 +226,19 @@ if ($mode -eq "Generalize") {
 		LogWriter("Modifying sysprep to avoid issues with AppXPackages - Done")
 	}
 
+	# Preparation for the snapshot workaround
+	if ($isSecureBoot -and $LocalAdminName -ne "" -and $LocalAdminPassword -ne "") {
+		LogWriter("Creating administrator $LocalAdminName")
+		New-LocalUser "$LocalAdminName" -Password (ConvertTo-SecureString $LocalAdminPassword -AsPlainText -Force) -FullName "$LocalAdminName" -Description "Local Administrator" -ErrorAction SilentlyContinue
+        Add-LocalGroupMember -Group "Administrators" -Member "$LocalAdminName" -ErrorAction SilentlyContinue
+	}
+
 	LogWriter("Removing an older Sysprep state")
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\Sysprep" -Name "SysprepCorrupt" -ErrorAction Ignore
 	New-ItemProperty -Path "HKLM:\SYSTEM\Setup\Status\SysprepStatus" -Name "State" -Value 2 -force
 	New-ItemProperty -Path "HKLM:\SYSTEM\Setup\Status\SysprepStatus" -Name "GeneralizationState" -Value 7 -force
+	New-Item -Path "HKLM:\Software\Microsoft\DesiredStateConfiguration" -ErrorAction Ignore
+	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\DesiredStateConfiguration" -Name "AgentId" -Value "" -force  -ErrorAction Ignore
 
 	LogWriter("Saving time zone info for re-deploy")
 	$timeZone=(Get-TimeZone).Id
@@ -140,10 +250,22 @@ if ($mode -eq "Generalize") {
 	LogWriter("Removing existing Azure Monitoring Certificates")
 	Get-ChildItem "Cert:\LocalMachine\Microsoft Monitoring Agent" -ErrorAction Ignore | Remove-Item
 
+	# Check, if the optimization script exist (Hydra: use a script inside Hydra)
 	if ([System.IO.File]::Exists("C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1")) {
 		LogWriter("Running VDI Optimization script")
-		Start-Process -wait -FilePath PowerShell.exe -WorkingDirectory "C:\ProgramData\Optimize" -ArgumentList '-ExecutionPolicy Bypass -File "C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1"' -RedirectStandardOutput "$($LogDir)\VirtualDesktop_Optimize.Stage1.Out.txt" -RedirectStandardError "$($LogDir)\VirtualDesktop_Optimize.Stage1.Warning.txt"
+		Start-Process -wait -FilePath PowerShell.exe -WorkingDirectory "C:\ProgramData\Optimize" -ArgumentList '-ExecutionPolicy Bypass -File "C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1 -AcceptEULA -Optimizations WindowsMediaPlayer,AppxPackages,ScheduledTasks,DefaultUserSettings,Autologgers,Services,NetworkOptimizations"' -RedirectStandardOutput "$($LogDir)\VirtualDesktop_Optimize.Stage1.Out.txt" -RedirectStandardError "$($LogDir)\VirtualDesktop_Optimize.Stage1.Warning.txt"
 	}
+
+	# prepare cleanup task for new deployed VMs - solve an issue with the runcommand api giving older log data
+	LogWriter("Preparing CleanFirstStart task")
+	$action = New-ScheduledTaskAction -Execute "$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe" -Argument "-executionPolicy Unrestricted -File `"$LocalConfig\ITPC-WVD-Image-Processing.ps1`" -Mode `"CleanFirstStart`""
+	$trigger = New-ScheduledTaskTrigger	-AtStartup
+	$principal = New-ScheduledTaskPrincipal 'NT Authority\SYSTEM' -RunLevel Highest
+	$settingsSet = New-ScheduledTaskSettingsSet
+	$task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
+	Register-ScheduledTask -TaskName 'ITPC-AVD-CleanFirstStart-Helper' -InputObject $task -ErrorAction Ignore
+	Enable-ScheduledTask -TaskName 'ITPC-AVD-CleanFirstStart-Helper'
+	LogWriter("Added new startup task to run the CleanFirstStart")
 
 	# check if D:-drive not the temporary storage and having three drives 
 	$modifyDrives=$false
@@ -152,7 +274,6 @@ if ($mode -eq "Generalize") {
 	if ($disks.Count -eq 3 -and $modifyDrives) {
 		LogWriter("VM with 3 drives so prepare change of drive letters of temp and data after deployment")
 		New-ItemProperty -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Runtime" -Name "ChangeDrives" -Value 1 -force
-
 		# check if default value 'automatic manage pagefile size for all devices' is activated 
 		if ($null -eq (Get-WmiObject Win32_Pagefile) ) {
 			# disable 'automatic manage pagefile size for all devices'
@@ -164,29 +285,10 @@ if ($mode -eq "Generalize") {
 		else {
 			LogWriter("Automatic manage pagefile size for all devices not activated")
 		}
-
 		# redirect pagefile to C: to rename data partition after deployment
-		$CurrentPageFile = Get-WmiObject -Query 'select * from Win32_PageFileSetting'
-		LogWriter("Pagefile name: '$($CurrentPageFile.Name)', max size: $($CurrentPageFile.MaximumSize)")
-		$CurrentPageFile.delete()
-		LogWriter("Pagefile deleted")
-		$CurrentPageFile = Get-WmiObject -Query 'select * from Win32_PageFileSetting'
-		if ($null -eq $CurrentPageFile) {
-			LogWriter("Pagefile deletion successful")
-		}
-		else {
-			LogWriter("Pagefile deletion failed")
-		}
-		Set-WMIInstance -Class Win32_PageFileSetting -Arguments @{name='c:\pagefile.sys';InitialSize = 0; MaximumSize = 0}
-		$CurrentPageFile = Get-WmiObject -Query 'select * from Win32_PageFileSetting'
-		if ($null -eq $CurrentPageFile) {
-			LogWriter("Pagefile not found")
-		}
-		else {
-			LogWriter("New pagefile name: '$($CurrentPageFile.Name)', max size: $($CurrentPageFile.MaximumSize)")
-		}
+		RedirectPageFileToC
 	}
-	
+
 	LogWriter("Starting sysprep to generalize session host")
 	if ([System.Environment]::OSVersion.Version.Major -le 6) {
 		#Windows 7
@@ -198,11 +300,36 @@ if ($mode -eq "Generalize") {
 		New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" -Name "fServerEnableRDP8" -Value 1 -force
 		Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown"
 	} else {
-		Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown /mode:vm"
+		if ($isSecureBoot) {
+			LogWriter("Secure boot is enabled")
+			write-output([System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($unattend))) | Out-File "$LocalConfig\unattend.xml" -Encoding ASCII
+			write-output([System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($unattend))) | Out-File "$env:windir\panther\unattend.xml" -Encoding ASCII
+			Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown /mode:vm /unattend:$LocalConfig\unattend.xml"
+		} else {
+			Start-Process -FilePath "$env:windir\System32\Sysprep\sysprep" -ArgumentList "/generalize /oobe /shutdown /mode:vm"
+		}
 	}
 
-} elseif ($mode -eq "JoinDomain")
+} elseif ($mode -eq "RenameComputer")
 {
+	# Used for the snapshot workaround
+	LogWriter("Renaming computer to: "+$readComputerNewname)
+	Rename-Computer -NewName $ComputerNewname -Force -ErrorAction SilentlyContinue
+} elseif ($mode -eq "JoinDomain")
+{	
+	# Removing existing agent if exist
+	LogWriter("Removing existing Remote Desktop Agent Boot Loader")
+	Uninstall-Package -Name "Remote Desktop Agent Boot Loader" -AllVersions -Force -ErrorAction SilentlyContinue 
+	LogWriter("Removing existing Remote Desktop Services Infrastructure Agent")
+	Uninstall-Package -Name "Remote Desktop Services Infrastructure Agent" -AllVersions -Force -ErrorAction SilentlyContinue 
+	Remove-Item -Path "HKLM:\SOFTWARE\Microsoft\RDMonitoringAgent" -Force -ErrorAction Ignore
+
+	# Storing AadOnly to registry
+	LogWriter("Storing AadOnly to registry: "+$AadOnly)
+	New-Item -Path "HKLM:\SOFTWARE" -Name "ITProCloud" -ErrorAction Ignore
+	New-Item -Path "HKLM:\SOFTWARE\ITProCloud" -Name "WVD.Runtime" -ErrorAction Ignore
+	New-ItemProperty -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Runtime" -Name "AadOnly" -Value $AadOnly -force
+
 	# Checking for a saved time zone information
 	if (Test-Path -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Runtime") {
 		$timeZone=(Get-ItemProperty -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Runtime" -ErrorAction Ignore)."TimeZone.Origin"
@@ -211,24 +338,58 @@ if ($mode -eq "Generalize") {
 			Set-TimeZone -Id $timeZone
 		}
 	}
-		
+	
+	# AD / AAD handling
+	LogWriter("Cleaning up previous AADLoginExtension / AAD join")
+	Remove-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows Azure\CurrentVersion\AADLoginForWindowsExtension" -Force -ErrorAction Ignore
+	if (Test-Path -Path "$($env:WinDir)\system32\Dsregcmd.exe") {
+		Start-Process -wait -FilePath  "$($env:WinDir)\system32\Dsregcmd.exe" -ArgumentList "/leave" -ErrorAction SilentlyContinue
+	}
 	if ($DomainJoinUserName -ne "" -and $AadOnly -ne "1") {
-		LogWriter("Joining domain")
+		LogWriter("Joining AD domain")
 		$psc = New-Object System.Management.Automation.PSCredential($DomainJoinUserName, (ConvertTo-SecureString $DomainJoinUserPassword -AsPlainText -Force))
-		if ($DomainJoinOU -eq "")
-		{
-			Add-Computer -DomainName $DomainFqdn -Credential $psc -Force -ErrorAction Stop
-		} 
-		else
-		{
-			Add-Computer -DomainName $DomainFqdn -OUPath $DomainJoinOU -Credential $psc -Force -ErrorAction Stop
-		}
+		$retry=3
+		$ok=$false
+		do{
+			try {
+				if ($DomainJoinOU -eq "")
+				{
+					Add-Computer -DomainName $DomainFqdn -Credential $psc -Force -ErrorAction Stop
+					$ok=$true
+					LogWriter("Domain joined successfully")
+				} 
+				else
+				{
+					Add-Computer -DomainName $DomainFqdn -OUPath $DomainJoinOU -Credential $psc -Force -ErrorAction Stop
+					$ok=$true
+					LogWriter("Domain joined successfully")
+				}
+			} catch {
+				if ($retry -eq 0) {throw $_}
+				$retry--
+				LogWriter("Retry domain join because of an error: $_")
+				Start-Sleep -Seconds 10
+			}
+		} while($ok -ne $true)
 	} else {
 		LogWriter("AAD only is selected. Skipping joining to a native AD, joining AAD")
 		$aadPath=@(Get-ChildItem -Directory  "C:\Packages\Plugins\Microsoft.Azure.ActiveDirectory.AADLoginForWindows")[@(Get-ChildItem -Directory  "C:\Packages\Plugins\Microsoft.Azure.ActiveDirectory.AADLoginForWindows").count-1].fullname
 		Start-Process -wait -FilePath "$aadPath\AADLoginForWindowsHandler.exe" -WorkingDirectory $aadPath -ArgumentList 'enable' -RedirectStandardOutput "$($LogDir)\Avd.AadJoin.Out.txt" -RedirectStandardError "$($LogDir)\Avd.AadJoin.Warning.txt"
+		if ($JoinMem -eq "1") {
+			LogWriter("Joining Microsoft Endpoint Manamgement is selected. Try to register to MEM")
+			Start-Process -wait -FilePath  "$($env:WinDir)\system32\Dsregcmd.exe" -ArgumentList "/AzureSecureVMJoin /debug /MdmId 0000000a-0000-0000-c000-000000000000" -RedirectStandardOutput "$($LogDir)\Avd.MemJoin.Out.txt" -RedirectStandardError "$($LogDir)\Avd.MemJoin.Warning.txt"
+		}
+		try {
+			if ($AadOnly) {
+				$timeOut=(Get-Date).AddSeconds(5*60)
+				do 
+				{
+					LogWriter("Waiting for the domain join")
+					Start-Sleep -Seconds 3#AzureAdJoined : YES
+				} while ((Get-Date) -le $timeOut -and (Select-String  -InputObject (&dsregcmd /status) -pattern "AzureAdJoined : YES").length -eq 0) 
+			}
+		} catch {}
 	}
-	
 	# check for disk handling
 	$modifyDrives=$false
 	if (Test-Path -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Runtime") {
@@ -244,9 +405,10 @@ if ($mode -eq "Generalize") {
 				$trigger = New-ScheduledTaskTrigger	-AtStartup
 				$principal = New-ScheduledTaskPrincipal 'NT Authority\SYSTEM' -RunLevel Highest
 				$settingsSet = New-ScheduledTaskSettingsSet
-				$task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
-				Register-ScheduledTask -TaskName 'ITPC-WVD-Disk-Mover-Helper' -InputObject $task
-				LogWriter("Added new startup task")
+				$task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet
+				Register-ScheduledTask -TaskName 'ITPC-AVD-Disk-Mover-Helper' -InputObject $task -ErrorAction Ignore
+				Enable-ScheduledTask -TaskName 'ITPC-AVD-Disk-Mover-Helper'
+				LogWriter("Added new startup task for the disk handling")
 
 				# change c:\pagefile.sys to e:\pagefile.sys
 				ShowPageFiles
@@ -269,54 +431,127 @@ if ($mode -eq "Generalize") {
 		}
 	}
 
+	# check to move pagefile finally to C
+	if ($MovePagefileToC -eq "1") {
+		RedirectPageFileToC
+
+	}
+	# install Hydra Agent (Hydra only)
+	if ($HydraAgentUri -ne "") {
+		$uri=$HydraAgentUri
+		$secret=$HydraAgentSecret
+		$DownloadAdress="https://$($uri)/Download/HydraAgent"
+		try {
+			if ((Test-Path ("$env:ProgramFiles\ITProCloud.de")) -eq $false) {
+				new-item "$env:ProgramFiles\ITProCloud.de" -ItemType Directory -ErrorAction Ignore
+			}
+			if ((Test-Path ("$env:ProgramFiles\ITProCloud.de\HydraAgent")) -eq $false) {
+				new-item "$env:ProgramFiles\ITProCloud.de\HydraAgent" -ItemType Directory -ErrorAction Ignore
+			}
+			Remove-Item -Path "$env:ProgramFiles\ITProCloud.de\HydraAgent\HydraAgent.zip" -Force -ErrorAction Ignore
 
 
-	# install WVD Agent if a registration key given
-	if ($WvdRegistrationKey -ne "") {
-		if ([System.Environment]::OSVersion.Version.Major -gt 6) {
-			LogWriter("Installing WVD boot loader - current path is ${LocalConfig}")
-			Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgentBootLoader.msi" -ArgumentList "/q"
-			LogWriter("Installing WVD agent")
-			Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgent.msi" -ArgumentList "/q RegistrationToken=${WvdRegistrationKey}"
-		} else {
-			if ((Test-Path "${LocalConfig}\Microsoft.RDInfra.WVDAgent.msi") -eq $false) {
-				LogWriter("Downloading Microsoft.RDInfra.WVDAgent.msi")
-				Invoke-WebRequest -Uri 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE3JZCm' -OutFile "${LocalConfig}\Microsoft.RDInfra.WVDAgent.msi"
-			}
-			if ((Test-Path "${LocalConfig}\Microsoft.RDInfra.WVDAgentManager.msi") -eq $false) {
-				LogWriter("Downloading Microsoft.RDInfra.WVDAgentManager.msi")
-				Invoke-WebRequest -Uri 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE3K2e3' -OutFile "${LocalConfig}\Microsoft.RDInfra.WVDAgentManager.msi"
-			}
-			LogWriter("Installing WVDAgent")
-			Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.WVDAgent.msi" -ArgumentList "/q RegistrationToken=${WvdRegistrationKey}"
-			LogWriter("Installing WVDAgentManager")
-			Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.WVDAgentManager.msi" -ArgumentList '/q'
+			LogWriter("Downloading HydraAgent.zip from $DownloadAdress")
+			DownloadFile $DownloadAdress "$env:ProgramFiles\ITProCloud.de\HydraAgent\HydraAgent.zip"
+			#Invoke-WebRequest -Uri $DownloadAdress -OutFile "$env:ProgramFiles\ITProCloud.de\HydraAgent\HydraAgent.zip" -UseBasicParsing
+
+			# Stop a running instance
+			LogWriter("Stop a running instance")
+			Stop-ScheduledTask -TaskName 'ITPC-AVD-Hydra-Helper' -ErrorAction Ignore
+			Stop-Process -Name HydraAgent -Force -ErrorAction Ignore
+			Start-Sleep -Seconds 6
+			UnzipFile "$env:ProgramFiles\ITProCloud.de\HydraAgent\HydraAgent.zip" "$env:ProgramFiles\ITProCloud.de\HydraAgent"
+
+			# Configuring the agent
+			LogWriter("Configuring the agent")
+			cd "$env:ProgramFiles\ITProCloud.de\HydraAgent"
+			. "$env:ProgramFiles\ITProCloud.de\HydraAgent\HydraAgent.exe" -i -u "wss://$($uri)/wsx" -s $secret
+		}
+		catch {
+			LogWriter("An error occurred while installing Hydra Agent: $_")
 		}
 	}
 
+	# install AVD Agent if a registration key given
+	if ($WvdRegistrationKey -ne "") {
+		if ([System.Environment]::OSVersion.Version.Major -gt 6) {
+			LogWriter("Installing AVD agent")
+			Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgent.msi" -ArgumentList "/quiet /qn /norestart /passive RegistrationToken=${WvdRegistrationKey}"
+			if ($false) {
+				LogWriter("Installing AVD boot loader - current path is ${LocalConfig}")
+				Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgentBootLoader.msi" -ArgumentList "/quiet /qn /norestart /passive"
+				LogWriter("Waiting for the service RDAgentBootLoader")
+				$bootloaderServiceName = "RDAgentBootLoader"
+				$retryCount = 0
+				while ( -not (Get-Service "RDAgentBootLoader" -ErrorAction SilentlyContinue)) {
+					$retry = ($retryCount -lt 6)
+					LogWriter("Service RDAgentBootLoader was not found")
+					if ($retry) { 
+						LogWriter("Retrying again in 30 seconds, this will be retry $retryCount")
+					} 
+					else {
+						LogWriter("Retry limit exceeded" )
+						throw "RDAgentBootLoader didn't become available after 6 retries"
+					}            
+					$retryCount++
+					Start-Sleep -Seconds 30
+				}
+			} else {
+				LogWriter("Preparing AVD boot loader task")
+				$action = New-ScheduledTaskAction -Execute "$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe" -Argument "-executionPolicy Unrestricted -File `"$LocalConfig\ITPC-WVD-Image-Processing.ps1`" -Mode `"RDAgentBootloader`""
+				$trigger = New-ScheduledTaskTrigger	-AtStartup
+				$principal = New-ScheduledTaskPrincipal 'NT Authority\SYSTEM' -RunLevel Highest
+				$settingsSet = New-ScheduledTaskSettingsSet
+				$task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
+				Register-ScheduledTask -TaskName 'ITPC-AVD-RDAgentBootloader-Helper' -InputObject $task -ErrorAction Ignore
+				Enable-ScheduledTask -TaskName 'ITPC-AVD-RDAgentBootloader-Helper'
+				LogWriter("Added new startup task to run the RDAgentBootloader")
+					
+				$class = cimclass MSFT_TaskEventTrigger root/Microsoft/Windows/TaskScheduler
+				$triggerM = $class | New-CimInstance -ClientOnly
+				$triggerM.Enabled = $true
+				$triggerM.Subscription='<QueryList><Query Id="0" Path="Application"><Select Path="Application">*[System[Provider[@Name=''WVD-Agent'']] and System[(Level=2) and (EventID=3277)]]</Select></Query></QueryList>'
+				$actionM = New-ScheduledTaskAction -Execute "$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe" -Argument "-executionPolicy Unrestricted -File `"$LocalConfig\ITPC-WVD-Image-Processing.ps1`" -Mode `"RestartBootloader`""
+				$settingsM = New-ScheduledTaskSettingsSet
+				$taskM = New-ScheduledTask -Action $actionM -Principal $principal -Trigger $triggerM -Settings $settingsM -Description "Restarts the bootloader in case of an known issue (timeout, download error) while installing the RDagent"
+				Register-ScheduledTask -TaskName 'ITPC-AVD-RDAgentBootloader-Monitor-1' -InputObject $taskM -ErrorAction Ignore
+				Enable-ScheduledTask -TaskName 'ITPC-AVD-RDAgentBootloader-Monitor-1' -ErrorAction Ignore
+				LogWriter("Added new task to monitor the RDAgentBootloader")
+			}
+		} else {
+			if ((Test-Path "${LocalConfig}\Microsoft.RDInfra.WVDAgent.msi") -eq $false) {
+				LogWriter("Downloading Microsoft.RDInfra.WVDAgent.msi")
+				DownloadFile "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE3JZCm" "${LocalConfig}\Microsoft.RDInfra.WVDAgent.msi"
+				#Invoke-WebRequest -Uri 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE3JZCm' -OutFile "${LocalConfig}\Microsoft.RDInfra.WVDAgent.msi" -UseBasicParsing
+			}
+			if ((Test-Path "${LocalConfig}\Microsoft.RDInfra.WVDAgentManager.msi") -eq $false) {
+				LogWriter("Downloading Microsoft.RDInfra.WVDAgentManager.msi")
+				DownloadFile "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE3K2e3" "${LocalConfig}\Microsoft.RDInfra.WVDAgentManager.msi"
+				#nvoke-WebRequest -Uri 'https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RE3K2e3' -OutFile "${LocalConfig}\Microsoft.RDInfra.WVDAgentManager.msi" -UseBasicParsing
+			}
+			LogWriter("Installing AVDAgent")
+			Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.WVDAgent.msi" -ArgumentList "/q RegistrationToken=${WvdRegistrationKey}"
+			LogWriter("Installing AVDAgentManager")
+			Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.WVDAgentManager.msi" -ArgumentList '/q'
+		}
+	}
 	LogWriter("Enabling ITPC-LogAnalyticAgent and MySmartScale if exist") 
 	Enable-ScheduledTask  -TaskName "ITPC-LogAnalyticAgent for RDS and Citrix" -ErrorAction Ignore
 	Enable-ScheduledTask  -TaskName "ITPC-MySmartScaleAgent" -ErrorAction Ignore
 
 	if ([System.IO.File]::Exists("C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1")) {
 		LogWriter("Running VDI Optimization script")
-		Start-Process -wait -FilePath PowerShell.exe -WorkingDirectory "C:\ProgramData\Optimize" -ArgumentList '-ExecutionPolicy Bypass -File "C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1"' -RedirectStandardOutput "$($LogDir)\VirtualDesktop_Optimize.Stage2.Out.txt" -RedirectStandardError "$($LogDir)\VirtualDesktop_Optimize.Stage2.Warning.txt"
+		Start-Process -wait -FilePath PowerShell.exe -WorkingDirectory "C:\ProgramData\Optimize" -ArgumentList '-ExecutionPolicy Bypass -File "C:\ProgramData\Optimize\Win10_VirtualDesktop_Optimize.ps1 -AcceptEULA -Optimizations WindowsMediaPlayer,AppxPackages,ScheduledTasks,DefaultUserSettings,Autologgers,Services,NetworkOptimizations"' -RedirectStandardOutput "$($LogDir)\VirtualDesktop_Optimize.Stage2.Out.txt" -RedirectStandardError "$($LogDir)\VirtualDesktop_Optimize.Stage2.Warning.txt"
 	}
 
-
+	# Final reboot
 	LogWriter("Finally restarting session host")
-
-	# final reboot
-	Restart-Computer -Force
-}
-elseif ($Mode -eq "DataPartition") {
-
+	Restart-Computer -Force -ErrorAction SilentlyContinue
+} elseif ($Mode -eq "DataPartition") {
 	if ((Get-WmiObject -Class win32_volume | Where-Object { $_.DriveLetter -ne $null -and $_.DriveType -eq 3 }).Count -eq 3) {
 		# change drive letters of temp and data drive for VMs with 3 drives
 		LogWriter("VM with 3 drives so change drive letters of temp and data")
-
 		ShowDrives
-
 		# change c:\pagefile.sys to e:\pagefile.sys
 		ShowPageFiles
 		$CurrentPageFile = Get-WmiObject -Query 'select * from Win32_PageFileSetting'
@@ -325,9 +560,7 @@ elseif ($Mode -eq "DataPartition") {
 		}
 		else {
 			if ($CurrentPageFile.Name.tolower().contains('c:')) {
-
 				ShowDrives
-
 				# change temp drive to Z:
 				$drive = Get-WmiObject -Class win32_volume -Filter "DriveLetter = 'd:'"
 				if ($null -ne $drive) {
@@ -339,7 +572,7 @@ elseif ($Mode -eq "DataPartition") {
 				else {
 					LogWriter("Drive D: not found")
 				}
-		
+
 				# change data drive to D: 
 				$drive = Get-WmiObject -Class win32_volume -Filter "DriveLetter = 'e:'"
 				if ($null -ne $drive) {
@@ -351,7 +584,7 @@ elseif ($Mode -eq "DataPartition") {
 				else {
 					LogWriter("Drive E: not found")
 				}
-		
+
 				# change temp drive back to E: 
 				$drive = Get-WmiObject -Class win32_volume -Filter "DriveLetter = 'z:'"
 				if ($null -ne $drive) {
@@ -363,7 +596,7 @@ elseif ($Mode -eq "DataPartition") {
 				else {
 					LogWriter("Drive Z: not found")
 				}
-		
+
 				# change c:\pagefile.sys to e:\pagefile.sys
 				ShowPageFiles
 				$CurrentPageFile = Get-WmiObject -Query 'select * from Win32_PageFileSetting'
@@ -375,8 +608,7 @@ elseif ($Mode -eq "DataPartition") {
 					LogWriter("Old pagefile deleted")	
 				}
 				ShowPageFiles
-		
-		
+
 				Set-WMIInstance -Class Win32_PageFileSetting -Arguments @{name='e:\pagefile.sys';InitialSize = 0; MaximumSize = 0}
 				LogWriter("set pagefile to e:\pagefile.sys")
 				ShowPageFiles
@@ -391,18 +623,76 @@ elseif ($Mode -eq "DataPartition") {
 	LogWriter("Disable scheduled task")
 	try {
 		# disable startup scheduled task
-		Disable-ScheduledTask -TaskName 'ITPC-WVD-Disk-Mover-Helper'
-		LogWriter("scheduled task disabled")
+		Disable-ScheduledTask -TaskName 'ITPC-AVD-Disk-Mover-Helper'
 	}
 	catch {
-		LogWriter("remove scheduled task failed: " + $_.Exception.Message)
+		LogWriter("Disabling scheduled task failed: " + $_.Exception.Message)
 	}
-}
+} elseif ($Mode -eq "RDAgentBootloader") {
+	LogWriter("Installing AVD boot loader - current path is ${LocalConfig}")
+	Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgentBootLoader.msi" -ArgumentList "/quiet /qn /norestart /passive"
+	LogWriter("Waiting for the service RDAgentBootLoader")
+	$bootloaderServiceName = "RDAgentBootLoader"
+	$retryCount = 0
+	while ( -not (Get-Service "RDAgentBootLoader" -ErrorAction SilentlyContinue)) {
+		$retry = ($retryCount -lt 6)
+		LogWriter("Service RDAgentBootLoader was not found")
+		if ($retry) { 
+			LogWriter("Retrying again in 30 seconds, this will be retry $retryCount")
+		} 
+		else {
+			LogWriter("Retry limit exceeded" )
+			throw "RDAgentBootLoader didn't become available after 6 retries"
+		}            
+		$retryCount++
+		Start-Sleep -Seconds 30
+	}
+	LogWriter("Disable scheduled task")
+	try {
+		# disable startup scheduled task
+		Disable-ScheduledTask -TaskName 'ITPC-AVD-RDAgentBootloader-Helper'
+	}
+	catch {
+		LogWriter("Disabling scheduled task failed: " + $_.Exception.Message)
+	}
+} elseif ($Mode -eq "CleanFirstStart") {
+	LogWriter("Cleaning up Azure Agent logs - current path is ${LocalConfig}")
+	Remove-Item -Path "C:\Packages\Plugins\Microsoft.CPlat.Core.RunCommandWindows\*" -Include *.status  -Recurse -Force -ErrorAction SilentlyContinue
+	LogWriter("Disable scheduled task")
+	try {
+		# disable startup scheduled task
+		Disable-ScheduledTask -TaskName 'ITPC-AVD-CleanFirstStart-Helper'
+	}
+	catch {
+		LogWriter("Disabling scheduled task failed: " + $_.Exception.Message)
+	}
+}  elseif ($mode -eq "RestartBootloader") {
+	$LogFile=$LogDir+"\AVD.AgentBootloaderErrorHandling.log"
+	LogWriter "Stopping service"
+	Stop-Service -Name "RDAgentBootLoader"
+	LogWriter "Starting service"
+	Start-Service -Name "RDAgentBootLoader"
+}  elseif ($mode -eq "StartBootloader") {
+	$LogFile=$LogDir+"\AVD.AgentBootloaderErrorHandling.log"
+	LogWriter "Start service was triggered by an event"
+	LogWriter "Waiting for 5 seconds"
+	Start-Sleep -Seconds 5
+	LogWriter "Starting service"
+	Start-Service -Name "RDAgentBootLoader"
+	LogWriter "Waiting for 60 seconds"
+	Start-Sleep -Seconds 60
+	LogWriter "Starting service (if not running)"
+	Start-Service -Name "RDAgentBootLoader"
+	LogWriter "Waiting for 60 seconds"
+	Start-Sleep -Seconds 60
+	LogWriter "Starting service (if not running)"
+	Start-Service -Name "RDAgentBootLoader"
+} 
 # SIG # Begin signature block
-# MIIjOgYJKoZIhvcNAQcCoIIjKzCCIycCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
+# MIIjNAYJKoZIhvcNAQcCoIIjJTCCIyECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUWPno6D7o5vXSoe2GB5b6Mhi3
-# gxOggh1YMIIFEzCCA/ugAwIBAgIQAs5KUttbmmyoHluSw+u3hTANBgkqhkiG9w0B
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU4qJrUnQJN2ErhFHujsk5VW1I
+# XQyggh1SMIIFEzCCA/ugAwIBAgIQAs5KUttbmmyoHluSw+u3hTANBgkqhkiG9w0B
 # AQsFADByMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYD
 # VQQLExB3d3cuZGlnaWNlcnQuY29tMTEwLwYDVQQDEyhEaWdpQ2VydCBTSEEyIEFz
 # c3VyZWQgSUQgQ29kZSBTaWduaW5nIENBMB4XDTIwMTIwNDAwMDAwMFoXDTI0MDEx
@@ -522,69 +812,69 @@ elseif ($Mode -eq "DataPartition") {
 # 8Zhf+yvYfvJGnXUsHicsJttvFXseGYs2uJPU5vIXmVnKcPA3v5gA3yAWTyf7YGcW
 # oWa63VXAOimGsJigK+2VQbc61RWYMbRiCQ8KvYHZE/6/pNHzV9m8BPqC3jLfBInw
 # AM1dwvnQI38AC+R2AibZ8GV2QqYphwlHK+Z/GqSFD/yYlvZVVCsfgPrA8g4r5db7
-# qS9EFUrnEw4d2zc4GqEr9u3WfPwwggbGMIIErqADAgECAhAKekqInsmZQpAGYzhN
-# hpedMA0GCSqGSIb3DQEBCwUAMGMxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdp
+# qS9EFUrnEw4d2zc4GqEr9u3WfPwwggbAMIIEqKADAgECAhADyzT9Pf8SETOf8HxL
+# IVfHMA0GCSqGSIb3DQEBCwUAMGMxCzAJBgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdp
 # Q2VydCwgSW5jLjE7MDkGA1UEAxMyRGlnaUNlcnQgVHJ1c3RlZCBHNCBSU0E0MDk2
-# IFNIQTI1NiBUaW1lU3RhbXBpbmcgQ0EwHhcNMjIwMzI5MDAwMDAwWhcNMzMwMzE0
-# MjM1OTU5WjBMMQswCQYDVQQGEwJVUzEXMBUGA1UEChMORGlnaUNlcnQsIEluYy4x
-# JDAiBgNVBAMTG0RpZ2lDZXJ0IFRpbWVzdGFtcCAyMDIyIC0gMjCCAiIwDQYJKoZI
-# hvcNAQEBBQADggIPADCCAgoCggIBALkqliOmXLxf1knwFYIY9DPuzFxs4+AlLtIx
-# 5DxArvurxON4XX5cNur1JY1Do4HrOGP5PIhp3jzSMFENMQe6Rm7po0tI6IlBfw2y
-# 1vmE8Zg+C78KhBJxbKFiJgHTzsNs/aw7ftwqHKm9MMYW2Nq867Lxg9GfzQnFuUFq
-# RUIjQVr4YNNlLD5+Xr2Wp/D8sfT0KM9CeR87x5MHaGjlRDRSXw9Q3tRZLER0wDJH
-# GVvimC6P0Mo//8ZnzzyTlU6E6XYYmJkRFMUrDKAz200kheiClOEvA+5/hQLJhuHV
-# GBS3BEXz4Di9or16cZjsFef9LuzSmwCKrB2NO4Bo/tBZmCbO4O2ufyguwp7gC0vI
-# CNEyu4P6IzzZ/9KMu/dDI9/nw1oFYn5wLOUrsj1j6siugSBrQ4nIfl+wGt0ZvZ90
-# QQqvuY4J03ShL7BUdsGQT5TshmH/2xEvkgMwzjC3iw9dRLNDHSNQzZHXL537/M2x
-# wafEDsTvQD4ZOgLUMalpoEn5deGb6GjkagyP6+SxIXuGZ1h+fx/oK+QUshbWgaHK
-# 2jCQa+5vdcCwNiayCDv/vb5/bBMY38ZtpHlJrYt/YYcFaPfUcONCleieu5tLsuK2
-# QT3nr6caKMmtYbCgQRgZTu1Hm2GV7T4LYVrqPnqYklHNP8lE54CLKUJy93my3YTq
-# J+7+fXprAgMBAAGjggGLMIIBhzAOBgNVHQ8BAf8EBAMCB4AwDAYDVR0TAQH/BAIw
-# ADAWBgNVHSUBAf8EDDAKBggrBgEFBQcDCDAgBgNVHSAEGTAXMAgGBmeBDAEEAjAL
-# BglghkgBhv1sBwEwHwYDVR0jBBgwFoAUuhbZbU2FL3MpdpovdYxqII+eyG8wHQYD
-# VR0OBBYEFI1kt4kh/lZYRIRhp+pvHDaP3a8NMFoGA1UdHwRTMFEwT6BNoEuGSWh0
-# dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydFRydXN0ZWRHNFJTQTQwOTZT
-# SEEyNTZUaW1lU3RhbXBpbmdDQS5jcmwwgZAGCCsGAQUFBwEBBIGDMIGAMCQGCCsG
-# AQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wWAYIKwYBBQUHMAKGTGh0
-# dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydFRydXN0ZWRHNFJTQTQw
-# OTZTSEEyNTZUaW1lU3RhbXBpbmdDQS5jcnQwDQYJKoZIhvcNAQELBQADggIBAA0t
-# I3Sm0fX46kuZPwHk9gzkrxad2bOMl4IpnENvAS2rOLVwEb+EGYs/XeWGT76TOt4q
-# OVo5TtiEWaW8G5iq6Gzv0UhpGThbz4k5HXBw2U7fIyJs1d/2WcuhwupMdsqh3KEr
-# lribVakaa33R9QIJT4LWpXOIxJiA3+5JlbezzMWn7g7h7x44ip/vEckxSli23zh8
-# y/pc9+RTv24KfH7X3pjVKWWJD6KcwGX0ASJlx+pedKZbNZJQfPQXpodkTz5GiRZj
-# IGvL8nvQNeNKcEiptucdYL0EIhUlcAZyqUQ7aUcR0+7px6A+TxC5MDbk86ppCaiL
-# fmSiZZQR+24y8fW7OK3NwJMR1TJ4Sks3KkzzXNy2hcC7cDBVeNaY/lRtf3GpSBp4
-# 3UZ3Lht6wDOK+EoojBKoc88t+dMj8p4Z4A2UKKDr2xpRoJWCjihrpM6ddt6pc6pI
-# allDrl/q+A8GQp3fBmiW/iqgdFtjZt5rLLh4qk1wbfAs8QcVfjW05rUMopml1xVr
-# NQ6F1uAszOAMJLh8UgsemXzvyMjFjFhpr6s94c/MfRWuFL+Kcd/Kl7HYR+ocheBF
-# ThIcFClYzG/Tf8u+wQ5KbyCcrtlzMlkI5y2SoRoR/jKYpl0rl+CL05zMbbUNrkdj
-# OEcXW28T2moQbh9Jt0RbtAgKh1pZBHYRoad3AhMcMYIFTDCCBUgCAQEwgYYwcjEL
-# MAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3
-# LmRpZ2ljZXJ0LmNvbTExMC8GA1UEAxMoRGlnaUNlcnQgU0hBMiBBc3N1cmVkIElE
-# IENvZGUgU2lnbmluZyBDQQIQAs5KUttbmmyoHluSw+u3hTAJBgUrDgMCGgUAoHgw
-# GAYKKwYBBAGCNwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGC
-# NwIBBDAcBgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQx
-# FgQUu1DrTefJFk3sfssvPtula/qcjgkwDQYJKoZIhvcNAQEBBQAEggEAzzxXrM/4
-# xiRE3V4aQVH5ue1rng4/+++49EtDaLy89pSZNHst8Ck9CnG0afZwwIX9sDCmcQ5y
-# GmHSgsf6U0ZPpwDdU9LPqivs/ewXYE55y4ZqJ5Dmnrp7ks5gCwnBWGw/r/tbqstq
-# bIr5u5F9pfdx91uTvC2eY2QGNU6Fce9faAxjPlHCNtdQ9aBgji/uf8/25e3Hhtjw
-# KqTqH+kK8C0q5UMs8kWwScNEq9SRUlwHi2ULnU8BbJTOPPPCcERv/etwpAAw8kgm
-# wDdvDq+Mrn8tgRqMcq9XyzKCEKkHSxlsf6PrHKf1xswspfZfGhV3CjiqpAfznq+D
-# CN9fLFI0uordOKGCAyAwggMcBgkqhkiG9w0BCQYxggMNMIIDCQIBATB3MGMxCzAJ
-# BgNVBAYTAlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE7MDkGA1UEAxMyRGln
-# aUNlcnQgVHJ1c3RlZCBHNCBSU0E0MDk2IFNIQTI1NiBUaW1lU3RhbXBpbmcgQ0EC
-# EAp6SoieyZlCkAZjOE2Gl50wDQYJYIZIAWUDBAIBBQCgaTAYBgkqhkiG9w0BCQMx
-# CwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMjA4MjQxNDIxNDlaMC8GCSqG
-# SIb3DQEJBDEiBCAc5jIwy+MIpaqgxTRQrNZ920E+1XiicgntZ6TChRYPwDANBgkq
-# hkiG9w0BAQEFAASCAgBWc+ftBeIqSQyuATuJEJP9YSPKQyfvdlG9Dg/lA9f5DiRo
-# dgHgL6iS9G4zJvXfc/0rnQgy+PKQyl50lWgGywijgtd5XGxcN6Z2YJRS8MY5oqAS
-# ZqMbNiPuw5qFekHCAmH3lvT+MKgf8H7lUQfoK17t8QT2Kufz+1OYjy58eyNkv8eJ
-# DqBl/hpS9mvlrQeMuXRdSaOShT+jzSb2PY3ie1aZluWwEb4fp58NF4BOKptpcoF/
-# 11nyavQx1Ob8EIuT9aZkCfG+7DiPkzFxH12FU54Qb6jFQhmVl9CdUeYpoGOE6hkt
-# Ein8ImeVibRMwxdSYmowDVLco4rpPSSm8HbcgkwhE7ySXxiVY25P6OPg3RnDPPB1
-# BaXXKTMa4zERroV+lkXahV+nNK4VkO8Z2o7zLNR7ON8aAkiLo9qULuyBYcvRSBwg
-# ixSSbeccsrPVpQio5Iy3qEjIk2W/kAoRn+xh5UmeIyQhSpVo+LFxoGOkY09zy5SW
-# ZJC5p+NmIhqOgdDVa1bRv4sZ33hCU6VzKjTj7swtHaZZ3mSr5L+IbSyP44VKZfIA
-# QlMysSZs2lF3UhFQ5QJ/1TSbQB46y+4tpmJBRkPQkkfKVtWOmd0tgh8E0uvnWTtw
-# w0Aw0A7f3KGRJ0tTTjqA4fM9l0qFY0ioUIU8HRih65l4TukQy+Hl9TML8G1TUQ==
+# IFNIQTI1NiBUaW1lU3RhbXBpbmcgQ0EwHhcNMjIwODMwMDAwMDAwWhcNMjMwODI5
+# MjM1OTU5WjBGMQswCQYDVQQGEwJVUzERMA8GA1UEChMIRGlnaUNlcnQxJDAiBgNV
+# BAMTG0RpZ2lDZXJ0IFRpbWVzdGFtcCAyMDIyIC0gMjCCAiIwDQYJKoZIhvcNAQEB
+# BQADggIPADCCAgoCggIBAM/spSY6xqnya7uNwQ2a26HoFIV0MxomrNAcVR4eNm28
+# klUMYfSdCXc9FZYIL2tkpP0GgxbXkZI4HDEClvtysZc6Va8z7GGK6aYo25BjXL2J
+# U+A6LYyHQq4mpOS7eHi5ehbhVsbAumRTuyoW51BIu4hpDIjG8b7gL307scpTjUCD
+# HufLckkoHkyAHoVW54Xt8mG8qjoHffarbuVm3eJc9S/tjdRNlYRo44DLannR0hCR
+# RinrPibytIzNTLlmyLuqUDgN5YyUXRlav/V7QG5vFqianJVHhoV5PgxeZowaCiS+
+# nKrSnLb3T254xCg/oxwPUAY3ugjZNaa1Htp4WB056PhMkRCWfk3h3cKtpX74LRsf
+# 7CtGGKMZ9jn39cFPcS6JAxGiS7uYv/pP5Hs27wZE5FX/NurlfDHn88JSxOYWe1p+
+# pSVz28BqmSEtY+VZ9U0vkB8nt9KrFOU4ZodRCGv7U0M50GT6Vs/g9ArmFG1keLuY
+# /ZTDcyHzL8IuINeBrNPxB9ThvdldS24xlCmL5kGkZZTAWOXlLimQprdhZPrZIGwY
+# UWC6poEPCSVT8b876asHDmoHOWIZydaFfxPZjXnPYsXs4Xu5zGcTB5rBeO3GiMiw
+# bjJ5xwtZg43G7vUsfHuOy2SJ8bHEuOdTXl9V0n0ZKVkDTvpd6kVzHIR+187i1Dp3
+# AgMBAAGjggGLMIIBhzAOBgNVHQ8BAf8EBAMCB4AwDAYDVR0TAQH/BAIwADAWBgNV
+# HSUBAf8EDDAKBggrBgEFBQcDCDAgBgNVHSAEGTAXMAgGBmeBDAEEAjALBglghkgB
+# hv1sBwEwHwYDVR0jBBgwFoAUuhbZbU2FL3MpdpovdYxqII+eyG8wHQYDVR0OBBYE
+# FGKK3tBh/I8xFO2XC809KpQU31KcMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9j
+# cmwzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydFRydXN0ZWRHNFJTQTQwOTZTSEEyNTZU
+# aW1lU3RhbXBpbmdDQS5jcmwwgZAGCCsGAQUFBwEBBIGDMIGAMCQGCCsGAQUFBzAB
+# hhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wWAYIKwYBBQUHMAKGTGh0dHA6Ly9j
+# YWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydFRydXN0ZWRHNFJTQTQwOTZTSEEy
+# NTZUaW1lU3RhbXBpbmdDQS5jcnQwDQYJKoZIhvcNAQELBQADggIBAC0UyaEGSS3d
+# imxaHgXjrMnYnjeKsKYhIj9EyjE9ywwM33xT5ZRqdiX3Isk7nEIElPWCRN5u4oTo
+# 7k5EGGktx3ZsrHpzf0siEEmEdDfygtNBlXYxLvlZab8HVrslWfexM+66XRCFK19P
+# gSnudu0gC3XaxWbC6eAeWmgBTLRktDRpqbY9fj1d6REtuXxf4RNrN0MDT+kVDdt1
+# BVTHDTlfGDbA6HAXR1Vc+khF8cv4RMJ8vvP3p6z05qFttPe3RMWPCC+d8hKtJI+2
+# C3hBwdKChzJizkfq60Vrqqj+dEeBnrUYhUcYIIz6WeVYk72r/31a9SowYPuTzNCk
+# tU59LF6Y2/bMPIpHeHhsBAvg2RMxDzH4TfzgKkGM8F8VDpTAKUXe8vlzzsNjJ4m+
+# oeGi72Kj6if/M07iiT4kMEQV5Fg8BotKdIqx7a1Cf+aqpZq5+DAcFhPwo4uoKtSL
+# AWY0aIACxRKSFqIHngiuc2t9n+vB/oM/rtlQNnnlt8E2hvC3yQl5+M/7sqzX4vI3
+# BBv6ASmOsDaYOGrb90BA77kpxccgavKscb/UdmJ+yGZjMyuuUzjPpKpGxMG95S9A
+# TieDVuDFi68taSY81PJVmxBD/MrBbfTZ9JBLS5F1s0ecKEr6OOY1PvLIry+8Trgn
+# FUP5KT019GjiRV2GVCOBx9aBB9M+oTliMYIFTDCCBUgCAQEwgYYwcjELMAkGA1UE
+# BhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3LmRpZ2lj
+# ZXJ0LmNvbTExMC8GA1UEAxMoRGlnaUNlcnQgU0hBMiBBc3N1cmVkIElEIENvZGUg
+# U2lnbmluZyBDQQIQAs5KUttbmmyoHluSw+u3hTAJBgUrDgMCGgUAoHgwGAYKKwYB
+# BAGCNwIBDDEKMAigAoAAoQKAADAZBgkqhkiG9w0BCQMxDAYKKwYBBAGCNwIBBDAc
+# BgorBgEEAYI3AgELMQ4wDAYKKwYBBAGCNwIBFTAjBgkqhkiG9w0BCQQxFgQU9eeb
+# 6SzZ/8wr7lCRfzqDfWfZr2YwDQYJKoZIhvcNAQEBBQAEggEADIxucTzcaC9NWiF6
+# r8tIqbCMTy5jA/kvCDHMtzPsu+48EfFCgetnmynpNgVH+3Z4/kDVC0tXemwkzmQV
+# +75LTfDzGG4NA9sbJe47IGjOLRzi1onZ9uxcq8Bntmwcoz4DWUsmq+DHT1DuAy5y
+# vYAPSmDo1ZpVxWy9t7tBkPPqJ0h6SON7P/VxeZMHBw6bG8876SOYgNF2KwQHMoC3
+# ERzHUZ1Kcm1WJsw5X9s09UaSDsrJb4eACCZgD7vNf/bxweZFn59Y8hCcvOTnSyIC
+# A09DRJoNut4Iw45xTz1ELPcbC0lmp3epf4rs6xHddNb6XVpfy0EZKv5iJdmAz0YW
+# uXSFYKGCAyAwggMcBgkqhkiG9w0BCQYxggMNMIIDCQIBATB3MGMxCzAJBgNVBAYT
+# AlVTMRcwFQYDVQQKEw5EaWdpQ2VydCwgSW5jLjE7MDkGA1UEAxMyRGlnaUNlcnQg
+# VHJ1c3RlZCBHNCBSU0E0MDk2IFNIQTI1NiBUaW1lU3RhbXBpbmcgQ0ECEAPLNP09
+# /xIRM5/wfEshV8cwDQYJYIZIAWUDBAIBBQCgaTAYBgkqhkiG9w0BCQMxCwYJKoZI
+# hvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0yMjA5MTUxMTIyMTNaMC8GCSqGSIb3DQEJ
+# BDEiBCAR/prLtqgX21MjxS5xrBDA/0n5jM8kZmX2PyMiAiUZ+jANBgkqhkiG9w0B
+# AQEFAASCAgDFw0B7awRc6nvezd36ySqaWHVz0jxtoxZmst4x+0xIWgs6yIRiowOc
+# 6AdrCSyAD1zTfjjFcyfESXLVimv1tJ4xz3t6efOyqNGXgYQ7xEQ49CjzpBT+cCwZ
+# 2mGtWmogZhSeeeZQsUSj/sO6mDyS/K+NY8smd166OFRROH3GUJWPA+WrjtIHwaLW
+# C68UARNGqtgdTrBG+equKW45RvQKUiLGS+nAvupe+OUR45Hl6xkfQ6tDI9banky5
+# BrDYAGgCOZwgCSql+lO10Nwo9J76blk8HW2baiC/5CorCzkdyOFTNeJ9+YX42eFf
+# MtGZno7WZ3JnUqsUVzwX5nY4YZnymQUrmyTwDJZyRGXw6DPy1noiX/bMLlrxWto5
+# jBteq9b3hGdazNaSFG/g/LBR0Xj3YtAS3MIlVJq7/PlnDvmOhPesUMwke9Cpy6fT
+# muxGXhZKaCw5Ik875JQ3/PHlfrQIlaIc7diha2v0fthH4+yNIdvgBeFlNmOOHLat
+# l6cGq8CwE8fAhkTCMkdXy/YvCBuAFVFPazlwQ5iBQbCuJSX5E1L1AfciwEW0Cz5l
+# jN5RderZSS/Bf6pgQZ01n3CIDRrvsGCeVSXJz5yqy3Vsou/U6JGy5J+2584sUFAB
+# 0R7BpEKZ6xZtaskpf3XwPUBEKdvckStw487knrFjG8MCnYKoGFFw/w==
 # SIG # End signature block
