@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logos/icon.png">
+
+<title>Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time | ITProCloud Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time" />
+<meta name="author" content="mm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="I had some presentations over the last weeks where I showed how to create images with PowerShell and how to deploy these images as new session hosts - also with PowerShell. Additionally, I showed how to log the state of the Azure Virtual Desktop session hosts each minute to a log analytics workspace. This post covers the why and how." />
+<meta property="og:description" content="I had some presentations over the last weeks where I showed how to create images with PowerShell and how to deploy these images as new session hosts - also with PowerShell. Additionally, I showed how to log the state of the Azure Virtual Desktop session hosts each minute to a log analytics workspace. This post covers the why and how." />
+<link rel="canonical" href="https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/" />
+<meta property="og:url" content="https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/" />
+<meta property="og:site_name" content="ITProCloud Blog" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/MonitorSessionHosts-01.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-09-20T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/MonitorSessionHosts-01.png" />
+<meta property="twitter:title" content="Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/MonitorSessionHosts-01.png","datePublished":"2022-09-20T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/","author":{"@type":"Person","name":"mm"},"headline":"Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time","dateModified":"2022-09-20T00:00:00+02:00","description":"I had some presentations over the last weeks where I showed how to create images with PowerShell and how to deploy these images as new session hosts - also with PowerShell. Additionally, I showed how to log the state of the Azure Virtual Desktop session hosts each minute to a log analytics workspace. This post covers the why and how.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<!--- cookie banner --->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-post">
+	<!-- defer loading of font and font awesome -->
+	<!-- <noscript id="deferred-styles"> -->
+		<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"> -->
+	<!-- </noscript> -->
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logos/itpc-logo-bottom-text.png" alt="ITProCloud Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
+                </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (42)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (41)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (10)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+	
+				<!-- Original tag list (unsorted) 
+				
+				
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-VM">Azure VM (2)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (8)</a>
+						</li>
+						
+					
+				
+				-->
+								
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://twitter.com/MarcelMeurer"><i class="fab fa-twitter"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/marcel-meurer-15b46b98"><i class="fab fa-linkedin"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://github.com/MarcelMeurer"><i class="fab fa-github"></i></a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="mailto:marcel.meurer@itprocloud.com?subject=Request%20from%20ITProCloud.de"><i class="far fa-envelope"></i></a>
+                </li>
+
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">ITProCloud Blog</h1>
+    <p class="lead">
+        Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <!-- Begin Article
+================================================== -->
+<div class="container">
+    <div class="row">
+
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time&url=https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/&title=Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+    </ul>
+    
+    <div class="sep">
+    </div>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
+    
+</div>
+
+        </div>
+
+        <!-- Post -->
+        
+
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
+
+                <!-- Author Box -->
+                
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                        
+                        <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
+                        
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href="https://blog.itprocloud.de">Marcel</a><a target="_blank" href="https://twitter.com/MarcelMeurer" class="btn follow">Follow</a>
+                        <span class="author-description">That's me: Marcel</span>
+                    </div>
+                </div>
+                
+
+                <!-- Post Title -->
+                <h1 class="posttitle">Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time</h1>
+
+            </div>
+
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
+
+            <!-- Post Featured Image -->
+            
+
+            
+            <img class="featured-image img-fluid" src="/assets/images/MonitorSessionHosts-01.png" alt="Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time">
+            
+
+            
+            <!-- End Featured Image -->
+
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <p>I had some presentations over the last weeks where I showed how to create images with PowerShell and how to deploy these images as new session hosts - also with PowerShell. Additionally, I showed how to log the state of the Azure Virtual Desktop session hosts each minute to a log analytics workspace. This post covers the why and how.</p>
+<p>Today, you can manage Azure Virtual Desktop differently (Portal, PowerShell, <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>, <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for AVD</a>, etc.). Also, monitoring is covered using Azure Monitor and the Diagnostic Logging, and my <a href="https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/">free Workbook</a>. But some parts are missing regarding monitoring: If you want to show available hosts and sessions over time (e.g., for the last month), you have no native solution. Also, the state of a specific host at any time would be interesting to find issues in the past.</p>
+<p>But it’s easy to solve. You can do the following steps with PowerShell to store this data in a Log Analytics workspace:</p>
+<p>Each minute:</p>
+<ul>
+<li>Query all host pools in a resource group</li>
+<li>Read the session hosts objects of each pool</li>
+<li>Extend a property to the session hosts with the current timestamp (do not rely on the generated timestamp to later group the hosts in time)</li>
+<li>Upload the data to Log Analytics</li>
+</ul>
+<p>The most efficient and economical way is to use an Azure Function. The function can be used to trigger the script each minute. To do it more professional, we can build this solution with a few Azure resources:</p>
+<ul>
+<li>Azure Function for the PowerShell script</li>
+<li>Azure Key Vault to store the Log Analytics workspace id and key</li>
+<li>A new or existing Log Analytics workspace</li>
+</ul>
+<h3 id="create-or-select-a-log-analytics-workspace">Create or select a Log Analytics workspace</h3>
+<p>You can create a new Log Analytics workspace to store the data or you can use an existing one. If you have done this, copy the WorkspaceId and WorkspaceKey (primary key) for later use (can be found in Agents Management -&gt; Log Analytics agent instructions).</p>
+<p><img src="../assets/images/MonitorSessionHosts-02.png" alt="" /></p>
+<h3 id="create-an-azure-key-vault">Create an Azure Key Vault</h3>
+<p>Create a standard Key Vault and add two secrets to the vault:</p>
+<ul>
+<li>WorkspaceId, containing the WorkspaceId of the Log Analytics workspace</li>
+<li>WorkspaceKey, containing the WorkspaceKey of the Log Analytics workspace</li>
+</ul>
+<p><img src="../assets/images/MonitorSessionHosts-03.png" alt="" /></p>
+<h3 id="configuring-the-azure-function">Configuring the Azure Function</h3>
+<p>Rollout a new Azure Function with a consumption plan (or an existing App Service Plan). Open the function -&gt; Identity and set the “System assigned” identity to on. This creates immediatily an identity for the Azure Function to give the Function permission to access the Key Vault and the Host Pool/resource group containing the host pools.</p>
+<p>In functions, select create -&gt; Time Trigger and set the time trigger to “*/60 * * * * *” to run the script each minute. Give the function a good name. In “code”, insert the content of <a href="https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0#file-run-ps1">run.ps1</a>. Modify line 28 and insert the name of the resource group of your host pools.</p>
+<p><img src="../assets/images/MonitorSessionHosts-04.png" alt="" /></p>
+<p>In the Function -&gt; App Files, copy the content from <a href="https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0">https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0</a> to the files “requierements.psd1” and “profile.ps1”. That is needed to load the Azure modules of AVD and the authentication with the managed identity.</p>
+<p>Finally, open configuration in the Azure Function, and create new application settings:</p>
+<ul>
+<li>WorkspaceId: @Microsoft.KeyVault(SecretUri=<a href="https://xxxx.vault.azure.net/secrets/WorkspaceId/">https://xxxx.vault.azure.net/secrets/WorkspaceId/</a>)</li>
+<li>WorkspaceKey: @Microsoft.KeyVault(SecretUri=<a href="https://xxxx.vault.azure.net/secrets/WorkspaceKey/">https://xxxx.vault.azure.net/secrets/WorkspaceKey/</a>)
+Use the correct URL to reflect the correct Key Vault</li>
+</ul>
+<p><img src="../assets/images/MonitorSessionHosts-05.png" alt="" /></p>
+<p>Do give the Azure Function permission to read the secrets, open the Key Vault again and go to: Access configuration -&gt; Go to access policies and create new permission with “Secret Get” for the identity of the function (use the name of the function to find the identity).</p>
+<p>Go to the resource group containing your host pools -&gt; Access Control -&gt; Add role assignment: Add the role “Desktop Virtualization Host Pool Reader” for the member “Managed Identity” and the name of the Azure Function.</p>
+<p>If everything is working fine, the first data are written to the Log Analytics workspace. You can check the output of the function in Monitor:</p>
+<p><img src="../assets/images/MonitorSessionHosts-06.png" alt="" /></p>
+<p>It takes one time a couple of minutes to build the data schema in Log Analytics. After that, a new table is shown in Logs:</p>
+<p><img src="../assets/images/MonitorSessionHosts-07.png" alt="" /></p>
+<p>To start showing some data, we can run the following Kusto queries to show the data:</p>
+<p><img src="../assets/images/MonitorSessionHosts-01.png" alt="" />
+<img src="../assets/images/MonitorSessionHosts-09.png" alt="" />
+<img src="../assets/images/MonitorSessionHosts-10.png" alt="" />
+<img src="../assets/images/MonitorSessionHosts-11.png" alt="" /></p>
+<h3 id="queries">Queries</h3>
+<pre><code>// sessions per host pool over time
+AvdBehind_v2_CL
+| extend HostPool=tostring(split(Id_s,&quot;/&quot;)[8])
+| summarize sum(Session_d) by HostPool, TimeGenerated
+| render timechart
+
+
+// available hosts per pool over time
+AvdBehind_v2_CL
+| extend HostPool=tostring(split(Id_s,&quot;/&quot;)[8])
+| where Status_s=~&quot;Available&quot;
+| summarize count() by HostPool, TimeGenerated
+| render timechart 
+
+
+// assigned hosts by state (now)
+AvdBehind_v2_CL
+| extend HostPool=tostring(split(Id_s,&quot;/&quot;)[8])
+| summarize arg_max(TimeGenerated,*) by Id_s    // get the newest data set by resource id of the session hosts
+| where AssignedUser_s !=&quot;&quot;
+| project HostPool, SessionHost=Name_s, AssignedUser_s
+
+
+// # hosts by state (now)
+AvdBehind_v2_CL
+| extend HostPool=tostring(split(Id_s,&quot;/&quot;)[8])
+| summarize arg_max(TimeGenerated,*) by Id_s    // get the newest data set by resource id of the session hosts
+| summarize Count=count() by Status=Status_s,HostPool
+| project HostPool, Status, Count
+</code></pre>
+<p>Let me know if everything is working as expected or if it makes sense to create a “Deploy to Azure Button” to deploy the solution.</p>
+
+            </div>
+
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2022-09-20">20 Sep 2022</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            <a class="prev d-block col-md-6" href="/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/"> &laquo; Azure Virtual Desktop Session Hosts with Azure Disk Encryption</a>
+            
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
+        </div>
+        <!-- End Post -->
+
+    </div>
+</div>
+<!-- End Article
+================================================== -->
+
+<!-- Begin Comments
+================================================== -->
+
+<!--End Comments
+================================================== -->
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div id="allTags" class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore by tags <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-VM">Azure VM (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (8)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (10)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (7)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-AD">Azure AD (4)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#OneDrive">OneDrive (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-IoT">Azure IoT (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Functions">Azure Functions (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Marketplace">Azure Marketplace (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (5)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (42)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (41)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Webapp">Azure Webapp (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#ADConnect">ADConnect (1)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 text-center text-lg-left">
+                Copyright © 2022 ITProCloud Blog 
+            </div>
+            <div class="col-md-4 col-sm-4 text-center text-lg-left">
+                <a href="/Impressum">Impressum</a>/<a href="/ImpressumEn">Imprint</a> - 
+                <a href="/privacyDe">Datenschutz</a> - 
+				<a href="/privacyEn">Privacy</a>
+            </div>
+            <div class="col-md-3 col-sm-3 text-center text-lg-right">    
+                <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+<script id="dsq-count-scr" src="//.disqus.com/count.js"></script>
+
+
+<!-- Start Cookie Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#eaf7f7",
+      "text": "#5c7291"
+    },
+    "button": {
+      "background": "#56cbdb",
+      "text": "#ffffff"
+    }
+  },
+  "position": "bottom-right",
+  "content": {
+    "message": 'This website uses cookies to ensure you get the best experience on our website.<br/><a href="/privacyEn">Privacy policy</a><br/><br/>Diese Website verwendet Cookies, um dir mehr Benutzerfreundlichkeit zu bieten. Mit der Nutzung dieser Website stimmst du der Verwendung von Cookies zu.<br/><a href="/privacyDe">Datenschutzerklärung</a><br/><br/> ',
+    "href": "/privacyEn"
+  }
+});
+</script>
+<!-- End Cookie Plugin -->
+
+</body>
+</html>
