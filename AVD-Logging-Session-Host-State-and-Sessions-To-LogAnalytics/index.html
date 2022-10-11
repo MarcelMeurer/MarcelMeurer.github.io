@@ -14,8 +14,8 @@
 <meta property="og:title" content="Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="I had some presentations over the last weeks where I showed how to create images with PowerShell and how to deploy these images as new session hosts - also with PowerShell. Additionally, I showed how to log the state of the Azure Virtual Desktop session hosts each minute to a log analytics workspace. This post covers the why and how." />
-<meta property="og:description" content="I had some presentations over the last weeks where I showed how to create images with PowerShell and how to deploy these images as new session hosts - also with PowerShell. Additionally, I showed how to log the state of the Azure Virtual Desktop session hosts each minute to a log analytics workspace. This post covers the why and how." />
+<meta name="description" content="Update October 2022: Check out the following Workbook to use diagnostic logging to get and visualize the data" />
+<meta property="og:description" content="Update October 2022: Check out the following Workbook to use diagnostic logging to get and visualize the data" />
 <link rel="canonical" href="https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/" />
 <meta property="og:url" content="https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/MonitorSessionHosts-01.png" />
 <meta property="twitter:title" content="Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/MonitorSessionHosts-01.png","datePublished":"2022-09-20T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/","author":{"@type":"Person","name":"mm"},"headline":"Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time","dateModified":"2022-09-20T00:00:00+02:00","description":"I had some presentations over the last weeks where I showed how to create images with PowerShell and how to deploy these images as new session hosts - also with PowerShell. Additionally, I showed how to log the state of the Azure Virtual Desktop session hosts each minute to a log analytics workspace. This post covers the why and how.","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/MonitorSessionHosts-01.png","datePublished":"2022-09-20T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/","author":{"@type":"Person","name":"mm"},"headline":"Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time","dateModified":"2022-09-20T00:00:00+02:00","description":"Update October 2022: Check out the following Workbook to use diagnostic logging to get and visualize the data","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -437,7 +437,8 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>I had some presentations over the last weeks where I showed how to create images with PowerShell and how to deploy these images as new session hosts - also with PowerShell. Additionally, I showed how to log the state of the Azure Virtual Desktop session hosts each minute to a log analytics workspace. This post covers the why and how.</p>
+                <p><strong>Update October 2022:</strong> <a href="https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/">Check out the following Workbook to use diagnostic logging to get and visualize the data</a></p>
+<p>I had some presentations over the last weeks where I showed how to create images with PowerShell and how to deploy these images as new session hosts - also with PowerShell. Additionally, I showed how to log the state of the Azure Virtual Desktop session hosts each minute to a log analytics workspace. This post covers the why and how.</p>
 <p>Today, you can manage Azure Virtual Desktop differently (Portal, PowerShell, <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>, <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for AVD</a>, etc.). Also, monitoring is covered using Azure Monitor and the Diagnostic Logging, and my <a href="https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/">free Workbook</a>. But some parts are missing regarding monitoring: If you want to show available hosts and sessions over time (e.g., for the last month), you have no native solution. Also, the state of a specific host at any time would be interesting to find issues in the past.</p>
 <p>But it’s easy to solve. You can do the following steps with PowerShell to store this data in a Log Analytics workspace:</p>
 <p>Each minute:</p>
