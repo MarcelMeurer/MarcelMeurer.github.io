@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 11 Oct 2022 17:37:23 +0200</pubDate>
-    <lastBuildDate>Tue, 11 Oct 2022 17:37:23 +0200</lastBuildDate>
+    <pubDate>Tue, 11 Oct 2022 17:40:48 +0200</pubDate>
+    <lastBuildDate>Tue, 11 Oct 2022 17:40:48 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -60,6 +60,7 @@
 &lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
@@ -197,8 +198,7 @@ Use the correct URL to reflect the correct Key Vault&lt;/li&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-01.png&quot; alt=&quot;&quot; /&gt;
 &lt;img src=&quot;../assets/images/MonitorSessionHosts-09.png&quot; alt=&quot;&quot; /&gt;
 &lt;img src=&quot;../assets/images/MonitorSessionHosts-10.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/MonitorSessionHosts-11.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;../assets/images/MonitorSessionHosts-11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;h3 id=&quot;queries&quot;&gt;Queries&lt;/h3&gt;
 &lt;pre&gt;&lt;code&gt;// sessions per host pool over time
 AvdBehind_v2_CL
