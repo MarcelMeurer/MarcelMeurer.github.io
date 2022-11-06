@@ -237,10 +237,6 @@
 <lastmod>2022-07-28T00:00:00+02:00</lastmod>
 </url>
 <url>
-<loc>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</loc>
-<lastmod>2022-08-15T00:00:00+02:00</lastmod>
-</url>
-<url>
 <loc>https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/</loc>
 <lastmod>2022-08-30T00:00:00+02:00</lastmod>
 </url>
@@ -255,6 +251,10 @@
 <url>
 <loc>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</loc>
 <lastmod>2022-11-03T00:00:00+01:00</lastmod>
+</url>
+<url>
+<loc>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</loc>
+<lastmod>2022-11-06T00:00:00+01:00</lastmod>
 </url>
 <url>
 <loc>https://blog.itprocloud.de/about</loc>

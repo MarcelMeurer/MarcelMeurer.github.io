@@ -5,291 +5,15 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 03 Nov 2022 19:28:54 +0100</pubDate>
-    <lastBuildDate>Thu, 03 Nov 2022 19:28:54 +0100</lastBuildDate>
+    <pubDate>Sun, 06 Nov 2022 21:19:16 +0100</pubDate>
+    <lastBuildDate>Sun, 06 Nov 2022 21:19:16 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
-    
-      <item>
-        <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
-        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Log Type&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
-&lt;td&gt;Details about the session hosts&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDConnections&lt;/td&gt;
-&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDErrors&lt;/td&gt;
-&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, …)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDFeeds&lt;/td&gt;
-&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
-&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDManagement&lt;/td&gt;
-&lt;td&gt;Log about administrative tasks&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDCheckpoints&lt;/td&gt;
-&lt;td&gt;Detailed information related to logins, errors, …&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDConnectionNetworkData&lt;/td&gt;
-&lt;td&gt;Network information (bandwidth and RTT)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that (use version 1.7.25 or higher):&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;After a while, the workbook is visible as a new template in: &lt;strong&gt;Log Analytics -&amp;gt; Workbooks -&amp;gt; Azure Virtual Desktop -&amp;gt; AVD - Deep-Insights&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;” occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
-&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Version&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1&lt;/td&gt;
-&lt;td&gt;01/28/2022&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.2&lt;/td&gt;
-&lt;td&gt;02/17/2022&lt;/td&gt;
-&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); see &lt;a href=&quot;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&quot;&gt;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&lt;/a&gt; &lt;br /&gt;&lt;br /&gt;Name changed to AVD - Deep-Insights&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.3&lt;/td&gt;
-&lt;td&gt;03/16/2022&lt;/td&gt;
-&lt;td&gt;Include Logon timing (GPO, FSLogix, Authentication, etc.)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.4&lt;/td&gt;
-&lt;td&gt;04/14/2022&lt;/td&gt;
-&lt;td&gt;In Session Bandwidths &amp;amp; Latencies: The connection type is shown if RDP Short Path is used (Public, Private). See: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.5&lt;/td&gt;
-&lt;td&gt;05/03/2022&lt;/td&gt;
-&lt;td&gt;New visualization: Logon timing per day and category over the time&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.6&lt;/td&gt;
-&lt;td&gt;10/11/2022&lt;/td&gt;
-&lt;td&gt;New visualization: Connections over time, unhealthy session hosts, graphic performance&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.7&lt;/td&gt;
-&lt;td&gt;11/03/2022&lt;/td&gt;
-&lt;td&gt;Optimization for charts to show data over a large time frame&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don’t generate costs&lt;/p&gt;
-</description>
-        <pubDate>Thu, 03 Nov 2022 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Azure Monitor</category>
-        
-        <category>Log Analytics</category>
-        
-      </item>
-    
-      <item>
-        <title>The challenge of having the correct language in the Edge browser with Azure Virtual Desktop in West Europe</title>
-        <description>&lt;p&gt;If you run Azure Virtual Desktop in a data center in another country, you maybe know that the browsers are showing some websites in the data center location language. For example: If you have AVD running in West Europe (Amsterdam, Netherlands), some websites - like Google and Bing - are responding in Dutch. That is often unexpected for users connecting from Germany. The reason is that web servers often use the client’s IP address to guess where the user is connecting. In this case, the client’s IP address is from the host running in Amsterdam and not the IP address of the endpoint in Germany.&lt;/p&gt;
-&lt;p&gt;To workaround this issue, I only found one way: Deploy a web proxy into Germany West Central in a single vnet and use peering to connect the proxy vnet with the vnet hosting your Azure Virtual Desktop session hosts (or use one of the proxy service providers around the world).&lt;/p&gt;
-&lt;p&gt;In my case, I deployed a small Ubuntu VM with Squid as a proxy system. I configured (e.g., GPO, Intune) Windows to use the proxy in the paired proxy vnet.&lt;/p&gt;
-&lt;p&gt;As expected: Using the proxy over the peered network showed Bing and Google in German instead of Dutch.&lt;/p&gt;
-&lt;p&gt;To do it more professionally, I recommend only redirecting http/https traffic for the browser and configuring the Microsoft Endpoint URLs to use the default way (using a proxy.pac file).&lt;/p&gt;
-&lt;p&gt;Note: Additional costs applied for proxy VMs and inter-region-traffic&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/DE-NL-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Wed, 21 Sep 2022 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/AVD-German-Language-in-AVD-in-West-Europe/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-German-Language-in-AVD-in-West-Europe/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time</title>
-        <description>&lt;p&gt;&lt;strong&gt;Update October 2022:&lt;/strong&gt; &lt;a href=&quot;https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/&quot;&gt;Check out the following Workbook to use diagnostic logging to get and visualize the data&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;I had some presentations over the last weeks where I showed how to create images with PowerShell and how to deploy these images as new session hosts - also with PowerShell. Additionally, I showed how to log the state of the Azure Virtual Desktop session hosts each minute to a log analytics workspace. This post covers the why and how.&lt;/p&gt;
-&lt;p&gt;Today, you can manage Azure Virtual Desktop differently (Portal, PowerShell, &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for AVD&lt;/a&gt;, etc.). Also, monitoring is covered using Azure Monitor and the Diagnostic Logging, and my &lt;a href=&quot;https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/&quot;&gt;free Workbook&lt;/a&gt;. But some parts are missing regarding monitoring: If you want to show available hosts and sessions over time (e.g., for the last month), you have no native solution. Also, the state of a specific host at any time would be interesting to find issues in the past.&lt;/p&gt;
-&lt;p&gt;But it’s easy to solve. You can do the following steps with PowerShell to store this data in a Log Analytics workspace:&lt;/p&gt;
-&lt;p&gt;Each minute:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Query all host pools in a resource group&lt;/li&gt;
-&lt;li&gt;Read the session hosts objects of each pool&lt;/li&gt;
-&lt;li&gt;Extend a property to the session hosts with the current timestamp (do not rely on the generated timestamp to later group the hosts in time)&lt;/li&gt;
-&lt;li&gt;Upload the data to Log Analytics&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The most efficient and economical way is to use an Azure Function. The function can be used to trigger the script each minute. To do it more professional, we can build this solution with a few Azure resources:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Azure Function for the PowerShell script&lt;/li&gt;
-&lt;li&gt;Azure Key Vault to store the Log Analytics workspace id and key&lt;/li&gt;
-&lt;li&gt;A new or existing Log Analytics workspace&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;create-or-select-a-log-analytics-workspace&quot;&gt;Create or select a Log Analytics workspace&lt;/h3&gt;
-&lt;p&gt;You can create a new Log Analytics workspace to store the data or you can use an existing one. If you have done this, copy the WorkspaceId and WorkspaceKey (primary key) for later use (can be found in Agents Management -&amp;gt; Log Analytics agent instructions).&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;create-an-azure-key-vault&quot;&gt;Create an Azure Key Vault&lt;/h3&gt;
-&lt;p&gt;Create a standard Key Vault and add two secrets to the vault:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;WorkspaceId, containing the WorkspaceId of the Log Analytics workspace&lt;/li&gt;
-&lt;li&gt;WorkspaceKey, containing the WorkspaceKey of the Log Analytics workspace&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;configuring-the-azure-function&quot;&gt;Configuring the Azure Function&lt;/h3&gt;
-&lt;p&gt;Rollout a new Azure Function with a consumption plan (or an existing App Service Plan). Open the function -&amp;gt; Identity and set the “System assigned” identity to on. This creates immediatily an identity for the Azure Function to give the Function permission to access the Key Vault and the Host Pool/resource group containing the host pools.&lt;/p&gt;
-&lt;p&gt;In functions, select create -&amp;gt; Time Trigger and set the time trigger to “*/60 * * * * *” to run the script each minute. Give the function a good name. In “code”, insert the content of &lt;a href=&quot;https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0#file-run-ps1&quot;&gt;run.ps1&lt;/a&gt;. Modify line 28 and insert the name of the resource group of your host pools.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;In the Function -&amp;gt; App Files, copy the content from &lt;a href=&quot;https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0&quot;&gt;https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0&lt;/a&gt; to the files “requierements.psd1” and “profile.ps1”. That is needed to load the Azure modules of AVD and the authentication with the managed identity.&lt;/p&gt;
-&lt;p&gt;Finally, open configuration in the Azure Function, and create new application settings:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;WorkspaceId: @Microsoft.KeyVault(SecretUri=&lt;a href=&quot;https://xxxx.vault.azure.net/secrets/WorkspaceId/&quot;&gt;https://xxxx.vault.azure.net/secrets/WorkspaceId/&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;WorkspaceKey: @Microsoft.KeyVault(SecretUri=&lt;a href=&quot;https://xxxx.vault.azure.net/secrets/WorkspaceKey/&quot;&gt;https://xxxx.vault.azure.net/secrets/WorkspaceKey/&lt;/a&gt;)
-Use the correct URL to reflect the correct Key Vault&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Do give the Azure Function permission to read the secrets, open the Key Vault again and go to: Access configuration -&amp;gt; Go to access policies and create new permission with “Secret Get” for the identity of the function (use the name of the function to find the identity).&lt;/p&gt;
-&lt;p&gt;Go to the resource group containing your host pools -&amp;gt; Access Control -&amp;gt; Add role assignment: Add the role “Desktop Virtualization Host Pool Reader” for the member “Managed Identity” and the name of the Azure Function.&lt;/p&gt;
-&lt;p&gt;If everything is working fine, the first data are written to the Log Analytics workspace. You can check the output of the function in Monitor:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-06.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;It takes one time a couple of minutes to build the data schema in Log Analytics. After that, a new table is shown in Logs:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-07.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;To start showing some data, we can run the following Kusto queries to show the data:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-01.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/MonitorSessionHosts-09.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/MonitorSessionHosts-10.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/MonitorSessionHosts-11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;queries&quot;&gt;Queries&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;// sessions per host pool over time
-AvdBehind_v2_CL
-| extend HostPool=tostring(split(Id_s,&amp;quot;/&amp;quot;)[8])
-| summarize sum(Session_d) by HostPool, TimeGenerated
-| render timechart
-
-
-// available hosts per pool over time
-AvdBehind_v2_CL
-| extend HostPool=tostring(split(Id_s,&amp;quot;/&amp;quot;)[8])
-| where Status_s=~&amp;quot;Available&amp;quot;
-| summarize count() by HostPool, TimeGenerated
-| render timechart 
-
-
-// assigned hosts by state (now)
-AvdBehind_v2_CL
-| extend HostPool=tostring(split(Id_s,&amp;quot;/&amp;quot;)[8])
-| summarize arg_max(TimeGenerated,*) by Id_s    // get the newest data set by resource id of the session hosts
-| where AssignedUser_s !=&amp;quot;&amp;quot;
-| project HostPool, SessionHost=Name_s, AssignedUser_s
-
-
-// # hosts by state (now)
-AvdBehind_v2_CL
-| extend HostPool=tostring(split(Id_s,&amp;quot;/&amp;quot;)[8])
-| summarize arg_max(TimeGenerated,*) by Id_s    // get the newest data set by resource id of the session hosts
-| summarize Count=count() by Status=Status_s,HostPool
-| project HostPool, Status, Count
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Let me know if everything is working as expected or if it makes sense to create a “Deploy to Azure Button” to deploy the solution.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 20 Sep 2022 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Azure Virtual Desktop Session Hosts with Azure Disk Encryption</title>
-        <description>&lt;p&gt;&lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; for Azure Virtual Desktop and &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; are supporting ADE for AVD Session Hosts.&lt;/p&gt;
-&lt;p&gt;Azure Disk Encryption (ADE) encrypts the OS and data disks of Azure virtual machines (VMs) inside your VMs by using BitLocker. ADE cannot be combined with a disk encryption set.&lt;/p&gt;
-&lt;p&gt;To roll out session hosts with ADE in &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt;, some resources must be prepared to work: Azure Key Vault with an encryption key, and Azure Key Vault to store the secrets of the disks (can be the same vault)&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;First, create a Key Vault in the Azure Portal&lt;/li&gt;
-&lt;li&gt;Give the service principal (from the tenant configuration) contributor permission to the vault (access and control)&lt;/li&gt;
-&lt;li&gt;In Access Policies, give the service principal the following permissions:
-– Key permissions: Get, Encrypt, Wrap Key
-– Secret permissions: Set&lt;/li&gt;
-&lt;li&gt;Check the boxes: Azure Virtual Machines for deployment and Azure Disk Encryption for volume encryption&lt;/li&gt;
-&lt;li&gt;Give yourself permissions: Key and secret management&lt;/li&gt;
-&lt;li&gt;Go to Keys and click on Generate. Type a name and select RSA and 2048&lt;/li&gt;
-&lt;li&gt;Click on the generate key and on the current version. Copy the Key identifier (must include the version). E.g., https://&lt;my-vaul&gt;.vault.azure.net/keys/ADE-Encryption/bf270e977a574813a87bb637d57a6675&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;In &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt;, configure “New Session Host Rollout”:
-In “Advanced settings” select the Key Vault  in ADE Key Vault
-Copy the Key Identifier to ADE Encryption Key Url&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/ADE-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Do a deployment to verify that the disk is ADE encrypted:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/ADE-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;To rollout hosts with ADE with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, add tags to the host pool:&lt;/p&gt;
-&lt;p&gt;WVD.Default.KeyVault.Id: resource id of the KeyVault (/subscriptions/&lt;GUID&gt;/resourceGroups/&lt;RG Name&gt;/providers/Microsoft.KeyVault/vaults/&lt;KV Name&gt;)
-WVD.Default.KeyVault.KeyUri: key for the vaul (https://&lt;my-vaul&gt;.vault.azure.net/keys/ADE-Encryption/bf270e977a574813a87bb637d57a6675)&lt;/p&gt;
-</description>
-        <pubDate>Tue, 30 Aug 2022 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 08/15/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/06/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
@@ -377,7 +101,7 @@ WVD.Default.KeyVault.KeyUri: key for the vaul (https://&lt;my-vaul&gt;.vault.azu
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 08/15/2022&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/06/2022&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
@@ -388,6 +112,10 @@ WVD.Default.KeyVault.KeyUri: key for the vaul (https://&lt;my-vaul&gt;.vault.azu
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7.50.0&lt;/td&gt;
+&lt;td&gt;Add: Workaround to image Windows 11 22H2 (there is a bug in the sysprep process)&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.7.49.0&lt;/td&gt;
 &lt;td&gt;Add: Secure boot enabled hosts are now supporting ‘Guest Attestation’ (automatically installed)&lt;/td&gt;
@@ -1158,11 +886,287 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 08/15/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/06/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Mon, 15 Aug 2022 00:00:00 +0200</pubDate>
+        <pubDate>Sun, 06 Nov 2022 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
+        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Log Type&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
+&lt;td&gt;Details about the session hosts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnections&lt;/td&gt;
+&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDErrors&lt;/td&gt;
+&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, …)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDFeeds&lt;/td&gt;
+&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
+&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDManagement&lt;/td&gt;
+&lt;td&gt;Log about administrative tasks&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDCheckpoints&lt;/td&gt;
+&lt;td&gt;Detailed information related to logins, errors, …&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnectionNetworkData&lt;/td&gt;
+&lt;td&gt;Network information (bandwidth and RTT)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that (use version 1.7.25 or higher):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;After a while, the workbook is visible as a new template in: &lt;strong&gt;Log Analytics -&amp;gt; Workbooks -&amp;gt; Azure Virtual Desktop -&amp;gt; AVD - Deep-Insights&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;” occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
+&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Version&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1&lt;/td&gt;
+&lt;td&gt;01/28/2022&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.2&lt;/td&gt;
+&lt;td&gt;02/17/2022&lt;/td&gt;
+&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); see &lt;a href=&quot;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&quot;&gt;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&lt;/a&gt; &lt;br /&gt;&lt;br /&gt;Name changed to AVD - Deep-Insights&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.3&lt;/td&gt;
+&lt;td&gt;03/16/2022&lt;/td&gt;
+&lt;td&gt;Include Logon timing (GPO, FSLogix, Authentication, etc.)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.4&lt;/td&gt;
+&lt;td&gt;04/14/2022&lt;/td&gt;
+&lt;td&gt;In Session Bandwidths &amp;amp; Latencies: The connection type is shown if RDP Short Path is used (Public, Private). See: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.5&lt;/td&gt;
+&lt;td&gt;05/03/2022&lt;/td&gt;
+&lt;td&gt;New visualization: Logon timing per day and category over the time&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6&lt;/td&gt;
+&lt;td&gt;10/11/2022&lt;/td&gt;
+&lt;td&gt;New visualization: Connections over time, unhealthy session hosts, graphic performance&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7&lt;/td&gt;
+&lt;td&gt;11/03/2022&lt;/td&gt;
+&lt;td&gt;Optimization for charts to show data over a large time frame&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don’t generate costs&lt;/p&gt;
+</description>
+        <pubDate>Thu, 03 Nov 2022 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Azure Monitor</category>
+        
+        <category>Log Analytics</category>
+        
+      </item>
+    
+      <item>
+        <title>The challenge of having the correct language in the Edge browser with Azure Virtual Desktop in West Europe</title>
+        <description>&lt;p&gt;If you run Azure Virtual Desktop in a data center in another country, you maybe know that the browsers are showing some websites in the data center location language. For example: If you have AVD running in West Europe (Amsterdam, Netherlands), some websites - like Google and Bing - are responding in Dutch. That is often unexpected for users connecting from Germany. The reason is that web servers often use the client’s IP address to guess where the user is connecting. In this case, the client’s IP address is from the host running in Amsterdam and not the IP address of the endpoint in Germany.&lt;/p&gt;
+&lt;p&gt;To workaround this issue, I only found one way: Deploy a web proxy into Germany West Central in a single vnet and use peering to connect the proxy vnet with the vnet hosting your Azure Virtual Desktop session hosts (or use one of the proxy service providers around the world).&lt;/p&gt;
+&lt;p&gt;In my case, I deployed a small Ubuntu VM with Squid as a proxy system. I configured (e.g., GPO, Intune) Windows to use the proxy in the paired proxy vnet.&lt;/p&gt;
+&lt;p&gt;As expected: Using the proxy over the peered network showed Bing and Google in German instead of Dutch.&lt;/p&gt;
+&lt;p&gt;To do it more professionally, I recommend only redirecting http/https traffic for the browser and configuring the Microsoft Endpoint URLs to use the default way (using a proxy.pac file).&lt;/p&gt;
+&lt;p&gt;Note: Additional costs applied for proxy VMs and inter-region-traffic&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/DE-NL-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Wed, 21 Sep 2022 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/AVD-German-Language-in-AVD-in-West-Europe/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-German-Language-in-AVD-in-West-Europe/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time</title>
+        <description>&lt;p&gt;&lt;strong&gt;Update October 2022:&lt;/strong&gt; &lt;a href=&quot;https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/&quot;&gt;Check out the following Workbook to use diagnostic logging to get and visualize the data&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I had some presentations over the last weeks where I showed how to create images with PowerShell and how to deploy these images as new session hosts - also with PowerShell. Additionally, I showed how to log the state of the Azure Virtual Desktop session hosts each minute to a log analytics workspace. This post covers the why and how.&lt;/p&gt;
+&lt;p&gt;Today, you can manage Azure Virtual Desktop differently (Portal, PowerShell, &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for AVD&lt;/a&gt;, etc.). Also, monitoring is covered using Azure Monitor and the Diagnostic Logging, and my &lt;a href=&quot;https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/&quot;&gt;free Workbook&lt;/a&gt;. But some parts are missing regarding monitoring: If you want to show available hosts and sessions over time (e.g., for the last month), you have no native solution. Also, the state of a specific host at any time would be interesting to find issues in the past.&lt;/p&gt;
+&lt;p&gt;But it’s easy to solve. You can do the following steps with PowerShell to store this data in a Log Analytics workspace:&lt;/p&gt;
+&lt;p&gt;Each minute:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Query all host pools in a resource group&lt;/li&gt;
+&lt;li&gt;Read the session hosts objects of each pool&lt;/li&gt;
+&lt;li&gt;Extend a property to the session hosts with the current timestamp (do not rely on the generated timestamp to later group the hosts in time)&lt;/li&gt;
+&lt;li&gt;Upload the data to Log Analytics&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The most efficient and economical way is to use an Azure Function. The function can be used to trigger the script each minute. To do it more professional, we can build this solution with a few Azure resources:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Azure Function for the PowerShell script&lt;/li&gt;
+&lt;li&gt;Azure Key Vault to store the Log Analytics workspace id and key&lt;/li&gt;
+&lt;li&gt;A new or existing Log Analytics workspace&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;create-or-select-a-log-analytics-workspace&quot;&gt;Create or select a Log Analytics workspace&lt;/h3&gt;
+&lt;p&gt;You can create a new Log Analytics workspace to store the data or you can use an existing one. If you have done this, copy the WorkspaceId and WorkspaceKey (primary key) for later use (can be found in Agents Management -&amp;gt; Log Analytics agent instructions).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;create-an-azure-key-vault&quot;&gt;Create an Azure Key Vault&lt;/h3&gt;
+&lt;p&gt;Create a standard Key Vault and add two secrets to the vault:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;WorkspaceId, containing the WorkspaceId of the Log Analytics workspace&lt;/li&gt;
+&lt;li&gt;WorkspaceKey, containing the WorkspaceKey of the Log Analytics workspace&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;configuring-the-azure-function&quot;&gt;Configuring the Azure Function&lt;/h3&gt;
+&lt;p&gt;Rollout a new Azure Function with a consumption plan (or an existing App Service Plan). Open the function -&amp;gt; Identity and set the “System assigned” identity to on. This creates immediatily an identity for the Azure Function to give the Function permission to access the Key Vault and the Host Pool/resource group containing the host pools.&lt;/p&gt;
+&lt;p&gt;In functions, select create -&amp;gt; Time Trigger and set the time trigger to “*/60 * * * * *” to run the script each minute. Give the function a good name. In “code”, insert the content of &lt;a href=&quot;https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0#file-run-ps1&quot;&gt;run.ps1&lt;/a&gt;. Modify line 28 and insert the name of the resource group of your host pools.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;In the Function -&amp;gt; App Files, copy the content from &lt;a href=&quot;https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0&quot;&gt;https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0&lt;/a&gt; to the files “requierements.psd1” and “profile.ps1”. That is needed to load the Azure modules of AVD and the authentication with the managed identity.&lt;/p&gt;
+&lt;p&gt;Finally, open configuration in the Azure Function, and create new application settings:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;WorkspaceId: @Microsoft.KeyVault(SecretUri=&lt;a href=&quot;https://xxxx.vault.azure.net/secrets/WorkspaceId/&quot;&gt;https://xxxx.vault.azure.net/secrets/WorkspaceId/&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;WorkspaceKey: @Microsoft.KeyVault(SecretUri=&lt;a href=&quot;https://xxxx.vault.azure.net/secrets/WorkspaceKey/&quot;&gt;https://xxxx.vault.azure.net/secrets/WorkspaceKey/&lt;/a&gt;)
+Use the correct URL to reflect the correct Key Vault&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Do give the Azure Function permission to read the secrets, open the Key Vault again and go to: Access configuration -&amp;gt; Go to access policies and create new permission with “Secret Get” for the identity of the function (use the name of the function to find the identity).&lt;/p&gt;
+&lt;p&gt;Go to the resource group containing your host pools -&amp;gt; Access Control -&amp;gt; Add role assignment: Add the role “Desktop Virtualization Host Pool Reader” for the member “Managed Identity” and the name of the Azure Function.&lt;/p&gt;
+&lt;p&gt;If everything is working fine, the first data are written to the Log Analytics workspace. You can check the output of the function in Monitor:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-06.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;It takes one time a couple of minutes to build the data schema in Log Analytics. After that, a new table is shown in Logs:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-07.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;To start showing some data, we can run the following Kusto queries to show the data:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-01.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/MonitorSessionHosts-09.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/MonitorSessionHosts-10.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/MonitorSessionHosts-11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;queries&quot;&gt;Queries&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;// sessions per host pool over time
+AvdBehind_v2_CL
+| extend HostPool=tostring(split(Id_s,&amp;quot;/&amp;quot;)[8])
+| summarize sum(Session_d) by HostPool, TimeGenerated
+| render timechart
+
+
+// available hosts per pool over time
+AvdBehind_v2_CL
+| extend HostPool=tostring(split(Id_s,&amp;quot;/&amp;quot;)[8])
+| where Status_s=~&amp;quot;Available&amp;quot;
+| summarize count() by HostPool, TimeGenerated
+| render timechart 
+
+
+// assigned hosts by state (now)
+AvdBehind_v2_CL
+| extend HostPool=tostring(split(Id_s,&amp;quot;/&amp;quot;)[8])
+| summarize arg_max(TimeGenerated,*) by Id_s    // get the newest data set by resource id of the session hosts
+| where AssignedUser_s !=&amp;quot;&amp;quot;
+| project HostPool, SessionHost=Name_s, AssignedUser_s
+
+
+// # hosts by state (now)
+AvdBehind_v2_CL
+| extend HostPool=tostring(split(Id_s,&amp;quot;/&amp;quot;)[8])
+| summarize arg_max(TimeGenerated,*) by Id_s    // get the newest data set by resource id of the session hosts
+| summarize Count=count() by Status=Status_s,HostPool
+| project HostPool, Status, Count
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Let me know if everything is working as expected or if it makes sense to create a “Deploy to Azure Button” to deploy the solution.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 20 Sep 2022 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Azure Virtual Desktop Session Hosts with Azure Disk Encryption</title>
+        <description>&lt;p&gt;&lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; for Azure Virtual Desktop and &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; are supporting ADE for AVD Session Hosts.&lt;/p&gt;
+&lt;p&gt;Azure Disk Encryption (ADE) encrypts the OS and data disks of Azure virtual machines (VMs) inside your VMs by using BitLocker. ADE cannot be combined with a disk encryption set.&lt;/p&gt;
+&lt;p&gt;To roll out session hosts with ADE in &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt;, some resources must be prepared to work: Azure Key Vault with an encryption key, and Azure Key Vault to store the secrets of the disks (can be the same vault)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;First, create a Key Vault in the Azure Portal&lt;/li&gt;
+&lt;li&gt;Give the service principal (from the tenant configuration) contributor permission to the vault (access and control)&lt;/li&gt;
+&lt;li&gt;In Access Policies, give the service principal the following permissions:
+– Key permissions: Get, Encrypt, Wrap Key
+– Secret permissions: Set&lt;/li&gt;
+&lt;li&gt;Check the boxes: Azure Virtual Machines for deployment and Azure Disk Encryption for volume encryption&lt;/li&gt;
+&lt;li&gt;Give yourself permissions: Key and secret management&lt;/li&gt;
+&lt;li&gt;Go to Keys and click on Generate. Type a name and select RSA and 2048&lt;/li&gt;
+&lt;li&gt;Click on the generate key and on the current version. Copy the Key identifier (must include the version). E.g., https://&lt;my-vaul&gt;.vault.azure.net/keys/ADE-Encryption/bf270e977a574813a87bb637d57a6675&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt;, configure “New Session Host Rollout”:
+In “Advanced settings” select the Key Vault  in ADE Key Vault
+Copy the Key Identifier to ADE Encryption Key Url&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/ADE-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Do a deployment to verify that the disk is ADE encrypted:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/ADE-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;To rollout hosts with ADE with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, add tags to the host pool:&lt;/p&gt;
+&lt;p&gt;WVD.Default.KeyVault.Id: resource id of the KeyVault (/subscriptions/&lt;GUID&gt;/resourceGroups/&lt;RG Name&gt;/providers/Microsoft.KeyVault/vaults/&lt;KV Name&gt;)
+WVD.Default.KeyVault.KeyUri: key for the vaul (https://&lt;my-vaul&gt;.vault.azure.net/keys/ADE-Encryption/bf270e977a574813a87bb637d57a6675)&lt;/p&gt;
+</description>
+        <pubDate>Tue, 30 Aug 2022 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/</guid>
         
         
         <category>Windows Virtual Desktop</category>
