@@ -5,9 +5,50 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 06 Nov 2022 21:19:16 +0100</pubDate>
-    <lastBuildDate>Sun, 06 Nov 2022 21:19:16 +0100</lastBuildDate>
+    <pubDate>Thu, 10 Nov 2022 17:34:45 +0100</pubDate>
+    <lastBuildDate>Thu, 10 Nov 2022 17:34:45 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Sysprep and deploy Windows 11 22H2 in Azure with a custom image and a workaround</title>
+        <description>&lt;p&gt;A common way to build virtual machines based on an image in Azure (e.g., as Session hosts for Azure Virtual Desktop) can be done by the “Golden Image” approach.&lt;/p&gt;
+&lt;p&gt;The golden image approach is pretty simple. First install your “Golden Master”&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a VM in Azure (e.g., Windows 11 multi-session)&lt;/li&gt;
+&lt;li&gt;Install all hotfixes and updates&lt;/li&gt;
+&lt;li&gt;Install the application&lt;/li&gt;
+&lt;li&gt;Optional: Join a domain&lt;/li&gt;
+&lt;li&gt;Test the application&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In the next step, create an image from the master&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Sysprep the Golden Master&lt;/li&gt;
+&lt;li&gt;Capture the VM in the Azure Portal and create a custom image&lt;/li&gt;
+&lt;li&gt;Optional: Copy the custom image to an Azure compute gallery to deploy VMs in different locations, subscriptions, and trusted launch VMs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The bad thing is that your Golden Master is destroyed during the sysprep and capturing process. A bit smarter is to do that on a cloned/temporary VM and later delete the clone. &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for AVD&lt;/a&gt; will do this automatically if you create a new custom image. So, you can reuse the Golden Master.
+&lt;img src=&quot;../assets/images/Sysprep-Advanced.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;But today, deploying Windows 11 22H2 is the main topic. In Windows 11 22H2 is an issue preventing the rollout of new VMs based on a custom image in s specific case:&lt;/p&gt;
+&lt;p&gt;If you create a custom image based on a Golden Master who is or was &lt;strong&gt;domain-joined&lt;/strong&gt;, you cannot roll out a new VM. The rollout will go into a timeout; if you capture a screenshot, you can see the installation screen and a rotating donut.&lt;/p&gt;
+&lt;p&gt;What I figured out. The setup process stops after handling the following task (found in C:\Windows\Panther\setupact.log):
+ActionPlatform::LaunchModule: Executing method &lt;em&gt;‘CryptoSysPrep_Specialize’&lt;/em&gt; from C:\Windows\system32\capisp.dll
+After that, no more happens. Also, the ETL files are not showing any process. I guess the process hangs.&lt;/p&gt;
+&lt;p&gt;I was able to bring it down to this part. For a workaround, I modified the &lt;em&gt;“C:\windows\system32\Sysprep\ActionFiles\Specialize.xml”&lt;/em&gt; on the master VM and removed the actions for &lt;em&gt;‘CryptoSysPrep_Specialize’&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Specialize.xml&lt;/em&gt; is processed by sysprep after a rollout based on an image on this VM. And: It worked. The deployed VMs are running, and the timeout didn’t happen.&lt;/p&gt;
+&lt;p&gt;As a workaround, you can modify the &lt;em&gt;Specialize.xml&lt;/em&gt; on the Golden Master and capture the image. After that, you can roll out new VMs based on that image.&lt;/p&gt;
+&lt;p&gt;I added the workaround to &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for AVD&lt;/a&gt;. If Windows 11 22H2 is detected during the imaging process, the Specialize.xml is automatically patched. Additionally, if you roll out new session hosts with one of the tools, capisp.dll with the entry point CryptoSysPrep_Specialize is called during the rollout.&lt;/p&gt;
+&lt;p&gt;Please note that this is a workaround. Follow the stream also on &lt;a href=&quot;https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html&quot;&gt;https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 10 Nov 2022 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/SYSPREP_and_rollout_deploy_WINDOWS_11_22H2_in_Azure/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/SYSPREP_and_rollout_deploy_WINDOWS_11_22H2_in_Azure/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -1432,43 +1473,6 @@ $table.GetEnumerator() | sort Value -Descending
         <pubDate>Fri, 13 May 2022 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>WVDAdmin - Azure Windows Virtual Desktop Administration for CSP and Consulting Partners</title>
-        <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-for-csp-and-consulting-partners&quot;&gt;Azure Windows Virtual Desktop Administration for CSP and Consulting Partners&lt;/h1&gt;
-&lt;p&gt;Last year I released my windows-based GUI for administrating WVD/AVD to the community called WVDAdmin. I had a bunch of updates to share more features. This week I will release version 1.3.0 with will add another feature, especially for providers and consulting companies. From version 1.3.0 WVDAdmin will support a multi-AAD-tenancy mode allowing to switch the Azure AD tenant very easily.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin.MultiTenancy/WVDAdmin.Welcome.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;To enable the multi-AAD-tenancy mode, you must set a registry key. Add the following dword32 to your registry:&lt;/p&gt;
-&lt;pre&gt;&lt;code class=&quot;language-registry&quot;&gt;&gt;HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin
-Name:	AadMultiTenant
-Type:	DWORD32
-Value:	1 (or 0 to disable this mode)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin.MultiTenancy/Registry1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;If you start WVDAdmin with this setting, a drop-down list will be visible at the welcome screen (see above). If you save a new service principal configuration, it happens to the drop-down list with the friendly name.
-All other settings for the image creation or rollout of new session hosts are saved to the context of the selected AAD tenant.&lt;/p&gt;
-&lt;p&gt;The authentication settings and other settings are saved in different trees in the registry starting from &lt;em&gt;HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin\AadMultiTenant&lt;/em&gt;
-If you had already used WVDAdmin in the “normal” mode, you could copy the settings from the root of the registry path to the new path for your AAD tenant. To delete a no longer needed AAD-tenant in WVDAdmin, remove the registry key of this one.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin.MultiTenancy/Registry2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Don’t change&lt;/strong&gt; the AAD tenant while an operation is in progress. This could result in an error. If you change the AAD tenant, click “Reload all” to read the configuration for the new tenant.&lt;/p&gt;
-&lt;p&gt;The AAD multi-tenancy mode helps a lot if you have (like me) multiple clients you are working with.&lt;/p&gt;
-&lt;p&gt;Feel free to use it and download the 64-bit Windows application “WVDAdmin” (AVDAdmin) from here: &lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;WVDAdmin Preview&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;update-from-version-17340&quot;&gt;Update from version 1.7.34.0&lt;/h2&gt;
-&lt;p&gt;You can use a custom script file for imaging and deployment in the program files folder of WVDAdmin (optionally). Place a copy in the program files folder with the AAD tenant friendly name like this (v7 is the current highest version and itprocloud.de the friendly tenant name):
-ITPC-WVD-Image-Processing.&lt;em&gt;itprocloud.de&lt;/em&gt;.v7.ps1&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/MultiTenantScript.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Read the original blog post about WVDAdmin here: &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Thu, 17 Mar 2022 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners/</guid>
         
         
         <category>Windows Virtual Desktop</category>
