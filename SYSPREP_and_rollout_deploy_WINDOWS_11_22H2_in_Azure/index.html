@@ -383,7 +383,7 @@ After that, no more happens. Also, the ETL files are not showing any process. I 
 <p><em>Specialize.xml</em> is processed by sysprep after a rollout based on an image on this VM. And: It worked. The deployed VMs are running, and the timeout didn’t happen.</p>
 <p>As a workaround, you can modify the <em>Specialize.xml</em> on the Golden Master and capture the image. After that, you can roll out new VMs based on that image.</p>
 <p>I added the workaround to <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for AVD</a>. If Windows 11 22H2 is detected during the imaging process, the Specialize.xml is automatically patched. Additionally, if you roll out new session hosts with one of the tools, capisp.dll with the entry point CryptoSysPrep_Specialize is called during the rollout.</p>
-<p>Please note that this is a workaround. Follow the stream also on <a href="https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html">https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html</a></p>
+<p>Please note that this is a <strong>workaround</strong>. Follow the stream also on <a href="https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html">https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html</a></p>
 
 		<!--<p>A common way to build virtual machines based on an image in Azure (e.g., as Session hosts for Azure Virtual Desktop) can be done by the “Golden Image” approach.</p>
 <p>The golden image approach is pretty simple. First install your “Golden Master”</p>
@@ -411,7 +411,7 @@ After that, no more happens. Also, the ETL files are not showing any process. I 
 <p><em>Specialize.xml</em> is processed by sysprep after a rollout based on an image on this VM. And: It worked. The deployed VMs are running, and the timeout didn’t happen.</p>
 <p>As a workaround, you can modify the <em>Specialize.xml</em> on the Golden Master and capture the image. After that, you can roll out new VMs based on that image.</p>
 <p>I added the workaround to <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for AVD</a>. If Windows 11 22H2 is detected during the imaging process, the Specialize.xml is automatically patched. Additionally, if you roll out new session hosts with one of the tools, capisp.dll with the entry point CryptoSysPrep_Specialize is called during the rollout.</p>
-<p>Please note that this is a workaround. Follow the stream also on <a href="https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html">https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html</a></p>
+<p>Please note that this is a <strong>workaround</strong>. Follow the stream also on <a href="https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html">https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html</a></p>
 -->
 	
     

@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 10 Nov 2022 17:34:45 +0100</pubDate>
-    <lastBuildDate>Thu, 10 Nov 2022 17:34:45 +0100</lastBuildDate>
+    <pubDate>Thu, 10 Nov 2022 17:35:08 +0100</pubDate>
+    <lastBuildDate>Thu, 10 Nov 2022 17:35:08 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -37,7 +37,7 @@ After that, no more happens. Also, the ETL files are not showing any process. I 
 &lt;p&gt;&lt;em&gt;Specialize.xml&lt;/em&gt; is processed by sysprep after a rollout based on an image on this VM. And: It worked. The deployed VMs are running, and the timeout didn’t happen.&lt;/p&gt;
 &lt;p&gt;As a workaround, you can modify the &lt;em&gt;Specialize.xml&lt;/em&gt; on the Golden Master and capture the image. After that, you can roll out new VMs based on that image.&lt;/p&gt;
 &lt;p&gt;I added the workaround to &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for AVD&lt;/a&gt;. If Windows 11 22H2 is detected during the imaging process, the Specialize.xml is automatically patched. Additionally, if you roll out new session hosts with one of the tools, capisp.dll with the entry point CryptoSysPrep_Specialize is called during the rollout.&lt;/p&gt;
-&lt;p&gt;Please note that this is a workaround. Follow the stream also on &lt;a href=&quot;https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html&quot;&gt;https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please note that this is a &lt;strong&gt;workaround&lt;/strong&gt;. Follow the stream also on &lt;a href=&quot;https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html&quot;&gt;https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 10 Nov 2022 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/SYSPREP_and_rollout_deploy_WINDOWS_11_22H2_in_Azure/</link>
