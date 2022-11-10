@@ -379,7 +379,7 @@
 <p>What I figured out. The setup process stops after handling the following task (found in C:\Windows\Panther\setupact.log):
 ActionPlatform::LaunchModule: Executing method <em>‘CryptoSysPrep_Specialize’</em> from C:\Windows\system32\capisp.dll
 After that, no more happens. Also, the ETL files are not showing any process. I guess the process hangs.</p>
-<p>I was able to bring it down to this part. For a workaround, I modified the <em>“C:\windows\system32\Sysprep\ActionFiles\Specialize.xml”</em> on the master VM and removed the actions for <em>‘CryptoSysPrep_Specialize’</em>.</p>
+<p>**I was able to bring it down to this part. For a workaround, I modified the <em>“C:\windows\system32\Sysprep\ActionFiles\Specialize.xml”</em> on the master VM and removed the actions for <em>‘CryptoSysPrep_Specialize’</em>. **</p>
 <p><em>Specialize.xml</em> is processed by sysprep after a rollout based on an image on this VM. And: It worked. The deployed VMs are running, and the timeout didn’t happen.</p>
 <p>As a workaround, you can modify the <em>Specialize.xml</em> on the Golden Master and capture the image. After that, you can roll out new VMs based on that image.</p>
 <p>I added the workaround to <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for AVD</a>. If Windows 11 22H2 is detected during the imaging process, the Specialize.xml is automatically patched. Additionally, if you roll out new session hosts with one of the tools, capisp.dll with the entry point CryptoSysPrep_Specialize is called during the rollout.</p>
@@ -407,7 +407,7 @@ After that, no more happens. Also, the ETL files are not showing any process. I 
 <p>What I figured out. The setup process stops after handling the following task (found in C:\Windows\Panther\setupact.log):
 ActionPlatform::LaunchModule: Executing method <em>‘CryptoSysPrep_Specialize’</em> from C:\Windows\system32\capisp.dll
 After that, no more happens. Also, the ETL files are not showing any process. I guess the process hangs.</p>
-<p>I was able to bring it down to this part. For a workaround, I modified the <em>“C:\windows\system32\Sysprep\ActionFiles\Specialize.xml”</em> on the master VM and removed the actions for <em>‘CryptoSysPrep_Specialize’</em>.</p>
+<p>**I was able to bring it down to this part. For a workaround, I modified the <em>“C:\windows\system32\Sysprep\ActionFiles\Specialize.xml”</em> on the master VM and removed the actions for <em>‘CryptoSysPrep_Specialize’</em>. **</p>
 <p><em>Specialize.xml</em> is processed by sysprep after a rollout based on an image on this VM. And: It worked. The deployed VMs are running, and the timeout didn’t happen.</p>
 <p>As a workaround, you can modify the <em>Specialize.xml</em> on the Golden Master and capture the image. After that, you can roll out new VMs based on that image.</p>
 <p>I added the workaround to <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for AVD</a>. If Windows 11 22H2 is detected during the imaging process, the Specialize.xml is automatically patched. Additionally, if you roll out new session hosts with one of the tools, capisp.dll with the entry point CryptoSysPrep_Specialize is called during the rollout.</p>
