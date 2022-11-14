@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 14 Nov 2022 18:50:42 +0100</pubDate>
-    <lastBuildDate>Mon, 14 Nov 2022 18:50:42 +0100</lastBuildDate>
+    <pubDate>Mon, 14 Nov 2022 18:51:53 +0100</pubDate>
+    <lastBuildDate>Mon, 14 Nov 2022 18:51:53 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -114,7 +114,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.8&lt;/td&gt;
 &lt;td&gt;11/14/2022&lt;/td&gt;
-&lt;td&gt;A new tab “Resources”, to show orphan session hosts&lt;/td&gt;
+&lt;td&gt;A new tab “Resources”, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
