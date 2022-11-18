@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 18 Nov 2022 17:41:10 +0100</pubDate>
-    <lastBuildDate>Fri, 18 Nov 2022 17:41:10 +0100</lastBuildDate>
+    <pubDate>Fri, 18 Nov 2022 17:45:51 +0100</pubDate>
+    <lastBuildDate>Fri, 18 Nov 2022 17:45:51 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -117,7 +117,7 @@
 &lt;td&gt;A new tab “Resources”, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;1.8&lt;/td&gt;
+&lt;td&gt;1.9&lt;/td&gt;
 &lt;td&gt;11/18/2022&lt;/td&gt;
 &lt;td&gt;A new tab “Resources”, to show orphan VMs (where the session host object is missing)&lt;/td&gt;
 &lt;/tr&gt;
