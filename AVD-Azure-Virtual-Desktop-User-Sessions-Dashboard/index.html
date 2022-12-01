@@ -6,27 +6,27 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>Sysprep and deploy Windows 11 22H2 in Azure with a custom image and a workaround | ITProCloud Blog</title>
+<title>Working interactively with user sessions in Azure Virtual Desktop | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Sysprep and deploy Windows 11 22H2 in Azure with a custom image and a workaround | ITProCloud Blog</title>
+<title>Working interactively with user sessions in Azure Virtual Desktop | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Sysprep and deploy Windows 11 22H2 in Azure with a custom image and a workaround" />
+<meta property="og:title" content="Working interactively with user sessions in Azure Virtual Desktop" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A common way to build virtual machines based on an image in Azure (e.g., as Session hosts for Azure Virtual Desktop) can be done by the “Golden Image” approach." />
-<meta property="og:description" content="A common way to build virtual machines based on an image in Azure (e.g., as Session hosts for Azure Virtual Desktop) can be done by the “Golden Image” approach." />
-<link rel="canonical" href="https://blog.itprocloud.de/SYSPREP_and_rollout_deploy_WINDOWS_11_22H2_in_Azure/" />
-<meta property="og:url" content="https://blog.itprocloud.de/SYSPREP_and_rollout_deploy_WINDOWS_11_22H2_in_Azure/" />
+<meta name="description" content="Handling user sessions in AVD could be more intuitive in the Azure Portal. Luckily, some tools (like WVDAdmin, Hydra, and others) are available to make it easier. I made a new approach without the need to install an application or tool: I published an Angular client application that displays user sessions for Azure Virtual Desktop - including an autorefresh. Additionally, sessions can be disconnected or logged out, or messages can be sent to them. The Angular application runs in the user’s browser and communicates directly with the Azure API. There is no processing of data on the web server. The application runs in the context and with the logged-in user’s permissions (similar to a PowerShell application). The application is automatically terminated when the browser is closed." />
+<meta property="og:description" content="Handling user sessions in AVD could be more intuitive in the Azure Portal. Luckily, some tools (like WVDAdmin, Hydra, and others) are available to make it easier. I made a new approach without the need to install an application or tool: I published an Angular client application that displays user sessions for Azure Virtual Desktop - including an autorefresh. Additionally, sessions can be disconnected or logged out, or messages can be sent to them. The Angular application runs in the user’s browser and communicates directly with the Azure API. There is no processing of data on the web server. The application runs in the context and with the logged-in user’s permissions (similar to a PowerShell application). The application is automatically terminated when the browser is closed." />
+<link rel="canonical" href="https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-User-Sessions-Dashboard/" />
+<meta property="og:url" content="https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-User-Sessions-Dashboard/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="https://blog.itprocloud.de/assets/images/Sysprep-Advanced.png" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/Avd-Sessions-01.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2022-11-10T00:00:00+01:00" />
+<meta property="article:published_time" content="2022-12-01T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Sysprep-Advanced.png" />
-<meta property="twitter:title" content="Sysprep and deploy Windows 11 22H2 in Azure with a custom image and a workaround" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Avd-Sessions-01.png" />
+<meta property="twitter:title" content="Working interactively with user sessions in Azure Virtual Desktop" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/Sysprep-Advanced.png","datePublished":"2022-11-10T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/SYSPREP_and_rollout_deploy_WINDOWS_11_22H2_in_Azure/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/SYSPREP_and_rollout_deploy_WINDOWS_11_22H2_in_Azure/","author":{"@type":"Person","name":"mm"},"headline":"Sysprep and deploy Windows 11 22H2 in Azure with a custom image and a workaround","dateModified":"2022-11-10T00:00:00+01:00","description":"A common way to build virtual machines based on an image in Azure (e.g., as Session hosts for Azure Virtual Desktop) can be done by the “Golden Image” approach.","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/Avd-Sessions-01.png","datePublished":"2022-12-01T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-User-Sessions-Dashboard/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-User-Sessions-Dashboard/","author":{"@type":"Person","name":"mm"},"headline":"Working interactively with user sessions in Azure Virtual Desktop","dateModified":"2022-12-01T00:00:00+01:00","description":"Handling user sessions in AVD could be more intuitive in the Azure Portal. Luckily, some tools (like WVDAdmin, Hydra, and others) are available to make it easier. I made a new approach without the need to install an application or tool: I published an Angular client application that displays user sessions for Azure Virtual Desktop - including an autorefresh. Additionally, sessions can be disconnected or logged out, or messages can be sent to them. The Angular application runs in the user’s browser and communicates directly with the Azure API. There is no processing of data on the web server. The application runs in the context and with the logged-in user’s permissions (similar to a PowerShell application). The application is automatically terminated when the browser is closed.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -351,67 +351,23 @@
 <div class="main-content">
     <section>
     <div class="section-title">
-        <h2><span>Sysprep and deploy Windows 11 22H2 in Azure with a custom image and a workaround</span></h2>
+        <h2><span>Working interactively with user sessions in Azure Virtual Desktop</span></h2>
     </div>
 
     <div class="article-post">
 	
 		<!-- change content to anchor styled output -->
-		<p>A common way to build virtual machines based on an image in Azure (e.g., as Session hosts for Azure Virtual Desktop) can be done by the “Golden Image” approach.</p>
-<p>The golden image approach is pretty simple. First install your “Golden Master”</p>
-<ul>
-<li>Create a VM in Azure (e.g., Windows 11 multi-session)</li>
-<li>Install all hotfixes and updates</li>
-<li>Install the application</li>
-<li>Optional: Join a domain</li>
-<li>Test the application</li>
-</ul>
-<p>In the next step, create an image from the master</p>
-<ul>
-<li>Sysprep the Golden Master</li>
-<li>Capture the VM in the Azure Portal and create a custom image</li>
-<li>Optional: Copy the custom image to an Azure compute gallery to deploy VMs in different locations, subscriptions, and trusted launch VMs</li>
-</ul>
-<p>The bad thing is that your Golden Master is destroyed during the sysprep and capturing process. A bit smarter is to do that on a cloned/temporary VM and later delete the clone. <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for AVD</a> will do this automatically if you create a new custom image. So, you can reuse the Golden Master.
-<img src="../assets/images/Sysprep-Advanced.png" alt="" /></p>
-<p>But today, deploying Windows 11 22H2 is the main topic. In Windows 11 22H2 is an issue preventing the rollout of new VMs based on a custom image in s specific case:</p>
-<p>If you create a custom image based on a Golden Master who is or was <strong>domain-joined</strong>, you cannot roll out a new VM. The rollout will go into a timeout; if you capture a screenshot, you can see the installation screen and a rotating donut.</p>
-<p>What I figured out. The setup process stops after handling the following task (found in C:\Windows\Panther\setupact.log):
-ActionPlatform::LaunchModule: Executing method <em>‘CryptoSysPrep_Specialize’</em> from C:\Windows\system32\capisp.dll
-After that, no more happens. Also, the ETL files are not showing any process. I guess the process hangs.</p>
-<p>**I was able to bring it down to this part. For a workaround, I modified the <em>“C:\windows\system32\Sysprep\ActionFiles\Specialize.xml”</em> on the master VM and removed the actions for <em>‘CryptoSysPrep_Specialize’</em>. **</p>
-<p><em>Specialize.xml</em> is processed by sysprep after a rollout based on an image on this VM. And: It worked. The deployed VMs are running, and the timeout didn’t happen.</p>
-<p>As a workaround, you can modify the <em>Specialize.xml</em> on the Golden Master and capture the image. After that, you can roll out new VMs based on that image.</p>
-<p>I added the workaround to <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for AVD</a>. If Windows 11 22H2 is detected during the imaging process, the Specialize.xml is automatically patched. Additionally, if you roll out new session hosts with one of the tools, capisp.dll with the entry point CryptoSysPrep_Specialize is called during the rollout.</p>
-<p>Please note that this is a <strong>workaround</strong>. Follow the stream also on <a href="https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html">https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html</a></p>
+		<p>Handling user sessions in AVD could be more intuitive in the Azure Portal. Luckily, some tools (like <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>, <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a>, and others) are available to make it easier. I made a new approach without the need to install an application or tool: I published an Angular client application that displays user sessions for Azure Virtual Desktop - including an autorefresh. Additionally, sessions can be disconnected or logged out, or messages can be sent to them. The Angular application runs in the user’s browser and communicates directly with the Azure API. There is no processing of data on the web server. The application runs in the context and with the logged-in user’s permissions (similar to a PowerShell application). The application is automatically terminated when the browser is closed.
+<img src="../assets/images/Avd-Sessions-01.png" alt="" /></p>
+<p>Feel free to give it a try. Please use the least needed permissions to log in at your own risk.</p>
+<p><a href="https://avd.itprocloud.com/">https://avd.itprocloud.com</a></p>
+<p>PS: There are no plans to rebuild WVDAdmin or Hydra as an angular application ;-)</p>
 
-		<!--<p>A common way to build virtual machines based on an image in Azure (e.g., as Session hosts for Azure Virtual Desktop) can be done by the “Golden Image” approach.</p>
-<p>The golden image approach is pretty simple. First install your “Golden Master”</p>
-<ul>
-<li>Create a VM in Azure (e.g., Windows 11 multi-session)</li>
-<li>Install all hotfixes and updates</li>
-<li>Install the application</li>
-<li>Optional: Join a domain</li>
-<li>Test the application</li>
-</ul>
-<p>In the next step, create an image from the master</p>
-<ul>
-<li>Sysprep the Golden Master</li>
-<li>Capture the VM in the Azure Portal and create a custom image</li>
-<li>Optional: Copy the custom image to an Azure compute gallery to deploy VMs in different locations, subscriptions, and trusted launch VMs</li>
-</ul>
-<p>The bad thing is that your Golden Master is destroyed during the sysprep and capturing process. A bit smarter is to do that on a cloned/temporary VM and later delete the clone. <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for AVD</a> will do this automatically if you create a new custom image. So, you can reuse the Golden Master.
-<img src="../assets/images/Sysprep-Advanced.png" alt="" /></p>
-<p>But today, deploying Windows 11 22H2 is the main topic. In Windows 11 22H2 is an issue preventing the rollout of new VMs based on a custom image in s specific case:</p>
-<p>If you create a custom image based on a Golden Master who is or was <strong>domain-joined</strong>, you cannot roll out a new VM. The rollout will go into a timeout; if you capture a screenshot, you can see the installation screen and a rotating donut.</p>
-<p>What I figured out. The setup process stops after handling the following task (found in C:\Windows\Panther\setupact.log):
-ActionPlatform::LaunchModule: Executing method <em>‘CryptoSysPrep_Specialize’</em> from C:\Windows\system32\capisp.dll
-After that, no more happens. Also, the ETL files are not showing any process. I guess the process hangs.</p>
-<p>**I was able to bring it down to this part. For a workaround, I modified the <em>“C:\windows\system32\Sysprep\ActionFiles\Specialize.xml”</em> on the master VM and removed the actions for <em>‘CryptoSysPrep_Specialize’</em>. **</p>
-<p><em>Specialize.xml</em> is processed by sysprep after a rollout based on an image on this VM. And: It worked. The deployed VMs are running, and the timeout didn’t happen.</p>
-<p>As a workaround, you can modify the <em>Specialize.xml</em> on the Golden Master and capture the image. After that, you can roll out new VMs based on that image.</p>
-<p>I added the workaround to <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for AVD</a>. If Windows 11 22H2 is detected during the imaging process, the Specialize.xml is automatically patched. Additionally, if you roll out new session hosts with one of the tools, capisp.dll with the entry point CryptoSysPrep_Specialize is called during the rollout.</p>
-<p>Please note that this is a <strong>workaround</strong>. Follow the stream also on <a href="https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html">https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html</a></p>
+		<!--<p>Handling user sessions in AVD could be more intuitive in the Azure Portal. Luckily, some tools (like <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>, <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a>, and others) are available to make it easier. I made a new approach without the need to install an application or tool: I published an Angular client application that displays user sessions for Azure Virtual Desktop - including an autorefresh. Additionally, sessions can be disconnected or logged out, or messages can be sent to them. The Angular application runs in the user’s browser and communicates directly with the Azure API. There is no processing of data on the web server. The application runs in the context and with the logged-in user’s permissions (similar to a PowerShell application). The application is automatically terminated when the browser is closed.
+<img src="../assets/images/Avd-Sessions-01.png" alt="" /></p>
+<p>Feel free to give it a try. Please use the least needed permissions to log in at your own risk.</p>
+<p><a href="https://avd.itprocloud.com/">https://avd.itprocloud.com</a></p>
+<p>PS: There are no plans to rebuild WVDAdmin or Hydra as an angular application ;-)</p>
 -->
 	
     
