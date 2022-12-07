@@ -249,10 +249,6 @@
 <lastmod>2022-09-21T00:00:00+02:00</lastmod>
 </url>
 <url>
-<loc>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</loc>
-<lastmod>2022-11-06T00:00:00+01:00</lastmod>
-</url>
-<url>
 <loc>https://blog.itprocloud.de/SYSPREP_and_rollout_deploy_WINDOWS_11_22H2_in_Azure/</loc>
 <lastmod>2022-11-10T00:00:00+01:00</lastmod>
 </url>
@@ -263,6 +259,10 @@
 <url>
 <loc>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-User-Sessions-Dashboard/</loc>
 <lastmod>2022-12-01T00:00:00+01:00</lastmod>
+</url>
+<url>
+<loc>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</loc>
+<lastmod>2022-12-07T00:00:00+01:00</lastmod>
 </url>
 <url>
 <loc>https://blog.itprocloud.de/about</loc>

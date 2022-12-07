@@ -5,212 +5,15 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 01 Dec 2022 18:05:27 +0100</pubDate>
-    <lastBuildDate>Thu, 01 Dec 2022 18:05:27 +0100</lastBuildDate>
+    <pubDate>Wed, 07 Dec 2022 21:23:22 +0100</pubDate>
+    <lastBuildDate>Wed, 07 Dec 2022 21:23:22 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
-    
-      <item>
-        <title>Working interactively with user sessions in Azure Virtual Desktop</title>
-        <description>&lt;p&gt;Handling user sessions in AVD could be more intuitive in the Azure Portal. Luckily, some tools (like &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt;, and others) are available to make it easier. I made a new approach without the need to install an application or tool: I published an Angular client application that displays user sessions for Azure Virtual Desktop - including an autorefresh. Additionally, sessions can be disconnected or logged out, or messages can be sent to them. The Angular application runs in the user’s browser and communicates directly with the Azure API. There is no processing of data on the web server. The application runs in the context and with the logged-in user’s permissions (similar to a PowerShell application). The application is automatically terminated when the browser is closed.
-&lt;img src=&quot;../assets/images/Avd-Sessions-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Feel free to give it a try. Please use the least needed permissions to log in at your own risk.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://avd.itprocloud.com/&quot;&gt;https://avd.itprocloud.com&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;PS: There are no plans to rebuild WVDAdmin or Hydra as an angular application ;-)&lt;/p&gt;
-</description>
-        <pubDate>Thu, 01 Dec 2022 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-User-Sessions-Dashboard/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-User-Sessions-Dashboard/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
-        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Log Type&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
-&lt;td&gt;Details about the session hosts&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDConnections&lt;/td&gt;
-&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDErrors&lt;/td&gt;
-&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, …)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDFeeds&lt;/td&gt;
-&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
-&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDManagement&lt;/td&gt;
-&lt;td&gt;Log about administrative tasks&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDCheckpoints&lt;/td&gt;
-&lt;td&gt;Detailed information related to logins, errors, …&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDConnectionNetworkData&lt;/td&gt;
-&lt;td&gt;Network information (bandwidth and RTT)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that (use version 1.7.25 or higher):&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;After a while, the workbook is visible as a new template in: &lt;strong&gt;Log Analytics -&amp;gt; Workbooks -&amp;gt; Azure Virtual Desktop -&amp;gt; AVD - Deep-Insights&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;” occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
-&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Version&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1&lt;/td&gt;
-&lt;td&gt;01/28/2022&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.2&lt;/td&gt;
-&lt;td&gt;02/17/2022&lt;/td&gt;
-&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); see &lt;a href=&quot;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&quot;&gt;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&lt;/a&gt; &lt;br /&gt;&lt;br /&gt;Name changed to AVD - Deep-Insights&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.3&lt;/td&gt;
-&lt;td&gt;03/16/2022&lt;/td&gt;
-&lt;td&gt;Include Logon timing (GPO, FSLogix, Authentication, etc.)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.4&lt;/td&gt;
-&lt;td&gt;04/14/2022&lt;/td&gt;
-&lt;td&gt;In Session Bandwidths &amp;amp; Latencies: The connection type is shown if RDP Short Path is used (Public, Private). See: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.5&lt;/td&gt;
-&lt;td&gt;05/03/2022&lt;/td&gt;
-&lt;td&gt;New visualization: Logon timing per day and category over the time&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.6&lt;/td&gt;
-&lt;td&gt;10/11/2022&lt;/td&gt;
-&lt;td&gt;New visualization: Connections over time, unhealthy session hosts, graphic performance&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.7&lt;/td&gt;
-&lt;td&gt;11/03/2022&lt;/td&gt;
-&lt;td&gt;Optimization for charts to show data over a large time frame&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.8&lt;/td&gt;
-&lt;td&gt;11/14/2022&lt;/td&gt;
-&lt;td&gt;A new tab “Resources”, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.9&lt;/td&gt;
-&lt;td&gt;11/18/2022&lt;/td&gt;
-&lt;td&gt;A new tab “Resources”, to show orphan VMs (where the session host object is missing)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.0&lt;/td&gt;
-&lt;td&gt;12/01/2022&lt;/td&gt;
-&lt;td&gt;Changed the description for the estimated available bandwidth&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don’t generate costs&lt;/p&gt;
-</description>
-        <pubDate>Wed, 30 Nov 2022 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Azure Monitor</category>
-        
-        <category>Log Analytics</category>
-        
-      </item>
-    
-      <item>
-        <title>Sysprep and deploy Windows 11 22H2 in Azure with a custom image and a workaround</title>
-        <description>&lt;p&gt;A common way to build virtual machines based on an image in Azure (e.g., as Session hosts for Azure Virtual Desktop) can be done by the “Golden Image” approach.&lt;/p&gt;
-&lt;p&gt;The golden image approach is pretty simple. First install your “Golden Master”&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Create a VM in Azure (e.g., Windows 11 multi-session)&lt;/li&gt;
-&lt;li&gt;Install all hotfixes and updates&lt;/li&gt;
-&lt;li&gt;Install the application&lt;/li&gt;
-&lt;li&gt;Optional: Join a domain&lt;/li&gt;
-&lt;li&gt;Test the application&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;In the next step, create an image from the master&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Sysprep the Golden Master&lt;/li&gt;
-&lt;li&gt;Capture the VM in the Azure Portal and create a custom image&lt;/li&gt;
-&lt;li&gt;Optional: Copy the custom image to an Azure compute gallery to deploy VMs in different locations, subscriptions, and trusted launch VMs&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The bad thing is that your Golden Master is destroyed during the sysprep and capturing process. A bit smarter is to do that on a cloned/temporary VM and later delete the clone. &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for AVD&lt;/a&gt; will do this automatically if you create a new custom image. So, you can reuse the Golden Master.
-&lt;img src=&quot;../assets/images/Sysprep-Advanced.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;But today, deploying Windows 11 22H2 is the main topic. In Windows 11 22H2 is an issue preventing the rollout of new VMs based on a custom image in s specific case:&lt;/p&gt;
-&lt;p&gt;If you create a custom image based on a Golden Master who is or was &lt;strong&gt;domain-joined&lt;/strong&gt;, you cannot roll out a new VM. The rollout will go into a timeout; if you capture a screenshot, you can see the installation screen and a rotating donut.&lt;/p&gt;
-&lt;p&gt;What I figured out. The setup process stops after handling the following task (found in C:\Windows\Panther\setupact.log):
-ActionPlatform::LaunchModule: Executing method &lt;em&gt;‘CryptoSysPrep_Specialize’&lt;/em&gt; from C:\Windows\system32\capisp.dll
-After that, no more happens. Also, the ETL files are not showing any process. I guess the process hangs.&lt;/p&gt;
-&lt;p&gt;**I was able to bring it down to this part. For a workaround, I modified the &lt;em&gt;“C:\windows\system32\Sysprep\ActionFiles\Specialize.xml”&lt;/em&gt; on the master VM and removed the actions for &lt;em&gt;‘CryptoSysPrep_Specialize’&lt;/em&gt;. **&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Specialize.xml&lt;/em&gt; is processed by sysprep after a rollout based on an image on this VM. And: It worked. The deployed VMs are running, and the timeout didn’t happen.&lt;/p&gt;
-&lt;p&gt;As a workaround, you can modify the &lt;em&gt;Specialize.xml&lt;/em&gt; on the Golden Master and capture the image. After that, you can roll out new VMs based on that image.&lt;/p&gt;
-&lt;p&gt;I added the workaround to &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for AVD&lt;/a&gt;. If Windows 11 22H2 is detected during the imaging process, the Specialize.xml is automatically patched. Additionally, if you roll out new session hosts with one of the tools, capisp.dll with the entry point CryptoSysPrep_Specialize is called during the rollout.&lt;/p&gt;
-&lt;p&gt;Please note that this is a &lt;strong&gt;workaround&lt;/strong&gt;. Follow the stream also on &lt;a href=&quot;https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html&quot;&gt;https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Thu, 10 Nov 2022 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/SYSPREP_and_rollout_deploy_WINDOWS_11_22H2_in_Azure/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/SYSPREP_and_rollout_deploy_WINDOWS_11_22H2_in_Azure/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/06/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 12/07/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
@@ -298,7 +101,7 @@ After that, no more happens. Also, the ETL files are not showing any process. I 
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/06/2022&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 12/07/2022&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
@@ -309,6 +112,10 @@ After that, no more happens. Also, the ETL files are not showing any process. I 
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7.51.0&lt;/td&gt;
+&lt;td&gt;Add: Support for Central India as meta-data location&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.7.50.0&lt;/td&gt;
 &lt;td&gt;Add: Workaround to image Windows 11 22H2 (there is a bug in the sysprep process)&lt;/td&gt;
@@ -1083,11 +890,208 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/06/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 12/07/2022&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Sun, 06 Nov 2022 00:00:00 +0100</pubDate>
+        <pubDate>Wed, 07 Dec 2022 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Working interactively with user sessions in Azure Virtual Desktop</title>
+        <description>&lt;p&gt;Handling user sessions in AVD could be more intuitive in the Azure Portal. Luckily, some tools (like &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt;, and others) are available to make it easier. I made a new approach without the need to install an application or tool: I published an Angular client application that displays user sessions for Azure Virtual Desktop - including an autorefresh. Additionally, sessions can be disconnected or logged out, or messages can be sent to them. The Angular application runs in the user’s browser and communicates directly with the Azure API. There is no processing of data on the web server. The application runs in the context and with the logged-in user’s permissions (similar to a PowerShell application). The application is automatically terminated when the browser is closed.
+&lt;img src=&quot;../assets/images/Avd-Sessions-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Feel free to give it a try. Please use the least needed permissions to log in at your own risk.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://avd.itprocloud.com/&quot;&gt;https://avd.itprocloud.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;PS: There are no plans to rebuild WVDAdmin or Hydra as an angular application ;-)&lt;/p&gt;
+</description>
+        <pubDate>Thu, 01 Dec 2022 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-User-Sessions-Dashboard/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-User-Sessions-Dashboard/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
+        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Log Type&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
+&lt;td&gt;Details about the session hosts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnections&lt;/td&gt;
+&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDErrors&lt;/td&gt;
+&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, …)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDFeeds&lt;/td&gt;
+&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
+&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDManagement&lt;/td&gt;
+&lt;td&gt;Log about administrative tasks&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDCheckpoints&lt;/td&gt;
+&lt;td&gt;Detailed information related to logins, errors, …&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnectionNetworkData&lt;/td&gt;
+&lt;td&gt;Network information (bandwidth and RTT)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that (use version 1.7.25 or higher):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;After a while, the workbook is visible as a new template in: &lt;strong&gt;Log Analytics -&amp;gt; Workbooks -&amp;gt; Azure Virtual Desktop -&amp;gt; AVD - Deep-Insights&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;” occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
+&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Version&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1&lt;/td&gt;
+&lt;td&gt;01/28/2022&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.2&lt;/td&gt;
+&lt;td&gt;02/17/2022&lt;/td&gt;
+&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); see &lt;a href=&quot;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&quot;&gt;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&lt;/a&gt; &lt;br /&gt;&lt;br /&gt;Name changed to AVD - Deep-Insights&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.3&lt;/td&gt;
+&lt;td&gt;03/16/2022&lt;/td&gt;
+&lt;td&gt;Include Logon timing (GPO, FSLogix, Authentication, etc.)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.4&lt;/td&gt;
+&lt;td&gt;04/14/2022&lt;/td&gt;
+&lt;td&gt;In Session Bandwidths &amp;amp; Latencies: The connection type is shown if RDP Short Path is used (Public, Private). See: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.5&lt;/td&gt;
+&lt;td&gt;05/03/2022&lt;/td&gt;
+&lt;td&gt;New visualization: Logon timing per day and category over the time&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6&lt;/td&gt;
+&lt;td&gt;10/11/2022&lt;/td&gt;
+&lt;td&gt;New visualization: Connections over time, unhealthy session hosts, graphic performance&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7&lt;/td&gt;
+&lt;td&gt;11/03/2022&lt;/td&gt;
+&lt;td&gt;Optimization for charts to show data over a large time frame&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.8&lt;/td&gt;
+&lt;td&gt;11/14/2022&lt;/td&gt;
+&lt;td&gt;A new tab “Resources”, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.9&lt;/td&gt;
+&lt;td&gt;11/18/2022&lt;/td&gt;
+&lt;td&gt;A new tab “Resources”, to show orphan VMs (where the session host object is missing)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.0&lt;/td&gt;
+&lt;td&gt;12/01/2022&lt;/td&gt;
+&lt;td&gt;Changed the description for the estimated available bandwidth&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don’t generate costs&lt;/p&gt;
+</description>
+        <pubDate>Wed, 30 Nov 2022 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Azure Monitor</category>
+        
+        <category>Log Analytics</category>
+        
+      </item>
+    
+      <item>
+        <title>Sysprep and deploy Windows 11 22H2 in Azure with a custom image and a workaround</title>
+        <description>&lt;p&gt;A common way to build virtual machines based on an image in Azure (e.g., as Session hosts for Azure Virtual Desktop) can be done by the “Golden Image” approach.&lt;/p&gt;
+&lt;p&gt;The golden image approach is pretty simple. First install your “Golden Master”&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a VM in Azure (e.g., Windows 11 multi-session)&lt;/li&gt;
+&lt;li&gt;Install all hotfixes and updates&lt;/li&gt;
+&lt;li&gt;Install the application&lt;/li&gt;
+&lt;li&gt;Optional: Join a domain&lt;/li&gt;
+&lt;li&gt;Test the application&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In the next step, create an image from the master&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Sysprep the Golden Master&lt;/li&gt;
+&lt;li&gt;Capture the VM in the Azure Portal and create a custom image&lt;/li&gt;
+&lt;li&gt;Optional: Copy the custom image to an Azure compute gallery to deploy VMs in different locations, subscriptions, and trusted launch VMs&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The bad thing is that your Golden Master is destroyed during the sysprep and capturing process. A bit smarter is to do that on a cloned/temporary VM and later delete the clone. &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for AVD&lt;/a&gt; will do this automatically if you create a new custom image. So, you can reuse the Golden Master.
+&lt;img src=&quot;../assets/images/Sysprep-Advanced.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;But today, deploying Windows 11 22H2 is the main topic. In Windows 11 22H2 is an issue preventing the rollout of new VMs based on a custom image in s specific case:&lt;/p&gt;
+&lt;p&gt;If you create a custom image based on a Golden Master who is or was &lt;strong&gt;domain-joined&lt;/strong&gt;, you cannot roll out a new VM. The rollout will go into a timeout; if you capture a screenshot, you can see the installation screen and a rotating donut.&lt;/p&gt;
+&lt;p&gt;What I figured out. The setup process stops after handling the following task (found in C:\Windows\Panther\setupact.log):
+ActionPlatform::LaunchModule: Executing method &lt;em&gt;‘CryptoSysPrep_Specialize’&lt;/em&gt; from C:\Windows\system32\capisp.dll
+After that, no more happens. Also, the ETL files are not showing any process. I guess the process hangs.&lt;/p&gt;
+&lt;p&gt;**I was able to bring it down to this part. For a workaround, I modified the &lt;em&gt;“C:\windows\system32\Sysprep\ActionFiles\Specialize.xml”&lt;/em&gt; on the master VM and removed the actions for &lt;em&gt;‘CryptoSysPrep_Specialize’&lt;/em&gt;. **&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Specialize.xml&lt;/em&gt; is processed by sysprep after a rollout based on an image on this VM. And: It worked. The deployed VMs are running, and the timeout didn’t happen.&lt;/p&gt;
+&lt;p&gt;As a workaround, you can modify the &lt;em&gt;Specialize.xml&lt;/em&gt; on the Golden Master and capture the image. After that, you can roll out new VMs based on that image.&lt;/p&gt;
+&lt;p&gt;I added the workaround to &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for AVD&lt;/a&gt;. If Windows 11 22H2 is detected during the imaging process, the Specialize.xml is automatically patched. Additionally, if you roll out new session hosts with one of the tools, capisp.dll with the entry point CryptoSysPrep_Specialize is called during the rollout.&lt;/p&gt;
+&lt;p&gt;Please note that this is a &lt;strong&gt;workaround&lt;/strong&gt;. Follow the stream also on &lt;a href=&quot;https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html&quot;&gt;https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 10 Nov 2022 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/SYSPREP_and_rollout_deploy_WINDOWS_11_22H2_in_Azure/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/SYSPREP_and_rollout_deploy_WINDOWS_11_22H2_in_Azure/</guid>
         
         
         <category>Windows Virtual Desktop</category>
