@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 09 Dec 2022 11:10:24 +0100</pubDate>
-    <lastBuildDate>Fri, 09 Dec 2022 11:10:24 +0100</lastBuildDate>
+    <pubDate>Fri, 09 Dec 2022 11:27:48 +0100</pubDate>
+    <lastBuildDate>Fri, 09 Dec 2022 11:27:48 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -129,7 +129,7 @@
 &lt;tr&gt;
 &lt;td&gt;2.1&lt;/td&gt;
 &lt;td&gt;12/09/2022&lt;/td&gt;
-&lt;td&gt;Added orphan disks and orphan nics to the “Resources” tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop version 1.0.1.84 (comming soo)&lt;/td&gt;
+&lt;td&gt;Added orphan disks and orphan nics to the “Resources” tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop, version 1.0.1.84 (comming soon))&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
