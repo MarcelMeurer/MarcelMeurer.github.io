@@ -6,27 +6,27 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>Azure Trusted Launch and Custom Images - even for AVD | ITProCloud Blog</title>
+<title>Azure AD only joined hosts in Azure Virtual Desktop: Join and re-join hosts | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Azure Trusted Launch and Custom Images - even for AVD | ITProCloud Blog</title>
+<title>Azure AD only joined hosts in Azure Virtual Desktop: Join and re-join hosts | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Azure Trusted Launch and Custom Images - even for AVD" />
+<meta property="og:title" content="Azure AD only joined hosts in Azure Virtual Desktop: Join and re-join hosts" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Trusted launch for Azure virtual machines is currently in public preview (https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch). The trusted launch has some benefits, like:" />
-<meta property="og:description" content="Trusted launch for Azure virtual machines is currently in public preview (https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch). The trusted launch has some benefits, like:" />
-<link rel="canonical" href="https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/" />
-<meta property="og:url" content="https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/" />
+<meta name="description" content="Azure AD-only joined are getting more common in Azure Virtual Desktop. There are some challenges running AVD hosts as AAD-only. One challenge is that you can roll out a new session host in AAD only if a device with the same name doesn’t exist. In the past, that was possible, but that may be changed over the last few months." />
+<meta property="og:description" content="Azure AD-only joined are getting more common in Azure Virtual Desktop. There are some challenges running AVD hosts as AAD-only. One challenge is that you can roll out a new session host in AAD only if a device with the same name doesn’t exist. In the past, that was possible, but that may be changed over the last few months." />
+<link rel="canonical" href="https://blog.itprocloud.de/Azure-Virtual-Desktop-AAD-Only-hostnames-property-exist/" />
+<meta property="og:url" content="https://blog.itprocloud.de/Azure-Virtual-Desktop-AAD-Only-hostnames-property-exist/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="https://blog.itprocloud.de/assets/images/WVDAdmin/InstantBuild-01.png" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/AAD-Hostname-already-exist.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2022-05-13T00:00:00+02:00" />
+<meta property="article:published_time" content="2023-01-17T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/WVDAdmin/InstantBuild-01.png" />
-<meta property="twitter:title" content="Azure Trusted Launch and Custom Images - even for AVD" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/AAD-Hostname-already-exist.png" />
+<meta property="twitter:title" content="Azure AD only joined hosts in Azure Virtual Desktop: Join and re-join hosts" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/WVDAdmin/InstantBuild-01.png","datePublished":"2022-05-13T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Azure-Trusted-Launch-and-Custom-Images/","author":{"@type":"Person","name":"mm"},"headline":"Azure Trusted Launch and Custom Images - even for AVD","dateModified":"2022-05-13T00:00:00+02:00","description":"Trusted launch for Azure virtual machines is currently in public preview (https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch). The trusted launch has some benefits, like:","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/AAD-Hostname-already-exist.png","datePublished":"2023-01-17T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Azure-Virtual-Desktop-AAD-Only-hostnames-property-exist/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Azure-Virtual-Desktop-AAD-Only-hostnames-property-exist/","author":{"@type":"Person","name":"mm"},"headline":"Azure AD only joined hosts in Azure Virtual Desktop: Join and re-join hosts","dateModified":"2023-01-17T00:00:00+01:00","description":"Azure AD-only joined are getting more common in Azure Virtual Desktop. There are some challenges running AVD hosts as AAD-only. One challenge is that you can roll out a new session host in AAD only if a device with the same name doesn’t exist. In the past, that was possible, but that may be changed over the last few months.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -351,121 +351,35 @@
 <div class="main-content">
     <section>
     <div class="section-title">
-        <h2><span>Azure Trusted Launch and Custom Images - even for AVD</span></h2>
+        <h2><span>Azure AD only joined hosts in Azure Virtual Desktop: Join and re-join hosts</span></h2>
     </div>
 
     <div class="article-post">
 	
 		<!-- change content to anchor styled output -->
-		<p>Trusted launch for Azure virtual machines is currently in public preview (<a href="https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch">https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch</a>). The trusted launch has some benefits, like:</p>
-<ul>
-<li>Securely deploy virtual machines with verified boot loaders, OS kernels, and drivers.</li>
-<li>Securely protect keys, certificates, and secrets in virtual machines.</li>
-<li>Gain insights and confidence in the entire boot chain’s integrity.</li>
-<li>Ensure workloads are trusted and verifiable.</li>
-</ul>
-<p>(Source: Microsoft website)</p>
-<p>Technology-based, the trusted launch cannot be activated on existing VMs. Additionally, the VM size must support this feature. More importantly, a trusted launch VM can only be created from vanilla Microsoft Marketplace images. Deployment from a custom image is not working and is not supported.</p>
-<p><strong>Update 20/01/2022:</strong> A native and supported process to rollout VMs and session hosts based on a custom image is expected in Feburary 2022 and will be added to <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> to show on <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydras’</a></p>
-<p><strong>Update 13/05/2022:</strong> You can enable “Secure Boot” for marketplace images and for Custom Images in an <a href="https://azure.microsoft.com/en-gb/updates/trusted-launch-azure-compute-gallery-support/">Azure Compute Gallery</a> (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition). #WVDAdmin and #Hydra are supporting this new feature right now</p>
-<p>Check out the video on Youtube: <a href="https://youtu.be/7_XDslLQlCo">Deploy secure boot-enabled custom images as AVD session hosts</a></p>
-<p><img src="../assets/images/Custom-Images-with-WVDAdmin-and-Hydra-and-Secure-Boot.png" alt="" /></p>
-<p><strong>If you use the current version of #WVDAdmin or #Hydra you can skip the next part</strong></p>
-<p>That’s not pretty, while in AVD, most deployments are based on images from Golden Masters. That is also the approach I’m using with my solutions (like <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>):</p>
-<ul>
-<li>Rolling out a Windows 10/11 VM</li>
-<li>Domain join the VM</li>
-<li>Update the VM and install applications</li>
-<li>Grabbing an image (with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>, the Master survives)</li>
-<li>Rolling out session hosts based on the image</li>
-</ul>
-<p>I spent some time finding a workaround for deploying session hosts based on a Golden Master with secure boot enabled. I was successful, and I built this as an experimental feature into <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> (v1.7.20).</p>
-<p>How does it work:</p>
-<ul>
-<li>
-<p>Preparing the Golden Master</p>
-</li>
-<li>
-<ul>
-<li>Rolling out a Windows 10/11 VM from the marketplace and configuring the secure boot feature</li>
-<li>Domain join the VM</li>
-<li>Update the VM and install applications</li>
-<li>Shutdown the VM</li>
-</ul>
-</li>
-<li>
-<p>Creating session hosts from the Master</p>
-</li>
-<li>
-<ul>
-<li>Navigate in <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> to the VM (Azure -&gt; Virtual Machines -&gt; Resource Group -&gt; VM)</li>
-<li>Right-click the VM and select: “Instantly build session hosts (experimental)”</li>
-<li>Configure the settings for the deployment (VM size, host pool, etc.)</li>
-<li>Start the rollout</li>
-</ul>
-</li>
-</ul>
-<p>After a while, session hosts with secure boot enabled are part of the host pool. While the rollout process is more complex, it will take longer than the classic approach (the new approach is based on a snap-shot technology).</p>
-<p><img src="../assets/images/WVDAdmin/InstantBuild-01.png" alt="" /></p>
-<p><img src="../assets/images/WVDAdmin/InstantBuild-02.png" alt="" /></p>
-<p><img src="../assets/images/WVDAdmin/InstantBuild-03.png" alt="" /></p>
-<p><strong>Note:</strong> This feature is very <em>experimental</em>, and I’m looking forward to a native and supported way to deploy secure boot hosts based on a custom image. Please use it at your own risk.</p>
-<p><strong>Note:</strong> If anybody finds an easier way - please let me know</p>
+		<p>Azure AD-only joined are getting more common in Azure Virtual Desktop. There are some challenges running AVD hosts as AAD-only. One challenge is that you can roll out a new session host in AAD only if a device with the same name doesn’t exist. In the past, that was possible, but that may be changed over the last few months.</p>
+<p>If you roll out a new session host with AAD-only integration and a device with the same exist, you get an error message:</p>
+<p><em>Another object with the same value for property hostnames already exists.</em></p>
+<p>So, if you roll out session hosts after an update of the image again and you try to reuse the names, you have to remove the older - no longer existing devices - from AAD first.</p>
+<p>To make this a bit easier, I added two options to do this with <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> for Azure Virtual Desktop in an automated way:</p>
+<ol>
+<li>If you added the service principal <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> used to the role “Cloud Device Administrator” and ticked the box “Azure Active Directory: Try to delete old device” in the rollout configuration, <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> will delete existing devices with the same name from Azure AD. Note: “Cloud Device Administrator” is a highly privileged role. Alternatively, the 2nd option doesn’t need this role.</li>
+<li>Run a script shortly before deleting a session host to remove the device. Running dsregcmd.exe locally on a device will remove the device from AAD. To automate this, a script collection can be selected in the base settings of the host pool configuration: Run script or collection on specific events -&gt; On-Delete -&gt; Select the collection “BuiltIn: Remove device from Azure Active Directory before deleting host”. The collection moves the host into the drain mode and runs the script shortly before the host is deleted. (Note: If the script collection is not visible, update the build-in scripts by clicking on the update button in the upper right corner of the script menu). The on-delete option can also be used for other aspects.</li>
+</ol>
+<p><img src="../assets/images/AAD-On-Delete.png" alt="" /></p>
+<p>Note: In <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> the script to remove a host can be triggered with: “Remove device from Azure Active Directory”</p>
 
-		<!--<p>Trusted launch for Azure virtual machines is currently in public preview (<a href="https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch">https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch</a>). The trusted launch has some benefits, like:</p>
-<ul>
-<li>Securely deploy virtual machines with verified boot loaders, OS kernels, and drivers.</li>
-<li>Securely protect keys, certificates, and secrets in virtual machines.</li>
-<li>Gain insights and confidence in the entire boot chain’s integrity.</li>
-<li>Ensure workloads are trusted and verifiable.</li>
-</ul>
-<p>(Source: Microsoft website)</p>
-<p>Technology-based, the trusted launch cannot be activated on existing VMs. Additionally, the VM size must support this feature. More importantly, a trusted launch VM can only be created from vanilla Microsoft Marketplace images. Deployment from a custom image is not working and is not supported.</p>
-<p><strong>Update 20/01/2022:</strong> A native and supported process to rollout VMs and session hosts based on a custom image is expected in Feburary 2022 and will be added to <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> to show on <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydras’</a></p>
-<p><strong>Update 13/05/2022:</strong> You can enable “Secure Boot” for marketplace images and for Custom Images in an <a href="https://azure.microsoft.com/en-gb/updates/trusted-launch-azure-compute-gallery-support/">Azure Compute Gallery</a> (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition). #WVDAdmin and #Hydra are supporting this new feature right now</p>
-<p>Check out the video on Youtube: <a href="https://youtu.be/7_XDslLQlCo">Deploy secure boot-enabled custom images as AVD session hosts</a></p>
-<p><img src="../assets/images/Custom-Images-with-WVDAdmin-and-Hydra-and-Secure-Boot.png" alt="" /></p>
-<p><strong>If you use the current version of #WVDAdmin or #Hydra you can skip the next part</strong></p>
-<p>That’s not pretty, while in AVD, most deployments are based on images from Golden Masters. That is also the approach I’m using with my solutions (like <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>):</p>
-<ul>
-<li>Rolling out a Windows 10/11 VM</li>
-<li>Domain join the VM</li>
-<li>Update the VM and install applications</li>
-<li>Grabbing an image (with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>, the Master survives)</li>
-<li>Rolling out session hosts based on the image</li>
-</ul>
-<p>I spent some time finding a workaround for deploying session hosts based on a Golden Master with secure boot enabled. I was successful, and I built this as an experimental feature into <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> (v1.7.20).</p>
-<p>How does it work:</p>
-<ul>
-<li>
-<p>Preparing the Golden Master</p>
-</li>
-<li>
-<ul>
-<li>Rolling out a Windows 10/11 VM from the marketplace and configuring the secure boot feature</li>
-<li>Domain join the VM</li>
-<li>Update the VM and install applications</li>
-<li>Shutdown the VM</li>
-</ul>
-</li>
-<li>
-<p>Creating session hosts from the Master</p>
-</li>
-<li>
-<ul>
-<li>Navigate in <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> to the VM (Azure -&gt; Virtual Machines -&gt; Resource Group -&gt; VM)</li>
-<li>Right-click the VM and select: “Instantly build session hosts (experimental)”</li>
-<li>Configure the settings for the deployment (VM size, host pool, etc.)</li>
-<li>Start the rollout</li>
-</ul>
-</li>
-</ul>
-<p>After a while, session hosts with secure boot enabled are part of the host pool. While the rollout process is more complex, it will take longer than the classic approach (the new approach is based on a snap-shot technology).</p>
-<p><img src="../assets/images/WVDAdmin/InstantBuild-01.png" alt="" /></p>
-<p><img src="../assets/images/WVDAdmin/InstantBuild-02.png" alt="" /></p>
-<p><img src="../assets/images/WVDAdmin/InstantBuild-03.png" alt="" /></p>
-<p><strong>Note:</strong> This feature is very <em>experimental</em>, and I’m looking forward to a native and supported way to deploy secure boot hosts based on a custom image. Please use it at your own risk.</p>
-<p><strong>Note:</strong> If anybody finds an easier way - please let me know</p>
+		<!--<p>Azure AD-only joined are getting more common in Azure Virtual Desktop. There are some challenges running AVD hosts as AAD-only. One challenge is that you can roll out a new session host in AAD only if a device with the same name doesn’t exist. In the past, that was possible, but that may be changed over the last few months.</p>
+<p>If you roll out a new session host with AAD-only integration and a device with the same exist, you get an error message:</p>
+<p><em>Another object with the same value for property hostnames already exists.</em></p>
+<p>So, if you roll out session hosts after an update of the image again and you try to reuse the names, you have to remove the older - no longer existing devices - from AAD first.</p>
+<p>To make this a bit easier, I added two options to do this with <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> for Azure Virtual Desktop in an automated way:</p>
+<ol>
+<li>If you added the service principal <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> used to the role “Cloud Device Administrator” and ticked the box “Azure Active Directory: Try to delete old device” in the rollout configuration, <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> will delete existing devices with the same name from Azure AD. Note: “Cloud Device Administrator” is a highly privileged role. Alternatively, the 2nd option doesn’t need this role.</li>
+<li>Run a script shortly before deleting a session host to remove the device. Running dsregcmd.exe locally on a device will remove the device from AAD. To automate this, a script collection can be selected in the base settings of the host pool configuration: Run script or collection on specific events -&gt; On-Delete -&gt; Select the collection “BuiltIn: Remove device from Azure Active Directory before deleting host”. The collection moves the host into the drain mode and runs the script shortly before the host is deleted. (Note: If the script collection is not visible, update the build-in scripts by clicking on the update button in the upper right corner of the script menu). The on-delete option can also be used for other aspects.</li>
+</ol>
+<p><img src="../assets/images/AAD-On-Delete.png" alt="" /></p>
+<p>Note: In <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> the script to remove a host can be triggered with: “Remove device from Azure Active Directory”</p>
 -->
 	
     

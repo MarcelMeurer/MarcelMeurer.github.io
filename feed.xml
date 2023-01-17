@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 17 Jan 2023 19:42:27 +0100</pubDate>
-    <lastBuildDate>Tue, 17 Jan 2023 19:42:27 +0100</lastBuildDate>
+    <pubDate>Tue, 17 Jan 2023 19:44:32 +0100</pubDate>
+    <lastBuildDate>Tue, 17 Jan 2023 19:44:32 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -908,6 +908,31 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
       </item>
     
       <item>
+        <title>Azure AD only joined hosts in Azure Virtual Desktop: Join and re-join hosts</title>
+        <description>&lt;p&gt;Azure AD-only joined are getting more common in Azure Virtual Desktop. There are some challenges running AVD hosts as AAD-only. One challenge is that you can roll out a new session host in AAD only if a device with the same name doesn’t exist. In the past, that was possible, but that may be changed over the last few months.&lt;/p&gt;
+&lt;p&gt;If you roll out a new session host with AAD-only integration and a device with the same exist, you get an error message:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Another object with the same value for property hostnames already exists.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;So, if you roll out session hosts after an update of the image again and you try to reuse the names, you have to remove the older - no longer existing devices - from AAD first.&lt;/p&gt;
+&lt;p&gt;To make this a bit easier, I added two options to do this with &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; for Azure Virtual Desktop in an automated way:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;If you added the service principal &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; used to the role “Cloud Device Administrator” and ticked the box “Azure Active Directory: Try to delete old device” in the rollout configuration, &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; will delete existing devices with the same name from Azure AD. Note: “Cloud Device Administrator” is a highly privileged role. Alternatively, the 2nd option doesn’t need this role.&lt;/li&gt;
+&lt;li&gt;Run a script shortly before deleting a session host to remove the device. Running dsregcmd.exe locally on a device will remove the device from AAD. To automate this, a script collection can be selected in the base settings of the host pool configuration: Run script or collection on specific events -&amp;gt; On-Delete -&amp;gt; Select the collection “BuiltIn: Remove device from Azure Active Directory before deleting host”. The collection moves the host into the drain mode and runs the script shortly before the host is deleted. (Note: If the script collection is not visible, update the build-in scripts by clicking on the update button in the upper right corner of the script menu). The on-delete option can also be used for other aspects.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-On-Delete.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Note: In &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; the script to remove a host can be triggered with: “Remove device from Azure Active Directory”&lt;/p&gt;
+</description>
+        <pubDate>Tue, 17 Jan 2023 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-AAD-Only-hostnames-property-exist/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-AAD-Only-hostnames-property-exist/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
         <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
         <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
 &lt;table&gt;
@@ -1435,26 +1460,6 @@ $table.GetEnumerator() | sort Value -Descending
         <link>https://blog.itprocloud.de/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Honey-Pot-in-Azure-and-Unfavorable-Account-Names-Login-RDP/</guid>
         
-        
-        <category>Azure</category>
-        
-      </item>
-    
-      <item>
-        <title>Securing an app service, a key vault, and a database with private endpoints</title>
-        <description>&lt;p&gt;A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Kommunikation is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string).&lt;/p&gt;
-&lt;p&gt;The key vaults and database endpoints are reachable over the public internet. The strong authentication from the app services ensures that the app service gets access.&lt;/p&gt;
-&lt;p&gt;In some cases, it’s mandatory to avoid public access to the vault and the database. Luckily, that can be easily done using private endpoints in Azure. Neither the application nor the configuration of the application needs to be adjusted. So, we can increase the security of any Azure app working with a vault and database (Azure SQL as a service).&lt;/p&gt;
-&lt;p&gt;I recorded a short video to show the steps. Watch it to the end and avoid my mistake of putting the full IP-range into one subnet (you need two subnets: one for the vault and database and another for the app service).&lt;/p&gt;
-&lt;p&gt;Check out the video on Youtube: &lt;a href=&quot;https://youtu.be/2bf1yjoEk_A&quot;&gt;How to secure the database and key vault of an app service / web app in Azure&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/SecureWebApp.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Mon, 30 May 2022 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/</guid>
-        
-        
-        <category>Azure Webapp</category>
         
         <category>Azure</category>
         
