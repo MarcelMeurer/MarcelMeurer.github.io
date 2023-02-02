@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logos/icon.png">
+
+<title>Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD | ITProCloud Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD" />
+<meta name="author" content="mm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don’t need to have network line-of-sight to the domain controller." />
+<meta property="og:description" content="With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don’t need to have network line-of-sight to the domain controller." />
+<link rel="canonical" href="https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/" />
+<meta property="og:url" content="https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/" />
+<meta property="og:site_name" content="ITProCloud Blog" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/AAD-Only-FSLogix-000.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-02-02T00:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/AAD-Only-FSLogix-000.png" />
+<meta property="twitter:title" content="Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/AAD-Only-FSLogix-000.png","datePublished":"2023-02-02T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/","author":{"@type":"Person","name":"mm"},"headline":"Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD","dateModified":"2023-02-02T00:00:00+01:00","description":"With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don’t need to have network line-of-sight to the domain controller.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<!--- cookie banner --->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-page">
+	<!-- defer loading of font and font awesome -->
+	<!-- <noscript id="deferred-styles"> -->
+		<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"> -->
+	<!-- </noscript> -->
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logos/itpc-logo-bottom-text.png" alt="ITProCloud Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
+                </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (47)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (46)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (10)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+	
+				<!-- Original tag list (unsorted) 
+				
+				
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-VM">Azure VM (2)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (8)</a>
+						</li>
+						
+					
+				
+				-->
+								
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://twitter.com/MarcelMeurer"><i class="fab fa-twitter"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/marcel-meurer-15b46b98"><i class="fab fa-linkedin"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://github.com/MarcelMeurer"><i class="fab fa-github"></i></a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="mailto:marcel.meurer@itprocloud.com?subject=Request%20from%20ITProCloud.de"><i class="far fa-envelope"></i></a>
+                </li>
+
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">ITProCloud Blog</h1>
+    <p class="lead">
+        Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <section>
+    <div class="section-title">
+        <h2><span>Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD</span></h2>
+    </div>
+
+    <div class="article-post">
+	
+		<!-- change content to anchor styled output -->
+		<p>With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don’t need to have network line-of-sight to the domain controller.</p>
+<p>However, the user identities must still be hybrid / synchronized from a legacy AD right now. And that prevents having AAD-only users in a multi-user pool in AVD where a profile is mostly mandatory.</p>
+      <h2 id="workaround">
+        
+        
+          Workaround <a href="#workaround"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>I found a nice workaround to do the same with cloud-only users in Azure AD - including the use of FSLogix file shares.</p>
+<p>Today, an Azure file share cannot be configured to use the AAD like an AD to set NTFS permissions. This is necessary to give the users the right permissions to create a profile folder on the share and have full access only to their own created files (the profile disk). Users should never have access to the profile disks of other users - to prevent data theft or to modify other users’ data).</p>
+<p>But how to handle this? For this workaround, I use a technic I have often used in the past to cover similar challenges (like <a href="https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/">this post</a>). In Windows, you can configure on a resource level what credential should be used - and that on a per-user level. This also works for the system account and, therefore, also for services. So, we are able to “teach” the system account to use specific credentials to access an Azure storage account.</p>
+<p>In our case, we need credentials to have full access to an Azure file share. And there are credentials to do that: The storage account credentials. Each storage account has credentials that can be used to have full access. You can grab the credentials from the “Access Key” menu in the storage account:</p>
+<p><img src="../assets/images/AAD-Only-FSLogix-005.png" alt="" /></p>
+<p>Collect the right values:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>User name:</td>
+<td>localhost\&lt;storageAccountName&gt;</td>
+</tr>
+<tr>
+<td>Secret:</td>
+<td>&lt;Key&gt;</td>
+</tr>
+<tr>
+<td>StorageAccountFqdn:</td>
+<td>&lt;storageAccountName&gt;.file.core.net (the files endpoint)</td>
+</tr>
+</tbody>
+</table>
+<p>In my example, the user name is “localhost\avdaadstorage” and &lt;StorageAccountFqdn&gt; is “avdaadstorage.file.core.windows.net”</p>
+<p>To “teach” the system account to use these credentials, we have to run the following command in the context of the system account:</p>
+<pre><code>cmdkey.exe /add:&lt;StorageAccountFqdn&gt; /user:localhost\&lt;StorageAccountName&gt; /pass:&lt;Key&gt;
+</code></pre>
+<p>Example:</p>
+<pre><code>cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\add:avdaadstorage /pass:xxxxxxxxxxxxxxxx
+</code></pre>
+<p>After running the command on a host/VM, any access in the context of the system account to the storage runs with the configured credentials - to every share!</p>
+<p>Great, our system can now access the shares on the storage account and has full permission.</p>
+      <h2 id="configuring-fslogix">
+        
+        
+          Configuring FSLogix <a href="#configuring-fslogix"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>Next step: Configure FSLogix to use the system account. Normally, FSLogix will access the share to store and read profiles in the user context. That is normally fine if users are able to authenticate with their own identity. In our case, we want to use the system account. The following reg-key configures FSLogix to use the system account:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Path:</td>
+<td>HKLM:\SOFTWARE\FSLogix\Profiles</td>
+</tr>
+<tr>
+<td>Name:</td>
+<td>AccessNetworkAsComputerObject</td>
+</tr>
+<tr>
+<td>Type:</td>
+<td>DWord</td>
+</tr>
+<tr>
+<td>Value:</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>This value can be set via registry or PowerShell:</p>
+<pre><code>New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
+New-Item -Path &quot;HKLM:\SOFTWARE\FSLogix&quot; -Name &quot;Profiles&quot; -ErrorAction Ignore
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
+</code></pre>
+<p>If not already done, configure the file share:</p>
+<ul>
+<li>Create a share on your storage account (e.g., profiles)</li>
+<li>Configure FSLogix to use the share on each host:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Path:</td>
+<td>HKLM:\SOFTWARE\FSLogix\Profiles</td>
+</tr>
+<tr>
+<td>Name:</td>
+<td>VHDLocations</td>
+</tr>
+<tr>
+<td>Type:</td>
+<td>Reg_SZ</td>
+</tr>
+<tr>
+<td>Value:</td>
+<td>\\&lt;StorageAccountFqdn&gt;\&lt;ProfileShareName&gt;</td>
+</tr>
+</tbody>
+</table>
+<p>And enable FSLogix profile service:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Path:</td>
+<td>HKLM:\SOFTWARE\FSLogix\Profiles</td>
+</tr>
+<tr>
+<td>Name:</td>
+<td>Enabled</td>
+</tr>
+<tr>
+<td>Type:</td>
+<td>DWord</td>
+</tr>
+<tr>
+<td>Value:</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>After that, users can log in to the hosts, and the profile is stored on the file share on the storage account:</p>
+<p><img src="../assets/images/AAD-Only-FSLogix-000.png" alt="" /></p>
+      <h2 id="security">
+        
+        
+          Security <a href="#security"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>How secure is that?</p>
+<ul>
+<li>Users cannot access their own or other profiles by entering the path to the share while they don’t have the storage account credentials.</li>
+<li>Users can also not run programs in the system context (if they are not local admins on the host - what I expect).</li>
+<li>Every local administrator of a host can run processes in the system context: So the local admin permissions/role must be secured to prevent admins from accessing the profile storage indirectly or reading the storage account credentials.</li>
+<li>Azure Administrator with the permission Microsoft.Compute/virtualMachines/runCommand/action can send scripts running in the system context to a host/VM (like a contributor). That is comparable to local administrator permission.</li>
+<li>The system has permission to access all shares on the storage account with the credentials. Not only the profile share. It makes sense to have a separate share for the profiles.</li>
+</ul>
+<p><strong>Summary:</strong> Users with non-admin permissions can not access other users’ profiles. Local admins are able to do this, but local admins are able to compromise users in other ways. So local admin privileges <strong>should be considered carefully</strong>. Same for privileged access in Azure.</p>
+      <h2 id="do-the-full-configuration-with-a-script">
+        
+        
+          Do the full configuration with a script <a href="#do-the-full-configuration-with-a-script"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>Let me share a script you can use to do the full configuration with a script. In the script, I also set some other basic configurations I mostly use for FSLogix. Keep in mind that the user name is part of the path and profile disk name. If you rename the display name of a user, the user will get a new profile.</p>
+<p>The script must be executed directly after the rollout of a new host in the system context. It’s not possible to do that on the Master VM while the credential store is reset during sysprep. To run the script in the system context, use PSEXEC to open PowerShell in the system context (psexec /s powershell.exe).</p>
+<p><strong>WARNING:</strong> The script contains a secret. Delete the script from the host</p>
+<pre><code>write-host &quot;Configuring FSLogix&quot;
+$fileServer=&quot;avdaadstorage.file.core.windows.net&quot;
+$profileShare=&quot;\\$($fileServer)\profiles&quot;
+
+$user=&quot;localhost\avdaadstorage&quot;
+$secret=&quot;###################&quot;
+
+New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
+New-Item -Path &quot;HKLM:\SOFTWARE\FSLogix&quot; -Name &quot;Profiles&quot; -ErrorAction Ignore
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;Enabled&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VHDLocations&quot; -Value $profileShare -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ConcurrentUserSessions&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;DeleteLocalProfileWhenVHDShouldApply&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;FlipFlopProfileDirectoryName&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;IsDynamic&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;KeepLocalDir&quot; -Value 0 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ProfileType&quot; -Value 0 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;SizeInMBs&quot; -Value 40000 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VolumeType&quot; -Value &quot;VHDX&quot; -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
+
+cmdkey.exe /add:$fileServer /user:$($user) /pass:$($secret)
+
+write-host &quot;The script has finished.&quot;
+</code></pre>
+      <h2 id="use-hydra-to-run-the-script-on-demand-or-automatically-after-each-rollout">
+        
+        
+          Use Hydra to run the script on-demand or automatically after each rollout <a href="#use-hydra-to-run-the-script-on-demand-or-automatically-after-each-rollout"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>You can use <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for Azure Virtual Desktop</a> to apply the script automatically after rolling out a new host.</p>
+<p>Open the host pool configuration in Hydra -&gt; Base and configure the service account:</p>
+<ul>
+<li>Service account name: localhost\avdaadstorage</li>
+<li>Service account password: &lt;key of the storage account&gt;</li>
+<li>Save</li>
+</ul>
+<p><img src="../assets/images/AAD-Only-FSLogix-002.png" alt="" /></p>
+<p>Scripts and Collections -&gt; Scripts</p>
+<ul>
+<li>Duplicate an existing script to have a new one</li>
+<li>Check “Service Account”</li>
+<li>Give it a good name (e.g., “FSLogix and Cloud Accounts - Hydra integrated”)</li>
+<li>Copy the following script into the code field</li>
+<li>Save</li>
+</ul>
+<p>Script:</p>
+<pre><code># Check, if service account available
+if ($global:Hydra_ServiceAccount_PSC -eq $null) {
+    throw &quot;Failed: Service account missing - The script needs a configured service account. You can configure the service account (having full access to the FSLogix profile share on the host pool configuration.&quot;
+}
+
+LogWriter(&quot;Configuring FSLogix&quot;)
+$fileServer=&quot;avdaadstorage.file.core.windows.net&quot;
+$profileShare=&quot;\\$($fileServer)\profiles&quot;
+
+New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
+New-Item -Path &quot;HKLM:\SOFTWARE\FSLogix&quot; -Name &quot;Profiles&quot; -ErrorAction Ignore
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;Enabled&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VHDLocations&quot; -Value $profileShare -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ConcurrentUserSessions&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;DeleteLocalProfileWhenVHDShouldApply&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;FlipFlopProfileDirectoryName&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;IsDynamic&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;KeepLocalDir&quot; -Value 0 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ProfileType&quot; -Value 0 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;SizeInMBs&quot; -Value 40000 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VolumeType&quot; -Value &quot;VHDX&quot; -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
+
+
+LogWriter(&quot;Setting credentials to access the storage account of the system&quot;)
+cmdkey.exe /add:$fileServer /user:$($global:Hydra_ServiceAccount_PSC.UserName) /pass:([System.Net.NetworkCredential]::new(&quot;&quot;,$global:Hydra_ServiceAccount_PSC.password).Password)
+
+OutputWriter(&quot;The script has finished.&quot;)
+</code></pre>
+<p><img src="../assets/images/AAD-Only-FSLogix-001.png" alt="" /></p>
+<p>After that, you can trigger the script on a host or let it run automatically after each deployment:</p>
+<ul>
+<li>Open the host pool configuration in Hydra -&gt; New Session Host Rollout</li>
+<li>Configure the rollout parameter</li>
+<li>Select the script in “Run script or script collection after deployment”</li>
+</ul>
+<p><img src="../assets/images/AAD-Only-FSLogix-003.png" alt="" /></p>
+<p>After that a new rollout looks like this:</p>
+<p><img src="../assets/images/AAD-Only-FSLogix-004.png" alt="" /></p>
+      <h2 id="others">
+        
+        
+          Others <a href="#others"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>And yes, there are other options to run the script in the system context automatically. Please ensure that the password/secret <strong>is not stored on the host’s disk</strong>.</p>
+<p><strong>Hint:</strong> You can create another share for MSIX App-Attach packages. The system account also has permission to load the packages.</p>
+<p><strong>Note: It’s a nice workaround to bridge the time until there is a native solution in Azure. Please use it at your own risk.</strong></p>
+
+		<!--<p>With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don’t need to have network line-of-sight to the domain controller.</p>
+<p>However, the user identities must still be hybrid / synchronized from a legacy AD right now. And that prevents having AAD-only users in a multi-user pool in AVD where a profile is mostly mandatory.</p>
+<h2 id="workaround">Workaround</h2>
+<p>I found a nice workaround to do the same with cloud-only users in Azure AD - including the use of FSLogix file shares.</p>
+<p>Today, an Azure file share cannot be configured to use the AAD like an AD to set NTFS permissions. This is necessary to give the users the right permissions to create a profile folder on the share and have full access only to their own created files (the profile disk). Users should never have access to the profile disks of other users - to prevent data theft or to modify other users’ data).</p>
+<p>But how to handle this? For this workaround, I use a technic I have often used in the past to cover similar challenges (like <a href="https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/">this post</a>). In Windows, you can configure on a resource level what credential should be used - and that on a per-user level. This also works for the system account and, therefore, also for services. So, we are able to “teach” the system account to use specific credentials to access an Azure storage account.</p>
+<p>In our case, we need credentials to have full access to an Azure file share. And there are credentials to do that: The storage account credentials. Each storage account has credentials that can be used to have full access. You can grab the credentials from the “Access Key” menu in the storage account:</p>
+<p><img src="../assets/images/AAD-Only-FSLogix-005.png" alt="" /></p>
+<p>Collect the right values:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>User name:</td>
+<td>localhost\&lt;storageAccountName&gt;</td>
+</tr>
+<tr>
+<td>Secret:</td>
+<td>&lt;Key&gt;</td>
+</tr>
+<tr>
+<td>StorageAccountFqdn:</td>
+<td>&lt;storageAccountName&gt;.file.core.net (the files endpoint)</td>
+</tr>
+</tbody>
+</table>
+<p>In my example, the user name is “localhost\avdaadstorage” and &lt;StorageAccountFqdn&gt; is “avdaadstorage.file.core.windows.net”</p>
+<p>To “teach” the system account to use these credentials, we have to run the following command in the context of the system account:</p>
+<pre><code>cmdkey.exe /add:&lt;StorageAccountFqdn&gt; /user:localhost\&lt;StorageAccountName&gt; /pass:&lt;Key&gt;
+</code></pre>
+<p>Example:</p>
+<pre><code>cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\add:avdaadstorage /pass:xxxxxxxxxxxxxxxx
+</code></pre>
+<p>After running the command on a host/VM, any access in the context of the system account to the storage runs with the configured credentials - to every share!</p>
+<p>Great, our system can now access the shares on the storage account and has full permission.</p>
+<h2 id="configuring-fslogix">Configuring FSLogix</h2>
+<p>Next step: Configure FSLogix to use the system account. Normally, FSLogix will access the share to store and read profiles in the user context. That is normally fine if users are able to authenticate with their own identity. In our case, we want to use the system account. The following reg-key configures FSLogix to use the system account:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Path:</td>
+<td>HKLM:\SOFTWARE\FSLogix\Profiles</td>
+</tr>
+<tr>
+<td>Name:</td>
+<td>AccessNetworkAsComputerObject</td>
+</tr>
+<tr>
+<td>Type:</td>
+<td>DWord</td>
+</tr>
+<tr>
+<td>Value:</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>This value can be set via registry or PowerShell:</p>
+<pre><code>New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
+New-Item -Path &quot;HKLM:\SOFTWARE\FSLogix&quot; -Name &quot;Profiles&quot; -ErrorAction Ignore
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
+</code></pre>
+<p>If not already done, configure the file share:</p>
+<ul>
+<li>Create a share on your storage account (e.g., profiles)</li>
+<li>Configure FSLogix to use the share on each host:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Path:</td>
+<td>HKLM:\SOFTWARE\FSLogix\Profiles</td>
+</tr>
+<tr>
+<td>Name:</td>
+<td>VHDLocations</td>
+</tr>
+<tr>
+<td>Type:</td>
+<td>Reg_SZ</td>
+</tr>
+<tr>
+<td>Value:</td>
+<td>\\&lt;StorageAccountFqdn&gt;\&lt;ProfileShareName&gt;</td>
+</tr>
+</tbody>
+</table>
+<p>And enable FSLogix profile service:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Path:</td>
+<td>HKLM:\SOFTWARE\FSLogix\Profiles</td>
+</tr>
+<tr>
+<td>Name:</td>
+<td>Enabled</td>
+</tr>
+<tr>
+<td>Type:</td>
+<td>DWord</td>
+</tr>
+<tr>
+<td>Value:</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>After that, users can log in to the hosts, and the profile is stored on the file share on the storage account:</p>
+<p><img src="../assets/images/AAD-Only-FSLogix-000.png" alt="" /></p>
+<h2 id="security">Security</h2>
+<p>How secure is that?</p>
+<ul>
+<li>Users cannot access their own or other profiles by entering the path to the share while they don’t have the storage account credentials.</li>
+<li>Users can also not run programs in the system context (if they are not local admins on the host - what I expect).</li>
+<li>Every local administrator of a host can run processes in the system context: So the local admin permissions/role must be secured to prevent admins from accessing the profile storage indirectly or reading the storage account credentials.</li>
+<li>Azure Administrator with the permission Microsoft.Compute/virtualMachines/runCommand/action can send scripts running in the system context to a host/VM (like a contributor). That is comparable to local administrator permission.</li>
+<li>The system has permission to access all shares on the storage account with the credentials. Not only the profile share. It makes sense to have a separate share for the profiles.</li>
+</ul>
+<p><strong>Summary:</strong> Users with non-admin permissions can not access other users’ profiles. Local admins are able to do this, but local admins are able to compromise users in other ways. So local admin privileges <strong>should be considered carefully</strong>. Same for privileged access in Azure.</p>
+<h2 id="do-the-full-configuration-with-a-script">Do the full configuration with a script</h2>
+<p>Let me share a script you can use to do the full configuration with a script. In the script, I also set some other basic configurations I mostly use for FSLogix. Keep in mind that the user name is part of the path and profile disk name. If you rename the display name of a user, the user will get a new profile.</p>
+<p>The script must be executed directly after the rollout of a new host in the system context. It’s not possible to do that on the Master VM while the credential store is reset during sysprep. To run the script in the system context, use PSEXEC to open PowerShell in the system context (psexec /s powershell.exe).</p>
+<p><strong>WARNING:</strong> The script contains a secret. Delete the script from the host</p>
+<pre><code>write-host &quot;Configuring FSLogix&quot;
+$fileServer=&quot;avdaadstorage.file.core.windows.net&quot;
+$profileShare=&quot;\\$($fileServer)\profiles&quot;
+
+$user=&quot;localhost\avdaadstorage&quot;
+$secret=&quot;###################&quot;
+
+New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
+New-Item -Path &quot;HKLM:\SOFTWARE\FSLogix&quot; -Name &quot;Profiles&quot; -ErrorAction Ignore
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;Enabled&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VHDLocations&quot; -Value $profileShare -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ConcurrentUserSessions&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;DeleteLocalProfileWhenVHDShouldApply&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;FlipFlopProfileDirectoryName&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;IsDynamic&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;KeepLocalDir&quot; -Value 0 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ProfileType&quot; -Value 0 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;SizeInMBs&quot; -Value 40000 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VolumeType&quot; -Value &quot;VHDX&quot; -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
+
+cmdkey.exe /add:$fileServer /user:$($user) /pass:$($secret)
+
+write-host &quot;The script has finished.&quot;
+</code></pre>
+<h2 id="use-hydra-to-run-the-script-on-demand-or-automatically-after-each-rollout">Use Hydra to run the script on-demand or automatically after each rollout</h2>
+<p>You can use <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for Azure Virtual Desktop</a> to apply the script automatically after rolling out a new host.</p>
+<p>Open the host pool configuration in Hydra -&gt; Base and configure the service account:</p>
+<ul>
+<li>Service account name: localhost\avdaadstorage</li>
+<li>Service account password: &lt;key of the storage account&gt;</li>
+<li>Save</li>
+</ul>
+<p><img src="../assets/images/AAD-Only-FSLogix-002.png" alt="" /></p>
+<p>Scripts and Collections -&gt; Scripts</p>
+<ul>
+<li>Duplicate an existing script to have a new one</li>
+<li>Check “Service Account”</li>
+<li>Give it a good name (e.g., “FSLogix and Cloud Accounts - Hydra integrated”)</li>
+<li>Copy the following script into the code field</li>
+<li>Save</li>
+</ul>
+<p>Script:</p>
+<pre><code># Check, if service account available
+if ($global:Hydra_ServiceAccount_PSC -eq $null) {
+    throw &quot;Failed: Service account missing - The script needs a configured service account. You can configure the service account (having full access to the FSLogix profile share on the host pool configuration.&quot;
+}
+
+LogWriter(&quot;Configuring FSLogix&quot;)
+$fileServer=&quot;avdaadstorage.file.core.windows.net&quot;
+$profileShare=&quot;\\$($fileServer)\profiles&quot;
+
+New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
+New-Item -Path &quot;HKLM:\SOFTWARE\FSLogix&quot; -Name &quot;Profiles&quot; -ErrorAction Ignore
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;Enabled&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VHDLocations&quot; -Value $profileShare -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ConcurrentUserSessions&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;DeleteLocalProfileWhenVHDShouldApply&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;FlipFlopProfileDirectoryName&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;IsDynamic&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;KeepLocalDir&quot; -Value 0 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ProfileType&quot; -Value 0 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;SizeInMBs&quot; -Value 40000 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VolumeType&quot; -Value &quot;VHDX&quot; -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
+
+
+LogWriter(&quot;Setting credentials to access the storage account of the system&quot;)
+cmdkey.exe /add:$fileServer /user:$($global:Hydra_ServiceAccount_PSC.UserName) /pass:([System.Net.NetworkCredential]::new(&quot;&quot;,$global:Hydra_ServiceAccount_PSC.password).Password)
+
+OutputWriter(&quot;The script has finished.&quot;)
+</code></pre>
+<p><img src="../assets/images/AAD-Only-FSLogix-001.png" alt="" /></p>
+<p>After that, you can trigger the script on a host or let it run automatically after each deployment:</p>
+<ul>
+<li>Open the host pool configuration in Hydra -&gt; New Session Host Rollout</li>
+<li>Configure the rollout parameter</li>
+<li>Select the script in “Run script or script collection after deployment”</li>
+</ul>
+<p><img src="../assets/images/AAD-Only-FSLogix-003.png" alt="" /></p>
+<p>After that a new rollout looks like this:</p>
+<p><img src="../assets/images/AAD-Only-FSLogix-004.png" alt="" /></p>
+<h2 id="others">Others</h2>
+<p>And yes, there are other options to run the script in the system context automatically. Please ensure that the password/secret <strong>is not stored on the host’s disk</strong>.</p>
+<p><strong>Hint:</strong> You can create another share for MSIX App-Attach packages. The system account also has permission to load the packages.</p>
+<p><strong>Note: It’s a nice workaround to bridge the time until there is a native solution in Azure. Please use it at your own risk.</strong></p>
+-->
+	
+    
+</section>
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div id="allTags" class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore by tags <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-VM">Azure VM (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (8)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (10)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (7)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-AD">Azure AD (4)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#OneDrive">OneDrive (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-IoT">Azure IoT (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Functions">Azure Functions (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Marketplace">Azure Marketplace (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (5)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (47)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (46)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Webapp">Azure Webapp (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#ADConnect">ADConnect (1)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 text-center text-lg-left">
+                Copyright © 2023 ITProCloud Blog 
+            </div>
+            <div class="col-md-4 col-sm-4 text-center text-lg-left">
+                <a href="/Impressum">Impressum</a>/<a href="/ImpressumEn">Imprint</a> - 
+                <a href="/privacyDe">Datenschutz</a> - 
+				<a href="/privacyEn">Privacy</a>
+            </div>
+            <div class="col-md-3 col-sm-3 text-center text-lg-right">    
+                <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+
+<!-- Start Cookie Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#eaf7f7",
+      "text": "#5c7291"
+    },
+    "button": {
+      "background": "#56cbdb",
+      "text": "#ffffff"
+    }
+  },
+  "position": "bottom-right",
+  "content": {
+    "message": 'This website uses cookies to ensure you get the best experience on our website.<br/><a href="/privacyEn">Privacy policy</a><br/><br/>Diese Website verwendet Cookies, um dir mehr Benutzerfreundlichkeit zu bieten. Mit der Nutzung dieser Website stimmst du der Verwendung von Cookies zu.<br/><a href="/privacyDe">Datenschutzerklärung</a><br/><br/> ',
+    "href": "/privacyEn"
+  }
+});
+</script>
+<!-- End Cookie Plugin -->
+
+</body>
+</html>
