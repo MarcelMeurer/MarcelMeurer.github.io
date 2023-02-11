@@ -578,7 +578,7 @@ if ($mode -eq "Generalize") {
 	if ($WvdRegistrationKey -ne "") {
 		if ([System.Environment]::OSVersion.Version.Major -gt 6) {
 			LogWriter("Installing AVD agent")
-			Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgent.msi" -ArgumentList "/quiet /qn /norestart /passive RegistrationToken=${WvdRegistrationKey}"
+			Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgent.msi" -ArgumentList "/quiet /qn /norestart /passive RegistrationToken=${WvdRegistrationKey} RDInfraAgent=BYODesktop"
 			if ($false) {
 				LogWriter("Installing AVD boot loader - current path is ${LocalConfig}")
 				Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgentBootLoader.msi" -ArgumentList "/quiet /qn /norestart /passive"
