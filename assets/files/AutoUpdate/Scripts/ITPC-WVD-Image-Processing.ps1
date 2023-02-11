@@ -1,5 +1,5 @@
 # This powershell script is part of WVDAdmin and Project Hydra - see https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/ for more information
-# Current Version of this script: 5.3
+# Current Version of this script: 5.6
 
 param(
 	[Parameter(Mandatory)]
@@ -7,13 +7,13 @@ param(
 	[ValidateSet('Generalize','JoinDomain','DataPartition','RDAgentBootloader','RestartBootloader','StartBootloader','CleanFirstStart', 'RenameComputer','RepairMonitoringAgent')]
 	[string] $Mode,
 	[string] $StrongGeneralize='0',
-	[string] $ComputerNewname='',						#Only for SecureBoot process (workaround, normaly not used)
-	[string] $LocalAdminName='localAdmin',				#Only for SecureBoot process (workaround, normaly not used)
+	[string] $ComputerNewname='',						#Only for SecureBoot workaround or HCI
+	[string] $LocalAdminName='',						#Only for SecureBoot workaround or HCI
 	[string] $LocalAdminPassword='',
 	[string] $DomainJoinUserName='',
 	[string] $DomainJoinUserPassword='',
-	[string] $LocalAdminName64='bG9jYWxBZG1pbg==',		#Base64-coding is used if not empty - providing the older parameters to be compatible
-	[string] $LocalAdminPassword64='',
+	[string] $LocalAdminName64='',						#Base64-coding is used if not empty - only for HCI
+	[string] $LocalAdminPassword64='',					#Base64-coding is used if not empty - only for HCI
 	[string] $DomainJoinUserName64='',
 	[string] $DomainJoinUserPassword64='',
 	[string] $DomainJoinOU='',
@@ -288,8 +288,8 @@ if ($mode -eq "Generalize") {
 		LogWriter("Modifying sysprep Specialize - Done")
 	}
 
-	# Preparation for the snapshot workaround
-	if ($isSecureBoot -and $LocalAdminName -ne "" -and $LocalAdminPassword -ne "") {
+	# Set the local admin credentials if provided (used for the snapshot workaround and HCI; removed: $isSecureBoot -and )
+	if ($LocalAdminName -ne "" -and $LocalAdminPassword -ne "") {
 		LogWriter("Creating administrator $LocalAdminName")
 		New-LocalUser "$LocalAdminName" -Password (ConvertTo-SecureString $LocalAdminPassword -AsPlainText -Force) -FullName "$LocalAdminName" -Description "Local Administrator" -ErrorAction SilentlyContinue
         Add-LocalGroupMember -Group "Administrators" -Member "$LocalAdminName" -ErrorAction SilentlyContinue
@@ -481,7 +481,7 @@ if ($mode -eq "Generalize") {
 		if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\ITProCloud\WVD.Runtime").ChangeDrives -eq 1) {
 			$disks=Get-WmiObject -Class win32_volume | Where-Object { $_.DriveLetter -ne $null -and $_.DriveType -eq 3 }
 			foreach ($disk in $disks) {if ($disk.Name -eq 'D:\' -and $disk.Label -eq 'Temporary Storage') {$modifyDrives=$true}}
-				if ($modifyDrives -and $disks.Count -eq 3) {
+			if ($modifyDrives -and $disks.Count -eq 3) {
 				# change drive letters of temp and data drive for VMs with 3 drives
 				LogWriter("VM with 3 drives so delete old pagefile and install runonce key")
 
@@ -512,13 +512,14 @@ if ($mode -eq "Generalize") {
 					}
 				}
 				ShowPageFiles
-			}
+			} else {$modifyDrives=$false}
 		}
 	}
 	
 	# resize C: partition to fill up the disk if ExpandPartition!="0""
 	if ($ExpandPartition -ne "0" -and $modifyDrives -eq $false)
 	{
+		LogWriter("Check C: partition for resizing")
 		try {
 			$defragSvc=Get-Service -Name defragsvc -ErrorAction SilentlyContinue
 			Set-Service -Name defragsvc -StartupType Manual -ErrorAction SilentlyContinue
