@@ -24,6 +24,7 @@ param(
 	[string] $DomainFqdn='',
 	[string] $WvdRegistrationKey='',
 	[string] $LogDir="$env:windir\system32\logfiles",
+	[string] $ByoDesktop="0"							#If "1" then the parameter is used during the AVD agent installation
 	[string] $HydraAgentUri='',							#Only used by Hydra
 	[string] $HydraAgentSecret='',						#Only used by Hydra
 	[string] $DownloadNewestAgent='0'					#Download the newes agent, event if a local agent exist
@@ -578,7 +579,9 @@ if ($mode -eq "Generalize") {
 	if ($WvdRegistrationKey -ne "") {
 		if ([System.Environment]::OSVersion.Version.Major -gt 6) {
 			LogWriter("Installing AVD agent")
-			Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgent.msi" -ArgumentList "/quiet /qn /norestart /passive RegistrationToken=${WvdRegistrationKey} RDInfraAgent=BYODesktop"
+			$addParameter=""
+			if ($ByoDesktop -eq "1") {$addParameter="RDInfraAgent=BYODesktop"}
+			Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgent.msi" -ArgumentList "/quiet /qn /norestart /passive RegistrationToken=${WvdRegistrationKey} $addParameter"
 			if ($false) {
 				LogWriter("Installing AVD boot loader - current path is ${LocalConfig}")
 				Start-Process -wait -FilePath "${LocalConfig}\Microsoft.RDInfra.RDAgentBootLoader.msi" -ArgumentList "/quiet /qn /norestart /passive"
