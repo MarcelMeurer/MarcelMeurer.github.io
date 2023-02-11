@@ -24,7 +24,7 @@ param(
 	[string] $DomainFqdn='',
 	[string] $WvdRegistrationKey='',
 	[string] $LogDir="$env:windir\system32\logfiles",
-	[string] $ByoDesktop="0"							#If "1" then the parameter is used during the AVD agent installation
+	[string] $ByoDesktop="0",							#If "1" then the parameter is used during the AVD agent installation
 	[string] $HydraAgentUri='',							#Only used by Hydra
 	[string] $HydraAgentSecret='',						#Only used by Hydra
 	[string] $DownloadNewestAgent='0'					#Download the newes agent, event if a local agent exist
