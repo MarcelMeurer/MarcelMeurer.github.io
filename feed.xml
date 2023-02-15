@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 15 Feb 2023 17:06:31 +0100</pubDate>
-    <lastBuildDate>Wed, 15 Feb 2023 17:06:31 +0100</lastBuildDate>
+    <pubDate>Wed, 15 Feb 2023 17:11:12 +0100</pubDate>
+    <lastBuildDate>Wed, 15 Feb 2023 17:11:12 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -56,7 +56,7 @@ Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started 
 &lt;p&gt;Great, our system can now access the shares on the storage account and has full permission.&lt;/p&gt;
 &lt;h3 id=&quot;window-11-22h2-and-credential-guard-with-uefi-lock&quot;&gt;Window 11 22H2 and Credential Guard with UEFI lock&lt;/h3&gt;
 &lt;p&gt;To prevent that Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key is needed:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force
+&lt;pre&gt;&lt;code&gt;New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force  # Only needed for Windows 11 22H2
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Remember that this disables &lt;a href=&quot;https://learn.microsoft.com/en-us/windows/security/identity-protection/credential-guard/credential-guard-manage#enable-virtualization-based-security-and-windows-defender-credential-guard&quot;&gt;Windows Defender Credential Guard&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&quot;configuring-fslogix&quot;&gt;Configuring FSLogix&lt;/h2&gt;
@@ -91,7 +91,7 @@ Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started 
 &lt;pre&gt;&lt;code&gt;New-Item -Path &amp;quot;HKLM:\SOFTWARE&amp;quot; -Name &amp;quot;FSLogix&amp;quot; -ErrorAction Ignore
 New-Item -Path &amp;quot;HKLM:\SOFTWARE\FSLogix&amp;quot; -Name &amp;quot;Profiles&amp;quot; -ErrorAction Ignore
 New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;AccessNetworkAsComputerObject&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force  # Only needed for Windows 11 22H2
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;If not already done, configure the file share:&lt;/p&gt;
 &lt;ul&gt;
@@ -190,7 +190,7 @@ New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name
 
 # Store credentials to access the storage account
 cmdkey.exe /generic:$fileServer /user:$($user) /pass:$($secret)
-# Enable Windows Defender Credential Guard without UEFI lock
+# Disable Windows Defender Credential Guard (only needed for Windows 11 22H2)
 New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force
 
 write-host &amp;quot;The script has finished.&amp;quot;
@@ -239,7 +239,7 @@ New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name
 
 LogWriter(&amp;quot;Setting credentials to access the storage account of the system&amp;quot;)
 cmdkey.exe /generic:$fileServer /user:$($global:Hydra_ServiceAccount_PSC.UserName) /pass:([System.Net.NetworkCredential]::new(&amp;quot;&amp;quot;,$global:Hydra_ServiceAccount_PSC.password).Password)
-LogWriter(&amp;quot;Enable Windows Defender Credential Guard without UEFI lock&amp;quot;)
+LogWriter(&amp;quot;Disable Windows Defender Credential Guard (only needed for Windows 11 22H2)&amp;quot;)
 New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force
 
 OutputWriter(&amp;quot;The script has finished.&amp;quot;)

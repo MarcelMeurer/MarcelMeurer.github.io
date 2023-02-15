@@ -423,7 +423,7 @@ Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started 
       </h3>
     
 <p>To prevent that Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key is needed:</p>
-<pre><code>New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force
+<pre><code>New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force  # Only needed for Windows 11 22H2
 </code></pre>
 <p>Remember that this disables <a href="https://learn.microsoft.com/en-us/windows/security/identity-protection/credential-guard/credential-guard-manage#enable-virtualization-based-security-and-windows-defender-credential-guard">Windows Defender Credential Guard</a>.</p>
       <h2 id="configuring-fslogix">
@@ -465,7 +465,7 @@ Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started 
 <pre><code>New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
 New-Item -Path &quot;HKLM:\SOFTWARE\FSLogix&quot; -Name &quot;Profiles&quot; -ErrorAction Ignore
 New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force
+New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force  # Only needed for Windows 11 22H2
 </code></pre>
 <p>If not already done, configure the file share:</p>
 <ul>
@@ -578,7 +578,7 @@ New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;A
 
 # Store credentials to access the storage account
 cmdkey.exe /generic:$fileServer /user:$($user) /pass:$($secret)
-# Enable Windows Defender Credential Guard without UEFI lock
+# Disable Windows Defender Credential Guard (only needed for Windows 11 22H2)
 New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force
 
 write-host &quot;The script has finished.&quot;
@@ -634,7 +634,7 @@ New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;A
 
 LogWriter(&quot;Setting credentials to access the storage account of the system&quot;)
 cmdkey.exe /generic:$fileServer /user:$($global:Hydra_ServiceAccount_PSC.UserName) /pass:([System.Net.NetworkCredential]::new(&quot;&quot;,$global:Hydra_ServiceAccount_PSC.password).Password)
-LogWriter(&quot;Enable Windows Defender Credential Guard without UEFI lock&quot;)
+LogWriter(&quot;Disable Windows Defender Credential Guard (only needed for Windows 11 22H2)&quot;)
 New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force
 
 OutputWriter(&quot;The script has finished.&quot;)
@@ -706,7 +706,7 @@ Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started 
 <p>Great, our system can now access the shares on the storage account and has full permission.</p>
 <h3 id="window-11-22h2-and-credential-guard-with-uefi-lock">Window 11 22H2 and Credential Guard with UEFI lock</h3>
 <p>To prevent that Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key is needed:</p>
-<pre><code>New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force
+<pre><code>New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force  # Only needed for Windows 11 22H2
 </code></pre>
 <p>Remember that this disables <a href="https://learn.microsoft.com/en-us/windows/security/identity-protection/credential-guard/credential-guard-manage#enable-virtualization-based-security-and-windows-defender-credential-guard">Windows Defender Credential Guard</a>.</p>
 <h2 id="configuring-fslogix">Configuring FSLogix</h2>
@@ -741,7 +741,7 @@ Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started 
 <pre><code>New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
 New-Item -Path &quot;HKLM:\SOFTWARE\FSLogix&quot; -Name &quot;Profiles&quot; -ErrorAction Ignore
 New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force
+New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force  # Only needed for Windows 11 22H2
 </code></pre>
 <p>If not already done, configure the file share:</p>
 <ul>
@@ -840,7 +840,7 @@ New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;A
 
 # Store credentials to access the storage account
 cmdkey.exe /generic:$fileServer /user:$($user) /pass:$($secret)
-# Enable Windows Defender Credential Guard without UEFI lock
+# Disable Windows Defender Credential Guard (only needed for Windows 11 22H2)
 New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force
 
 write-host &quot;The script has finished.&quot;
@@ -889,7 +889,7 @@ New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;A
 
 LogWriter(&quot;Setting credentials to access the storage account of the system&quot;)
 cmdkey.exe /generic:$fileServer /user:$($global:Hydra_ServiceAccount_PSC.UserName) /pass:([System.Net.NetworkCredential]::new(&quot;&quot;,$global:Hydra_ServiceAccount_PSC.password).Password)
-LogWriter(&quot;Enable Windows Defender Credential Guard without UEFI lock&quot;)
+LogWriter(&quot;Disable Windows Defender Credential Guard (only needed for Windows 11 22H2)&quot;)
 New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force
 
 OutputWriter(&quot;The script has finished.&quot;)
