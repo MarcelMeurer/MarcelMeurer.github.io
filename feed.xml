@@ -5,14 +5,17 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 11 Feb 2023 17:45:28 +0100</pubDate>
-    <lastBuildDate>Sat, 11 Feb 2023 17:45:28 +0100</lastBuildDate>
+    <pubDate>Wed, 15 Feb 2023 17:06:31 +0100</pubDate>
+    <lastBuildDate>Wed, 15 Feb 2023 17:06:31 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
         <title>Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD</title>
         <description>&lt;p&gt;With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don’t need to have network line-of-sight to the domain controller.&lt;/p&gt;
 &lt;p&gt;However, the user identities must still be hybrid / synchronized from a legacy AD right now. And that prevents having AAD-only users in a multi-user pool in AVD where a profile is mostly mandatory.&lt;/p&gt;
+&lt;h2 id=&quot;update-2023-02-15&quot;&gt;Update 2023-02-15&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Change of the script to work with Windows 11 22H2&lt;/strong&gt;
+Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key prevents this behavior.&lt;/p&gt;
 &lt;h2 id=&quot;workaround&quot;&gt;Workaround&lt;/h2&gt;
 &lt;p&gt;I found a nice workaround to do the same with cloud-only users in Azure AD - including the use of FSLogix file shares.&lt;/p&gt;
 &lt;p&gt;Today, an Azure file share cannot be configured to use the AAD like an AD to set NTFS permissions. This is necessary to give the users the right permissions to create a profile folder on the share and have full access only to their own created files (the profile disk). Users should never have access to the profile disks of other users - to prevent data theft or to modify other users’ data).&lt;/p&gt;
@@ -44,13 +47,18 @@
 &lt;/table&gt;
 &lt;p&gt;In my example, the user name is “localhost\avdaadstorage” and &amp;lt;StorageAccountFqdn&amp;gt; is “avdaadstorage.file.core.windows.net”&lt;/p&gt;
 &lt;p&gt;To “teach” the system account to use these credentials, we have to run the following command in the context of the system account:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;cmdkey.exe /add:&amp;lt;StorageAccountFqdn&amp;gt; /user:localhost\&amp;lt;StorageAccountName&amp;gt; /pass:&amp;lt;Key&amp;gt;
+&lt;pre&gt;&lt;code&gt;cmdkey.exe /generic:&amp;lt;StorageAccountFqdn&amp;gt; /user:localhost\&amp;lt;StorageAccountName&amp;gt; /pass:&amp;lt;Key&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Example:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\add:avdaadstorage /pass:xxxxxxxxxxxxxxxx
+&lt;pre&gt;&lt;code&gt;cmdkey.exe /generic:avdaadstorage.file.core.windows.net /user:localhost\add:avdaadstorage /pass:xxxxxxxxxxxxxxxx
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;After running the command on a host/VM, any access in the context of the system account to the storage runs with the configured credentials - to every share!&lt;/p&gt;
 &lt;p&gt;Great, our system can now access the shares on the storage account and has full permission.&lt;/p&gt;
+&lt;h3 id=&quot;window-11-22h2-and-credential-guard-with-uefi-lock&quot;&gt;Window 11 22H2 and Credential Guard with UEFI lock&lt;/h3&gt;
+&lt;p&gt;To prevent that Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key is needed:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Remember that this disables &lt;a href=&quot;https://learn.microsoft.com/en-us/windows/security/identity-protection/credential-guard/credential-guard-manage#enable-virtualization-based-security-and-windows-defender-credential-guard&quot;&gt;Windows Defender Credential Guard&lt;/a&gt;.&lt;/p&gt;
 &lt;h2 id=&quot;configuring-fslogix&quot;&gt;Configuring FSLogix&lt;/h2&gt;
 &lt;p&gt;Next step: Configure FSLogix to use the system account. Normally, FSLogix will access the share to store and read profiles in the user context. That is normally fine if users are able to authenticate with their own identity. In our case, we want to use the system account. The following reg-key configures FSLogix to use the system account:&lt;/p&gt;
 &lt;table&gt;
@@ -83,6 +91,7 @@
 &lt;pre&gt;&lt;code&gt;New-Item -Path &amp;quot;HKLM:\SOFTWARE&amp;quot; -Name &amp;quot;FSLogix&amp;quot; -ErrorAction Ignore
 New-Item -Path &amp;quot;HKLM:\SOFTWARE\FSLogix&amp;quot; -Name &amp;quot;Profiles&amp;quot; -ErrorAction Ignore
 New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;AccessNetworkAsComputerObject&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;If not already done, configure the file share:&lt;/p&gt;
 &lt;ul&gt;
@@ -179,7 +188,10 @@ New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name
 New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;VolumeType&amp;quot; -Value &amp;quot;VHDX&amp;quot; -force
 New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;AccessNetworkAsComputerObject&amp;quot; -Value 1 -force
 
-cmdkey.exe /add:$fileServer /user:$($user) /pass:$($secret)
+# Store credentials to access the storage account
+cmdkey.exe /generic:$fileServer /user:$($user) /pass:$($secret)
+# Enable Windows Defender Credential Guard without UEFI lock
+New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force
 
 write-host &amp;quot;The script has finished.&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;
@@ -226,7 +238,9 @@ New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name
 
 
 LogWriter(&amp;quot;Setting credentials to access the storage account of the system&amp;quot;)
-cmdkey.exe /add:$fileServer /user:$($global:Hydra_ServiceAccount_PSC.UserName) /pass:([System.Net.NetworkCredential]::new(&amp;quot;&amp;quot;,$global:Hydra_ServiceAccount_PSC.password).Password)
+cmdkey.exe /generic:$fileServer /user:$($global:Hydra_ServiceAccount_PSC.UserName) /pass:([System.Net.NetworkCredential]::new(&amp;quot;&amp;quot;,$global:Hydra_ServiceAccount_PSC.password).Password)
+LogWriter(&amp;quot;Enable Windows Defender Credential Guard without UEFI lock&amp;quot;)
+New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force
 
 OutputWriter(&amp;quot;The script has finished.&amp;quot;)
 &lt;/code&gt;&lt;/pre&gt;
@@ -245,7 +259,7 @@ OutputWriter(&amp;quot;The script has finished.&amp;quot;)
 &lt;p&gt;&lt;strong&gt;Hint:&lt;/strong&gt; You can create another share for MSIX App-Attach packages. The system account also has permission to load the packages.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Note: It’s a nice workaround to bridge the time until there is a native solution in Azure. Please use it at your own risk.&lt;/strong&gt;&lt;/p&gt;
 </description>
-        <pubDate>Thu, 02 Feb 2023 00:00:00 +0100</pubDate>
+        <pubDate>Wed, 15 Feb 2023 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/</guid>
         
