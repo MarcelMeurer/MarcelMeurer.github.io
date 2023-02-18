@@ -369,7 +369,8 @@
         
       </h1>
     
-<p>Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.</p>
+<p>Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.</p>
+<p>Are you interested in the new “Hydra for Azure Virtual Desktop” solution to manage AVD even better with a lot of automation? <a href="https://github.com/MarcelMeurer/WVD-Hydra">Check it out here.</a></p>
 <p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 01/22/2023</strong></a></p>
 <p><a href="https://youtu.be/fH1_FzNyJf0">Check out the Youtube video to install and configure WVDAdmin in four steps</a></p>
 <p>The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:</p>
@@ -1070,18 +1071,16 @@
         
       </h2>
     
-<p>To work with the GUI, you need a service principal (function account) with permission to administrate access to the WVD/AVD and Azure resources. I decide to use a service principal to avoid confusion if my Azure AD user is only a guest account in the WVD/AVD tenant I have to administrate and easily switch between different tenants.</p>
+<p>To work with the GUI, you need a service principal (function account) with permission to administrate access to the AVD and Azure resources. I decide to use a service principal to avoid confusion if my Azure AD user is only a guest account in the AVD tenant I have to administrate and easily switch between different tenants.</p>
 <p>To create a service principal, go to your Azure AD -&gt; <a href="https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps" target="_blank">App registration</a> -&gt; New registration and type a name for your principal like “ svc_WVDAdmin” and press “register”.</p>
 <p><img src="../assets/images/WVDAdmin/documentation-001.png" alt="documentation-001" /></p>
 <p>Click on “certificates &amp; secrets”. Click “new client secret”, select a validity period and a description (like “Key01”). Press “add”.</p>
 <p><img src="../assets/images/WVDAdmin/documentation-002.png" alt="documentation-002" /></p>
 <p>Copy the generated key directly - it will never be displayed again. Note the key for later.</p>
 <p><img src="../assets/images/WVDAdmin/documentation-003.png" alt="documentation-003" /></p>
-<p>To assign users to app groups, the service principal needs two API permissions to get the users and groups from Azure AD:</p>
+<p>To assign users to app groups, the service principal needs one API permissions to get the users and groups from Azure AD (optional):</p>
 <p>Add the permission “Microsoft Graph” -&gt; Application Permission -&gt; Directory.Read.All</p>
 <p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png" alt="AADBrowser" /></p>
-<p><strong>From version 1.7.17 and AVD (spring version) you can skip this permission (is no longer available in Azure for new installations):</strong> API Permissions: Add the permission “Azure Active Directory Graph” -&gt; Application Permission -&gt; Directory.Read.All</p>
-<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01.png" alt="AADBrowser" /></p>
 <p>To consent, the permission and administrator of Azure AD have to grant this:</p>
 <p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png" alt="AADBrowser" /></p>
 <p>Go to “Overview”. Note the “Application (client) ID” and the “Directory (tenant) ID” as well.</p>
@@ -1092,48 +1091,25 @@
 <li>Service principal id (application id)</li>
 <li>Service principal key</li>
 </ul>
-      <h2 id="wvd-permissions-classic--fall-version">
+      <h2 id="avd-permissions">
         
         
-          WVD permissions (Classic / Fall Version) <a href="#wvd-permissions-classic--fall-version"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
-        
-        
-      </h2>
-    
-<p>This chapter is for WVD Classic / Fall. <a href="#wvd-permissions-arm--spring-version">Skip</a> this chapter if you only work with WVD/AVD ARM (Spring).</p>
-<p>To use WVDAdmin you need at least an existing WVD/AVD tenant. If you new to WVD/AVD follow this article to create a WVD/AVD tenant:  [https://docs.microsoft.com/en-us/azure/virtual-desktop/virtual-desktop-fall-2019/tenant-setup-azure-active-directory)</p>
-<p>You have to use PowerShell to give the WVD/AVD the appropriated permission:</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Import-Module</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">Microsoft.RDInfra.RDPowerShell</span><span class="w">
-</span><span class="c"># log on with an administrative user account to your </span><span class="w">
-</span><span class="n">Add-RdsAccount</span><span class="w"> </span><span class="nt">-DeploymentUrl</span><span class="w"> </span><span class="s2">"https://rdbroker.wvd.microsoft.com"</span><span class="w">  
-
-</span><span class="c"># list rds tenants</span><span class="w">
-</span><span class="n">Get-RdsTenant</span><span class="w">
-
-</span><span class="c"># give your service principal the right permission</span><span class="w">
-</span><span class="n">New-RdsRoleAssignment</span><span class="w"> </span><span class="nt">-TenantName</span><span class="w"> </span><span class="s2">"Builder City"</span><span class="w"> </span><span class="nt">-RoleDefinitionName</span><span class="w"> </span><span class="s2">"RDS Owner"</span><span class="w"> </span><span class="nt">-ApplicationId</span><span class="w"> </span><span class="nx">89050a12-xxxx-xxxx-xxxx-000000000000</span><span class="w">
-</span></code></pre></div></div>
-<p><img src="../assets/images/WVDAdmin/documentation-005.png" alt="documentation-005" /></p>
-      <h2 id="wvdavd-permissions-arm--spring-version">
-        
-        
-          WVD/AVD permissions (ARM / Spring Version) <a href="#wvdavd-permissions-arm--spring-version"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+          AVD permissions <a href="#avd-permissions"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
         
         
       </h2>
     
-<p>This chapter is for WVD/AVD ARM / Spring. <a href="#azure-resource-permissions">Skip</a> this chapter if you only work with WVD Classic (Fall).</p>
-<p>The service principal needs permission to add and modify WVD/AVD resource objects (host pools, workspaces, app groups). To assign users and groups to app groups, the service principal needs the owner role on the resource groups you want to use for your WVD/AVD environment. Add the service principal in the next step and use the <strong>owner</strong> role.</p>
-      <h2 id="register-resource-provider-arm--spring-version">
+<p>This chapter is for AVD ARM / Spring. <a href="#azure-resource-permissions">Skip</a> this chapter if you only work with WVD Classic (Fall).</p>
+<p>The service principal needs permission to add and modify AVD resource objects (host pools, workspaces, app groups). To assign users and groups to app groups, the service principal needs the owner role on the resource groups you want to use for your AVD environment. Add the service principal in the next step and use the <strong>owner</strong> role.</p>
+      <h2 id="register-resource-provider">
         
         
-          Register Resource Provider (ARM / Spring Version) <a href="#register-resource-provider-arm--spring-version"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+          Register Resource Provider <a href="#register-resource-provider"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
         
         
       </h2>
     
-<p>This chapter is for WVD/AVD ARM / Spring. <a href="#azure-resource-permissions">Skip</a> this chapter if you only work with WVD/AVD Classic (Fall).</p>
-<p>If you have never worked with WVD, you have to register the WVD/AVD resource provider once. To do that, go to the Azure portal -&gt; subscriptions -&gt; select your subscription -&gt; Resource providers</p>
+<p>If you have never worked with AVD, you have to register the AVD resource provider once. To do that, go to the Azure portal -&gt; subscriptions -&gt; select your subscription -&gt; Resource providers</p>
 <p>Search for “Microsoft.DesktopVirtualization” and click on “Register”.
 <img src="../assets/images/WVDAdmin/documentation-015.png" alt="documentation-015" /></p>
       <h2 id="azure-resource-permissions">
@@ -1144,7 +1120,7 @@
         
       </h2>
     
-<p>The service principal needs permission to subscriptions or resource groups to manage your WVD/AVD resources, imaging template VM and rollout session hosts.</p>
+<p>The service principal needs permission to subscriptions or resource groups to manage your AVD resources, imaging template VM and rollout session hosts.</p>
 <p>Open the Azure portal and go to the resource groups you want to use or to the subscriptions. In each resource group/subscription, click “Access control (IAM)” -&gt; select “Add” -&gt; Add role assignment. Select “owner” and search in “Select” for your service principal name. Click on the principal and save the settings.</p>
 <p><strong>Note:</strong> Owner is needed to assign users to app groups. For other resources, “contributor” is fine.</p>
 <p><img src="../assets/images/WVDAdmin/documentation-006.png" alt="documentation-006" /></p>
@@ -1170,11 +1146,11 @@
         
       </h2>
     
-<p>In earlier versions (&lt;1.6.40), you had to provide the deployment script and the WVD/AVD agent binaries on a custom file share or blob storage. With WVDAdmin 1.6.40 or newer, this no longer mandatory.
-In some cases, where virtual machines don’t have access to the internet to download the WVD/AVD agent binaries, you can use a custom file share.</p>
+<p>In earlier versions (&lt;1.6.40), you had to provide the deployment script and the AVD agent binaries on a custom file share or blob storage. With WVDAdmin 1.6.40 or newer, this no longer mandatory.
+In some cases, where virtual machines don’t have access to the internet to download the AVD agent binaries, you can use a custom file share.</p>
 <details><summary>Read more.</summary><br/>
 <p><em>Hint: Alternatively, you can use Azure blob storage to store the script. Make the blob storage read-only and use the URL as rollout script-path. E.g.: <a href="https://sharedservices01.blob.core.windows.net/wvd">https://sharedservices01.blob.core.windows.net/wvd</a></em></p>
-<p>Create a file share for the configuration script (which adds new session hosts to the domain and install the WVD/AVD agent). Give everyone at least read permissions. Set the NTFS permissions to everyone and read. This is necessary while during the first startup, the VM extension tries to execute the script. In this process, the file share is accessed anonymously.</p>
+<p>Create a file share for the configuration script (which adds new session hosts to the domain and install the AVD agent). Give everyone at least read permissions. Set the NTFS permissions to everyone and read. This is necessary while during the first startup, the VM extension tries to execute the script. In this process, the file share is accessed anonymously.</p>
 <p><img src="../assets/images/WVDAdmin/documentation-009.png" alt="documentation-009" /></p>
 <p><img src="../assets/images/WVDAdmin/documentation-010.png" alt="documentation-010" /></p>
 <p>Place the following files in this share:</p>
@@ -1204,7 +1180,7 @@ In some cases, where virtual machines don’t have access to the internet to dow
         
       </h1>
     
-<p>Please start WVDAdmin. Before you load WVD/AVD and Azure data, copy the Azure tenant id, service principal id, and service principal key into the welcome tab. Press save and load the data by clicking “Reload all”.</p>
+<p>Please start WVDAdmin. Before you load AVD and Azure data, copy the Azure tenant id, service principal id, and service principal key into the welcome tab. Press save and load the data by clicking “Reload all”.</p>
 <p>You are now able to administrate WVD, create images from template VMs and rollout new session hosts.</p>
 <p>The first time you want to roll out new session hosts, you have to enter some information from your Active Directory and file share configuration from above:</p>
 <p><img src="../assets/images/WVDAdmin/documentation-012.png" alt="documentation-012" /></p>
@@ -1253,23 +1229,23 @@ In some cases, where virtual machines don’t have access to the internet to dow
         
       </h2>
     
-<p>First node: VM Scale Sets cannot autoscale WVD/AVD session hosts. Auto-scaling only works for stateless services like a web server. But if you need hundreds of session hosts, then VM Scale Set allows you to work with these numbers efficiently.</p>
+<p>First node: VM Scale Sets cannot autoscale AVD session hosts. Auto-scaling only works for stateless services like a web server. But if you need hundreds of session hosts, then VM Scale Set allows you to work with these numbers efficiently.</p>
 <details><summary>Read more</summary><br/>
-From version 1.2.5, WVDAdmin support VM Scale Sets. A Scale Set can have several instances, which are the VMs / session hosts. There are some essential things you have to know if you use VM Scale Set with WVDAdmin and WVD/AVD itself:
+From version 1.2.5, WVDAdmin support VM Scale Sets. A Scale Set can have several instances, which are the VMs / session hosts. There are some essential things you have to know if you use VM Scale Set with WVDAdmin and AVD itself:
 <ul>
 <li>Build a Scale Set with WVDAdmin. Select an image, right-click and select “Create session host from image”. Check “Rollout as VM Scale Set”</li>
 <li>You can use regular disks and ephemeral disks. If you use ephemeral disks, you cannot deallocate the instances of your Scale Set. You have to delete the instances</li>
 <li>Today, you can not use ultra disks</li>
 <li>You can add and remove instances with WVDAdmin or in the Azure Portal. New instances will join the domain and WVD</li>
-<li>A new instance can only join WVD/AVD if the session host with the new name doesn’t exist. If you delete instances, the session host entry will also be removed</li>
+<li>A new instance can only join AVD if the session host with the new name doesn’t exist. If you delete instances, the session host entry will also be removed</li>
 <li>You can re-image single instances or all instances of a Scale Set. After that, the instances are “clean” as at the first rollout</li>
-<li>Adding instances or re-imaging assumes that the Scale Set configuration (which is a custom script extension) has a valid WVD/AVD token to join new instances to WVD. While WVD/AVD provides only one token per host pool and that the token can be expiring, you can update the token with a right-click on the Scale Set and select “Update WVD token”. The max. lifetime of a token is 59 days</li>
+<li>Adding instances or re-imaging assumes that the Scale Set configuration (which is a custom script extension) has a valid AVD token to join new instances to WVD. While AVD provides only one token per host pool and that the token can be expiring, you can update the token with a right-click on the Scale Set and select “Update WVD token”. The max. lifetime of a token is 59 days</li>
 <li>Unfortunately, WVDAdmin cannot change the source image for a VM Scale Set. So if you want to update the image for a host pool, take these steps:
 <ul>
 <li>Rollout a new Scale Set based on the new image</li>
 <li>Disable new logons for the old session host from the previous Scale Set</li>
 <li>Test the host pool based on the new Scale Set</li>
-<li>If no user logged on to the ancient Scale Set, remove all instances from the Scale Set (this deletes the session hosts in WVD/AVD as well)</li>
+<li>If no user logged on to the ancient Scale Set, remove all instances from the Scale Set (this deletes the session hosts in AVD as well)</li>
 <li>Remove the Scale Set</li>
 </ul>
 </details><br/>
@@ -1283,7 +1259,7 @@ From version 1.2.5, WVDAdmin support VM Scale Sets. A Scale Set can have several
         
       </h2>
     
-<p>Ephemeral disks are awesome. They give you a high performance free of charge. Especially in a WVD/AVD multiuser environment where no data a stored permanently on the session hosts, this kind of disk can give you some value add.</p>
+<p>Ephemeral disks are awesome. They give you a high performance free of charge. Especially in a AVD multiuser environment where no data a stored permanently on the session hosts, this kind of disk can give you some value add.</p>
 <details><summary>Read more</summary><br/>
 Ephemeral disks are running on the Azure hypervisor and not stored. This has some advantages:
 <ul>
@@ -1355,7 +1331,7 @@ Reg-DWord: <strong>NamingMode</strong> = <strong>1</strong></p>
         
       </h3>
     
-<p>Usually, the WVD/AVD tenant and the resources (sessions hosts) are in the same AAD tenant. If you have two Azure AD tenant, you can use WVDAdmin with a second service principal for the session hosts (resource tenant).
+<p>Usually, the AVD tenant and the resources (sessions hosts) are in the same AAD tenant. If you have two Azure AD tenant, you can use WVDAdmin with a second service principal for the session hosts (resource tenant).
 <a href="../Windows-Virtual-Desktop-Admin-for-2-tenant-mode">Follow this link</a></p>
       <h3 id="us-government-cloud">
         
@@ -1365,7 +1341,7 @@ Reg-DWord: <strong>NamingMode</strong> = <strong>1</strong></p>
         
       </h3>
     
-<p>WVDAdmin can be used to deploy WVD/AVD in the Azure Government Cloud. You can enable WVDAdmin to work in the US Government Cloud via registry:
+<p>WVDAdmin can be used to deploy AVD in the Azure Government Cloud. You can enable WVDAdmin to work in the US Government Cloud via registry:
 Reg-SZ: <strong>Environment</strong> = <strong>US</strong></p>
       <h3 id="run-custom-actions-simultaneously">
         
@@ -1448,7 +1424,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <ul>
 <li>You have created a host pool, an app group, and assigned a user to the app group, but the user cannot see the apps/desktop.
 <ul>
-<li>For WVD/AVD ARM: Don’t forget to create a workspace and link the app group in the workspace. The workspace is mandatory to show the users’ resources.</li>
+<li>For AVD ARM: Don’t forget to create a workspace and link the app group in the workspace. The workspace is mandatory to show the users’ resources.</li>
 <li>For the HTML5 web site: Check the correct web address:
 <ul>
 <li>ARM/Spring: <a href="https://aka.ms/wvdarmweb">https://aka.ms/wvdarmweb</a></li>
@@ -1461,7 +1437,8 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 01/22/2023</strong></a></p>
 
 						<!--<h1 id="azure-windows-virtual-desktop-administration-with-wvdadmin">Azure Windows Virtual Desktop administration with WVDAdmin</h1>
-<p>Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM (Spring) and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.</p>
+<p>Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.</p>
+<p>Are you interested in the new “Hydra for Azure Virtual Desktop” solution to manage AVD even better with a lot of automation? <a href="https://github.com/MarcelMeurer/WVD-Hydra">Check it out here.</a></p>
 <p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 01/22/2023</strong></a></p>
 <p><a href="https://youtu.be/fH1_FzNyJf0">Check out the Youtube video to install and configure WVDAdmin in four steps</a></p>
 <p>The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:</p>
@@ -2134,18 +2111,16 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 </details><br/>
 <h2 id="configuration">Configuration</h2>
 <h2 id="service-principal-functional-account">Service principal (functional account)</h2>
-<p>To work with the GUI, you need a service principal (function account) with permission to administrate access to the WVD/AVD and Azure resources. I decide to use a service principal to avoid confusion if my Azure AD user is only a guest account in the WVD/AVD tenant I have to administrate and easily switch between different tenants.</p>
+<p>To work with the GUI, you need a service principal (function account) with permission to administrate access to the AVD and Azure resources. I decide to use a service principal to avoid confusion if my Azure AD user is only a guest account in the AVD tenant I have to administrate and easily switch between different tenants.</p>
 <p>To create a service principal, go to your Azure AD -&gt; <a href="https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps" target="_blank">App registration</a> -&gt; New registration and type a name for your principal like “ svc_WVDAdmin” and press “register”.</p>
 <p><img src="../assets/images/WVDAdmin/documentation-001.png" alt="documentation-001" /></p>
 <p>Click on “certificates &amp; secrets”. Click “new client secret”, select a validity period and a description (like “Key01”). Press “add”.</p>
 <p><img src="../assets/images/WVDAdmin/documentation-002.png" alt="documentation-002" /></p>
 <p>Copy the generated key directly - it will never be displayed again. Note the key for later.</p>
 <p><img src="../assets/images/WVDAdmin/documentation-003.png" alt="documentation-003" /></p>
-<p>To assign users to app groups, the service principal needs two API permissions to get the users and groups from Azure AD:</p>
+<p>To assign users to app groups, the service principal needs one API permissions to get the users and groups from Azure AD (optional):</p>
 <p>Add the permission “Microsoft Graph” -&gt; Application Permission -&gt; Directory.Read.All</p>
 <p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png" alt="AADBrowser" /></p>
-<p><strong>From version 1.7.17 and AVD (spring version) you can skip this permission (is no longer available in Azure for new installations):</strong> API Permissions: Add the permission “Azure Active Directory Graph” -&gt; Application Permission -&gt; Directory.Read.All</p>
-<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01.png" alt="AADBrowser" /></p>
 <p>To consent, the permission and administrator of Azure AD have to grant this:</p>
 <p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png" alt="AADBrowser" /></p>
 <p>Go to “Overview”. Note the “Application (client) ID” and the “Directory (tenant) ID” as well.</p>
@@ -2156,31 +2131,15 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <li>Service principal id (application id)</li>
 <li>Service principal key</li>
 </ul>
-<h2 id="wvd-permissions-classic--fall-version">WVD permissions (Classic / Fall Version)</h2>
-<p>This chapter is for WVD Classic / Fall. <a href="#wvd-permissions-arm--spring-version">Skip</a> this chapter if you only work with WVD/AVD ARM (Spring).</p>
-<p>To use WVDAdmin you need at least an existing WVD/AVD tenant. If you new to WVD/AVD follow this article to create a WVD/AVD tenant:  [https://docs.microsoft.com/en-us/azure/virtual-desktop/virtual-desktop-fall-2019/tenant-setup-azure-active-directory)</p>
-<p>You have to use PowerShell to give the WVD/AVD the appropriated permission:</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Import-Module</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">Microsoft.RDInfra.RDPowerShell</span><span class="w">
-</span><span class="c"># log on with an administrative user account to your </span><span class="w">
-</span><span class="n">Add-RdsAccount</span><span class="w"> </span><span class="nt">-DeploymentUrl</span><span class="w"> </span><span class="s2">"https://rdbroker.wvd.microsoft.com"</span><span class="w">  
-
-</span><span class="c"># list rds tenants</span><span class="w">
-</span><span class="n">Get-RdsTenant</span><span class="w">
-
-</span><span class="c"># give your service principal the right permission</span><span class="w">
-</span><span class="n">New-RdsRoleAssignment</span><span class="w"> </span><span class="nt">-TenantName</span><span class="w"> </span><span class="s2">"Builder City"</span><span class="w"> </span><span class="nt">-RoleDefinitionName</span><span class="w"> </span><span class="s2">"RDS Owner"</span><span class="w"> </span><span class="nt">-ApplicationId</span><span class="w"> </span><span class="nx">89050a12-xxxx-xxxx-xxxx-000000000000</span><span class="w">
-</span></code></pre></div></div>
-<p><img src="../assets/images/WVDAdmin/documentation-005.png" alt="documentation-005" /></p>
-<h2 id="wvdavd-permissions-arm--spring-version">WVD/AVD permissions (ARM / Spring Version)</h2>
-<p>This chapter is for WVD/AVD ARM / Spring. <a href="#azure-resource-permissions">Skip</a> this chapter if you only work with WVD Classic (Fall).</p>
-<p>The service principal needs permission to add and modify WVD/AVD resource objects (host pools, workspaces, app groups). To assign users and groups to app groups, the service principal needs the owner role on the resource groups you want to use for your WVD/AVD environment. Add the service principal in the next step and use the <strong>owner</strong> role.</p>
-<h2 id="register-resource-provider-arm--spring-version">Register Resource Provider (ARM / Spring Version)</h2>
-<p>This chapter is for WVD/AVD ARM / Spring. <a href="#azure-resource-permissions">Skip</a> this chapter if you only work with WVD/AVD Classic (Fall).</p>
-<p>If you have never worked with WVD, you have to register the WVD/AVD resource provider once. To do that, go to the Azure portal -&gt; subscriptions -&gt; select your subscription -&gt; Resource providers</p>
+<h2 id="avd-permissions">AVD permissions</h2>
+<p>This chapter is for AVD ARM / Spring. <a href="#azure-resource-permissions">Skip</a> this chapter if you only work with WVD Classic (Fall).</p>
+<p>The service principal needs permission to add and modify AVD resource objects (host pools, workspaces, app groups). To assign users and groups to app groups, the service principal needs the owner role on the resource groups you want to use for your AVD environment. Add the service principal in the next step and use the <strong>owner</strong> role.</p>
+<h2 id="register-resource-provider">Register Resource Provider</h2>
+<p>If you have never worked with AVD, you have to register the AVD resource provider once. To do that, go to the Azure portal -&gt; subscriptions -&gt; select your subscription -&gt; Resource providers</p>
 <p>Search for “Microsoft.DesktopVirtualization” and click on “Register”.
 <img src="../assets/images/WVDAdmin/documentation-015.png" alt="documentation-015" /></p>
 <h2 id="azure-resource-permissions">Azure resource permissions</h2>
-<p>The service principal needs permission to subscriptions or resource groups to manage your WVD/AVD resources, imaging template VM and rollout session hosts.</p>
+<p>The service principal needs permission to subscriptions or resource groups to manage your AVD resources, imaging template VM and rollout session hosts.</p>
 <p>Open the Azure portal and go to the resource groups you want to use or to the subscriptions. In each resource group/subscription, click “Access control (IAM)” -&gt; select “Add” -&gt; Add role assignment. Select “owner” and search in “Select” for your service principal name. Click on the principal and save the settings.</p>
 <p><strong>Note:</strong> Owner is needed to assign users to app groups. For other resources, “contributor” is fine.</p>
 <p><img src="../assets/images/WVDAdmin/documentation-006.png" alt="documentation-006" /></p>
@@ -2192,11 +2151,11 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <p>Delegate permission for the user to an OU. I found a really good blog post from <a href="https://twitter.com/prajwaldesai">Prajwal Desai</a>. Check out hist post on (external web site): <a href="https://www.prajwaldesai.com/allow-domain-user-to-add-computer-to-domain/" target="_blank">Method 2 – Delegate rights to user/group using Active Directory Users and Computers</a></p>
 <p>In my case I added my function account to: “OU=WVD,OU=Azure,OU=Site,OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test”</p>
 <h2 id="optional-create-a-file-share">Optional: Create a file share</h2>
-<p>In earlier versions (&lt;1.6.40), you had to provide the deployment script and the WVD/AVD agent binaries on a custom file share or blob storage. With WVDAdmin 1.6.40 or newer, this no longer mandatory.
-In some cases, where virtual machines don’t have access to the internet to download the WVD/AVD agent binaries, you can use a custom file share.</p>
+<p>In earlier versions (&lt;1.6.40), you had to provide the deployment script and the AVD agent binaries on a custom file share or blob storage. With WVDAdmin 1.6.40 or newer, this no longer mandatory.
+In some cases, where virtual machines don’t have access to the internet to download the AVD agent binaries, you can use a custom file share.</p>
 <details><summary>Read more.</summary><br/>
 <p><em>Hint: Alternatively, you can use Azure blob storage to store the script. Make the blob storage read-only and use the URL as rollout script-path. E.g.: <a href="https://sharedservices01.blob.core.windows.net/wvd">https://sharedservices01.blob.core.windows.net/wvd</a></em></p>
-<p>Create a file share for the configuration script (which adds new session hosts to the domain and install the WVD/AVD agent). Give everyone at least read permissions. Set the NTFS permissions to everyone and read. This is necessary while during the first startup, the VM extension tries to execute the script. In this process, the file share is accessed anonymously.</p>
+<p>Create a file share for the configuration script (which adds new session hosts to the domain and install the AVD agent). Give everyone at least read permissions. Set the NTFS permissions to everyone and read. This is necessary while during the first startup, the VM extension tries to execute the script. In this process, the file share is accessed anonymously.</p>
 <p><img src="../assets/images/WVDAdmin/documentation-009.png" alt="documentation-009" /></p>
 <p><img src="../assets/images/WVDAdmin/documentation-010.png" alt="documentation-010" /></p>
 <p>Place the following files in this share:</p>
@@ -2219,7 +2178,7 @@ In some cases, where virtual machines don’t have access to the internet to dow
 </li>
 </ul>
 <h1 id="configure-wvdadmin">Configure WVDAdmin</h1>
-<p>Please start WVDAdmin. Before you load WVD/AVD and Azure data, copy the Azure tenant id, service principal id, and service principal key into the welcome tab. Press save and load the data by clicking “Reload all”.</p>
+<p>Please start WVDAdmin. Before you load AVD and Azure data, copy the Azure tenant id, service principal id, and service principal key into the welcome tab. Press save and load the data by clicking “Reload all”.</p>
 <p>You are now able to administrate WVD, create images from template VMs and rollout new session hosts.</p>
 <p>The first time you want to roll out new session hosts, you have to enter some information from your Active Directory and file share configuration from above:</p>
 <p><img src="../assets/images/WVDAdmin/documentation-012.png" alt="documentation-012" /></p>
@@ -2247,30 +2206,30 @@ In some cases, where virtual machines don’t have access to the internet to dow
 <p>You can and should reuse the template VM for new updates and applications. After these changes, shut down the template VM and create a new image.</p>
 <h1 id="tipps-amp-tricks">Tipps &amp; Tricks</h1>
 <h2 id="vm-scale-sets">VM Scale Sets</h2>
-<p>First node: VM Scale Sets cannot autoscale WVD/AVD session hosts. Auto-scaling only works for stateless services like a web server. But if you need hundreds of session hosts, then VM Scale Set allows you to work with these numbers efficiently.</p>
+<p>First node: VM Scale Sets cannot autoscale AVD session hosts. Auto-scaling only works for stateless services like a web server. But if you need hundreds of session hosts, then VM Scale Set allows you to work with these numbers efficiently.</p>
 <details><summary>Read more</summary><br/>
-From version 1.2.5, WVDAdmin support VM Scale Sets. A Scale Set can have several instances, which are the VMs / session hosts. There are some essential things you have to know if you use VM Scale Set with WVDAdmin and WVD/AVD itself:
+From version 1.2.5, WVDAdmin support VM Scale Sets. A Scale Set can have several instances, which are the VMs / session hosts. There are some essential things you have to know if you use VM Scale Set with WVDAdmin and AVD itself:
 <ul>
 <li>Build a Scale Set with WVDAdmin. Select an image, right-click and select “Create session host from image”. Check “Rollout as VM Scale Set”</li>
 <li>You can use regular disks and ephemeral disks. If you use ephemeral disks, you cannot deallocate the instances of your Scale Set. You have to delete the instances</li>
 <li>Today, you can not use ultra disks</li>
 <li>You can add and remove instances with WVDAdmin or in the Azure Portal. New instances will join the domain and WVD</li>
-<li>A new instance can only join WVD/AVD if the session host with the new name doesn’t exist. If you delete instances, the session host entry will also be removed</li>
+<li>A new instance can only join AVD if the session host with the new name doesn’t exist. If you delete instances, the session host entry will also be removed</li>
 <li>You can re-image single instances or all instances of a Scale Set. After that, the instances are “clean” as at the first rollout</li>
-<li>Adding instances or re-imaging assumes that the Scale Set configuration (which is a custom script extension) has a valid WVD/AVD token to join new instances to WVD. While WVD/AVD provides only one token per host pool and that the token can be expiring, you can update the token with a right-click on the Scale Set and select “Update WVD token”. The max. lifetime of a token is 59 days</li>
+<li>Adding instances or re-imaging assumes that the Scale Set configuration (which is a custom script extension) has a valid AVD token to join new instances to WVD. While AVD provides only one token per host pool and that the token can be expiring, you can update the token with a right-click on the Scale Set and select “Update WVD token”. The max. lifetime of a token is 59 days</li>
 <li>Unfortunately, WVDAdmin cannot change the source image for a VM Scale Set. So if you want to update the image for a host pool, take these steps:
 <ul>
 <li>Rollout a new Scale Set based on the new image</li>
 <li>Disable new logons for the old session host from the previous Scale Set</li>
 <li>Test the host pool based on the new Scale Set</li>
-<li>If no user logged on to the ancient Scale Set, remove all instances from the Scale Set (this deletes the session hosts in WVD/AVD as well)</li>
+<li>If no user logged on to the ancient Scale Set, remove all instances from the Scale Set (this deletes the session hosts in AVD as well)</li>
 <li>Remove the Scale Set</li>
 </ul>
 </details><br/>
 </li>
 </ul>
 <h2 id="ephemeral--disks">Ephemeral  disks</h2>
-<p>Ephemeral disks are awesome. They give you a high performance free of charge. Especially in a WVD/AVD multiuser environment where no data a stored permanently on the session hosts, this kind of disk can give you some value add.</p>
+<p>Ephemeral disks are awesome. They give you a high performance free of charge. Especially in a AVD multiuser environment where no data a stored permanently on the session hosts, this kind of disk can give you some value add.</p>
 <details><summary>Read more</summary><br/>
 Ephemeral disks are running on the Azure hypervisor and not stored. This has some advantages:
 <ul>
@@ -2300,10 +2259,10 @@ Ephemeral disks are running on the Azure hypervisor and not stored. This has som
 <p>If you deploy session hosts to a host pool, WVDAdmin counts up the names from the highest available VM. E.g., if you have a session host with the name “WVD-PROD-012” and you rollout new hosts (WVD-PROD-###), the first new hostname is “WVD-PROD-013” - even if you have gaps in the existing numeration. You can force WVDAdmin to fill this gaps (non-existing hosts in the naming schema) if you set the following registry key:
 Reg-DWord: <strong>NamingMode</strong> = <strong>1</strong></p>
 <h3 id="split-tenant">Split-Tenant</h3>
-<p>Usually, the WVD/AVD tenant and the resources (sessions hosts) are in the same AAD tenant. If you have two Azure AD tenant, you can use WVDAdmin with a second service principal for the session hosts (resource tenant).
+<p>Usually, the AVD tenant and the resources (sessions hosts) are in the same AAD tenant. If you have two Azure AD tenant, you can use WVDAdmin with a second service principal for the session hosts (resource tenant).
 <a href="../Windows-Virtual-Desktop-Admin-for-2-tenant-mode">Follow this link</a></p>
 <h3 id="us-government-cloud">US-Government Cloud</h3>
-<p>WVDAdmin can be used to deploy WVD/AVD in the Azure Government Cloud. You can enable WVDAdmin to work in the US Government Cloud via registry:
+<p>WVDAdmin can be used to deploy AVD in the Azure Government Cloud. You can enable WVDAdmin to work in the US Government Cloud via registry:
 Reg-SZ: <strong>Environment</strong> = <strong>US</strong></p>
 <h3 id="run-custom-actions-simultaneously">Run custom actions simultaneously</h3>
 <p>From version 1.6.15, WVDAdmin supports custom scripts to run administrative tasks simultaneously on different session hosts. And that is easy to use and to extend.
@@ -2337,7 +2296,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <ul>
 <li>You have created a host pool, an app group, and assigned a user to the app group, but the user cannot see the apps/desktop.
 <ul>
-<li>For WVD/AVD ARM: Don’t forget to create a workspace and link the app group in the workspace. The workspace is mandatory to show the users’ resources.</li>
+<li>For AVD ARM: Don’t forget to create a workspace and link the app group in the workspace. The workspace is mandatory to show the users’ resources.</li>
 <li>For the HTML5 web site: Check the correct web address:
 <ul>
 <li>ARM/Spring: <a href="https://aka.ms/wvdarmweb">https://aka.ms/wvdarmweb</a></li>
@@ -2364,9 +2323,8 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <li><a href="#release-history">Release History</a></li>
 <li><a href="#configuration">Configuration</a></li>
 <li><a href="#service-principal-functional-account">Service principal (functional account)</a></li>
-<li><a href="#wvd-permissions-classic--fall-version">WVD permissions (Classic / Fall Version)</a></li>
-<li><a href="#wvdavd-permissions-arm--spring-version">WVD/AVD permissions (ARM / Spring Version)</a></li>
-<li><a href="#register-resource-provider-arm--spring-version">Register Resource Provider (ARM / Spring Version)</a></li>
+<li><a href="#avd-permissions">AVD permissions</a></li>
+<li><a href="#register-resource-provider">Register Resource Provider</a></li>
 <li><a href="#azure-resource-permissions">Azure resource permissions</a></li>
 <li><a href="#prepare-your-native-active-directory">Prepare your “native” Active Directory</a></li>
 <li><a href="#optional-create-a-file-share">Optional: Create a file share</a></li>
