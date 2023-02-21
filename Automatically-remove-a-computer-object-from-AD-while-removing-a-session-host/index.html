@@ -6,27 +6,27 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD | ITProCloud Blog</title>
+<title>Automatically remove a computer object from AD while removing a session host in AVD | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD | ITProCloud Blog</title>
+<title>Automatically remove a computer object from AD while removing a session host in AVD | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD" />
+<meta property="og:title" content="Automatically remove a computer object from AD while removing a session host in AVD" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don’t need to have network line-of-sight to the domain controller." />
-<meta property="og:description" content="With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don’t need to have network line-of-sight to the domain controller." />
-<link rel="canonical" href="https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/" />
-<meta property="og:url" content="https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/" />
+<meta name="description" content="With my tools WVDAdmin and Hydra for Azure Virtual Desktop, you can easily manage Azure Virtual Desktop. It also includes the deletion of session hosts and VMs with a single click - or automated. If the host - or computer object - is AD domain-joined, the compute object is usually not deleted and re-used on the next deployment." />
+<meta property="og:description" content="With my tools WVDAdmin and Hydra for Azure Virtual Desktop, you can easily manage Azure Virtual Desktop. It also includes the deletion of session hosts and VMs with a single click - or automated. If the host - or computer object - is AD domain-joined, the compute object is usually not deleted and re-used on the next deployment." />
+<link rel="canonical" href="https://blog.itprocloud.de/Automatically-remove-a-computer-object-from-AD-while-removing-a-session-host/" />
+<meta property="og:url" content="https://blog.itprocloud.de/Automatically-remove-a-computer-object-from-AD-while-removing-a-session-host/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="https://blog.itprocloud.de/assets/images/AAD-Only-FSLogix-000.png" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/AAD-AD-Remove-03.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2023-02-15T00:00:00+01:00" />
+<meta property="article:published_time" content="2023-02-21T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/AAD-Only-FSLogix-000.png" />
-<meta property="twitter:title" content="Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/AAD-AD-Remove-03.png" />
+<meta property="twitter:title" content="Automatically remove a computer object from AD while removing a session host in AVD" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/AAD-Only-FSLogix-000.png","datePublished":"2023-02-15T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/","author":{"@type":"Person","name":"mm"},"headline":"Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD","dateModified":"2023-02-15T00:00:00+01:00","description":"With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don’t need to have network line-of-sight to the domain controller.","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/AAD-AD-Remove-03.png","datePublished":"2023-02-21T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Automatically-remove-a-computer-object-from-AD-while-removing-a-session-host/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Automatically-remove-a-computer-object-from-AD-while-removing-a-session-host/","author":{"@type":"Person","name":"mm"},"headline":"Automatically remove a computer object from AD while removing a session host in AVD","dateModified":"2023-02-21T00:00:00+01:00","description":"With my tools WVDAdmin and Hydra for Azure Virtual Desktop, you can easily manage Azure Virtual Desktop. It also includes the deletion of session hosts and VMs with a single click - or automated. If the host - or computer object - is AD domain-joined, the compute object is usually not deleted and re-used on the next deployment.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -351,24 +351,61 @@
 <div class="main-content">
     <section>
     <div class="section-title">
-        <h2><span>Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD</span></h2>
+        <h2><span>Automatically remove a computer object from AD while removing a session host in AVD</span></h2>
     </div>
 
     <div class="article-post">
 	
 		<!-- change content to anchor styled output -->
-		<p>With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don’t need to have network line-of-sight to the domain controller.</p>
-<p>However, the user identities must still be hybrid / synchronized from a legacy AD right now. And that prevents having AAD-only users in a multi-user pool in AVD where a profile is mostly mandatory.</p>
-      <h2 id="update-2023-02-15">
-        
-        
-          Update 2023-02-15 <a href="#update-2023-02-15"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
-        
-        
-      </h2>
-    
-<p><strong>Change of the script to work with Windows 11 22H2</strong>
-Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key prevents this behavior.</p>
+		<p>With my tools WVDAdmin and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for Azure Virtual Desktop</a>, you can easily manage Azure Virtual Desktop. It also includes the deletion of session hosts and VMs with a single click - or automated. If the host - or computer object - is AD domain-joined, the compute object is usually not deleted and re-used on the next deployment.</p>
+<p>In some circumstances, it would make sense to also delete the computer object: If you are running the environment hybrid-joined, the orphan computer objects are synced to AAD - even if you delete the AAD device of the computer.</p>
+<p>To clean up the AD and AAD, I use a script running on the session host shortly before deleting the host (ok, the host must be started to do that). While the script runs on the session host, the host can remove itself easily from Azure AD. To remove it also from AD, a service account is used. You can put a service account to Hydra on a host pool level (Base settings). If the service account has the proper permission to remove the computer object, we can leave both ADs with one script. For that, create a script in Scripts and Collections -&gt; Scrips with the name “Remove computer from AD and AAD”:</p>
+<p><img src="../assets/images/AAD-AD-Remove-01.png" alt="" /></p>
+<p>With the following script (please tick the checkbox “Service Account”:</p>
+<pre><code># Each PowerShell script can use internal logging to store logging data to the local disk. The log is stored in %Windir%\System32\LogFiles\Hydra.Logging.log
+
+# Check, if service account available
+if ($global:Hydra_ServiceAccount_PSC -eq $null) {
+    throw &quot;Failed: Service account missing - The script needs a configured service account. You can configure the service account (having the proper permissions to the OU in the base settings of the pool).&quot;
+}
+
+$outMessage=&quot;Script finished&quot;
+
+LogWriter(&quot;Try to remove computer account from domain&quot;)
+
+$root = &quot;LDAP://$((Get-WmiObject -Namespace root\cimv2 -Class Win32_ComputerSystem | Select Name, Domain).Domain)&quot;
+LogWriter(&quot;Domain root is: $root&quot;)
+
+$domain = New-Object System.DirectoryServices.DirectoryEntry($root, $global:Hydra_ServiceAccount_PSC.UserName,$global:Hydra_ServiceAccount_PSC.GetNetworkCredential().Password)
+$search = New-Object -TypeName System.DirectoryServices.DirectorySearcher($domain)
+
+$search.filter = &quot;(&amp;(ObjectCategory=Computer)(ObjectClass=Computer)((cn=$($env:computername))))&quot;
+$computer=$search.FindOne()
+
+
+if ($computer -eq $null) {
+    $outMessage=&quot;Could find computer object in AD&quot;
+    LogWriter($outMessage)
+} else {
+    $dnc = $computer.GetDirectoryEntry()
+    LogWriter(&quot;DN of the computer object: $($dnc.Path)&quot;)
+    LogWriter(&quot;Try to remove computer object with user $($global:Hydra_ServiceAccount_PSC.UserName)&quot;)
+
+    $dnc = $computer.GetDirectoryEntry()
+
+    $dnc.DeleteTree()
+    LogWriter(&quot;Computer object deleted&quot;)
+}
+
+LogWriter(&quot;Try to remove computer account from AAD&quot;)
+dsregcmd /leave
+
+OutputWriter($outMessage)
+</code></pre>
+<p>Do run the script automatically on delete, go to the host pool configuration in Hydra: Base -&gt; Run script or collection on specific events -&gt; On-Delete and select your script</p>
+<p><img src="../assets/images/AAD-AD-Remove-02.png" alt="" /></p>
+<p>If you then delete a host, the computer account in AD and the device in AAD are deleted:</p>
+<p><img src="../assets/images/AAD-AD-Remove-03.png" alt="" /></p>
       <h2 id="workaround">
         
         
@@ -661,11 +698,55 @@ OutputWriter(&quot;The script has finished.&quot;)
 <p><strong>Hint:</strong> You can create another share for MSIX App-Attach packages. The system account also has permission to load the packages.</p>
 <p><strong>Note: It’s a nice workaround to bridge the time until there is a native solution in Azure. Please use it at your own risk.</strong></p>
 
-		<!--<p>With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don’t need to have network line-of-sight to the domain controller.</p>
-<p>However, the user identities must still be hybrid / synchronized from a legacy AD right now. And that prevents having AAD-only users in a multi-user pool in AVD where a profile is mostly mandatory.</p>
-<h2 id="update-2023-02-15">Update 2023-02-15</h2>
-<p><strong>Change of the script to work with Windows 11 22H2</strong>
-Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key prevents this behavior.</p>
+		<!--<p>With my tools WVDAdmin and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for Azure Virtual Desktop</a>, you can easily manage Azure Virtual Desktop. It also includes the deletion of session hosts and VMs with a single click - or automated. If the host - or computer object - is AD domain-joined, the compute object is usually not deleted and re-used on the next deployment.</p>
+<p>In some circumstances, it would make sense to also delete the computer object: If you are running the environment hybrid-joined, the orphan computer objects are synced to AAD - even if you delete the AAD device of the computer.</p>
+<p>To clean up the AD and AAD, I use a script running on the session host shortly before deleting the host (ok, the host must be started to do that). While the script runs on the session host, the host can remove itself easily from Azure AD. To remove it also from AD, a service account is used. You can put a service account to Hydra on a host pool level (Base settings). If the service account has the proper permission to remove the computer object, we can leave both ADs with one script. For that, create a script in Scripts and Collections -&gt; Scrips with the name “Remove computer from AD and AAD”:</p>
+<p><img src="../assets/images/AAD-AD-Remove-01.png" alt="" /></p>
+<p>With the following script (please tick the checkbox “Service Account”:</p>
+<pre><code># Each PowerShell script can use internal logging to store logging data to the local disk. The log is stored in %Windir%\System32\LogFiles\Hydra.Logging.log
+
+# Check, if service account available
+if ($global:Hydra_ServiceAccount_PSC -eq $null) {
+    throw &quot;Failed: Service account missing - The script needs a configured service account. You can configure the service account (having the proper permissions to the OU in the base settings of the pool).&quot;
+}
+
+$outMessage=&quot;Script finished&quot;
+
+LogWriter(&quot;Try to remove computer account from domain&quot;)
+
+$root = &quot;LDAP://$((Get-WmiObject -Namespace root\cimv2 -Class Win32_ComputerSystem | Select Name, Domain).Domain)&quot;
+LogWriter(&quot;Domain root is: $root&quot;)
+
+$domain = New-Object System.DirectoryServices.DirectoryEntry($root, $global:Hydra_ServiceAccount_PSC.UserName,$global:Hydra_ServiceAccount_PSC.GetNetworkCredential().Password)
+$search = New-Object -TypeName System.DirectoryServices.DirectorySearcher($domain)
+
+$search.filter = &quot;(&amp;(ObjectCategory=Computer)(ObjectClass=Computer)((cn=$($env:computername))))&quot;
+$computer=$search.FindOne()
+
+
+if ($computer -eq $null) {
+    $outMessage=&quot;Could find computer object in AD&quot;
+    LogWriter($outMessage)
+} else {
+    $dnc = $computer.GetDirectoryEntry()
+    LogWriter(&quot;DN of the computer object: $($dnc.Path)&quot;)
+    LogWriter(&quot;Try to remove computer object with user $($global:Hydra_ServiceAccount_PSC.UserName)&quot;)
+
+    $dnc = $computer.GetDirectoryEntry()
+
+    $dnc.DeleteTree()
+    LogWriter(&quot;Computer object deleted&quot;)
+}
+
+LogWriter(&quot;Try to remove computer account from AAD&quot;)
+dsregcmd /leave
+
+OutputWriter($outMessage)
+</code></pre>
+<p>Do run the script automatically on delete, go to the host pool configuration in Hydra: Base -&gt; Run script or collection on specific events -&gt; On-Delete and select your script</p>
+<p><img src="../assets/images/AAD-AD-Remove-02.png" alt="" /></p>
+<p>If you then delete a host, the computer account in AD and the device in AAD are deleted:</p>
+<p><img src="../assets/images/AAD-AD-Remove-03.png" alt="" /></p>
 <h2 id="workaround">Workaround</h2>
 <p>I found a nice workaround to do the same with cloud-only users in Azure AD - including the use of FSLogix file shares.</p>
 <p>Today, an Azure file share cannot be configured to use the AAD like an AD to set NTFS permissions. This is necessary to give the users the right permissions to create a profile folder on the share and have full access only to their own created files (the profile disk). Users should never have access to the profile disks of other users - to prevent data theft or to modify other users’ data).</p>

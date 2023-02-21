@@ -5,9 +5,314 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 20 Feb 2023 09:45:27 +0100</pubDate>
-    <lastBuildDate>Mon, 20 Feb 2023 09:45:27 +0100</lastBuildDate>
+    <pubDate>Tue, 21 Feb 2023 11:07:59 +0100</pubDate>
+    <lastBuildDate>Tue, 21 Feb 2023 11:07:59 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Automatically remove a computer object from AD while removing a session host in AVD</title>
+        <description>&lt;p&gt;With my tools WVDAdmin and &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;, you can easily manage Azure Virtual Desktop. It also includes the deletion of session hosts and VMs with a single click - or automated. If the host - or computer object - is AD domain-joined, the compute object is usually not deleted and re-used on the next deployment.&lt;/p&gt;
+&lt;p&gt;In some circumstances, it would make sense to also delete the computer object: If you are running the environment hybrid-joined, the orphan computer objects are synced to AAD - even if you delete the AAD device of the computer.&lt;/p&gt;
+&lt;p&gt;To clean up the AD and AAD, I use a script running on the session host shortly before deleting the host (ok, the host must be started to do that). While the script runs on the session host, the host can remove itself easily from Azure AD. To remove it also from AD, a service account is used. You can put a service account to Hydra on a host pool level (Base settings). If the service account has the proper permission to remove the computer object, we can leave both ADs with one script. For that, create a script in Scripts and Collections -&amp;gt; Scrips with the name “Remove computer from AD and AAD”:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-AD-Remove-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;With the following script (please tick the checkbox “Service Account”:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Each PowerShell script can use internal logging to store logging data to the local disk. The log is stored in %Windir%\System32\LogFiles\Hydra.Logging.log
+
+# Check, if service account available
+if ($global:Hydra_ServiceAccount_PSC -eq $null) {
+    throw &amp;quot;Failed: Service account missing - The script needs a configured service account. You can configure the service account (having the proper permissions to the OU in the base settings of the pool).&amp;quot;
+}
+
+$outMessage=&amp;quot;Script finished&amp;quot;
+
+LogWriter(&amp;quot;Try to remove computer account from domain&amp;quot;)
+
+$root = &amp;quot;LDAP://$((Get-WmiObject -Namespace root\cimv2 -Class Win32_ComputerSystem | Select Name, Domain).Domain)&amp;quot;
+LogWriter(&amp;quot;Domain root is: $root&amp;quot;)
+
+$domain = New-Object System.DirectoryServices.DirectoryEntry($root, $global:Hydra_ServiceAccount_PSC.UserName,$global:Hydra_ServiceAccount_PSC.GetNetworkCredential().Password)
+$search = New-Object -TypeName System.DirectoryServices.DirectorySearcher($domain)
+
+$search.filter = &amp;quot;(&amp;amp;(ObjectCategory=Computer)(ObjectClass=Computer)((cn=$($env:computername))))&amp;quot;
+$computer=$search.FindOne()
+
+
+if ($computer -eq $null) {
+    $outMessage=&amp;quot;Could find computer object in AD&amp;quot;
+    LogWriter($outMessage)
+} else {
+    $dnc = $computer.GetDirectoryEntry()
+    LogWriter(&amp;quot;DN of the computer object: $($dnc.Path)&amp;quot;)
+    LogWriter(&amp;quot;Try to remove computer object with user $($global:Hydra_ServiceAccount_PSC.UserName)&amp;quot;)
+
+    $dnc = $computer.GetDirectoryEntry()
+
+    $dnc.DeleteTree()
+    LogWriter(&amp;quot;Computer object deleted&amp;quot;)
+}
+
+LogWriter(&amp;quot;Try to remove computer account from AAD&amp;quot;)
+dsregcmd /leave
+
+OutputWriter($outMessage)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Do run the script automatically on delete, go to the host pool configuration in Hydra: Base -&amp;gt; Run script or collection on specific events -&amp;gt; On-Delete and select your script&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-AD-Remove-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;If you then delete a host, the computer account in AD and the device in AAD are deleted:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-AD-Remove-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;workaround&quot;&gt;Workaround&lt;/h2&gt;
+&lt;p&gt;I found a nice workaround to do the same with cloud-only users in Azure AD - including the use of FSLogix file shares.&lt;/p&gt;
+&lt;p&gt;Today, an Azure file share cannot be configured to use the AAD like an AD to set NTFS permissions. This is necessary to give the users the right permissions to create a profile folder on the share and have full access only to their own created files (the profile disk). Users should never have access to the profile disks of other users - to prevent data theft or to modify other users’ data).&lt;/p&gt;
+&lt;p&gt;But how to handle this? For this workaround, I use a technic I have often used in the past to cover similar challenges (like &lt;a href=&quot;https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/&quot;&gt;this post&lt;/a&gt;). In Windows, you can configure on a resource level what credential should be used - and that on a per-user level. This also works for the system account and, therefore, also for services. So, we are able to “teach” the system account to use specific credentials to access an Azure storage account.&lt;/p&gt;
+&lt;p&gt;In our case, we need credentials to have full access to an Azure file share. And there are credentials to do that: The storage account credentials. Each storage account has credentials that can be used to have full access. You can grab the credentials from the “Access Key” menu in the storage account:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-005.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Collect the right values:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;User name:&lt;/td&gt;
+&lt;td&gt;localhost\&amp;lt;storageAccountName&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Secret:&lt;/td&gt;
+&lt;td&gt;&amp;lt;Key&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;StorageAccountFqdn:&lt;/td&gt;
+&lt;td&gt;&amp;lt;storageAccountName&amp;gt;.file.core.net (the files endpoint)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;In my example, the user name is “localhost\avdaadstorage” and &amp;lt;StorageAccountFqdn&amp;gt; is “avdaadstorage.file.core.windows.net”&lt;/p&gt;
+&lt;p&gt;To “teach” the system account to use these credentials, we have to run the following command in the context of the system account:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cmdkey.exe /generic:&amp;lt;StorageAccountFqdn&amp;gt; /user:localhost\&amp;lt;StorageAccountName&amp;gt; /pass:&amp;lt;Key&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;cmdkey.exe /generic:avdaadstorage.file.core.windows.net /user:localhost\add:avdaadstorage /pass:xxxxxxxxxxxxxxxx
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;After running the command on a host/VM, any access in the context of the system account to the storage runs with the configured credentials - to every share!&lt;/p&gt;
+&lt;p&gt;Great, our system can now access the shares on the storage account and has full permission.&lt;/p&gt;
+&lt;h3 id=&quot;window-11-22h2-and-credential-guard-with-uefi-lock&quot;&gt;Window 11 22H2 and Credential Guard with UEFI lock&lt;/h3&gt;
+&lt;p&gt;To prevent that Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key is needed:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force  # Only needed for Windows 11 22H2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Remember that this disables &lt;a href=&quot;https://learn.microsoft.com/en-us/windows/security/identity-protection/credential-guard/credential-guard-manage#enable-virtualization-based-security-and-windows-defender-credential-guard&quot;&gt;Windows Defender Credential Guard&lt;/a&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;configuring-fslogix&quot;&gt;Configuring FSLogix&lt;/h2&gt;
+&lt;p&gt;Next step: Configure FSLogix to use the system account. Normally, FSLogix will access the share to store and read profiles in the user context. That is normally fine if users are able to authenticate with their own identity. In our case, we want to use the system account. The following reg-key configures FSLogix to use the system account:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Path:&lt;/td&gt;
+&lt;td&gt;HKLM:\SOFTWARE\FSLogix\Profiles&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Name:&lt;/td&gt;
+&lt;td&gt;AccessNetworkAsComputerObject&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Type:&lt;/td&gt;
+&lt;td&gt;DWord&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Value:&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;This value can be set via registry or PowerShell:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;New-Item -Path &amp;quot;HKLM:\SOFTWARE&amp;quot; -Name &amp;quot;FSLogix&amp;quot; -ErrorAction Ignore
+New-Item -Path &amp;quot;HKLM:\SOFTWARE\FSLogix&amp;quot; -Name &amp;quot;Profiles&amp;quot; -ErrorAction Ignore
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;AccessNetworkAsComputerObject&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force  # Only needed for Windows 11 22H2
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If not already done, configure the file share:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a share on your storage account (e.g., profiles)&lt;/li&gt;
+&lt;li&gt;Configure FSLogix to use the share on each host:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Path:&lt;/td&gt;
+&lt;td&gt;HKLM:\SOFTWARE\FSLogix\Profiles&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Name:&lt;/td&gt;
+&lt;td&gt;VHDLocations&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Type:&lt;/td&gt;
+&lt;td&gt;Reg_SZ&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Value:&lt;/td&gt;
+&lt;td&gt;\\&amp;lt;StorageAccountFqdn&amp;gt;\&amp;lt;ProfileShareName&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;And enable FSLogix profile service:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Path:&lt;/td&gt;
+&lt;td&gt;HKLM:\SOFTWARE\FSLogix\Profiles&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Name:&lt;/td&gt;
+&lt;td&gt;Enabled&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Type:&lt;/td&gt;
+&lt;td&gt;DWord&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Value:&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;After that, users can log in to the hosts, and the profile is stored on the file share on the storage account:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-000.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;security&quot;&gt;Security&lt;/h2&gt;
+&lt;p&gt;How secure is that?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Users cannot access their own or other profiles by entering the path to the share while they don’t have the storage account credentials.&lt;/li&gt;
+&lt;li&gt;Users can also not run programs in the system context (if they are not local admins on the host - what I expect).&lt;/li&gt;
+&lt;li&gt;Every local administrator of a host can run processes in the system context: So the local admin permissions/role must be secured to prevent admins from accessing the profile storage indirectly or reading the storage account credentials.&lt;/li&gt;
+&lt;li&gt;Azure Administrator with the permission Microsoft.Compute/virtualMachines/runCommand/action can send scripts running in the system context to a host/VM (like a contributor). That is comparable to local administrator permission.&lt;/li&gt;
+&lt;li&gt;The system has permission to access all shares on the storage account with the credentials. Not only the profile share. It makes sense to have a separate share for the profiles.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Summary:&lt;/strong&gt; Users with non-admin permissions can not access other users’ profiles. Local admins are able to do this, but local admins are able to compromise users in other ways. So local admin privileges &lt;strong&gt;should be considered carefully&lt;/strong&gt;. Same for privileged access in Azure.&lt;/p&gt;
+&lt;h2 id=&quot;do-the-full-configuration-with-a-script&quot;&gt;Do the full configuration with a script&lt;/h2&gt;
+&lt;p&gt;Let me share a script you can use to do the full configuration with a script. In the script, I also set some other basic configurations I mostly use for FSLogix. Keep in mind that the user name is part of the path and profile disk name. If you rename the display name of a user, the user will get a new profile.&lt;/p&gt;
+&lt;p&gt;The script must be executed directly after the rollout of a new host in the system context. It’s not possible to do that on the Master VM while the credential store is reset during sysprep. To run the script in the system context, use PSEXEC to open PowerShell in the system context (psexec /s powershell.exe).&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;WARNING:&lt;/strong&gt; The script contains a secret. Delete the script from the host&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;write-host &amp;quot;Configuring FSLogix&amp;quot;
+$fileServer=&amp;quot;avdaadstorage.file.core.windows.net&amp;quot;
+$profileShare=&amp;quot;\\$($fileServer)\profiles&amp;quot;
+
+$user=&amp;quot;localhost\avdaadstorage&amp;quot;
+$secret=&amp;quot;###################&amp;quot;
+
+New-Item -Path &amp;quot;HKLM:\SOFTWARE&amp;quot; -Name &amp;quot;FSLogix&amp;quot; -ErrorAction Ignore
+New-Item -Path &amp;quot;HKLM:\SOFTWARE\FSLogix&amp;quot; -Name &amp;quot;Profiles&amp;quot; -ErrorAction Ignore
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;Enabled&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;VHDLocations&amp;quot; -Value $profileShare -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;ConcurrentUserSessions&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;DeleteLocalProfileWhenVHDShouldApply&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;FlipFlopProfileDirectoryName&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;IsDynamic&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;KeepLocalDir&amp;quot; -Value 0 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;ProfileType&amp;quot; -Value 0 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;SizeInMBs&amp;quot; -Value 40000 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;VolumeType&amp;quot; -Value &amp;quot;VHDX&amp;quot; -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;AccessNetworkAsComputerObject&amp;quot; -Value 1 -force
+
+# Store credentials to access the storage account
+cmdkey.exe /generic:$fileServer /user:$($user) /pass:$($secret)
+# Disable Windows Defender Credential Guard (only needed for Windows 11 22H2)
+New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force
+
+write-host &amp;quot;The script has finished.&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;use-hydra-to-run-the-script-on-demand-or-automatically-after-each-rollout&quot;&gt;Use Hydra to run the script on-demand or automatically after each rollout&lt;/h2&gt;
+&lt;p&gt;You can use &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; to apply the script automatically after rolling out a new host.&lt;/p&gt;
+&lt;p&gt;Open the host pool configuration in Hydra -&amp;gt; Base and configure the service account:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Service account name: localhost\avdaadstorage&lt;/li&gt;
+&lt;li&gt;Service account password: &amp;lt;key of the storage account&amp;gt;&lt;/li&gt;
+&lt;li&gt;Save&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-002.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Scripts and Collections -&amp;gt; Scripts&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Duplicate an existing script to have a new one&lt;/li&gt;
+&lt;li&gt;Check “Service Account”&lt;/li&gt;
+&lt;li&gt;Give it a good name (e.g., “FSLogix and Cloud Accounts - Hydra integrated”)&lt;/li&gt;
+&lt;li&gt;Copy the following script into the code field&lt;/li&gt;
+&lt;li&gt;Save&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Script:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Check, if service account available
+if ($global:Hydra_ServiceAccount_PSC -eq $null) {
+    throw &amp;quot;Failed: Service account missing - The script needs a configured service account. You can configure the service account (having full access to the FSLogix profile share on the host pool configuration.&amp;quot;
+}
+
+LogWriter(&amp;quot;Configuring FSLogix&amp;quot;)
+$fileServer=&amp;quot;avdaadstorage.file.core.windows.net&amp;quot;
+$profileShare=&amp;quot;\\$($fileServer)\profiles&amp;quot;
+
+New-Item -Path &amp;quot;HKLM:\SOFTWARE&amp;quot; -Name &amp;quot;FSLogix&amp;quot; -ErrorAction Ignore
+New-Item -Path &amp;quot;HKLM:\SOFTWARE\FSLogix&amp;quot; -Name &amp;quot;Profiles&amp;quot; -ErrorAction Ignore
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;Enabled&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;VHDLocations&amp;quot; -Value $profileShare -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;ConcurrentUserSessions&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;DeleteLocalProfileWhenVHDShouldApply&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;FlipFlopProfileDirectoryName&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;IsDynamic&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;KeepLocalDir&amp;quot; -Value 0 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;ProfileType&amp;quot; -Value 0 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;SizeInMBs&amp;quot; -Value 40000 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;VolumeType&amp;quot; -Value &amp;quot;VHDX&amp;quot; -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;AccessNetworkAsComputerObject&amp;quot; -Value 1 -force
+
+
+LogWriter(&amp;quot;Setting credentials to access the storage account of the system&amp;quot;)
+cmdkey.exe /generic:$fileServer /user:$($global:Hydra_ServiceAccount_PSC.UserName) /pass:([System.Net.NetworkCredential]::new(&amp;quot;&amp;quot;,$global:Hydra_ServiceAccount_PSC.password).Password)
+LogWriter(&amp;quot;Disable Windows Defender Credential Guard (only needed for Windows 11 22H2)&amp;quot;)
+New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force
+
+OutputWriter(&amp;quot;The script has finished.&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-001.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;After that, you can trigger the script on a host or let it run automatically after each deployment:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Open the host pool configuration in Hydra -&amp;gt; New Session Host Rollout&lt;/li&gt;
+&lt;li&gt;Configure the rollout parameter&lt;/li&gt;
+&lt;li&gt;Select the script in “Run script or script collection after deployment”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-003.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;After that a new rollout looks like this:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-004.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;others&quot;&gt;Others&lt;/h2&gt;
+&lt;p&gt;And yes, there are other options to run the script in the system context automatically. Please ensure that the password/secret &lt;strong&gt;is not stored on the host’s disk&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Hint:&lt;/strong&gt; You can create another share for MSIX App-Attach packages. The system account also has permission to load the packages.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Note: It’s a nice workaround to bridge the time until there is a native solution in Azure. Please use it at your own risk.&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 21 Feb 2023 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/Automatically-remove-a-computer-object-from-AD-while-removing-a-session-host/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Automatically-remove-a-computer-object-from-AD-while-removing-a-session-host/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
@@ -141,12 +446,17 @@
 &lt;td&gt;02/20/2023&lt;/td&gt;
 &lt;td&gt;Added “Unresponding AVD Agents” in the tab “Resources” to identify running VM with a non responding AVD agent&lt;/td&gt;
 &lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.4&lt;/td&gt;
+&lt;td&gt;02/21/2023&lt;/td&gt;
+&lt;td&gt;Added new tab “FSLogix” to show the size, usage and free space of the FSLogix profiles&lt;/td&gt;
+&lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don’t generate costs&lt;/p&gt;
 </description>
-        <pubDate>Mon, 20 Feb 2023 00:00:00 +0100</pubDate>
+        <pubDate>Tue, 21 Feb 2023 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
         
@@ -1543,134 +1853,6 @@ WVD.Default.KeyVault.KeyUri: key for the vaul (https://&lt;my-vaul&gt;.vault.azu
         <category>Windows Virtual Desktop</category>
         
         <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Automatically add or change Azure Active Directory computer objects on-demand</title>
-        <description>&lt;p&gt;Hybrid joined AVD session hosts are great for working with conditional access, Intune (MEM), access to Azure files, and other AAD integrated services.&lt;/p&gt;
-&lt;p&gt;But there are some challenges: One challenge is that it takes a while to see new session hosts after the deployment in AAD - which avoids that AAD services (like ca) can be used directly. One reason for the delay is that AD objects are synced every 30 minutes by default using ADConnect. In the worst case, it takes 30 minutes before the computer object is visible in AAD.&lt;/p&gt;
-&lt;p&gt;My approach to lowering the delay is to pimp ADConnect with a custom PowerShell tool (SyncOnDemand.ps1): The tool checks every 3 seconds for computer objects in AD. The tool triggers ADConnect to start a differential sync if a computer object is new or updated after the last 30 minutes. To avoid the sync being triggered for the same computer object multiple times, already detected computer objects are ignored for the next 30 minutes.&lt;/p&gt;
-&lt;p&gt;This should bring down the time for a host before the host is also visible in AAD.&lt;/p&gt;
-&lt;p&gt;How does it work? Copy the script to the ADConnect server. Modify line 31 ($OuPath = …) to match your OU and domain.&lt;/p&gt;
-&lt;p&gt;Run the script in an administrative PowerShell. The script checks every 3 seconds for changed computer objects. Change one of the computer objects in the right OU to test it (e.g., change the description). The script detects the change and triggers a delta sync to AAD.&lt;/p&gt;
-&lt;p&gt;If everything works as expected, you can install the script with:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;SyncOnDemand.ps1 -Install
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;That creates a scheduled task to run the script on the startup of the ADConnect server. The scheduled task is started directly and runs in the background.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Update&lt;/strong&gt;: To speed up the replication between AD sites, you can use (“Use Notify”)[https://social.technet.microsoft.com/wiki/contents/articles/16929.set-active-directory-to-use-notify-replication.aspx]&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; This is a workaround. Use at your own risk&lt;/p&gt;
-&lt;p&gt;Script (must be run as an administrator):&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;param(
-    [Parameter(Mandatory=$false)]
-    [Switch]$Install
-)
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-
-
-if ($Install) {
-    Write-Host &amp;quot;Installing script to $env:windir&amp;quot;
-    Copy-Item &amp;quot;$($MyInvocation.InvocationName)&amp;quot; -Destination (&amp;quot;$($env:windir)\SyncOnDemand.ps1&amp;quot;)
-
-	$action = New-ScheduledTaskAction -Execute &amp;quot;$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe&amp;quot; -Argument &amp;quot;-executionPolicy Unrestricted -File `&amp;quot;$($env:windir)\SyncOnDemand.ps1`&amp;quot;&amp;quot;
-	$trigger = New-ScheduledTaskTrigger	-AtStartup
-	$principal = New-ScheduledTaskPrincipal 'NT Authority\SYSTEM'
-	$settingsSet = New-ScheduledTaskSettingsSet
-    $settingsSet.Enabled=$true
-    #$settingsSet.IdleSettings.IdleDuration=0
-    $settingsSet.StopIfGoingOnBatteries=$false
-    $settingsSet.DisallowStartIfOnBatteries=$false
-    $settingsSet.ExecutionTimeLimit=&amp;quot;PT0H&amp;quot;
-    
-	$task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
-	Register-ScheduledTask -TaskName 'ITPC-ADConnect-OnDemand' -InputObject $task -ErrorAction Ignore | Out-Null
-	Start-ScheduledTask -TaskName 'ITPC-ADConnect-OnDemand'
-    Write-Host &amp;quot;Starting the task&amp;quot;
-    return
-}
-
-
-# Parameter
-$OuPath = &amp;quot;LDAP://OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test&amp;quot;
-$AcceptChangesForTheLastMinutes=30
-$RunEachSeconds = 3
-
-# Initialize
-$cycle = Get-Date
-$table=@{}
-
-
-try {
-    Get-ADSyncScheduler | Out-Null
-} catch {
-    Write-Error &amp;quot;Command Get-ADSyncScheduler not exist. Please check your configuration. This script must run on a computer with AD-Connect installed&amp;quot;
-    return
-}
-
-
-do {
-    $lastStart = Get-Date
-    $dt=($lastStart.AddMinutes(-$AcceptChangesForTheLastMinutes)).ToUniversalTime().ToString(&amp;quot;yyyyMMddHHmmss.0Z&amp;quot;)
-    $newObjects=0
-    # cleanup ignore-list
-    $table.clone().GetEnumerator() | foreach {
-        if ($_.Value -le $lastStart.AddMinutes(-$AcceptChangesForTheLastMinutes)) {
-                Write-Host &amp;quot;Removing computer from the ignore-list: $($_.Name)&amp;quot;
-                $table.Remove($_.Name)
-            }
-    }
-
-    $search=[adsisearcher]&amp;quot;(&amp;amp;(ObjectCategory=computer)(|(whenchanged&amp;gt;=$dt)(whencreated&amp;gt;=$dt)))&amp;quot;
-    $search.SearchScope = &amp;quot;Subtree&amp;quot;
-    $search.PageSize=150000
-    $search.SearchRoot = $OuPath
-
-    $obj2=$search.FindAll()
-    Write-Host &amp;quot;Computer objects found: $($obj2.Count)&amp;quot;
-    $obj2 | foreach {
-        $le=$table[$_.Path]
-        if ($le -eq $null) {
-            $table.Add($_.Path,$lastStart)
-            Write-Host &amp;quot;Found an updated computer: $($_.Path)&amp;quot;
-            $newObjects++
-        } else {
-            Write-Host &amp;quot;Skipping computer while object is in the ignore-list for a while: $($_.Path)&amp;quot;
-        }
-    }
-
-    Write-Host &amp;quot;Ignore list: $($table.Count)&amp;quot;
-    Write-Host &amp;quot;New objects: $newObjects&amp;quot;
-    if ($newObjects -gt 0) {
-        Write-Host &amp;quot;Starting delta sync&amp;quot;
-        try {
-            do {
-                Sleep -Seconds 1
-            } while ((Get-ADSyncScheduler).SyncCycleInProgress)
-            Start-ADSyncSyncCycle -PolicyType Delta | Out-Null
-        } catch {
-            Write-Error &amp;quot;Delta sync failed&amp;quot;
-            $table=@{}
-        }
-        do {
-            Sleep -Seconds 1
-        } while ((Get-ADSyncScheduler).SyncCycleInProgress)
-        Write-Host &amp;quot;Delta sync done&amp;quot;
-    }
-    Write-Host &amp;quot;Waiting for the next cycle&amp;quot;
-    Write-Host
-    Sleep -Seconds $RunEachSeconds
-} while ($true)
-&lt;/code&gt;&lt;/pre&gt;</description>
-        <pubDate>Thu, 28 Jul 2022 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/</guid>
-        
-        
-        <category>Azure</category>
-        
-        <category>PowerShell</category>
-        
-        <category>ADConnect</category>
         
       </item>
     
