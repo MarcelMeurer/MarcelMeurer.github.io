@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 21 Feb 2023 11:07:59 +0100</pubDate>
-    <lastBuildDate>Tue, 21 Feb 2023 11:07:59 +0100</lastBuildDate>
+    <pubDate>Tue, 21 Feb 2023 11:30:38 +0100</pubDate>
+    <lastBuildDate>Tue, 21 Feb 2023 11:30:38 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -15,7 +15,7 @@
 &lt;p&gt;In some circumstances, it would make sense to also delete the computer object: If you are running the environment hybrid-joined, the orphan computer objects are synced to AAD - even if you delete the AAD device of the computer.&lt;/p&gt;
 &lt;p&gt;To clean up the AD and AAD, I use a script running on the session host shortly before deleting the host (ok, the host must be started to do that). While the script runs on the session host, the host can remove itself easily from Azure AD. To remove it also from AD, a service account is used. You can put a service account to Hydra on a host pool level (Base settings). If the service account has the proper permission to remove the computer object, we can leave both ADs with one script. For that, create a script in Scripts and Collections -&amp;gt; Scrips with the name “Remove computer from AD and AAD”:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/AAD-AD-Remove-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;With the following script (please tick the checkbox “Service Account”:&lt;/p&gt;
+&lt;p&gt;With the following script (please tick the checkbox “Service Account”):&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;# Each PowerShell script can use internal logging to store logging data to the local disk. The log is stored in %Windir%\System32\LogFiles\Hydra.Logging.log
 
 # Check, if service account available
