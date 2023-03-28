@@ -5,9 +5,33 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 25 Mar 2023 14:19:25 +0100</pubDate>
-    <lastBuildDate>Sat, 25 Mar 2023 14:19:25 +0100</lastBuildDate>
+    <pubDate>Tue, 28 Mar 2023 10:25:38 +0200</pubDate>
+    <lastBuildDate>Tue, 28 Mar 2023 10:25:38 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Deploying and updating standard applications with Microsoft Package Manager / Winget automatically</title>
+        <description>&lt;p&gt;Around 2.5 years ago, I introduced a feature in &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to install applications from a list of thousands of VM and hosts. That was based on the Microsoft Package Manager / Winget - at this time, probably in preview.&lt;/p&gt;
+&lt;p&gt;During the last week, I updated the process of how &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; gets the newest data about available package and also implemented this feature in &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; you select session hosts or VMs and then select the package do you want to install: Select Hosts / VMs -&amp;gt; Run script: Microsoft Package Manager / Winget -&amp;gt; Click on Run script -&amp;gt; Select the applications and go.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/PM-001.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;I also recorded a video to show how to use it in &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;:&lt;/p&gt;
+&lt;iframe width=&quot;1280&quot; height=&quot;720&quot; src=&quot;https://www.youtube.com/embed/OtAdranqAZA&quot; title=&quot;Hydra for Azure Virtual Desktop: App deployment and updates (Package Manager, Winget, custom)&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&quot; allowfullscreen&gt;&lt;/iframe&gt;
+</description>
+        <pubDate>Tue, 28 Mar 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/WVDAdmin-Hydra-Package-Manager-Install-and-Update-apps/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/WVDAdmin-Hydra-Package-Manager-Install-and-Update-apps/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Azure Monitor</category>
+        
+        <category>Log Analytics</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -1729,43 +1753,6 @@ AvdBehind_v2_CL
         <pubDate>Tue, 20 Sep 2022 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Azure Virtual Desktop Session Hosts with Azure Disk Encryption</title>
-        <description>&lt;p&gt;&lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; for Azure Virtual Desktop and &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; are supporting ADE for AVD Session Hosts.&lt;/p&gt;
-&lt;p&gt;Azure Disk Encryption (ADE) encrypts the OS and data disks of Azure virtual machines (VMs) inside your VMs by using BitLocker. ADE cannot be combined with a disk encryption set.&lt;/p&gt;
-&lt;p&gt;To roll out session hosts with ADE in &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt;, some resources must be prepared to work: Azure Key Vault with an encryption key, and Azure Key Vault to store the secrets of the disks (can be the same vault)&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;First, create a Key Vault in the Azure Portal&lt;/li&gt;
-&lt;li&gt;Give the service principal (from the tenant configuration) contributor permission to the vault (access and control)&lt;/li&gt;
-&lt;li&gt;In Access Policies, give the service principal the following permissions:
-– Key permissions: Get, Encrypt, Wrap Key
-– Secret permissions: Set&lt;/li&gt;
-&lt;li&gt;Check the boxes: Azure Virtual Machines for deployment and Azure Disk Encryption for volume encryption&lt;/li&gt;
-&lt;li&gt;Give yourself permissions: Key and secret management&lt;/li&gt;
-&lt;li&gt;Go to Keys and click on Generate. Type a name and select RSA and 2048&lt;/li&gt;
-&lt;li&gt;Click on the generate key and on the current version. Copy the Key identifier (must include the version). E.g., https://&lt;my-vaul&gt;.vault.azure.net/keys/ADE-Encryption/bf270e977a574813a87bb637d57a6675&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;In &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt;, configure “New Session Host Rollout”:
-In “Advanced settings” select the Key Vault  in ADE Key Vault
-Copy the Key Identifier to ADE Encryption Key Url&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/ADE-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Do a deployment to verify that the disk is ADE encrypted:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/ADE-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;To rollout hosts with ADE with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, add tags to the host pool:&lt;/p&gt;
-&lt;p&gt;WVD.Default.KeyVault.Id: resource id of the KeyVault (/subscriptions/&lt;GUID&gt;/resourceGroups/&lt;RG Name&gt;/providers/Microsoft.KeyVault/vaults/&lt;KV Name&gt;)
-WVD.Default.KeyVault.KeyUri: key for the vaul (https://&lt;my-vaul&gt;.vault.azure.net/keys/ADE-Encryption/bf270e977a574813a87bb637d57a6675)&lt;/p&gt;
-</description>
-        <pubDate>Tue, 30 Aug 2022 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-with-ADE-Azure-Disk-Encryption-Session-Host/</guid>
         
         
         <category>Windows Virtual Desktop</category>
