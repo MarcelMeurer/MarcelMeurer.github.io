@@ -444,8 +444,8 @@ The session uses all of the monitors
 AVCHardwareEncodePreferred is set to 1 (e.g., by using the GPO “Configure H.264/AVC hardware encoding for Remote Desktop Connections”)
 The operating system is Windows 11 (22H2) - I was not able to reproduce the issue with Windows 10 and with the same configuration</p>
 <p><strong>Solution:</strong>
-If policies are used: Unconfigure all settings in Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session Host\Remote Session Environment.</p>
-<p>Configure the protocol-related settings through the registry on the hosts or on the Golden Master (e.g., with a script in <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for Azure Virtual Desktop</a> or <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>). Important is the value for AVCHardwareEncodePreferred. That should be 2 (which cannot be set with the GPO). The teams optimization is optional:</p>
+If policies are used: Unconfigure all protocol-related settings in Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session Host\Remote Session Environment.</p>
+<p>Configure the protocol-related settings through the registry on the hosts or on the Golden Master (e.g., with a script in <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for Azure Virtual Desktop</a> or <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>). Important is the value for <strong>AVCHardwareEncodePreferred</strong>. That should be 2 (which cannot be set with the GPO). The teams optimization is optional:</p>
 <pre><code>param(Write-Host &quot;RDS Settings&quot;
 New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;Policies&quot; -ErrorAction Ignore
 New-Item -Path &quot;HKLM:\SOFTWARE\Policies&quot; -Name &quot;Microsoft&quot; -ErrorAction Ignore
@@ -454,7 +454,7 @@ New-Item -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT&quot; -Name &q
 New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;AVC444ModePreferred&quot; -Value 1 -force
 New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;AVCHardwareEncodePreferred&quot; -Value 2 -force
 New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;bEnumerateHWBeforeSW&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;fEnableRemoteFXAdvancedRemoteApp&quot; -Value 1 -force # was 0
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;fEnableRemoteFXAdvancedRemoteApp&quot; -Value 1 -force
 New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;fEnableTimeZoneRedirection&quot; -Value 1 -force
 New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;KeepAliveEnable&quot; -Value 1 -force
 New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;KeepAliveInterval&quot; -Value 1 -force
