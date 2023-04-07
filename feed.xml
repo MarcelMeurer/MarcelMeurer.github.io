@@ -5,9 +5,54 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 03 Apr 2023 22:25:14 +0200</pubDate>
-    <lastBuildDate>Mon, 03 Apr 2023 22:25:14 +0200</lastBuildDate>
+    <pubDate>Fri, 07 Apr 2023 13:57:30 +0200</pubDate>
+    <lastBuildDate>Fri, 07 Apr 2023 13:57:30 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Azure Virtual Desktop - Login error Protocol Error Code 0x112f - Windows 11</title>
+        <description>&lt;p&gt;Login error: Protocol Error Code 0x112f&lt;/p&gt;
+&lt;p&gt;There are a lot of posts regarding this issue. I figured out that this old issue comes back in a specific combination with RDS settings and Windows 11.&lt;/p&gt;
+&lt;p&gt;If a user has multiple monitors and connecting to AVD, an error message is raised, if:
+The session uses all of the monitors
+AVCHardwareEncodePreferred is set to 1 (e.g., by using the GPO “Configure H.264/AVC hardware encoding for Remote Desktop Connections”)
+The operating system is Windows 11 (22H2) - I was not able to reproduce the issue with Windows 10 and with the same configuration&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Solution:&lt;/strong&gt;
+If policies are used: Unconfigure all settings in Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session Host\Remote Session Environment.&lt;/p&gt;
+&lt;p&gt;Configure the protocol-related settings through the registry on the hosts or on the Golden Master (e.g., with a script in &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; or &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;). Important is the value for AVCHardwareEncodePreferred. That should be 2 (which cannot be set with the GPO). The teams optimization is optional:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;param(Write-Host &amp;quot;RDS Settings&amp;quot;
+New-Item -Path &amp;quot;HKLM:\SOFTWARE&amp;quot; -Name &amp;quot;Policies&amp;quot; -ErrorAction Ignore
+New-Item -Path &amp;quot;HKLM:\SOFTWARE\Policies&amp;quot; -Name &amp;quot;Microsoft&amp;quot; -ErrorAction Ignore
+New-Item -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft&amp;quot; -Name &amp;quot;Windows NT&amp;quot; -ErrorAction Ignore
+New-Item -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT&amp;quot; -Name &amp;quot;Terminal Services&amp;quot; -ErrorAction Ignore
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;AVC444ModePreferred&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;AVCHardwareEncodePreferred&amp;quot; -Value 2 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;bEnumerateHWBeforeSW&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;fEnableRemoteFXAdvancedRemoteApp&amp;quot; -Value 1 -force # was 0
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;fEnableTimeZoneRedirection&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;KeepAliveEnable&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;KeepAliveInterval&amp;quot; -Value 1 -force
+
+Write-Host &amp;quot;Teams Optimization&amp;quot;
+New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server&amp;quot; -Name &amp;quot;AddIns&amp;quot; -ErrorAction Ignore
+New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns&amp;quot; -Name &amp;quot;WebRTC Redirector&amp;quot; -ErrorAction Ignore
+New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector&amp;quot; -Name &amp;quot;Policy&amp;quot; -ErrorAction Ignore
+New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy&amp;quot; -Name &amp;quot;ShareClientDesktop &amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy&amp;quot; -Name &amp;quot;DisableRAILScreensharing  &amp;quot; -Value 0 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy&amp;quot; -Name &amp;quot;DisableRAILAppSharing&amp;quot; -Value 0 -force
+&lt;/code&gt;&lt;/pre&gt;</description>
+        <pubDate>Fri, 07 Apr 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-Login-error-Protocol-Error-Code-0x112f-Windows-11/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-Login-error-Protocol-Error-Code-0x112f-Windows-11/</guid>
+        
+        
+        <category>PowerShell</category>
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -1667,102 +1712,6 @@ After that, no more happens. Also, the ETL files are not showing any process. I 
         <pubDate>Wed, 21 Sep 2022 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/AVD-German-Language-in-AVD-in-West-Europe/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/AVD-German-Language-in-AVD-in-West-Europe/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time</title>
-        <description>&lt;p&gt;&lt;strong&gt;Update October 2022:&lt;/strong&gt; &lt;a href=&quot;https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/&quot;&gt;Check out the following Workbook to use diagnostic logging to get and visualize the data&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;I had some presentations over the last weeks where I showed how to create images with PowerShell and how to deploy these images as new session hosts - also with PowerShell. Additionally, I showed how to log the state of the Azure Virtual Desktop session hosts each minute to a log analytics workspace. This post covers the why and how.&lt;/p&gt;
-&lt;p&gt;Today, you can manage Azure Virtual Desktop differently (Portal, PowerShell, &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for AVD&lt;/a&gt;, etc.). Also, monitoring is covered using Azure Monitor and the Diagnostic Logging, and my &lt;a href=&quot;https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/&quot;&gt;free Workbook&lt;/a&gt;. But some parts are missing regarding monitoring: If you want to show available hosts and sessions over time (e.g., for the last month), you have no native solution. Also, the state of a specific host at any time would be interesting to find issues in the past.&lt;/p&gt;
-&lt;p&gt;But it’s easy to solve. You can do the following steps with PowerShell to store this data in a Log Analytics workspace:&lt;/p&gt;
-&lt;p&gt;Each minute:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Query all host pools in a resource group&lt;/li&gt;
-&lt;li&gt;Read the session hosts objects of each pool&lt;/li&gt;
-&lt;li&gt;Extend a property to the session hosts with the current timestamp (do not rely on the generated timestamp to later group the hosts in time)&lt;/li&gt;
-&lt;li&gt;Upload the data to Log Analytics&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The most efficient and economical way is to use an Azure Function. The function can be used to trigger the script each minute. To do it more professional, we can build this solution with a few Azure resources:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Azure Function for the PowerShell script&lt;/li&gt;
-&lt;li&gt;Azure Key Vault to store the Log Analytics workspace id and key&lt;/li&gt;
-&lt;li&gt;A new or existing Log Analytics workspace&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;create-or-select-a-log-analytics-workspace&quot;&gt;Create or select a Log Analytics workspace&lt;/h3&gt;
-&lt;p&gt;You can create a new Log Analytics workspace to store the data or you can use an existing one. If you have done this, copy the WorkspaceId and WorkspaceKey (primary key) for later use (can be found in Agents Management -&amp;gt; Log Analytics agent instructions).&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;create-an-azure-key-vault&quot;&gt;Create an Azure Key Vault&lt;/h3&gt;
-&lt;p&gt;Create a standard Key Vault and add two secrets to the vault:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;WorkspaceId, containing the WorkspaceId of the Log Analytics workspace&lt;/li&gt;
-&lt;li&gt;WorkspaceKey, containing the WorkspaceKey of the Log Analytics workspace&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;configuring-the-azure-function&quot;&gt;Configuring the Azure Function&lt;/h3&gt;
-&lt;p&gt;Rollout a new Azure Function with a consumption plan (or an existing App Service Plan). Open the function -&amp;gt; Identity and set the “System assigned” identity to on. This creates immediatily an identity for the Azure Function to give the Function permission to access the Key Vault and the Host Pool/resource group containing the host pools.&lt;/p&gt;
-&lt;p&gt;In functions, select create -&amp;gt; Time Trigger and set the time trigger to “*/60 * * * * *” to run the script each minute. Give the function a good name. In “code”, insert the content of &lt;a href=&quot;https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0#file-run-ps1&quot;&gt;run.ps1&lt;/a&gt;. Modify line 28 and insert the name of the resource group of your host pools.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;In the Function -&amp;gt; App Files, copy the content from &lt;a href=&quot;https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0&quot;&gt;https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0&lt;/a&gt; to the files “requierements.psd1” and “profile.ps1”. That is needed to load the Azure modules of AVD and the authentication with the managed identity.&lt;/p&gt;
-&lt;p&gt;Finally, open configuration in the Azure Function, and create new application settings:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;WorkspaceId: @Microsoft.KeyVault(SecretUri=&lt;a href=&quot;https://xxxx.vault.azure.net/secrets/WorkspaceId/&quot;&gt;https://xxxx.vault.azure.net/secrets/WorkspaceId/&lt;/a&gt;)&lt;/li&gt;
-&lt;li&gt;WorkspaceKey: @Microsoft.KeyVault(SecretUri=&lt;a href=&quot;https://xxxx.vault.azure.net/secrets/WorkspaceKey/&quot;&gt;https://xxxx.vault.azure.net/secrets/WorkspaceKey/&lt;/a&gt;)
-Use the correct URL to reflect the correct Key Vault&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Do give the Azure Function permission to read the secrets, open the Key Vault again and go to: Access configuration -&amp;gt; Go to access policies and create new permission with “Secret Get” for the identity of the function (use the name of the function to find the identity).&lt;/p&gt;
-&lt;p&gt;Go to the resource group containing your host pools -&amp;gt; Access Control -&amp;gt; Add role assignment: Add the role “Desktop Virtualization Host Pool Reader” for the member “Managed Identity” and the name of the Azure Function.&lt;/p&gt;
-&lt;p&gt;If everything is working fine, the first data are written to the Log Analytics workspace. You can check the output of the function in Monitor:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-06.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;It takes one time a couple of minutes to build the data schema in Log Analytics. After that, a new table is shown in Logs:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-07.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;To start showing some data, we can run the following Kusto queries to show the data:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-01.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/MonitorSessionHosts-09.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/MonitorSessionHosts-10.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/MonitorSessionHosts-11.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;queries&quot;&gt;Queries&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;// sessions per host pool over time
-AvdBehind_v2_CL
-| extend HostPool=tostring(split(Id_s,&amp;quot;/&amp;quot;)[8])
-| summarize sum(Session_d) by HostPool, TimeGenerated
-| render timechart
-
-
-// available hosts per pool over time
-AvdBehind_v2_CL
-| extend HostPool=tostring(split(Id_s,&amp;quot;/&amp;quot;)[8])
-| where Status_s=~&amp;quot;Available&amp;quot;
-| summarize count() by HostPool, TimeGenerated
-| render timechart 
-
-
-// assigned hosts by state (now)
-AvdBehind_v2_CL
-| extend HostPool=tostring(split(Id_s,&amp;quot;/&amp;quot;)[8])
-| summarize arg_max(TimeGenerated,*) by Id_s    // get the newest data set by resource id of the session hosts
-| where AssignedUser_s !=&amp;quot;&amp;quot;
-| project HostPool, SessionHost=Name_s, AssignedUser_s
-
-
-// # hosts by state (now)
-AvdBehind_v2_CL
-| extend HostPool=tostring(split(Id_s,&amp;quot;/&amp;quot;)[8])
-| summarize arg_max(TimeGenerated,*) by Id_s    // get the newest data set by resource id of the session hosts
-| summarize Count=count() by Status=Status_s,HostPool
-| project HostPool, Status, Count
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Let me know if everything is working as expected or if it makes sense to create a “Deploy to Azure Button” to deploy the solution.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 20 Sep 2022 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Logging-Session-Host-State-and-Sessions-To-LogAnalytics/</guid>
         
         
         <category>Windows Virtual Desktop</category>
