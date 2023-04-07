@@ -446,7 +446,7 @@ The operating system is Windows 11 (22H2) - I was not able to reproduce the issu
 <p><strong>Solution:</strong>
 If policies are used: Unconfigure all protocol-related settings in Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session Host\Remote Session Environment.</p>
 <p>Configure the protocol-related settings through the registry on the hosts or on the Golden Master (e.g., with a script in <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for Azure Virtual Desktop</a> or <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>). Important is the value for <strong>AVCHardwareEncodePreferred</strong>. That should be 2 (which cannot be set with the GPO). The teams optimization is optional:</p>
-<pre><code>param(Write-Host &quot;RDS Settings&quot;
+<pre><code>Write-Host &quot;RDS Settings&quot;
 New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;Policies&quot; -ErrorAction Ignore
 New-Item -Path &quot;HKLM:\SOFTWARE\Policies&quot; -Name &quot;Microsoft&quot; -ErrorAction Ignore
 New-Item -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft&quot; -Name &quot;Windows NT&quot; -ErrorAction Ignore

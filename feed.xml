@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 07 Apr 2023 14:05:18 +0200</pubDate>
-    <lastBuildDate>Fri, 07 Apr 2023 14:05:18 +0200</lastBuildDate>
+    <pubDate>Fri, 07 Apr 2023 14:10:59 +0200</pubDate>
+    <lastBuildDate>Fri, 07 Apr 2023 14:10:59 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -20,7 +20,7 @@ The operating system is Windows 11 (22H2) - I was not able to reproduce the issu
 &lt;p&gt;&lt;strong&gt;Solution:&lt;/strong&gt;
 If policies are used: Unconfigure all protocol-related settings in Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session Host\Remote Session Environment.&lt;/p&gt;
 &lt;p&gt;Configure the protocol-related settings through the registry on the hosts or on the Golden Master (e.g., with a script in &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; or &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;). Important is the value for &lt;strong&gt;AVCHardwareEncodePreferred&lt;/strong&gt;. That should be 2 (which cannot be set with the GPO). The teams optimization is optional:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;param(Write-Host &amp;quot;RDS Settings&amp;quot;
+&lt;pre&gt;&lt;code&gt;Write-Host &amp;quot;RDS Settings&amp;quot;
 New-Item -Path &amp;quot;HKLM:\SOFTWARE&amp;quot; -Name &amp;quot;Policies&amp;quot; -ErrorAction Ignore
 New-Item -Path &amp;quot;HKLM:\SOFTWARE\Policies&amp;quot; -Name &amp;quot;Microsoft&amp;quot; -ErrorAction Ignore
 New-Item -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft&amp;quot; -Name &amp;quot;Windows NT&amp;quot; -ErrorAction Ignore
