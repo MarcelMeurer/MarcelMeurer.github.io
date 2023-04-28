@@ -419,7 +419,7 @@ Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started 
 <pre><code>cmdkey.exe /add:&lt;StorageAccountFqdn&gt; /user:localhost\&lt;StorageAccountName&gt; /pass:&lt;Key&gt;
 </code></pre>
 <p>Example:</p>
-<pre><code>cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\add:avdaadstorage /pass:xxxxxxxxxxxxxxxx
+<pre><code>cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\avdaadstorage /pass:xxxxxxxxxxxxxxxx
 </code></pre>
 <p>After running the command on a host/VM, any access in the context of the system account to the storage runs with the configured credentials - to every share!</p>
 <p>Great, our system can now access the shares on the storage account and has full permission.</p>
@@ -711,7 +711,7 @@ Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started 
 <pre><code>cmdkey.exe /add:&lt;StorageAccountFqdn&gt; /user:localhost\&lt;StorageAccountName&gt; /pass:&lt;Key&gt;
 </code></pre>
 <p>Example:</p>
-<pre><code>cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\add:avdaadstorage /pass:xxxxxxxxxxxxxxxx
+<pre><code>cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\avdaadstorage /pass:xxxxxxxxxxxxxxxx
 </code></pre>
 <p>After running the command on a host/VM, any access in the context of the system account to the storage runs with the configured credentials - to every share!</p>
 <p>Great, our system can now access the shares on the storage account and has full permission.</p>
