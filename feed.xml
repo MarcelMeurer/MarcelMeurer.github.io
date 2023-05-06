@@ -5,183 +5,16 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 04 May 2023 20:55:48 +0200</pubDate>
-    <lastBuildDate>Thu, 04 May 2023 20:55:48 +0200</lastBuildDate>
+    <pubDate>Sat, 06 May 2023 17:35:48 +0200</pubDate>
+    <lastBuildDate>Sat, 06 May 2023 17:35:48 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
-    
-      <item>
-        <title>CountrySwitch - First Logon Experience and language selector and an app starter for remote apps on network paths for AVD</title>
-        <description>&lt;h2 id=&quot;first-logon-experience-and-language-selector-and-an-app-starter-for-remote-apps-on-network-paths&quot;&gt;First Logon Experience and language selector and an app starter for remote apps on network paths&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/04/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;select-the-language-users&quot;&gt;Select the language (users)&lt;/h2&gt;
-&lt;p&gt;In some environments, customers are running Azure on Windows 10/11 with multiple language packs installed. After the first login, users have to choose their language to customize the environment - that is not so easy, while users have to open the language settings and select the language. The first steps are outside the user’s language and are not easy to do for everyone.&lt;/p&gt;
-&lt;p&gt;I built a tool that makes it easier for users to select their language by clicking on the right flag. Currently, the following features are available:&lt;/p&gt;
-&lt;p&gt;Feature regarding the language selection:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;The tool shows the installed language packages by a flag of the countries.&lt;/li&gt;
-&lt;li&gt;A welcome message in the present language welcomes the users.&lt;/li&gt;
-&lt;li&gt;The user selects the language settings with a click on the flag.&lt;/li&gt;
-&lt;li&gt;Hovering the mouse over a flag shows the country and language name.&lt;/li&gt;
-&lt;li&gt;The app configures the language settings (and does one logoff to apply the setting).&lt;/li&gt;
-&lt;li&gt;The PowerShell script CountrySwitch-User.ps1 in the program files folder is started to do some optional customizing (language code is in $languageTag)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;CountrySwitch is linked in all users’ start menu:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Startup: With parameter /RunOnce - Starts CountrySwitch at logon. The user will see the language selector only if the user is new and didn’t select a language once (HKCU:\SOFTWARE\ITProCloud\CountrySwitch\Completed is set to 1 )&lt;/li&gt;
-&lt;li&gt;Direct: Without parameters - Users can star CountrySwitch manually to select the language&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Note on Remote Apps&lt;/strong&gt;: Remote apps are ignoring the autostart folder. To have CountrySwitch enabled for remote app, please configure a local Startup script (local policy for users) with the following parameters:
-Name of script: “C:\Program Files\ITProCloud.de\CountrySwitch\CountrySwitch.exe”
-Parameters:	/runonce&lt;/p&gt;
-&lt;h2 id=&quot;app-starter-for-remote-apps&quot;&gt;App Starter for remote apps&lt;/h2&gt;
-&lt;p&gt;CountrySwitch can also start a local or an application on a file share (which normally does not work directly with AVD). Publish CountrySwitch as a remote app with the following parameters:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;&amp;lt;path to executable with parameters&amp;gt;&amp;quot; &amp;quot;&amp;lt;Working directory&amp;gt;&amp;quot;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot; &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;If a remote app is started with CountrySwitch, CountrySwitch first starts the PowerShell script CountrySwitch-App.ps1 in the program files folder to do some optional customization. The following parameters are set in the script:&lt;/p&gt;
-&lt;p&gt;Example:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$languageTag = &amp;quot;unknown&amp;quot;,
-$appCommandline = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot;,
-$appWorkingDir = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;,
-$appParameter = &amp;quot;/db=vm1&amp;quot;,
-$appExecutable = &amp;quot;finance.exe&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The application starts after the PowerShell script finishes (CountrySwitch will run hidden and terminates after the start of the application (e.g., finance.exe).&lt;/p&gt;
-&lt;h2 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h2&gt;
-&lt;p&gt;CountrySwitch logs into %AppData%\ITProCloud&lt;/p&gt;
-&lt;p&gt;There are the following reg keys to optionally configure CountrySwitch:&lt;/p&gt;
-&lt;p&gt;HKLM:\SOFTWARE\Policies\ITProCloud\CountrySwitch (alls values are dword - 1 is true; 0 is false)&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Key&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;th&gt;Default value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Enable&lt;/td&gt;
-&lt;td&gt;If false, the application will not show up (except for /remoteapp (App starter mode))&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;ExitOnRunOnceCompleted&lt;/td&gt;
-&lt;td&gt;If the app is started with /runonce and the user has already completed the process, the application will not show up&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;ExitOnSingleLanguage&lt;/td&gt;
-&lt;td&gt;If only one language is installed, don’t show up&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;LogoffUserAfterSelectingNewLanguage logoff user after selecting a new language&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;LogoffUserAfterSelectingSameLanguage&lt;/td&gt;
-&lt;td&gt;Logoff user after selecting the same language as the user is still using&lt;/td&gt;
-&lt;td&gt;false&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;RunUserScriptAfterSelectingLanguage&lt;/td&gt;
-&lt;td&gt;Runs the ps script CountrySwitch-User.ps1 -languageTag {xx-YY} after the user selects a language&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;DisableUserScriptForAppStarterMode&lt;/td&gt;
-&lt;td&gt;If true, the app starter mode for a remote app will no longer trigger CountrySwitch-App before starting the application&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
-&lt;h2 id=&quot;release-notes&quot;&gt;Release notes&lt;/h2&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Release&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1.3&lt;/td&gt;
-&lt;td&gt;2023-05-04&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/04/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 04 May 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Azure Virtual Desktop - Login error Protocol Error Code 0x112f - Windows 11</title>
-        <description>&lt;p&gt;Login error: Protocol Error Code 0x112f&lt;/p&gt;
-&lt;p&gt;There are a lot of posts regarding this issue. I figured out that this old issue comes back in a specific combination with RDS settings and Windows 11.&lt;/p&gt;
-&lt;p&gt;If a user has multiple monitors and connecting to AVD, an error message is raised, if:
-The session uses all of the monitors
-AVCHardwareEncodePreferred is set to 1 (e.g., by using the GPO “Configure H.264/AVC hardware encoding for Remote Desktop Connections”)
-The operating system is Windows 11 (22H2) - I was not able to reproduce the issue with Windows 10 and with the same configuration&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Solution:&lt;/strong&gt;
-If policies are used: Unconfigure all protocol-related settings in Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session Host\Remote Session Environment.&lt;/p&gt;
-&lt;p&gt;Configure the protocol-related settings through the registry on the hosts or on the Golden Master (e.g., with a script in &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; or &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;). Important is the value for &lt;strong&gt;AVCHardwareEncodePreferred&lt;/strong&gt;. That should be 2 (which cannot be set with the GPO). The teams optimization is optional:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Write-Host &amp;quot;RDS Settings&amp;quot;
-New-Item -Path &amp;quot;HKLM:\SOFTWARE&amp;quot; -Name &amp;quot;Policies&amp;quot; -ErrorAction Ignore
-New-Item -Path &amp;quot;HKLM:\SOFTWARE\Policies&amp;quot; -Name &amp;quot;Microsoft&amp;quot; -ErrorAction Ignore
-New-Item -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft&amp;quot; -Name &amp;quot;Windows NT&amp;quot; -ErrorAction Ignore
-New-Item -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT&amp;quot; -Name &amp;quot;Terminal Services&amp;quot; -ErrorAction Ignore
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;AVC444ModePreferred&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;AVCHardwareEncodePreferred&amp;quot; -Value 2 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;bEnumerateHWBeforeSW&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;fEnableRemoteFXAdvancedRemoteApp&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;fEnableTimeZoneRedirection&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;KeepAliveEnable&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;KeepAliveInterval&amp;quot; -Value 1 -force
-
-Write-Host &amp;quot;Teams Optimization&amp;quot;
-New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server&amp;quot; -Name &amp;quot;AddIns&amp;quot; -ErrorAction Ignore
-New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns&amp;quot; -Name &amp;quot;WebRTC Redirector&amp;quot; -ErrorAction Ignore
-New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector&amp;quot; -Name &amp;quot;Policy&amp;quot; -ErrorAction Ignore
-New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy&amp;quot; -Name &amp;quot;ShareClientDesktop &amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy&amp;quot; -Name &amp;quot;DisableRAILScreensharing  &amp;quot; -Value 0 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy&amp;quot; -Name &amp;quot;DisableRAILAppSharing&amp;quot; -Value 0 -force
-&lt;/code&gt;&lt;/pre&gt;</description>
-        <pubDate>Fri, 07 Apr 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-Login-error-Protocol-Error-Code-0x112f-Windows-11/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-Login-error-Protocol-Error-Code-0x112f-Windows-11/</guid>
-        
-        
-        <category>PowerShell</category>
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
 &lt;p&gt;Are you interested in the new “Hydra for Azure Virtual Desktop” solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 04/03/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/06/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
@@ -269,7 +102,7 @@ New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 04/03/2023&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/06/2023&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
@@ -281,6 +114,11 @@ New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7.59.0&lt;/td&gt;
+&lt;td&gt;2023-05-06&lt;/td&gt;
+&lt;td&gt;Add: Custom scirpt extension can ask for a parameter (see CustomScript-WithParameterString.ps1)&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.7.58.0&lt;/td&gt;
 &lt;td&gt;2023-04-07&lt;/td&gt;
@@ -1211,12 +1049,179 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 04/03/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/06/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Mon, 03 Apr 2023 00:00:00 +0200</pubDate>
+        <pubDate>Sat, 06 May 2023 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
         
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>CountrySwitch - First Logon Experience and language selector and an app starter for remote apps on network paths for AVD</title>
+        <description>&lt;h2 id=&quot;first-logon-experience-and-language-selector-and-an-app-starter-for-remote-apps-on-network-paths&quot;&gt;First Logon Experience and language selector and an app starter for remote apps on network paths&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/04/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;select-the-language-users&quot;&gt;Select the language (users)&lt;/h2&gt;
+&lt;p&gt;In some environments, customers are running Azure on Windows 10/11 with multiple language packs installed. After the first login, users have to choose their language to customize the environment - that is not so easy, while users have to open the language settings and select the language. The first steps are outside the user’s language and are not easy to do for everyone.&lt;/p&gt;
+&lt;p&gt;I built a tool that makes it easier for users to select their language by clicking on the right flag. Currently, the following features are available:&lt;/p&gt;
+&lt;p&gt;Feature regarding the language selection:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The tool shows the installed language packages by a flag of the countries.&lt;/li&gt;
+&lt;li&gt;A welcome message in the present language welcomes the users.&lt;/li&gt;
+&lt;li&gt;The user selects the language settings with a click on the flag.&lt;/li&gt;
+&lt;li&gt;Hovering the mouse over a flag shows the country and language name.&lt;/li&gt;
+&lt;li&gt;The app configures the language settings (and does one logoff to apply the setting).&lt;/li&gt;
+&lt;li&gt;The PowerShell script CountrySwitch-User.ps1 in the program files folder is started to do some optional customizing (language code is in $languageTag)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;CountrySwitch is linked in all users’ start menu:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Startup: With parameter /RunOnce - Starts CountrySwitch at logon. The user will see the language selector only if the user is new and didn’t select a language once (HKCU:\SOFTWARE\ITProCloud\CountrySwitch\Completed is set to 1 )&lt;/li&gt;
+&lt;li&gt;Direct: Without parameters - Users can star CountrySwitch manually to select the language&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Note on Remote Apps&lt;/strong&gt;: Remote apps are ignoring the autostart folder. To have CountrySwitch enabled for remote app, please configure a local Startup script (local policy for users) with the following parameters:
+Name of script: “C:\Program Files\ITProCloud.de\CountrySwitch\CountrySwitch.exe”
+Parameters:	/runonce&lt;/p&gt;
+&lt;h2 id=&quot;app-starter-for-remote-apps&quot;&gt;App Starter for remote apps&lt;/h2&gt;
+&lt;p&gt;CountrySwitch can also start a local or an application on a file share (which normally does not work directly with AVD). Publish CountrySwitch as a remote app with the following parameters:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;&amp;lt;path to executable with parameters&amp;gt;&amp;quot; &amp;quot;&amp;lt;Working directory&amp;gt;&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot; &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If a remote app is started with CountrySwitch, CountrySwitch first starts the PowerShell script CountrySwitch-App.ps1 in the program files folder to do some optional customization. The following parameters are set in the script:&lt;/p&gt;
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$languageTag = &amp;quot;unknown&amp;quot;,
+$appCommandline = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot;,
+$appWorkingDir = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;,
+$appParameter = &amp;quot;/db=vm1&amp;quot;,
+$appExecutable = &amp;quot;finance.exe&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The application starts after the PowerShell script finishes (CountrySwitch will run hidden and terminates after the start of the application (e.g., finance.exe).&lt;/p&gt;
+&lt;h2 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h2&gt;
+&lt;p&gt;CountrySwitch logs into %AppData%\ITProCloud&lt;/p&gt;
+&lt;p&gt;There are the following reg keys to optionally configure CountrySwitch:&lt;/p&gt;
+&lt;p&gt;HKLM:\SOFTWARE\Policies\ITProCloud\CountrySwitch (alls values are dword - 1 is true; 0 is false)&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Key&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;th&gt;Default value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Enable&lt;/td&gt;
+&lt;td&gt;If false, the application will not show up (except for /remoteapp (App starter mode))&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ExitOnRunOnceCompleted&lt;/td&gt;
+&lt;td&gt;If the app is started with /runonce and the user has already completed the process, the application will not show up&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ExitOnSingleLanguage&lt;/td&gt;
+&lt;td&gt;If only one language is installed, don’t show up&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LogoffUserAfterSelectingNewLanguage logoff user after selecting a new language&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LogoffUserAfterSelectingSameLanguage&lt;/td&gt;
+&lt;td&gt;Logoff user after selecting the same language as the user is still using&lt;/td&gt;
+&lt;td&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RunUserScriptAfterSelectingLanguage&lt;/td&gt;
+&lt;td&gt;Runs the ps script CountrySwitch-User.ps1 -languageTag {xx-YY} after the user selects a language&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;DisableUserScriptForAppStarterMode&lt;/td&gt;
+&lt;td&gt;If true, the app starter mode for a remote app will no longer trigger CountrySwitch-App before starting the application&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+&lt;h2 id=&quot;release-notes&quot;&gt;Release notes&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Release&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1.3&lt;/td&gt;
+&lt;td&gt;2023-05-04&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/04/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 04 May 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Azure Virtual Desktop - Login error Protocol Error Code 0x112f - Windows 11</title>
+        <description>&lt;p&gt;Login error: Protocol Error Code 0x112f&lt;/p&gt;
+&lt;p&gt;There are a lot of posts regarding this issue. I figured out that this old issue comes back in a specific combination with RDS settings and Windows 11.&lt;/p&gt;
+&lt;p&gt;If a user has multiple monitors and connecting to AVD, an error message is raised, if:
+The session uses all of the monitors
+AVCHardwareEncodePreferred is set to 1 (e.g., by using the GPO “Configure H.264/AVC hardware encoding for Remote Desktop Connections”)
+The operating system is Windows 11 (22H2) - I was not able to reproduce the issue with Windows 10 and with the same configuration&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Solution:&lt;/strong&gt;
+If policies are used: Unconfigure all protocol-related settings in Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session Host\Remote Session Environment.&lt;/p&gt;
+&lt;p&gt;Configure the protocol-related settings through the registry on the hosts or on the Golden Master (e.g., with a script in &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; or &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;). Important is the value for &lt;strong&gt;AVCHardwareEncodePreferred&lt;/strong&gt;. That should be 2 (which cannot be set with the GPO). The teams optimization is optional:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Write-Host &amp;quot;RDS Settings&amp;quot;
+New-Item -Path &amp;quot;HKLM:\SOFTWARE&amp;quot; -Name &amp;quot;Policies&amp;quot; -ErrorAction Ignore
+New-Item -Path &amp;quot;HKLM:\SOFTWARE\Policies&amp;quot; -Name &amp;quot;Microsoft&amp;quot; -ErrorAction Ignore
+New-Item -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft&amp;quot; -Name &amp;quot;Windows NT&amp;quot; -ErrorAction Ignore
+New-Item -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT&amp;quot; -Name &amp;quot;Terminal Services&amp;quot; -ErrorAction Ignore
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;AVC444ModePreferred&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;AVCHardwareEncodePreferred&amp;quot; -Value 2 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;bEnumerateHWBeforeSW&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;fEnableRemoteFXAdvancedRemoteApp&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;fEnableTimeZoneRedirection&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;KeepAliveEnable&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;KeepAliveInterval&amp;quot; -Value 1 -force
+
+Write-Host &amp;quot;Teams Optimization&amp;quot;
+New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server&amp;quot; -Name &amp;quot;AddIns&amp;quot; -ErrorAction Ignore
+New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns&amp;quot; -Name &amp;quot;WebRTC Redirector&amp;quot; -ErrorAction Ignore
+New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector&amp;quot; -Name &amp;quot;Policy&amp;quot; -ErrorAction Ignore
+New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy&amp;quot; -Name &amp;quot;ShareClientDesktop &amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy&amp;quot; -Name &amp;quot;DisableRAILScreensharing  &amp;quot; -Value 0 -force
+New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy&amp;quot; -Name &amp;quot;DisableRAILAppSharing&amp;quot; -Value 0 -force
+&lt;/code&gt;&lt;/pre&gt;</description>
+        <pubDate>Fri, 07 Apr 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-Login-error-Protocol-Error-Code-0x112f-Windows-11/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-Login-error-Protocol-Error-Code-0x112f-Windows-11/</guid>
+        
+        
+        <category>PowerShell</category>
         
         <category>Windows Virtual Desktop</category>
         
