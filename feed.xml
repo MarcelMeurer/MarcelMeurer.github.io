@@ -5,14 +5,14 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 10 May 2023 20:15:57 +0200</pubDate>
-    <lastBuildDate>Wed, 10 May 2023 20:15:57 +0200</lastBuildDate>
+    <pubDate>Thu, 11 May 2023 19:33:50 +0200</pubDate>
+    <lastBuildDate>Thu, 11 May 2023 19:33:50 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
         <title>CountrySwitch - First Logon Experience and language selector and an app starter for remote apps on network paths for AVD</title>
         <description>&lt;h2 id=&quot;first-logon-experience-and-language-selector-and-an-app-starter-for-remote-apps-on-network-paths&quot;&gt;First Logon Experience and language selector and an app starter for remote apps on network paths&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/10/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/11/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&quot;select-the-language-users&quot;&gt;Select the language (users)&lt;/h2&gt;
 &lt;p&gt;In some environments, customers are running Azure on Windows 10/11 with multiple language packs installed. After the first login, users have to choose their language to customize the environment - that is not so easy, while users have to open the language settings and select the language. The first steps are outside the user’s language and are not easy to do for everyone.&lt;/p&gt;
 &lt;p&gt;I built a tool that makes it easier for users to select their language by clicking on the right flag. Currently, the following features are available:&lt;/p&gt;
@@ -119,13 +119,18 @@ $appExecutable = &amp;quot;finance.exe&amp;quot;
 &lt;td&gt;2023-05-10&lt;/td&gt;
 &lt;td&gt;Update: CountrySwitch-User.ps1 had a typo&lt;/td&gt;
 &lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1.7&lt;/td&gt;
+&lt;td&gt;2023-05-11&lt;/td&gt;
+&lt;td&gt;Fix: Avoid showing MSI installation screen for users if package unaccessible&lt;/td&gt;
+&lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
 &lt;br/&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/10/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/11/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
 </description>
-        <pubDate>Wed, 10 May 2023 00:00:00 +0200</pubDate>
+        <pubDate>Thu, 11 May 2023 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</guid>
         
