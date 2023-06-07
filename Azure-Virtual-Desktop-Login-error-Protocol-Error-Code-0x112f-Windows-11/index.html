@@ -451,7 +451,7 @@ New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;Policies&quot; -ErrorActio
 New-Item -Path &quot;HKLM:\SOFTWARE\Policies&quot; -Name &quot;Microsoft&quot; -ErrorAction Ignore
 New-Item -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft&quot; -Name &quot;Windows NT&quot; -ErrorAction Ignore
 New-Item -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT&quot; -Name &quot;Terminal Services&quot; -ErrorAction Ignore
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;AVC444ModePreferred&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;AVC444ModePreferred&quot; -Value 0 -force  # if 1 - browser mm redirection is not workuing
 New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;AVCHardwareEncodePreferred&quot; -Value 2 -force
 New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;bEnumerateHWBeforeSW&quot; -Value 1 -force
 New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;fEnableRemoteFXAdvancedRemoteApp&quot; -Value 1 -force
@@ -516,7 +516,7 @@ New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Ser
             <a class="prev d-block col-md-6" href="/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/"> &laquo; Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</a>
             
             
-            <a class="next d-block col-md-6 text-lg-right" href="/Windows-Virtual-Desktop-Admin/">WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD) &raquo; </a>
+            <a class="next d-block col-md-6 text-lg-right" href="/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/">CountrySwitch - First Logon Experience and language selector and an app starter for remote apps on network paths for AVD &raquo; </a>
             
             <div class="clearfix"></div>
             </div>
