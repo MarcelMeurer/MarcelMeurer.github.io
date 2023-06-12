@@ -5,9 +5,117 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 07 Jun 2023 08:38:22 +0200</pubDate>
-    <lastBuildDate>Wed, 07 Jun 2023 08:38:22 +0200</lastBuildDate>
+    <pubDate>Mon, 12 Jun 2023 14:20:00 +0200</pubDate>
+    <lastBuildDate>Mon, 12 Jun 2023 14:20:00 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>OneDrive Clean-Up for Azure Virtual Desktop</title>
+        <description>&lt;p&gt;Running OneDrive with Azure Virtual Desktop is a common scenario and enables users to work in a modern way with Teams and SharePoint. If FSLogix is used, there is a challenge in combination with OneDrive: Users can download OneDrive files to the host, and the data are stored in the profile. The profile size increases heavily and causes some extra costs on the storage account.&lt;/p&gt;
+&lt;p&gt;Having so many OneDrive files stored in the profile may make no sense in every case - if a user access a file, the file is downloaded automatically (on demand). And it’s mostly fine to “unpin” the file later if the file is no longer needed. The files are downloaded fast, while AVD and OneDrive are in the Microsoft cloud.&lt;/p&gt;
+&lt;h3 id=&quot;background&quot;&gt;Background:&lt;/h3&gt;
+&lt;p&gt;OneDrive files can have three different states:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Cloud:&lt;/strong&gt;
+The file content is in the cloud only. The file system simulates that the file exists. While the content is not on the disk, the files don’t need storage on the device. If a user opens such a file, the content is downloaded, and the file state change to On-Device.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;On-Device:&lt;/strong&gt;
+The file content is also on the local disk, and the files are using local storage.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Always:&lt;/strong&gt;
+The file content is also on the local disk, and the files are using local storage. OneDrive wouldn’t change the state to “Cloud”.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/ODClaenUp-02.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;OneDrive can change the state to “Cloud” on normal Windows 10/11 devices using storage sense. Based on the implementation of storage sense, this is not working for Azure Virtual Desktop (Multi-Session) with FSLogix profiles.&lt;/p&gt;
+&lt;p&gt;A solution to avoid profile blotting in combination with FSLogix is changing the state of OneDrive files to “Cloud” (unpin files). If files are unpinned, they are no longer using local storage, and the “Disk Compaction” of FSLogix would reduce the profile automatically over time (or have more space left for user data).&lt;/p&gt;
+&lt;p&gt;I built a small tool to solve this challenge (I didn’t find a native solution). The tool is called OneDrive CleanUp. OneDrive CleanUp can run in two ways:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Started automatically with the login of the user (after the installation, it creates a link in the start-up folder of the start menu). It directly starts in the background and validates and maybe unpin OneDrive files. This process is repeated every 30 minutes and during the logoff of the user.&lt;/li&gt;
+&lt;li&gt;Start the program with the parameter /RunOnce during the logoff using a (group) policy.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I prefer the first method to ensure that OneDrive has time to react to the unpinning of files.&lt;/p&gt;
+&lt;p&gt;Example for method 2:
+&lt;img src=&quot;../assets/images/ODClaenUp-03.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
+&lt;p&gt;In my test, my profile grew to 8 GByte while I pinned some files in OneDrive, and after logoff, the profile went back to 800 MByte while the tool unpinned the OneDrive files.&lt;/p&gt;
+&lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
+&lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\Policies\ITProCloud\OneDriveCleanUp&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Key&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;th&gt;Default value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Enabled&lt;/td&gt;
+&lt;td&gt;If false, the application will not check the files&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RunEachMinutes&lt;/td&gt;
+&lt;td&gt;Check OneDrive files each minutes&lt;/td&gt;
+&lt;td&gt;30&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AlwaysUnpinFilesOlderThenDays&lt;/td&gt;
+&lt;td&gt;Unpin files older then days (0: disabled&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AllowMbytesOnDisk&lt;/td&gt;
+&lt;td&gt;Allow the configured value in MByte on the local disk&lt;/td&gt;
+&lt;td&gt;5120&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;IgnoreFilesContaining&lt;/td&gt;
+&lt;td&gt;String with separated values (;). If the path of a file contains one of the values, the file is ignored&lt;/td&gt;
+&lt;td&gt;Empty&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
+&lt;p&gt;Example:
+&lt;img src=&quot;../assets/images/ODClaenUp-01.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
+&lt;p&gt;OneDrive CleanUp regularly checks all OneDrive paths and calculates the size of the disk. If the size is larger than the configured maximum size (AllowMbytesOnDisk), it unpins files to go under the configured size. It starts from the oldest to the newest file based on the LastAccessTime property.&lt;/p&gt;
+&lt;br/&gt;
+&lt;h3 id=&quot;release-notes&quot;&gt;Release notes&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Release&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.4&lt;/td&gt;
+&lt;td&gt;2023-05-04&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+&lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/OneDriveCleanUp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 06/12/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 12 Jun 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -1120,7 +1228,7 @@ $appExecutable = &amp;quot;finance.exe&amp;quot;
 &lt;/thead&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;Enable&lt;/td&gt;
+&lt;td&gt;Enabled&lt;/td&gt;
 &lt;td&gt;If false, the application will not show up (except for /remoteapp (App starter mode))&lt;/td&gt;
 &lt;td&gt;true&lt;/td&gt;
 &lt;/tr&gt;
@@ -1797,47 +1905,6 @@ OutputWriter($outMessage)
         <pubDate>Thu, 01 Dec 2022 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-User-Sessions-Dashboard/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-User-Sessions-Dashboard/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Sysprep and deploy Windows 11 22H2 in Azure with a custom image and a workaround</title>
-        <description>&lt;p&gt;A common way to build virtual machines based on an image in Azure (e.g., as Session hosts for Azure Virtual Desktop) can be done by the “Golden Image” approach.&lt;/p&gt;
-&lt;p&gt;The golden image approach is pretty simple. First install your “Golden Master”&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Create a VM in Azure (e.g., Windows 11 multi-session)&lt;/li&gt;
-&lt;li&gt;Install all hotfixes and updates&lt;/li&gt;
-&lt;li&gt;Install the application&lt;/li&gt;
-&lt;li&gt;Optional: Join a domain&lt;/li&gt;
-&lt;li&gt;Test the application&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;In the next step, create an image from the master&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Sysprep the Golden Master&lt;/li&gt;
-&lt;li&gt;Capture the VM in the Azure Portal and create a custom image&lt;/li&gt;
-&lt;li&gt;Optional: Copy the custom image to an Azure compute gallery to deploy VMs in different locations, subscriptions, and trusted launch VMs&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The bad thing is that your Golden Master is destroyed during the sysprep and capturing process. A bit smarter is to do that on a cloned/temporary VM and later delete the clone. &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for AVD&lt;/a&gt; will do this automatically if you create a new custom image. So, you can reuse the Golden Master.
-&lt;img src=&quot;../assets/images/Sysprep-Advanced.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;But today, deploying Windows 11 22H2 is the main topic. In Windows 11 22H2 is an issue preventing the rollout of new VMs based on a custom image in s specific case:&lt;/p&gt;
-&lt;p&gt;If you create a custom image based on a Golden Master who is or was &lt;strong&gt;domain-joined&lt;/strong&gt;, you cannot roll out a new VM. The rollout will go into a timeout; if you capture a screenshot, you can see the installation screen and a rotating donut.&lt;/p&gt;
-&lt;p&gt;What I figured out. The setup process stops after handling the following task (found in C:\Windows\Panther\setupact.log):
-ActionPlatform::LaunchModule: Executing method &lt;em&gt;‘CryptoSysPrep_Specialize’&lt;/em&gt; from C:\Windows\system32\capisp.dll
-After that, no more happens. Also, the ETL files are not showing any process. I guess the process hangs.&lt;/p&gt;
-&lt;p&gt;**I was able to bring it down to this part. For a workaround, I modified the &lt;em&gt;“C:\windows\system32\Sysprep\ActionFiles\Specialize.xml”&lt;/em&gt; on the master VM and removed the actions for &lt;em&gt;‘CryptoSysPrep_Specialize’&lt;/em&gt;. **&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Specialize.xml&lt;/em&gt; is processed by sysprep after a rollout based on an image on this VM. And: It worked. The deployed VMs are running, and the timeout didn’t happen.&lt;/p&gt;
-&lt;p&gt;As a workaround, you can modify the &lt;em&gt;Specialize.xml&lt;/em&gt; on the Golden Master and capture the image. After that, you can roll out new VMs based on that image.&lt;/p&gt;
-&lt;p&gt;I added the workaround to &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for AVD&lt;/a&gt;. If Windows 11 22H2 is detected during the imaging process, the Specialize.xml is automatically patched. Additionally, if you roll out new session hosts with one of the tools, capisp.dll with the entry point CryptoSysPrep_Specialize is called during the rollout.&lt;/p&gt;
-&lt;p&gt;Please note that this is a &lt;strong&gt;workaround&lt;/strong&gt;. Follow the stream also on &lt;a href=&quot;https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html&quot;&gt;https://learn.microsoft.com/en-us/answers/questions/1027370/windows-11-sysprep-1.html&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Thu, 10 Nov 2022 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/SYSPREP_and_rollout_deploy_WINDOWS_11_22H2_in_Azure/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/SYSPREP_and_rollout_deploy_WINDOWS_11_22H2_in_Azure/</guid>
         
         
         <category>Windows Virtual Desktop</category>
