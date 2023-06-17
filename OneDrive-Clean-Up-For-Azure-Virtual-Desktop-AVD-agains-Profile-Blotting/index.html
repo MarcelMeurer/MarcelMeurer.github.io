@@ -407,44 +407,15 @@ The file content is also on the local disk, and the files are using local storag
       </h3>
     
 <p>The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\OneDriveCleanUp</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Value</th>
-<th>Default value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Enabled</td>
-<td>If false, the application will not check the files</td>
-<td>true</td>
-</tr>
-<tr>
-<td>RunEachMinutes</td>
-<td>Check OneDrive files each minutes</td>
-<td>30</td>
-</tr>
-<tr>
-<td>AlwaysUnpinFilesOlderThenDays</td>
-<td>Unpin files older then days (0: disabled</td>
-<td>0</td>
-</tr>
-<tr>
-<td>AllowMbytesOnDisk</td>
-<td>Allow the configured value in MByte on the local disk</td>
-<td>5120</td>
-</tr>
-<tr>
-<td>IgnoreFilesContaining</td>
-<td>String with separated values (;). If the path of a file contains one of the values, the file is ignored</td>
-<td>Empty</td>
-</tr>
-</tbody>
-</table>
+<p>| Key | Type | Value | Default value |
+|–––––|———––|——|
+| Enabled | Reg_DWORD | If false, the application will not check the files | 1=true |
+| RunEachMinutes	| Reg_DWORD | Check OneDrive files each minutes | 30 |
+| AlwaysUnpinFilesOlderThenDays | Reg_DWORD | Unpin files older then days (0: disabled )| 0 |
+| AllowMbytesOnDisk | Reg_DWORD | Allow the configured value in MByte on the local disk | 5120 |
+| IgnoreFilesContaining | Reg_SZ | String with separated values (;). If the path of a file contains one of the values, the file is ignored | Empty |
 <br/>
-OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
+OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log.</p>
 <p>Example:
 <img src="../assets/images/ODClaenUp-01.png" alt="" />
 <br/></p>
@@ -523,44 +494,15 @@ The file content is also on the local disk, and the files are using local storag
 <p>In my test, my profile grew to 8 GByte while I pinned some files in OneDrive, and after logoff, the profile went back to 800 MByte while the tool unpinned the OneDrive files.</p>
 <h3 id="logging-and-configuration">Logging and configuration</h3>
 <p>The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\OneDriveCleanUp</p>
-<table>
-<thead>
-<tr>
-<th>Key</th>
-<th>Value</th>
-<th>Default value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Enabled</td>
-<td>If false, the application will not check the files</td>
-<td>true</td>
-</tr>
-<tr>
-<td>RunEachMinutes</td>
-<td>Check OneDrive files each minutes</td>
-<td>30</td>
-</tr>
-<tr>
-<td>AlwaysUnpinFilesOlderThenDays</td>
-<td>Unpin files older then days (0: disabled</td>
-<td>0</td>
-</tr>
-<tr>
-<td>AllowMbytesOnDisk</td>
-<td>Allow the configured value in MByte on the local disk</td>
-<td>5120</td>
-</tr>
-<tr>
-<td>IgnoreFilesContaining</td>
-<td>String with separated values (;). If the path of a file contains one of the values, the file is ignored</td>
-<td>Empty</td>
-</tr>
-</tbody>
-</table>
+<p>| Key | Type | Value | Default value |
+|–––––|———––|——|
+| Enabled | Reg_DWORD | If false, the application will not check the files | 1=true |
+| RunEachMinutes	| Reg_DWORD | Check OneDrive files each minutes | 30 |
+| AlwaysUnpinFilesOlderThenDays | Reg_DWORD | Unpin files older then days (0: disabled )| 0 |
+| AllowMbytesOnDisk | Reg_DWORD | Allow the configured value in MByte on the local disk | 5120 |
+| IgnoreFilesContaining | Reg_SZ | String with separated values (;). If the path of a file contains one of the values, the file is ignored | Empty |
 <br/>
-OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
+OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log.</p>
 <p>Example:
 <img src="../assets/images/ODClaenUp-01.png" alt="" />
 <br/></p>
