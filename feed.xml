@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 17 Jun 2023 20:35:10 +0200</pubDate>
-    <lastBuildDate>Sat, 17 Jun 2023 20:35:10 +0200</lastBuildDate>
+    <pubDate>Sat, 17 Jun 2023 20:39:41 +0200</pubDate>
+    <lastBuildDate>Sat, 17 Jun 2023 20:39:41 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -40,15 +40,50 @@ The file content is also on the local disk, and the files are using local storag
 &lt;p&gt;In my test, my profile grew to 8 GByte while I pinned some files in OneDrive, and after logoff, the profile went back to 800 MByte while the tool unpinned the OneDrive files.&lt;/p&gt;
 &lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
 &lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\OneDriveCleanUp&lt;/p&gt;
-&lt;p&gt;| Key | Type | Value | Default value |
-|–––––|———––|——|
-| Enabled | Reg_DWORD | If false, the application will not check the files | 1=true |
-| RunEachMinutes	| Reg_DWORD | Check OneDrive files each minutes | 30 |
-| AlwaysUnpinFilesOlderThenDays | Reg_DWORD | Unpin files older then days (0: disabled )| 0 |
-| AllowMbytesOnDisk | Reg_DWORD | Allow the configured value in MByte on the local disk | 5120 |
-| IgnoreFilesContaining | Reg_SZ | String with separated values (;). If the path of a file contains one of the values, the file is ignored | Empty |
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Key&lt;/th&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;th&gt;Default value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Enabled&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;If false, the application will not check the files&lt;/td&gt;
+&lt;td&gt;1=true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RunEachMinutes&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Check OneDrive files each minutes&lt;/td&gt;
+&lt;td&gt;30&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AlwaysUnpinFilesOlderThenDays&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Unpin files older then days (0: disabled )&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AllowMbytesOnDisk&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Allow the configured value in MByte on the local disk&lt;/td&gt;
+&lt;td&gt;5120&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;IgnoreFilesContaining&lt;/td&gt;
+&lt;td&gt;Reg_SZ&lt;/td&gt;
+&lt;td&gt;String with separated values (;). If the path of a file contains one of the values, the file is ignored&lt;/td&gt;
+&lt;td&gt;Empty&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 &lt;br/&gt;
-OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log.&lt;/p&gt;
+OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
 &lt;p&gt;Example:
 &lt;img src=&quot;../assets/images/ODClaenUp-01.png&quot; alt=&quot;&quot; /&gt;
 &lt;br/&gt;&lt;/p&gt;
