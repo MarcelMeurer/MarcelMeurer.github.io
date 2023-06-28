@@ -447,8 +447,9 @@
 <p>In most companies, a help desk agent supports users using applications. For that, local admin privileges are not necessary and not recommended. To allow help desk agents shadowing users in WVD, you have to give these users (or better: a user group) only the needed permission. To do this, execute the following command in an administrative cmd:</p>
 <pre><code>wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL AddAccount 'ITPROCLOUD\ADM_WVD-Shadowing',2
 </code></pre>
-<p>This gives the users of the group <strong>ITPROCLOUD\ADM_WVD-Shadowing</strong> the needed permission directly on the RDP-SXS stack (you need to reboot the session host).
-I would run this command on the template VM / golden Image to have this permission configured for each session host. Alternatively, you can run this in a computer-logon script for existing session hosts.</p>
+<p>Please also configure the local or group policy: Computer -&gt; Administrative Templates -&gt; Windows Components -&gt; Remote Desktop Services -&gt; Remote Desktop Session Hosts -&gt; Connections -&gt; Set riles for remote control … to “2” (Allow control with user consent)</p>
+<p>This gives the users of the group <strong>ITPROCLOUD\ADM_WVD-Shadowing</strong> the needed permission directly on the RDP-SXS stack (you need to reboot the session host).</p>
+<p>Run this configuration after the deployment and installation of the AVD agent and ensure to run it maybe again, if the RDP-SXS stack is updated.</p>
 <p>Hint: You can reset this setting with:</p>
 <pre><code>wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL RestoreDefaults
 </code></pre>
