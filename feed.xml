@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 22 Jun 2023 18:47:08 +0200</pubDate>
-    <lastBuildDate>Thu, 22 Jun 2023 18:47:08 +0200</lastBuildDate>
+    <pubDate>Wed, 28 Jun 2023 14:58:12 +0200</pubDate>
+    <lastBuildDate>Wed, 28 Jun 2023 14:58:12 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -14,7 +14,7 @@
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
 &lt;p&gt;Are you interested in the new “Hydra for Azure Virtual Desktop” solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 06/19/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 06/28/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
@@ -102,7 +102,7 @@
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 06/19/2023&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 06/28/2023&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
@@ -114,6 +114,11 @@
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7.62.0&lt;/td&gt;
+&lt;td&gt;2023-06-28&lt;/td&gt;
+&lt;td&gt;Add: New deployed hosts: In the first minutes, the correct start of the BootloaderAgent is monitored (if the service is not running, the service will be started)&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.7.61.0&lt;/td&gt;
 &lt;td&gt;2023-06-19&lt;/td&gt;
@@ -1059,11 +1064,46 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 06/19/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 06/28/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Mon, 19 Jun 2023 00:00:00 +0200</pubDate>
+        <pubDate>Wed, 28 Jun 2023 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Session hosts are not available in Azure Virtual Desktop, but VMs are running. </title>
+        <description>&lt;p&gt;During June/July, I got several emails that session hosts were not available in AVD, but the VMs were in a running state. Rebooting the host sometimes helps, and the host was shown as available. We figured out that the issue was caused by a not running RDAgentBootLoader service on affected hosts. Starting the service (or the host) resolved the issue. Right now, I don’t know the root cause of why the RDAgentBootLoader was not started or failed.&lt;/p&gt;
+&lt;p&gt;To workaround this behavior by implementing a scheduled task, start with the host and monitors the service for the first 30 minutes. The service will be started if it’s not running.&lt;/p&gt;
+&lt;p&gt;The scheduled task will automatically be created for new deployments with &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; or &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;) from version 06/27/2023.&lt;/p&gt;
+&lt;p&gt;If you want to build your own scheduled task, you can use this script:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;	$interval=30
+	$run=$true
+	$counter=0
+	$serviceName=&amp;quot;RDAgentBootLoader&amp;quot;
+	do {
+		Start-Sleep -Seconds $interval
+		$service=Get-Service -Name $serviceName -ErrorAction SilentlyContinue
+		if ($service -ne $null -and $service.Status -ne [System.ServiceProcess.ServiceControllerStatus](4)) {
+			Write-Host &amp;quot;Starting service: $serviceName&amp;quot;
+			Start-Service -Name $serviceName -ErrorAction SilentlyContinue
+		}
+		$counter++
+		if ($counter -gt 10) {$interval=90}
+		if ($counter -gt 20) {$run=$false}
+	} while ($run)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;PS: Maybe it makes sense to monitor the service during the runtime of the VM in the future.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 28 Jun 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -1897,25 +1937,6 @@ OutputWriter($outMessage)
         <pubDate>Tue, 17 Jan 2023 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-AAD-Only-hostnames-property-exist/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-AAD-Only-hostnames-property-exist/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Working interactively with user sessions in Azure Virtual Desktop</title>
-        <description>&lt;p&gt;Handling user sessions in AVD could be more intuitive in the Azure Portal. Luckily, some tools (like &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt;, and others) are available to make it easier. I made a new approach without the need to install an application or tool: I published an Angular client application that displays user sessions for Azure Virtual Desktop - including an autorefresh. Additionally, sessions can be disconnected or logged out, or messages can be sent to them. The Angular application runs in the user’s browser and communicates directly with the Azure API. There is no processing of data on the web server. The application runs in the context and with the logged-in user’s permissions (similar to a PowerShell application). The application is automatically terminated when the browser is closed.
-&lt;img src=&quot;../assets/images/Avd-Sessions-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Feel free to give it a try. Please use the least needed permissions to log in at your own risk.&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://avd.itprocloud.com/&quot;&gt;https://avd.itprocloud.com&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;PS: There are no plans to rebuild WVDAdmin or Hydra as an angular application ;-)&lt;/p&gt;
-</description>
-        <pubDate>Thu, 01 Dec 2022 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-User-Sessions-Dashboard/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-User-Sessions-Dashboard/</guid>
         
         
         <category>Windows Virtual Desktop</category>

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logos/icon.png">
+
+<title>Session hosts are not available in Azure Virtual Desktop, but VMs are running.  | ITProCloud Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Session hosts are not available in Azure Virtual Desktop, but VMs are running. | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Session hosts are not available in Azure Virtual Desktop, but VMs are running." />
+<meta name="author" content="mm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="During June/July, I got several emails that session hosts were not available in AVD, but the VMs were in a running state. Rebooting the host sometimes helps, and the host was shown as available. We figured out that the issue was caused by a not running RDAgentBootLoader service on affected hosts. Starting the service (or the host) resolved the issue. Right now, I don’t know the root cause of why the RDAgentBootLoader was not started or failed." />
+<meta property="og:description" content="During June/July, I got several emails that session hosts were not available in AVD, but the VMs were in a running state. Rebooting the host sometimes helps, and the host was shown as available. We figured out that the issue was caused by a not running RDAgentBootLoader service on affected hosts. Starting the service (or the host) resolved the issue. Right now, I don’t know the root cause of why the RDAgentBootLoader was not started or failed." />
+<link rel="canonical" href="https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/" />
+<meta property="og:url" content="https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/" />
+<meta property="og:site_name" content="ITProCloud Blog" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/Unavailable.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-06-28T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Unavailable.png" />
+<meta property="twitter:title" content="Session hosts are not available in Azure Virtual Desktop, but VMs are running." />
+<script type="application/ld+json">
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/Unavailable.png","datePublished":"2023-06-28T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/","author":{"@type":"Person","name":"mm"},"headline":"Session hosts are not available in Azure Virtual Desktop, but VMs are running.","dateModified":"2023-06-28T00:00:00+02:00","description":"During June/July, I got several emails that session hosts were not available in AVD, but the VMs were in a running state. Rebooting the host sometimes helps, and the host was shown as available. We figured out that the issue was caused by a not running RDAgentBootLoader service on affected hosts. Starting the service (or the host) resolved the issue. Right now, I don’t know the root cause of why the RDAgentBootLoader was not started or failed.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<!--- cookie banner --->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-post">
+	<!-- defer loading of font and font awesome -->
+	<!-- <noscript id="deferred-styles"> -->
+		<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"> -->
+	<!-- </noscript> -->
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logos/itpc-logo-bottom-text.png" alt="ITProCloud Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/tools"><b>Tools</b></a>
+                </li>
+				
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
+                </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (53)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (52)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (11)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+	
+				<!-- Original tag list (unsorted) 
+				
+				
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-VM">Azure VM (2)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (9)</a>
+						</li>
+						
+					
+				
+				-->
+								
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://twitter.com/MarcelMeurer"><i class="fab fa-twitter"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/marcel-meurer-15b46b98"><i class="fab fa-linkedin"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://github.com/MarcelMeurer"><i class="fab fa-github"></i></a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="mailto:marcel.meurer@itprocloud.com?subject=Request%20from%20ITProCloud.de"><i class="far fa-envelope"></i></a>
+                </li>
+
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">ITProCloud Blog</h1>
+    <p class="lead">
+        Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <!-- Begin Article
+================================================== -->
+<div class="container">
+    <div class="row">
+
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Session hosts are not available in Azure Virtual Desktop, but VMs are running. &url=https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/&title=Session hosts are not available in Azure Virtual Desktop, but VMs are running. " onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+    </ul>
+    
+    <div class="sep">
+    </div>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
+    
+</div>
+
+        </div>
+
+        <!-- Post -->
+        
+
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
+
+                <!-- Author Box -->
+                
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                        
+                        <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
+                        
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href="https://blog.itprocloud.de">Marcel</a><a target="_blank" href="https://twitter.com/MarcelMeurer" class="btn follow">Follow</a>
+                        <span class="author-description">That's me: Marcel</span>
+                    </div>
+                </div>
+                
+
+                <!-- Post Title -->
+                <h1 class="posttitle">Session hosts are not available in Azure Virtual Desktop, but VMs are running. </h1>
+
+            </div>
+
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
+
+            <!-- Post Featured Image -->
+            
+
+            
+            <img class="featured-image img-fluid" src="/assets/images/Unavailable.png" alt="Session hosts are not available in Azure Virtual Desktop, but VMs are running. ">
+            
+
+            
+            <!-- End Featured Image -->
+
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <p>During June/July, I got several emails that session hosts were not available in AVD, but the VMs were in a running state. Rebooting the host sometimes helps, and the host was shown as available. We figured out that the issue was caused by a not running RDAgentBootLoader service on affected hosts. Starting the service (or the host) resolved the issue. Right now, I don’t know the root cause of why the RDAgentBootLoader was not started or failed.</p>
+<p>To workaround this behavior by implementing a scheduled task, start with the host and monitors the service for the first 30 minutes. The service will be started if it’s not running.</p>
+<p>The scheduled task will automatically be created for new deployments with <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for Azure Virtual Desktop</a> or <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>) from version 06/27/2023.</p>
+<p>If you want to build your own scheduled task, you can use this script:</p>
+<pre><code>	$interval=30
+	$run=$true
+	$counter=0
+	$serviceName=&quot;RDAgentBootLoader&quot;
+	do {
+		Start-Sleep -Seconds $interval
+		$service=Get-Service -Name $serviceName -ErrorAction SilentlyContinue
+		if ($service -ne $null -and $service.Status -ne [System.ServiceProcess.ServiceControllerStatus](4)) {
+			Write-Host &quot;Starting service: $serviceName&quot;
+			Start-Service -Name $serviceName -ErrorAction SilentlyContinue
+		}
+		$counter++
+		if ($counter -gt 10) {$interval=90}
+		if ($counter -gt 20) {$run=$false}
+	} while ($run)
+</code></pre>
+<p>PS: Maybe it makes sense to monitor the service during the runtime of the VM in the future.</p>
+
+            </div>
+
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2023-06-28">28 Jun 2023</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            <a class="prev d-block col-md-6" href="/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/"> &laquo; OneDrive Clean-Up for Azure Virtual Desktop</a>
+            
+            
+            <a class="next d-block col-md-6 text-lg-right" href="/Windows-Virtual-Desktop-Admin/">WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD) &raquo; </a>
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
+        </div>
+        <!-- End Post -->
+
+    </div>
+</div>
+<!-- End Article
+================================================== -->
+
+<!-- Begin Comments
+================================================== -->
+
+<!--End Comments
+================================================== -->
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div id="allTags" class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore by tags <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-VM">Azure VM (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (9)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (11)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (8)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-AD">Azure AD (4)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#OneDrive">OneDrive (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-IoT">Azure IoT (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Functions">Azure Functions (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Marketplace">Azure Marketplace (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (5)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (53)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (52)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Webapp">Azure Webapp (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#ADConnect">ADConnect (1)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 text-center text-lg-left">
+                Copyright © 2023 ITProCloud Blog 
+            </div>
+            <div class="col-md-4 col-sm-4 text-center text-lg-left">
+                <a href="/Impressum">Impressum</a>/<a href="/ImpressumEn">Imprint</a> - 
+                <a href="/privacyDe">Datenschutz</a> - 
+				<a href="/privacyEn">Privacy</a>
+            </div>
+            <div class="col-md-3 col-sm-3 text-center text-lg-right">    
+                <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+<script id="dsq-count-scr" src="//.disqus.com/count.js"></script>
+
+
+<!-- Start Cookie Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#eaf7f7",
+      "text": "#5c7291"
+    },
+    "button": {
+      "background": "#56cbdb",
+      "text": "#ffffff"
+    }
+  },
+  "position": "bottom-right",
+  "content": {
+    "message": 'This website uses cookies to ensure you get the best experience on our website.<br/><a href="/privacyEn">Privacy policy</a><br/><br/>Diese Website verwendet Cookies, um dir mehr Benutzerfreundlichkeit zu bieten. Mit der Nutzung dieser Website stimmst du der Verwendung von Cookies zu.<br/><a href="/privacyDe">Datenschutzerklärung</a><br/><br/> ',
+    "href": "/privacyEn"
+  }
+});
+</script>
+<!-- End Cookie Plugin -->
+
+</body>
+</html>
