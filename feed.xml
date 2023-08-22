@@ -5,9 +5,90 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 15 Jul 2023 08:29:41 +0200</pubDate>
-    <lastBuildDate>Sat, 15 Jul 2023 08:29:41 +0200</lastBuildDate>
+    <pubDate>Tue, 22 Aug 2023 18:48:02 +0200</pubDate>
+    <lastBuildDate>Tue, 22 Aug 2023 18:48:02 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Onboard AVD pooled session hosts to Defender automatically with a script</title>
+        <description>&lt;p&gt;Onboarding session hosts to Defender is very important for security reasons. Microsoft has documented the way to onboard these devices in different scenarios here: &lt;a href=&quot;https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-vdi&quot;&gt;https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-vdi&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;While I often work with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; and also have some AAD native deployment, I decided to prepare an easy script to onboard this device automatically after the rollout. The script is generic, so it can also be used with other automation.&lt;/p&gt;
+&lt;p&gt;To start, we need the  VDI onboarding script for non-persistent devices from &lt;a href=&quot;htps://defender.microsoft.com/securitysettings/endpoints/onboarding&quot;&gt;htps://defender.microsoft.com/securitysettings/endpoints/onboarding&lt;/a&gt; - Make sure to download the right package.&lt;/p&gt;
+&lt;p&gt;To install Defender without the need to store the package (zip file) to share, we can encode the package to a base64 encoded string. After that, we can grab the string from the text file &lt;em&gt;WindowsDefenderATPOnboardingPackage.zip.txt&lt;/em&gt; and put it into quotes in line 30.&lt;/p&gt;
+&lt;p&gt;Step-by-step:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Save the PowerShell script to your local disk&lt;/li&gt;
+&lt;li&gt;Change &lt;em&gt;$false&lt;/em&gt; into &lt;em&gt;$true&lt;/em&gt; in line 22&lt;/li&gt;
+&lt;li&gt;Download the onboarding script and store it in the same folder&lt;/li&gt;
+&lt;li&gt;Run the PowerShell script&lt;/li&gt;
+&lt;li&gt;Open the text file &lt;em&gt;WindowsDefenderATPOnboardingPackage.zip.txt&lt;/em&gt; and put it into quotes in line 30&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The script can then be run after the rollout to join the device to Defender. In Hydra, you can add the script as a new script into Scripts and Collections (with your onboarding script encoded in line 25 and $false in line 22).
+&lt;br/&gt;
+&lt;img src=&quot;../assets/images/AVD-DefenderOnboarding-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Add the script to the Deployment Configuration -&amp;gt; Run script or script collection after deployment:
+&lt;br/&gt;
+&lt;img src=&quot;../assets/images/AVD-DefenderOnboarding-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The next device is automatically onboarded to Defender.&lt;/p&gt;
+&lt;h3 id=&quot;the-script&quot;&gt;The script:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;# Script to prepare and onboard AVD non-persistent hosts to Microsoft Defender
+
+# test if fuction LogWriter available
+if (!(Test-Path function:LogWriter)) {
+    function LogWriter($message) {
+        Write-Host $message
+    }
+}
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+
+$DefenderFile=&amp;quot;WindowsDefenderATPOnboardingPackage.zip&amp;quot;
+$ScriptPath = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
+
+function UnzipFile
+{
+    param([string]$zipfile, [string]$out)
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $out)
+}
+
+
+// set it to $true to generate the base64 string from your dowloaded WindowsDefenderATPOnboardingPackage.zip - that must run locally
+if ($false) {
+    # Generate base64 file fron DefenderFile
+    # Download VDI onboarding script for non-persistent devices from: https://defender.microsoft.com/securitysettings/endpoints/onboarding
+    LogWriter(&amp;quot;Generate base64 file fron DefenderFile&amp;quot;)
+    $WindowsDefenderATPOnboardingPackage=[System.Convert]::ToBase64String((Get-Content -Path &amp;quot;$ScriptPath\$DefenderFile&amp;quot; -Encoding Byte))
+    $WindowsDefenderATPOnboardingPackage | Out-File &amp;quot;$ScriptPath\$($DefenderFile).txt&amp;quot; -Encoding UTF8
+} else {
+    LogWriter(&amp;quot;Read base64 file fron DefenderFile&amp;quot;)
+    $WindowsDefenderATPOnboardingPackage =&amp;quot;&amp;lt;put your base64 encoded string here&amp;gt;&amp;quot;
+    # Clean up the temp folder
+    LogWriter(&amp;quot;Cleaning up the temp folder&amp;quot;)
+    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; -Force -ErrorAction SilentlyContinue
+    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; -Recurse -Force -ErrorAction SilentlyContinue
+    LogWriter(&amp;quot;Create the Defender files&amp;quot;)
+    Set-Content -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; -Value ([System.Convert]::FromBase64String($WindowsDefenderATPOnboardingPackage)) -Encoding Byte
+    UnzipFile &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; 
+    
+    # start the test.cmd with cmd.exe in the extracted folder
+    LogWriter(&amp;quot;Starting the onboarding&amp;quot;)
+    Start-Process -FilePath &amp;quot;$env:windir\system32\cmd.exe&amp;quot; -ArgumentList &amp;quot;/c WindowsDefenderATPOnboardingScript.cmd&amp;quot; -WorkingDirectory &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; -Wait -PassThru
+
+    # Clean up the temp folder
+    LogWriter(&amp;quot;Cleaning up the temp folder&amp;quot;)
+    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; -Force -ErrorAction SilentlyContinue
+    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; -Recurse -Force -ErrorAction SilentlyContinue
+}
+&lt;/code&gt;&lt;/pre&gt;</description>
+        <pubDate>Tue, 22 Aug 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Rollout-AVD-SessionHost-To-Defender-Automatically-with-a-script/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Rollout-AVD-SessionHost-To-Defender-Automatically-with-a-script/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>OneDrive Clean-Up for Azure Virtual Desktop</title>
@@ -1927,31 +2008,6 @@ OutputWriter($outMessage)
         <pubDate>Tue, 21 Feb 2023 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Automatically-remove-a-computer-object-from-AD-while-removing-a-session-host/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Automatically-remove-a-computer-object-from-AD-while-removing-a-session-host/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Azure AD only joined hosts in Azure Virtual Desktop: Join and re-join hosts</title>
-        <description>&lt;p&gt;Azure AD-only joined are getting more common in Azure Virtual Desktop. There are some challenges running AVD hosts as AAD-only. One challenge is that you can roll out a new session host in AAD only if a device with the same name doesn’t exist. In the past, that was possible, but that may be changed over the last few months.&lt;/p&gt;
-&lt;p&gt;If you roll out a new session host with AAD-only integration and a device with the same exist, you get an error message:&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;Another object with the same value for property hostnames already exists.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;So, if you roll out session hosts after an update of the image again and you try to reuse the names, you have to remove the older - no longer existing devices - from AAD first.&lt;/p&gt;
-&lt;p&gt;To make this a bit easier, I added two options to do this with &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; for Azure Virtual Desktop in an automated way:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;If you added the service principal &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; used to the role “Cloud Device Administrator” and ticked the box “Azure Active Directory: Try to delete old device” in the rollout configuration, &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; will delete existing devices with the same name from Azure AD. Note: “Cloud Device Administrator” is a highly privileged role. Alternatively, the 2nd option doesn’t need this role.&lt;/li&gt;
-&lt;li&gt;Run a script shortly before deleting a session host to remove the device. Running dsregcmd.exe locally on a device will remove the device from AAD. To automate this, a script collection can be selected in the base settings of the host pool configuration: Run script or collection on specific events -&amp;gt; On-Delete -&amp;gt; Select the collection “BuiltIn: Remove device from Azure Active Directory before deleting host”. The collection moves the host into the drain mode and runs the script shortly before the host is deleted. (Note: If the script collection is not visible, update the build-in scripts by clicking on the update button in the upper right corner of the script menu). The on-delete option can also be used for other aspects.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-On-Delete.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Note: In &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; the script to remove a host can be triggered with: “Remove device from Azure Active Directory”&lt;/p&gt;
-</description>
-        <pubDate>Tue, 17 Jan 2023 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-AAD-Only-hostnames-property-exist/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-AAD-Only-hostnames-property-exist/</guid>
         
         
         <category>Windows Virtual Desktop</category>
