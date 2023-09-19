@@ -5,216 +5,16 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 22 Aug 2023 18:56:32 +0200</pubDate>
-    <lastBuildDate>Tue, 22 Aug 2023 18:56:32 +0200</lastBuildDate>
+    <pubDate>Tue, 19 Sep 2023 20:00:36 +0200</pubDate>
+    <lastBuildDate>Tue, 19 Sep 2023 20:00:36 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
-    
-      <item>
-        <title>Onboard AVD pooled session hosts to Defender automatically with a script</title>
-        <description>&lt;p&gt;Onboarding session hosts to Defender is very important for security reasons. Microsoft has documented the way to onboard these devices in different scenarios here: &lt;a href=&quot;https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-vdi&quot;&gt;https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-vdi&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;While I often work with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; and also have some AAD native deployment, I decided to prepare an easy script to onboard this device automatically after the rollout. The script is generic, so it can also be used with other automation.&lt;/p&gt;
-&lt;p&gt;To start, we need the  VDI onboarding script for non-persistent devices from &lt;a href=&quot;htps://defender.microsoft.com/securitysettings/endpoints/onboarding&quot;&gt;htps://defender.microsoft.com/securitysettings/endpoints/onboarding&lt;/a&gt; - Make sure to download the right package.&lt;/p&gt;
-&lt;p&gt;To install Defender without the need to store the package (zip file) to share, we can encode the package to a base64 encoded string. After that, we can grab the string from the text file &lt;em&gt;WindowsDefenderATPOnboardingPackage.zip.txt&lt;/em&gt; and put it into quotes in line 30.&lt;/p&gt;
-&lt;p&gt;Step-by-step:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Save the PowerShell script to your local disk&lt;/li&gt;
-&lt;li&gt;Change &lt;em&gt;$false&lt;/em&gt; into &lt;em&gt;$true&lt;/em&gt; in line 22&lt;/li&gt;
-&lt;li&gt;Download the onboarding script and store it in the same folder&lt;/li&gt;
-&lt;li&gt;Run the PowerShell script&lt;/li&gt;
-&lt;li&gt;Open the text file &lt;em&gt;WindowsDefenderATPOnboardingPackage.zip.txt&lt;/em&gt; and put it into quotes in line 30&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The script can then be run after the rollout to join the device to Defender. In Hydra, you can add the script as a new script into Scripts and Collections (with your onboarding script encoded in line 25 and $false in line 22).
-&lt;br/&gt;
-&lt;img src=&quot;../assets/images/AVD-DefenderOnboarding-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Add the script to the Deployment Configuration -&amp;gt; Run script or script collection after deployment:
-&lt;br/&gt;
-&lt;img src=&quot;../assets/images/AVD-DefenderOnboarding-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The next device is automatically onboarded to Defender.&lt;/p&gt;
-&lt;h3 id=&quot;the-script&quot;&gt;The script:&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;# Script to prepare and onboard AVD non-persistent hosts to Microsoft Defender
-
-# test if fuction LogWriter available
-if (!(Test-Path function:LogWriter)) {
-    function LogWriter($message) {
-        Write-Host $message
-    }
-}
-Add-Type -AssemblyName System.IO.Compression.FileSystem
-
-$DefenderFile=&amp;quot;WindowsDefenderATPOnboardingPackage.zip&amp;quot;
-$ScriptPath = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
-
-function UnzipFile
-{
-    param([string]$zipfile, [string]$out)
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $out)
-}
-
-
-// set it to $true to generate the base64 string from your dowloaded WindowsDefenderATPOnboardingPackage.zip - that must run locally
-if ($false) {
-    # Generate base64 file fron DefenderFile
-    # Download VDI onboarding script for non-persistent devices from: https://defender.microsoft.com/securitysettings/endpoints/onboarding
-    LogWriter(&amp;quot;Generate base64 file fron DefenderFile&amp;quot;)
-    $WindowsDefenderATPOnboardingPackage=[System.Convert]::ToBase64String((Get-Content -Path &amp;quot;$ScriptPath\$DefenderFile&amp;quot; -Encoding Byte))
-    $WindowsDefenderATPOnboardingPackage | Out-File &amp;quot;$ScriptPath\$($DefenderFile).txt&amp;quot; -Encoding UTF8
-} else {
-    LogWriter(&amp;quot;Read base64 file fron DefenderFile&amp;quot;)
-    $WindowsDefenderATPOnboardingPackage =&amp;quot;&amp;lt;put your base64 encoded string here&amp;gt;&amp;quot;
-    # Clean up the temp folder
-    LogWriter(&amp;quot;Cleaning up the temp folder&amp;quot;)
-    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; -Force -ErrorAction SilentlyContinue
-    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; -Recurse -Force -ErrorAction SilentlyContinue
-    LogWriter(&amp;quot;Create the Defender files&amp;quot;)
-    Set-Content -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; -Value ([System.Convert]::FromBase64String($WindowsDefenderATPOnboardingPackage)) -Encoding Byte
-    UnzipFile &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; 
-    
-    # start the test.cmd with cmd.exe in the extracted folder
-    LogWriter(&amp;quot;Starting the onboarding&amp;quot;)
-    Start-Process -FilePath &amp;quot;$env:windir\system32\cmd.exe&amp;quot; -ArgumentList &amp;quot;/c WindowsDefenderATPOnboardingScript.cmd&amp;quot; -WorkingDirectory &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; -Wait -PassThru
-
-    # Clean up the temp folder
-    LogWriter(&amp;quot;Cleaning up the temp folder&amp;quot;)
-    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; -Force -ErrorAction SilentlyContinue
-    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; -Recurse -Force -ErrorAction SilentlyContinue
-}
-&lt;/code&gt;&lt;/pre&gt;</description>
-        <pubDate>Tue, 22 Aug 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Rollout-AVD-SessionHost-To-Defender-Automatically-with-a-script/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Rollout-AVD-SessionHost-To-Defender-Automatically-with-a-script/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>OneDrive Clean-Up for Azure Virtual Desktop</title>
-        <description>&lt;p&gt;Running OneDrive with Azure Virtual Desktop is a common scenario and enables users to work in a modern way with Teams and SharePoint. If FSLogix is used, there is a challenge in combination with OneDrive: Users can download OneDrive files to the host, and the data are stored in the profile. The profile size increases heavily and causes some extra costs on the storage account.&lt;/p&gt;
-&lt;p&gt;Having so many OneDrive files stored in the profile may make no sense in every case - if a user access a file, the file is downloaded automatically (on demand). And it’s mostly fine to “unpin” the file later if the file is no longer needed. The files are downloaded fast, while AVD and OneDrive are in the Microsoft cloud.&lt;/p&gt;
-&lt;h3 id=&quot;background&quot;&gt;Background:&lt;/h3&gt;
-&lt;p&gt;OneDrive files can have three different states:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Cloud:&lt;/strong&gt;
-The file content is in the cloud only. The file system simulates that the file exists. While the content is not on the disk, the files don’t need storage on the device. If a user opens such a file, the content is downloaded, and the file state change to On-Device.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;On-Device:&lt;/strong&gt;
-The file content is also on the local disk, and the files are using local storage.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Always:&lt;/strong&gt;
-The file content is also on the local disk, and the files are using local storage. OneDrive wouldn’t change the state to “Cloud”.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/ODClaenUp-02.png&quot; alt=&quot;&quot; /&gt;
-&lt;br/&gt;&lt;/p&gt;
-&lt;p&gt;OneDrive can change the state to “Cloud” on normal Windows 10/11 devices using storage sense. Based on the implementation of storage sense, this is not working for Azure Virtual Desktop (Multi-Session) with FSLogix profiles.&lt;/p&gt;
-&lt;p&gt;A solution to avoid profile blotting in combination with FSLogix is changing the state of OneDrive files to “Cloud” (unpin files). If files are unpinned, they are no longer using local storage, and the “Disk Compaction” of FSLogix would reduce the profile automatically over time (or have more space left for user data).&lt;/p&gt;
-&lt;p&gt;I built a small tool to solve this challenge (I didn’t find a native solution). The tool is called OneDrive CleanUp. OneDrive CleanUp can run in two ways:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Started automatically with the login of the user (after the installation, it creates a link in the start-up folder of the start menu). It directly starts in the background and validates and maybe unpin OneDrive files. This process is repeated every 30 minutes and during the logoff of the user.&lt;/li&gt;
-&lt;li&gt;Start the program with the parameter /RunOnce during the logoff using a (group) policy.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;I prefer the first method to ensure that OneDrive has time to react to the unpinning of files.&lt;/p&gt;
-&lt;p&gt;Example for method 2:
-&lt;img src=&quot;../assets/images/ODClaenUp-03.png&quot; alt=&quot;&quot; /&gt;
-&lt;br/&gt;&lt;/p&gt;
-&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
-&lt;p&gt;In my test, my profile grew to 8 GByte while I pinned some files in OneDrive, and after logoff, the profile went back to 800 MByte while the tool unpinned the OneDrive files.&lt;/p&gt;
-&lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
-&lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\OneDriveCleanUp&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Key&lt;/th&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;th&gt;Default value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Enabled&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;If false, the application will not check the files&lt;/td&gt;
-&lt;td&gt;1=true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;RunEachMinutes&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Check OneDrive files each minutes&lt;/td&gt;
-&lt;td&gt;30&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;AlwaysUnpinFilesOlderThenDays&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Unpin files older then days (0: disabled )&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;AllowMbytesOnDisk&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Allow the configured value in MByte on the local disk&lt;/td&gt;
-&lt;td&gt;5120&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;IgnoreFilesContaining&lt;/td&gt;
-&lt;td&gt;Reg_SZ&lt;/td&gt;
-&lt;td&gt;String with separated values (;). If the path of a file contains one of the values, the file is ignored&lt;/td&gt;
-&lt;td&gt;Empty&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
-OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
-&lt;p&gt;Example:
-&lt;img src=&quot;../assets/images/ODClaenUp-01.png&quot; alt=&quot;&quot; /&gt;
-&lt;br/&gt;&lt;/p&gt;
-&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
-&lt;p&gt;OneDrive CleanUp regularly checks all OneDrive paths and calculates the size of the disk. If the size is larger than the configured maximum size (AllowMbytesOnDisk), it unpins files to go under the configured size. It starts from the oldest to the newest file based on the LastAccessTime property.&lt;/p&gt;
-&lt;br/&gt;
-&lt;h3 id=&quot;release-notes&quot;&gt;Release notes&lt;/h3&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Release&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.4&lt;/td&gt;
-&lt;td&gt;2023-05-04&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.5&lt;/td&gt;
-&lt;td&gt;2023-07-13&lt;/td&gt;
-&lt;td&gt;Fix: Files larger than 2 GByte were counted wrong&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
-&lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/OneDriveCleanUp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/13/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 13 Jul 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
 &lt;p&gt;Are you interested in the new “Hydra for Azure Virtual Desktop” solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/09/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/19/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
@@ -302,7 +102,7 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log.
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/09/2023&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/19/2023&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
@@ -314,6 +114,11 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log.
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.8.01.0&lt;/td&gt;
+&lt;td&gt;2023-09-19&lt;/td&gt;
+&lt;td&gt;Add: Support to capture trusted launch VMs directly into an Azure Compute Gallery; More reliable rollout of session hosts working around some of the AVD-agent issues&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.7.63.0&lt;/td&gt;
 &lt;td&gt;2023-07-09&lt;/td&gt;
@@ -1269,11 +1074,211 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/09/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/19/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Sun, 09 Jul 2023 00:00:00 +0200</pubDate>
+        <pubDate>Tue, 19 Sep 2023 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Onboard AVD pooled session hosts to Defender automatically with a script</title>
+        <description>&lt;p&gt;Onboarding session hosts to Defender is very important for security reasons. Microsoft has documented the way to onboard these devices in different scenarios here: &lt;a href=&quot;https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-vdi&quot;&gt;https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-vdi&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;While I often work with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; and also have some AAD native deployment, I decided to prepare an easy script to onboard this device automatically after the rollout. The script is generic, so it can also be used with other automation.&lt;/p&gt;
+&lt;p&gt;To start, we need the  VDI onboarding script for non-persistent devices from &lt;a href=&quot;htps://defender.microsoft.com/securitysettings/endpoints/onboarding&quot;&gt;htps://defender.microsoft.com/securitysettings/endpoints/onboarding&lt;/a&gt; - Make sure to download the right package.&lt;/p&gt;
+&lt;p&gt;To install Defender without the need to store the package (zip file) to share, we can encode the package to a base64 encoded string. After that, we can grab the string from the text file &lt;em&gt;WindowsDefenderATPOnboardingPackage.zip.txt&lt;/em&gt; and put it into quotes in line 30.&lt;/p&gt;
+&lt;p&gt;Step-by-step:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Save the PowerShell script to your local disk&lt;/li&gt;
+&lt;li&gt;Change &lt;em&gt;$false&lt;/em&gt; into &lt;em&gt;$true&lt;/em&gt; in line 22&lt;/li&gt;
+&lt;li&gt;Download the onboarding script and store it in the same folder&lt;/li&gt;
+&lt;li&gt;Run the PowerShell script&lt;/li&gt;
+&lt;li&gt;Open the text file &lt;em&gt;WindowsDefenderATPOnboardingPackage.zip.txt&lt;/em&gt; and put it into quotes in line 30&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The script can then be run after the rollout to join the device to Defender. In Hydra, you can add the script as a new script into Scripts and Collections (with your onboarding script encoded in line 25 and $false in line 22).
+&lt;br/&gt;
+&lt;img src=&quot;../assets/images/AVD-DefenderOnboarding-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Add the script to the Deployment Configuration -&amp;gt; Run script or script collection after deployment:
+&lt;br/&gt;
+&lt;img src=&quot;../assets/images/AVD-DefenderOnboarding-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The next device is automatically onboarded to Defender.&lt;/p&gt;
+&lt;h3 id=&quot;the-script&quot;&gt;The script:&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;# Script to prepare and onboard AVD non-persistent hosts to Microsoft Defender
+
+# test if fuction LogWriter available
+if (!(Test-Path function:LogWriter)) {
+    function LogWriter($message) {
+        Write-Host $message
+    }
+}
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+
+$DefenderFile=&amp;quot;WindowsDefenderATPOnboardingPackage.zip&amp;quot;
+$ScriptPath = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
+
+function UnzipFile
+{
+    param([string]$zipfile, [string]$out)
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $out)
+}
+
+
+// set it to $true to generate the base64 string from your dowloaded WindowsDefenderATPOnboardingPackage.zip - that must run locally
+if ($false) {
+    # Generate base64 file fron DefenderFile
+    # Download VDI onboarding script for non-persistent devices from: https://defender.microsoft.com/securitysettings/endpoints/onboarding
+    LogWriter(&amp;quot;Generate base64 file fron DefenderFile&amp;quot;)
+    $WindowsDefenderATPOnboardingPackage=[System.Convert]::ToBase64String((Get-Content -Path &amp;quot;$ScriptPath\$DefenderFile&amp;quot; -Encoding Byte))
+    $WindowsDefenderATPOnboardingPackage | Out-File &amp;quot;$ScriptPath\$($DefenderFile).txt&amp;quot; -Encoding UTF8
+} else {
+    LogWriter(&amp;quot;Read base64 file fron DefenderFile&amp;quot;)
+    $WindowsDefenderATPOnboardingPackage =&amp;quot;&amp;lt;put your base64 encoded string here&amp;gt;&amp;quot;
+    # Clean up the temp folder
+    LogWriter(&amp;quot;Cleaning up the temp folder&amp;quot;)
+    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; -Force -ErrorAction SilentlyContinue
+    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; -Recurse -Force -ErrorAction SilentlyContinue
+    LogWriter(&amp;quot;Create the Defender files&amp;quot;)
+    Set-Content -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; -Value ([System.Convert]::FromBase64String($WindowsDefenderATPOnboardingPackage)) -Encoding Byte
+    UnzipFile &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; 
+    
+    # start the test.cmd with cmd.exe in the extracted folder
+    LogWriter(&amp;quot;Starting the onboarding&amp;quot;)
+    Start-Process -FilePath &amp;quot;$env:windir\system32\cmd.exe&amp;quot; -ArgumentList &amp;quot;/c WindowsDefenderATPOnboardingScript.cmd&amp;quot; -WorkingDirectory &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; -Wait -PassThru
+
+    # Clean up the temp folder
+    LogWriter(&amp;quot;Cleaning up the temp folder&amp;quot;)
+    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; -Force -ErrorAction SilentlyContinue
+    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; -Recurse -Force -ErrorAction SilentlyContinue
+}
+&lt;/code&gt;&lt;/pre&gt;</description>
+        <pubDate>Tue, 22 Aug 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Rollout-AVD-SessionHost-To-Defender-Automatically-with-a-script/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Rollout-AVD-SessionHost-To-Defender-Automatically-with-a-script/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>OneDrive Clean-Up for Azure Virtual Desktop</title>
+        <description>&lt;p&gt;Running OneDrive with Azure Virtual Desktop is a common scenario and enables users to work in a modern way with Teams and SharePoint. If FSLogix is used, there is a challenge in combination with OneDrive: Users can download OneDrive files to the host, and the data are stored in the profile. The profile size increases heavily and causes some extra costs on the storage account.&lt;/p&gt;
+&lt;p&gt;Having so many OneDrive files stored in the profile may make no sense in every case - if a user access a file, the file is downloaded automatically (on demand). And it’s mostly fine to “unpin” the file later if the file is no longer needed. The files are downloaded fast, while AVD and OneDrive are in the Microsoft cloud.&lt;/p&gt;
+&lt;h3 id=&quot;background&quot;&gt;Background:&lt;/h3&gt;
+&lt;p&gt;OneDrive files can have three different states:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Cloud:&lt;/strong&gt;
+The file content is in the cloud only. The file system simulates that the file exists. While the content is not on the disk, the files don’t need storage on the device. If a user opens such a file, the content is downloaded, and the file state change to On-Device.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;On-Device:&lt;/strong&gt;
+The file content is also on the local disk, and the files are using local storage.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Always:&lt;/strong&gt;
+The file content is also on the local disk, and the files are using local storage. OneDrive wouldn’t change the state to “Cloud”.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/ODClaenUp-02.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;OneDrive can change the state to “Cloud” on normal Windows 10/11 devices using storage sense. Based on the implementation of storage sense, this is not working for Azure Virtual Desktop (Multi-Session) with FSLogix profiles.&lt;/p&gt;
+&lt;p&gt;A solution to avoid profile blotting in combination with FSLogix is changing the state of OneDrive files to “Cloud” (unpin files). If files are unpinned, they are no longer using local storage, and the “Disk Compaction” of FSLogix would reduce the profile automatically over time (or have more space left for user data).&lt;/p&gt;
+&lt;p&gt;I built a small tool to solve this challenge (I didn’t find a native solution). The tool is called OneDrive CleanUp. OneDrive CleanUp can run in two ways:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Started automatically with the login of the user (after the installation, it creates a link in the start-up folder of the start menu). It directly starts in the background and validates and maybe unpin OneDrive files. This process is repeated every 30 minutes and during the logoff of the user.&lt;/li&gt;
+&lt;li&gt;Start the program with the parameter /RunOnce during the logoff using a (group) policy.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I prefer the first method to ensure that OneDrive has time to react to the unpinning of files.&lt;/p&gt;
+&lt;p&gt;Example for method 2:
+&lt;img src=&quot;../assets/images/ODClaenUp-03.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
+&lt;p&gt;In my test, my profile grew to 8 GByte while I pinned some files in OneDrive, and after logoff, the profile went back to 800 MByte while the tool unpinned the OneDrive files.&lt;/p&gt;
+&lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
+&lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\OneDriveCleanUp&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Key&lt;/th&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;th&gt;Default value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Enabled&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;If false, the application will not check the files&lt;/td&gt;
+&lt;td&gt;1=true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RunEachMinutes&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Check OneDrive files each minutes&lt;/td&gt;
+&lt;td&gt;30&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AlwaysUnpinFilesOlderThenDays&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Unpin files older then days (0: disabled )&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AllowMbytesOnDisk&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Allow the configured value in MByte on the local disk&lt;/td&gt;
+&lt;td&gt;5120&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;IgnoreFilesContaining&lt;/td&gt;
+&lt;td&gt;Reg_SZ&lt;/td&gt;
+&lt;td&gt;String with separated values (;). If the path of a file contains one of the values, the file is ignored&lt;/td&gt;
+&lt;td&gt;Empty&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
+&lt;p&gt;Example:
+&lt;img src=&quot;../assets/images/ODClaenUp-01.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
+&lt;p&gt;OneDrive CleanUp regularly checks all OneDrive paths and calculates the size of the disk. If the size is larger than the configured maximum size (AllowMbytesOnDisk), it unpins files to go under the configured size. It starts from the oldest to the newest file based on the LastAccessTime property.&lt;/p&gt;
+&lt;br/&gt;
+&lt;h3 id=&quot;release-notes&quot;&gt;Release notes&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Release&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.4&lt;/td&gt;
+&lt;td&gt;2023-05-04&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.5&lt;/td&gt;
+&lt;td&gt;2023-07-13&lt;/td&gt;
+&lt;td&gt;Fix: Files larger than 2 GByte were counted wrong&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+&lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/OneDriveCleanUp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/13/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 13 Jul 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</guid>
         
         
         <category>Windows Virtual Desktop</category>
