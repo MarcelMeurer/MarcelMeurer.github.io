@@ -5,9 +5,209 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 19 Sep 2023 20:00:36 +0200</pubDate>
-    <lastBuildDate>Tue, 19 Sep 2023 20:00:36 +0200</lastBuildDate>
+    <pubDate>Sat, 07 Oct 2023 16:09:24 +0200</pubDate>
+    <lastBuildDate>Sat, 07 Oct 2023 16:09:24 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Updating a Golden Master VM from Windows 10 multi-user to Windows 11 multi-user</title>
+        <description>&lt;p&gt;The Golden-Master approach is a common way to deploy applications and desktops as session hosts in Azure Virtual Desktop. The approach is very simple, and the rollout of new session hosts is very fast - while applications are installed and the host configured. Using PowerShell, &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, or &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra&lt;/a&gt; simplifies the process while the original Golden Master VM survives and can be updated with OS and application updates over time.&lt;/p&gt;
+&lt;p&gt;The process looks like this:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Installing the Golden Master VM in Azure with Windows multi-user
+&lt;ul&gt;
+&lt;li&gt;Running Windows Update&lt;/li&gt;
+&lt;li&gt;Installing the applications&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Configuring the VM&lt;/li&gt;
+&lt;li&gt;Grabbing an image with PowerShell, &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra&lt;/a&gt;, etc., &lt;strong&gt;without destroying&lt;/strong&gt; the Golden Master VM&lt;/li&gt;
+&lt;li&gt;Using the image to deploy multiple session hosts&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It is a very easy approach, and often, the applications and the configuration of the master are done with a software deployment solution (like Intune, ECM). But there are also deployments where the master was customized manually, including the configuration and applications. In this case, changing the underlying OS can be a challenge.&lt;/p&gt;
+&lt;h3 id=&quot;windows-10-multi-user&quot;&gt;Windows 10 multi-user&lt;/h3&gt;
+&lt;p&gt;There are a lot of manual customized Golden Masters with Windows 10 multi-user. Unfortunately, Windows Update mostly does not offer an in-place-upgrade to Windows 11 multi-user. Even the following approaches are not working for Windows 10 multi-user:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Downloading Windows 11 and trying to upgrade the VM -&amp;gt; Doesn’t work, while the ISO files of Windows 11 are not multi-user&lt;/li&gt;
+&lt;li&gt;Forcing Windows Update to install Windows 11 -&amp;gt; That is mostly not enough (see below)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;preparing-your-vm&quot;&gt;Preparing your VM&lt;/h3&gt;
+&lt;p&gt;To update to Windows 11 multi-user, your VM must have trusted launch-, secure boot-enabled, and a vTPM.&lt;/p&gt;
+&lt;p&gt;You can do this in the following ways:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Your VM is Generation V1:
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/&quot;&gt;Creating a Windows Azure VM Generation V2 from a V1 VM&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Your VM is Generation V2 without a trusted launch-enabled security type:
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://blog.itprocloud.de/Migrate-Azure-VM-To-Trusted-Launch/&quot;&gt;Updating or cloning a Azure VM with standard security to trusted launch with secure boot and vTPM&lt;/a&gt; or&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/&quot;&gt;Creating a Windows Azure VM Generation V2 from a V1 VM&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;forcing-windows-update&quot;&gt;Forcing Windows Update&lt;/h3&gt;
+&lt;p&gt;You can force Windows Update to show Windows 11 as an option.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Log in to the new Golden Master
+&lt;ul&gt;
+&lt;li&gt;Modify the local policy to force Windows Update to install Windows 11 22h2: Local Computer Policy\Computer Configuration\Administrative Templates\Windows Components\Windows Update\Windows Updates for Business\Select the target Feature Update version&lt;/li&gt;
+&lt;li&gt;Run Windows Update&lt;/li&gt;
+&lt;li&gt;Update to Windows 11&lt;/li&gt;
+&lt;li&gt;Reboot&lt;/li&gt;
+&lt;li&gt;Remove the local policy entries&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Your Golden Master is ready and converted from Windows 10 to 11 multi-user&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Update-11-22h2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;If you got the following error message: &lt;strong&gt;The PC must support TPM 2.0.&lt;/strong&gt;, you have forgotten to migrate your VM to a V2 Generation with trusted lauch-enabled.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 07 Oct 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Update-Windows-10-Multi-user-to-Windows-11-Multi-user/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Update-Windows-10-Multi-user-to-Windows-11-Multi-user/</guid>
+        
+        
+        <category>Azure</category>
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Updating or cloning a Azure VM with standard security to trusted launch with secure boot and vTPM</title>
+        <description>&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; If your source VM is based on the &lt;strong&gt;VM generation V1&lt;/strong&gt;, follow this post to convert your VM: &lt;a href=&quot;https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/&quot;&gt;Creating a Windows Azure VM Generation V2 from a V2 VM&lt;/a&gt;. Also, follow the link if you want to have an exact copy (and not a clone) of your VM.&lt;/p&gt;
+&lt;p&gt;If you once installed an Azure VM with the standard of security, you can not convert this VM into a trusted launch-enabled VM with secure boot and vTPM. But that is sometimes necessary, e.g., if you want to upgrade from Windows 10 multi-user to Windows 11 multi-user.&lt;/p&gt;
+&lt;p&gt;But there is a way to do that. You could capture your existing VM and store the image in a secure boot enabled. Compute Gallery definition in Azure. From this image version, you can create a new VM with a security-type trusted launch.&lt;/p&gt;
+&lt;h3 id=&quot;prepare-an-azure-compute-gallery&quot;&gt;Prepare an Azure Compute Gallery&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Create an Azure Compute Gallery “Conversion_Gallery” in the same resource group of your VM&lt;/li&gt;
+&lt;li&gt;Add an Image Definition “Secure-VM”
+&lt;ul&gt;
+&lt;li&gt;Security Type: Trusted Launch&lt;/li&gt;
+&lt;li&gt;OS state: Generalized&lt;/li&gt;
+&lt;li&gt;Tick “Accelerated networking” if this is enabled on your original VM&lt;/li&gt;
+&lt;li&gt;Fill Publisher, Offer, SKU with some information&lt;/li&gt;
+&lt;li&gt;Click Review+Create, Create&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/To-TrustedLaunch-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;capturing-the-original-vm&quot;&gt;Capturing the original VM&lt;/h3&gt;
+&lt;p&gt;I’m using &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to prevent that I must sysprep my original VM. &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; first makes a clone of the original VM and runs sysprep on the clone. In the end, I have an image in a compute gallery and the untouched original VM.&lt;/p&gt;
+&lt;p&gt;In &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Azure -&amp;gt; Virtual Machines -&amp;gt; Resource Group -&amp;gt; Right-click the VM and select “Create a template image”&lt;/li&gt;
+&lt;li&gt;Enter an image name (no spaces)&lt;/li&gt;
+&lt;li&gt;Select the resource group of the VM as Target RG&lt;/li&gt;
+&lt;li&gt;Tick “Use Azure Compute Galleries”&lt;/li&gt;
+&lt;li&gt;Select your Gallery and Gallery definition&lt;/li&gt;
+&lt;li&gt;Your region from the list&lt;/li&gt;
+&lt;li&gt;Hit “Capture”&lt;/li&gt;
+&lt;li&gt;This will take a while to clone the VM, create an image and upload it to the image gallery.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/To-TrustedLaunch-03.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/To-TrustedLaunch-04.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/To-TrustedLaunch-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Note: You can delete the also-created custom image (we only need the gallery image)&lt;/p&gt;
+&lt;h3 id=&quot;deploying-a-new-secure-boot-enabled-vm-from-the-image&quot;&gt;Deploying a new secure boot-enabled VM from the image&lt;/h3&gt;
+&lt;p&gt;With &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; or in the Azure Portal, you can create a new VM from that image containing all the applications. Please note that the new VM has a new name and compute identity.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Go to the gallery definition in the Azure Portal and select your uploaded version.&lt;/li&gt;
+&lt;li&gt;Hit + Create VM&lt;/li&gt;
+&lt;li&gt;Fill out all parameters and ensure that you select the security type “Trusted Launch”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/To-TrustedLaunch-06.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/To-TrustedLaunch-07.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;After the deployment, you have a new trusted launch-enabled VM based on your - still existing - original VM.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 07 Oct 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Migrate-Azure-VM-To-Trusted-Launch/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Migrate-Azure-VM-To-Trusted-Launch/</guid>
+        
+        
+        <category>Azure</category>
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Creating a Windows Azure VM Generation V2 from a V1 VM</title>
+        <description>&lt;p&gt;Microsoft has provided different VM sizes over the last years and also introduced the VM Generation V2 at the end of 2019. V2 VMs are different from V1 VMs and have the following advantages:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;UEFI&lt;/strong&gt; based (no longer bios-based)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Enhanced OS support&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Faster boot and disk support&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Advanced Security Features&lt;/strong&gt;, like Secure Boot, which ensures the integrity of the boot process, and BitLocker encryption, which enhances data protection&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Today, I expect that the most deployed VMs are V2, but I still see older V1 versions - including in my own environment. For example, I have several Golden Masters for Azure Virtual Desktop running Windows 10 22/h2 Multi-User. We still see V1 types because of the missing simple migration path. There is no native way in the Azure Portal to do this.&lt;/p&gt;
+&lt;p&gt;While I wanted to upgrade my Windows 10 Golden Masters to Windows 11, I came to the point of discovering that Windows 11 needs a V2 generation VM (for upgrading, trusted launch, vTPM, and secure boot must also be enabled).&lt;/p&gt;
+&lt;p&gt;After some research, I figured out that this is really not simple. I found a good blog post from &lt;a href=&quot;https://charbelnemnom.com/migrate-gen1-to-gen2-vms-on-azure/&quot;&gt;Charbel Nemnom&lt;/a&gt;, who provides a step-by-step solution. The solution is still complex, so I decided to write a PowerShell script to handle this complex process more easily.&lt;/p&gt;
+&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
+&lt;p&gt;We have our V1 virtual machine we want to convert. Instead of converting, we are building a new virtual machine (V2) with the converted OS disk of our V1 VM. So, in the end, we have two identical VMs: The original V1 VM and the V2 VM. If anything doesn’t work, we still have our original VM.&lt;/p&gt;
+&lt;p&gt;But takes some time, and the full process takes hours (for the script).&lt;/p&gt;
+&lt;p&gt;After configuring the script, the script enters the following steps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Deallocates the V1 VM&lt;/li&gt;
+&lt;li&gt;Creates the new V2 VM with the same size in the same network, optional with trusted launch, secure boot, and vTPM&lt;/li&gt;
+&lt;li&gt;Makes a snapshot of the V1 OS disk and, from the snapshot, a cloned OS disk (still V1)&lt;/li&gt;
+&lt;li&gt;Creates an empty V2 disk with the same size and type as the V1 OS disk(this disk is supposed to be our converted OS disk)&lt;/li&gt;
+&lt;li&gt;Attaches the empty V2 disk and the cloned V1 OS disk to the new V2 VM&lt;/li&gt;
+&lt;li&gt;The script runs itself on the V2 VM
+&lt;ul&gt;
+&lt;li&gt;Preparing the partitions of the attached disks&lt;/li&gt;
+&lt;li&gt;Formatting the partitions&lt;/li&gt;
+&lt;li&gt;Capturing the cloned V1 OS partition using DISM (that takes some time; in my last conversion, it took nearly 4 hours)&lt;/li&gt;
+&lt;li&gt;Apply the captured image to the prepared partition of the empty V2 disk&lt;/li&gt;
+&lt;li&gt;Write the UEFI partition of the formerly empty V2 disk&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Deallocates the V2 VM&lt;/li&gt;
+&lt;li&gt;Detach the attached disks&lt;/li&gt;
+&lt;li&gt;Swap the OS disk with the no longer empty V2 disk (the now converted OS disk of the V1 VM)&lt;/li&gt;
+&lt;li&gt;Starting the V2 VM&lt;/li&gt;
+&lt;li&gt;Doing some cleanup: Deleting the snapshot, the old V2 OS disk, the cloned V1 OS disk&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Done&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/V1-V2-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;how-to-use-the-script&quot;&gt;How to use the script&lt;/h3&gt;
+&lt;p&gt;Open the script in a PowerShell editor like ISE (or VS Code). Connect to your Azure subscription using &lt;em&gt;Connect-AzAccount&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Modify the script to match your:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Your subscription Id&lt;/li&gt;
+&lt;li&gt;Your source V1 VM (name and resource group)&lt;/li&gt;
+&lt;li&gt;Your new V2 VM (name and resource group - ensure to have a different name or resource group; another name of the VM doesn’t reflect the computer name after the process)&lt;/li&gt;
+&lt;li&gt;Set $enabledTrustedLaunch = $true to also create your V2 VM trusted launch enabled, incl. secure boot and vTPM&lt;/li&gt;
+&lt;li&gt;The tempDiskSizeGb must be large enough to contain the temporary OS (Server 2022) and the content of the OS disk of the V1 VM (512 should be fine if the disk of the V1 VM is 128 GByte)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That’s all. You can run the script and come back after some hours to see the result.&lt;/p&gt;
+&lt;h3 id=&quot;hints&quot;&gt;Hints&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;If the VM size doesn’t support V2, modify the target VM size in the script&lt;/li&gt;
+&lt;li&gt;If something fails: Cleanup the temporarily created resources manually (snapshot, empty V2 disk, cloned V1 disk, and V2 VM)&lt;/li&gt;
+&lt;li&gt;Upgrading to Windows 11 multi-user: Check-out this video&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;where-is-the-script&quot;&gt;Where is the script&lt;/h3&gt;
+&lt;p&gt;You can find the script on github: &lt;a href=&quot;https://gist.github.com/MarcelMeurer/aab2ef8f36d7c634beebea771f54bf30&quot;&gt;Create-V2-From-V1-VM.ps1&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 07 Oct 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</guid>
+        
+        
+        <category>Azure</category>
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -1668,356 +1868,6 @@ New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal
         <category>Azure Monitor</category>
         
         <category>Log Analytics</category>
-        
-      </item>
-    
-      <item>
-        <title>Deploying and updating standard applications with Microsoft Package Manager / Winget automatically</title>
-        <description>&lt;p&gt;Around 2.5 years ago, I introduced a feature in &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to install applications from a list of thousands of VM and hosts. That was based on the Microsoft Package Manager / Winget - at this time, probably in preview.&lt;/p&gt;
-&lt;p&gt;During the last week, I updated the process of how &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; gets the newest data about available package and also implemented this feature in &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;In &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; you select session hosts or VMs and then select the package do you want to install: Select Hosts / VMs -&amp;gt; Run script: Microsoft Package Manager / Winget -&amp;gt; Click on Run script -&amp;gt; Select the applications and go.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/PM-001.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;I also recorded a video to show how to use it in &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;:&lt;/p&gt;
-&lt;iframe width=&quot;1280&quot; height=&quot;720&quot; src=&quot;https://www.youtube.com/embed/OtAdranqAZA&quot; title=&quot;Hydra for Azure Virtual Desktop: App deployment and updates (Package Manager, Winget, custom)&quot; frameborder=&quot;0&quot; allow=&quot;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share&quot; allowfullscreen&gt;&lt;/iframe&gt;
-</description>
-        <pubDate>Tue, 28 Mar 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/WVDAdmin-Hydra-Package-Manager-Install-and-Update-apps/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/WVDAdmin-Hydra-Package-Manager-Install-and-Update-apps/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Azure Monitor</category>
-        
-        <category>Log Analytics</category>
-        
-      </item>
-    
-      <item>
-        <title>Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD</title>
-        <description>&lt;p&gt;With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don’t need to have network line-of-sight to the domain controller.&lt;/p&gt;
-&lt;p&gt;However, the user identities must still be hybrid / synchronized from a legacy AD right now. And that prevents having AAD-only users in a multi-user pool in AVD where a profile is mostly mandatory.&lt;/p&gt;
-&lt;h2 id=&quot;update-2023-03-02&quot;&gt;Update 2023-03-02&lt;/h2&gt;
-&lt;p&gt;There was an issue in the script/parameter for cmdkey. The parameter we need is /add not /generic&lt;/p&gt;
-&lt;h2 id=&quot;update-2023-02-15&quot;&gt;Update 2023-02-15&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Change of the script to work with Windows 11 22H2&lt;/strong&gt;
-Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key prevents this behavior.&lt;/p&gt;
-&lt;h2 id=&quot;workaround&quot;&gt;Workaround&lt;/h2&gt;
-&lt;p&gt;I found a nice workaround to do the same with cloud-only users in Azure AD - including the use of FSLogix file shares.&lt;/p&gt;
-&lt;p&gt;Today, an Azure file share cannot be configured to use the AAD like an AD to set NTFS permissions. This is necessary to give the users the right permissions to create a profile folder on the share and have full access only to their own created files (the profile disk). Users should never have access to the profile disks of other users - to prevent data theft or to modify other users’ data).&lt;/p&gt;
-&lt;p&gt;But how to handle this? For this workaround, I use a technic I have often used in the past to cover similar challenges (like &lt;a href=&quot;https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/&quot;&gt;this post&lt;/a&gt;). In Windows, you can configure on a resource level what credential should be used - and that on a per-user level. This also works for the system account and, therefore, also for services. So, we are able to “teach” the system account to use specific credentials to access an Azure storage account.&lt;/p&gt;
-&lt;p&gt;In our case, we need credentials to have full access to an Azure file share. And there are credentials to do that: The storage account credentials. Each storage account has credentials that can be used to have full access. You can grab the credentials from the “Access Key” menu in the storage account:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-005.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Collect the right values:&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;User name:&lt;/td&gt;
-&lt;td&gt;localhost\&amp;lt;storageAccountName&amp;gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Secret:&lt;/td&gt;
-&lt;td&gt;&amp;lt;Key&amp;gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;StorageAccountFqdn:&lt;/td&gt;
-&lt;td&gt;&amp;lt;storageAccountName&amp;gt;.file.core.net (the files endpoint)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;In my example, the user name is “localhost\avdaadstorage” and &amp;lt;StorageAccountFqdn&amp;gt; is “avdaadstorage.file.core.windows.net”&lt;/p&gt;
-&lt;p&gt;To “teach” the system account to use these credentials, we have to run the following command in the context of the system account:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;cmdkey.exe /add:&amp;lt;StorageAccountFqdn&amp;gt; /user:localhost\&amp;lt;StorageAccountName&amp;gt; /pass:&amp;lt;Key&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Example:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\avdaadstorage /pass:xxxxxxxxxxxxxxxx
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;After running the command on a host/VM, any access in the context of the system account to the storage runs with the configured credentials - to every share!&lt;/p&gt;
-&lt;p&gt;Great, our system can now access the shares on the storage account and has full permission.&lt;/p&gt;
-&lt;h3 id=&quot;window-11-22h2-and-credential-guard-with-uefi-lock&quot;&gt;Window 11 22H2 and Credential Guard with UEFI lock&lt;/h3&gt;
-&lt;p&gt;To prevent that Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key is needed:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force  # Only needed for Windows 11 22H2
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Remember that this disables &lt;a href=&quot;https://learn.microsoft.com/en-us/windows/security/identity-protection/credential-guard/credential-guard-manage#enable-virtualization-based-security-and-windows-defender-credential-guard&quot;&gt;Windows Defender Credential Guard&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;configuring-fslogix&quot;&gt;Configuring FSLogix&lt;/h2&gt;
-&lt;p&gt;Next step: Configure FSLogix to use the system account. Normally, FSLogix will access the share to store and read profiles in the user context. That is normally fine if users are able to authenticate with their own identity. In our case, we want to use the system account. The following reg-key configures FSLogix to use the system account:&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Path:&lt;/td&gt;
-&lt;td&gt;HKLM:\SOFTWARE\FSLogix\Profiles&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Name:&lt;/td&gt;
-&lt;td&gt;AccessNetworkAsComputerObject&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Type:&lt;/td&gt;
-&lt;td&gt;DWord&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Value:&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;This value can be set via registry or PowerShell:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;New-Item -Path &amp;quot;HKLM:\SOFTWARE&amp;quot; -Name &amp;quot;FSLogix&amp;quot; -ErrorAction Ignore
-New-Item -Path &amp;quot;HKLM:\SOFTWARE\FSLogix&amp;quot; -Name &amp;quot;Profiles&amp;quot; -ErrorAction Ignore
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;AccessNetworkAsComputerObject&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force  # Only needed for Windows 11 22H2
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;If not already done, configure the file share:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Create a share on your storage account (e.g., profiles)&lt;/li&gt;
-&lt;li&gt;Configure FSLogix to use the share on each host:&lt;/li&gt;
-&lt;/ul&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Path:&lt;/td&gt;
-&lt;td&gt;HKLM:\SOFTWARE\FSLogix\Profiles&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Name:&lt;/td&gt;
-&lt;td&gt;VHDLocations&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Type:&lt;/td&gt;
-&lt;td&gt;Reg_SZ&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Value:&lt;/td&gt;
-&lt;td&gt;\\&amp;lt;StorageAccountFqdn&amp;gt;\&amp;lt;ProfileShareName&amp;gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;And enable FSLogix profile service:&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Path:&lt;/td&gt;
-&lt;td&gt;HKLM:\SOFTWARE\FSLogix\Profiles&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Name:&lt;/td&gt;
-&lt;td&gt;Enabled&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Type:&lt;/td&gt;
-&lt;td&gt;DWord&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Value:&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;After that, users can log in to the hosts, and the profile is stored on the file share on the storage account:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-000.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h2 id=&quot;security&quot;&gt;Security&lt;/h2&gt;
-&lt;p&gt;How secure is that?&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Users cannot access their own or other profiles by entering the path to the share while they don’t have the storage account credentials.&lt;/li&gt;
-&lt;li&gt;Users can also not run programs in the system context (if they are not local admins on the host - what I expect).&lt;/li&gt;
-&lt;li&gt;Every local administrator of a host can run processes in the system context: So the local admin permissions/role must be secured to prevent admins from accessing the profile storage indirectly or reading the storage account credentials.&lt;/li&gt;
-&lt;li&gt;Azure Administrator with the permission Microsoft.Compute/virtualMachines/runCommand/action can send scripts running in the system context to a host/VM (like a contributor). That is comparable to local administrator permission.&lt;/li&gt;
-&lt;li&gt;The system has permission to access all shares on the storage account with the credentials. Not only the profile share. It makes sense to have a separate share for the profiles.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Summary:&lt;/strong&gt; Users with non-admin permissions can not access other users’ profiles. Local admins are able to do this, but local admins are able to compromise users in other ways. So local admin privileges &lt;strong&gt;should be considered carefully&lt;/strong&gt;. Same for privileged access in Azure.&lt;/p&gt;
-&lt;h2 id=&quot;do-the-full-configuration-with-a-script&quot;&gt;Do the full configuration with a script&lt;/h2&gt;
-&lt;p&gt;Let me share a script you can use to do the full configuration with a script. In the script, I also set some other basic configurations I mostly use for FSLogix. Keep in mind that the user name is part of the path and profile disk name. If you rename the display name of a user, the user will get a new profile.&lt;/p&gt;
-&lt;p&gt;The script must be executed directly after the rollout of a new host in the system context. It’s not possible to do that on the Master VM while the credential store is reset during sysprep. To run the script in the system context, use PSEXEC to open PowerShell in the system context (psexec /s powershell.exe).&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;WARNING:&lt;/strong&gt; The script contains a secret. Delete the script from the host&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;write-host &amp;quot;Configuring FSLogix&amp;quot;
-$fileServer=&amp;quot;avdaadstorage.file.core.windows.net&amp;quot;
-$profileShare=&amp;quot;\\$($fileServer)\profiles&amp;quot;
-
-$user=&amp;quot;localhost\avdaadstorage&amp;quot;
-$secret=&amp;quot;###################&amp;quot;
-
-New-Item -Path &amp;quot;HKLM:\SOFTWARE&amp;quot; -Name &amp;quot;FSLogix&amp;quot; -ErrorAction Ignore
-New-Item -Path &amp;quot;HKLM:\SOFTWARE\FSLogix&amp;quot; -Name &amp;quot;Profiles&amp;quot; -ErrorAction Ignore
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;Enabled&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;VHDLocations&amp;quot; -Value $profileShare -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;ConcurrentUserSessions&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;DeleteLocalProfileWhenVHDShouldApply&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;FlipFlopProfileDirectoryName&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;IsDynamic&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;KeepLocalDir&amp;quot; -Value 0 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;ProfileType&amp;quot; -Value 0 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;SizeInMBs&amp;quot; -Value 40000 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;VolumeType&amp;quot; -Value &amp;quot;VHDX&amp;quot; -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;AccessNetworkAsComputerObject&amp;quot; -Value 1 -force
-
-# Store credentials to access the storage account
-cmdkey.exe /add:$fileServer /user:$($user) /pass:$($secret)
-# Disable Windows Defender Credential Guard (only needed for Windows 11 22H2)
-New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force
-
-write-host &amp;quot;The script has finished.&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2 id=&quot;use-hydra-to-run-the-script-on-demand-or-automatically-after-each-rollout&quot;&gt;Use Hydra to run the script on-demand or automatically after each rollout&lt;/h2&gt;
-&lt;p&gt;You can use &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; to apply the script automatically after rolling out a new host.&lt;/p&gt;
-&lt;p&gt;Open the host pool configuration in Hydra -&amp;gt; Base and configure the service account:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Service account name: localhost\avdaadstorage&lt;/li&gt;
-&lt;li&gt;Service account password: &amp;lt;key of the storage account&amp;gt;&lt;/li&gt;
-&lt;li&gt;Save&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-002.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Scripts and Collections -&amp;gt; Scripts&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Duplicate an existing script to have a new one&lt;/li&gt;
-&lt;li&gt;Check “Service Account”&lt;/li&gt;
-&lt;li&gt;Give it a good name (e.g., “FSLogix and Cloud Accounts - Hydra integrated”)&lt;/li&gt;
-&lt;li&gt;Copy the following script into the code field&lt;/li&gt;
-&lt;li&gt;Save&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Script:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# Check, if service account available
-if ($global:Hydra_ServiceAccount_PSC -eq $null) {
-    throw &amp;quot;Failed: Service account missing - The script needs a configured service account. You can configure the service account (having full access to the FSLogix profile share on the host pool configuration.&amp;quot;
-}
-
-LogWriter(&amp;quot;Configuring FSLogix&amp;quot;)
-$fileServer=&amp;quot;avdaadstorage.file.core.windows.net&amp;quot;
-$profileShare=&amp;quot;\\$($fileServer)\profiles&amp;quot;
-
-New-Item -Path &amp;quot;HKLM:\SOFTWARE&amp;quot; -Name &amp;quot;FSLogix&amp;quot; -ErrorAction Ignore
-New-Item -Path &amp;quot;HKLM:\SOFTWARE\FSLogix&amp;quot; -Name &amp;quot;Profiles&amp;quot; -ErrorAction Ignore
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;Enabled&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;VHDLocations&amp;quot; -Value $profileShare -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;ConcurrentUserSessions&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;DeleteLocalProfileWhenVHDShouldApply&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;FlipFlopProfileDirectoryName&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;IsDynamic&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;KeepLocalDir&amp;quot; -Value 0 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;ProfileType&amp;quot; -Value 0 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;SizeInMBs&amp;quot; -Value 40000 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;VolumeType&amp;quot; -Value &amp;quot;VHDX&amp;quot; -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;AccessNetworkAsComputerObject&amp;quot; -Value 1 -force
-
-
-LogWriter(&amp;quot;Setting credentials to access the storage account of the system&amp;quot;)
-cmdkey.exe /add:$fileServer /user:$($global:Hydra_ServiceAccount_PSC.UserName) /pass:([System.Net.NetworkCredential]::new(&amp;quot;&amp;quot;,$global:Hydra_ServiceAccount_PSC.password).Password)
-LogWriter(&amp;quot;Disable Windows Defender Credential Guard (only needed for Windows 11 22H2)&amp;quot;)
-New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force
-
-OutputWriter(&amp;quot;The script has finished.&amp;quot;)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-001.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;After that, you can trigger the script on a host or let it run automatically after each deployment:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Open the host pool configuration in Hydra -&amp;gt; New Session Host Rollout&lt;/li&gt;
-&lt;li&gt;Configure the rollout parameter&lt;/li&gt;
-&lt;li&gt;Select the script in “Run script or script collection after deployment”&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-003.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;After that a new rollout looks like this:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-004.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h2 id=&quot;others&quot;&gt;Others&lt;/h2&gt;
-&lt;p&gt;And yes, there are other options to run the script in the system context automatically. Please ensure that the password/secret &lt;strong&gt;is not stored on the host’s disk&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Hint:&lt;/strong&gt; You can create another share for MSIX App-Attach packages. The system account also has permission to load the packages.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Note: It’s a nice workaround to bridge the time until there is a native solution in Azure. Please use it at your own risk.&lt;/strong&gt;&lt;/p&gt;
-</description>
-        <pubDate>Thu, 02 Mar 2023 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Automatically remove a computer object from AD while removing a session host in AVD</title>
-        <description>&lt;p&gt;With my tools WVDAdmin and &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;, you can easily manage Azure Virtual Desktop. It also includes the deletion of session hosts and VMs with a single click - or automated. If the host - or computer object - is AD domain-joined, the compute object is usually not deleted and re-used on the next deployment.&lt;/p&gt;
-&lt;p&gt;In some circumstances, it would make sense to also delete the computer object: If you are running the environment hybrid-joined, the orphan computer objects are synced to AAD - even if you delete the AAD device of the computer.&lt;/p&gt;
-&lt;p&gt;To clean up the AD and AAD, I use a script running on the session host shortly before deleting the host (ok, the host must be started to do that). While the script runs on the session host, the host can remove itself easily from Azure AD. To remove it also from AD, a service account is used. You can put a service account to Hydra on a host pool level (Base settings). If the service account has the proper permission to remove the computer object, we can leave both ADs with one script. For that, create a script in Scripts and Collections -&amp;gt; Scrips with the name “Remove computer from AD and AAD”:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-AD-Remove-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;With the following script (please tick the checkbox “Service Account”):&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# Each PowerShell script can use internal logging to store logging data to the local disk. The log is stored in %Windir%\System32\LogFiles\Hydra.Logging.log
-
-# Check, if service account available
-if ($global:Hydra_ServiceAccount_PSC -eq $null) {
-    throw &amp;quot;Failed: Service account missing - The script needs a configured service account. You can configure the service account (having the proper permissions to the OU in the base settings of the pool).&amp;quot;
-}
-
-$outMessage=&amp;quot;Script finished&amp;quot;
-
-LogWriter(&amp;quot;Try to remove computer account from domain&amp;quot;)
-
-$root = &amp;quot;LDAP://$((Get-WmiObject -Namespace root\cimv2 -Class Win32_ComputerSystem | Select Name, Domain).Domain)&amp;quot;
-LogWriter(&amp;quot;Domain root is: $root&amp;quot;)
-
-$domain = New-Object System.DirectoryServices.DirectoryEntry($root, $global:Hydra_ServiceAccount_PSC.UserName,$global:Hydra_ServiceAccount_PSC.GetNetworkCredential().Password)
-$search = New-Object -TypeName System.DirectoryServices.DirectorySearcher($domain)
-
-$search.filter = &amp;quot;(&amp;amp;(ObjectCategory=Computer)(ObjectClass=Computer)((cn=$($env:computername))))&amp;quot;
-$computer=$search.FindOne()
-
-
-if ($computer -eq $null) {
-    $outMessage=&amp;quot;Could find computer object in AD&amp;quot;
-    LogWriter($outMessage)
-} else {
-    $dnc = $computer.GetDirectoryEntry()
-    LogWriter(&amp;quot;DN of the computer object: $($dnc.Path)&amp;quot;)
-    LogWriter(&amp;quot;Try to remove computer object with user $($global:Hydra_ServiceAccount_PSC.UserName)&amp;quot;)
-
-    $dnc = $computer.GetDirectoryEntry()
-
-    $dnc.DeleteTree()
-    LogWriter(&amp;quot;Computer object deleted&amp;quot;)
-}
-
-LogWriter(&amp;quot;Try to remove computer account from AAD&amp;quot;)
-dsregcmd /leave
-
-OutputWriter($outMessage)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Do run the script automatically on delete, go to the host pool configuration in Hydra: Base -&amp;gt; Run script or collection on specific events -&amp;gt; On-Delete and select your script&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-AD-Remove-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;If you then delete a host, the computer account in AD and the device in AAD are deleted:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-AD-Remove-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Tue, 21 Feb 2023 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/Automatically-remove-a-computer-object-from-AD-while-removing-a-session-host/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Automatically-remove-a-computer-object-from-AD-while-removing-a-session-host/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
         
       </item>
     
