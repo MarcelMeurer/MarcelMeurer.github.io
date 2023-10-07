@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sat, 07 Oct 2023 16:09:24 +0200</pubDate>
-    <lastBuildDate>Sat, 07 Oct 2023 16:09:24 +0200</lastBuildDate>
+    <pubDate>Sat, 07 Oct 2023 16:21:53 +0200</pubDate>
+    <lastBuildDate>Sat, 07 Oct 2023 16:21:53 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -61,6 +61,7 @@
 &lt;/li&gt;
 &lt;li&gt;Your Golden Master is ready and converted from Windows 10 to 11 multi-user&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;&lt;a href=&quot;https://youtu.be/T8lJnepnEKk&quot;&gt;Link to the YouTube video.&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/Update-11-22h2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;If you got the following error message: &lt;strong&gt;The PC must support TPM 2.0.&lt;/strong&gt;, you have forgotten to migrate your VM to a V2 Generation with trusted lauch-enabled.&lt;/p&gt;
 </description>
