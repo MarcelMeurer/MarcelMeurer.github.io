@@ -5,394 +5,16 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 13 Oct 2023 16:54:15 +0200</pubDate>
-    <lastBuildDate>Fri, 13 Oct 2023 16:54:15 +0200</lastBuildDate>
+    <pubDate>Fri, 13 Oct 2023 17:18:18 +0200</pubDate>
+    <lastBuildDate>Fri, 13 Oct 2023 17:18:18 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
-    
-      <item>
-        <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
-        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Log Type&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
-&lt;td&gt;Details about the session hosts&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDConnections&lt;/td&gt;
-&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDErrors&lt;/td&gt;
-&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, …)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDFeeds&lt;/td&gt;
-&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
-&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDManagement&lt;/td&gt;
-&lt;td&gt;Log about administrative tasks&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDCheckpoints&lt;/td&gt;
-&lt;td&gt;Detailed information related to logins, errors, …&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDConnectionNetworkData&lt;/td&gt;
-&lt;td&gt;Network information (bandwidth and RTT)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that (use version 1.7.25 or higher):&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;After a while, the workbook is visible as a new template in: &lt;strong&gt;Log Analytics -&amp;gt; Workbooks -&amp;gt; Azure Virtual Desktop -&amp;gt; AVD - Deep-Insights&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;” occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
-&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Version&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1&lt;/td&gt;
-&lt;td&gt;01/28/2022&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.2&lt;/td&gt;
-&lt;td&gt;02/17/2022&lt;/td&gt;
-&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); see &lt;a href=&quot;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&quot;&gt;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&lt;/a&gt; &lt;br /&gt;&lt;br /&gt;Name changed to AVD - Deep-Insights&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.3&lt;/td&gt;
-&lt;td&gt;03/16/2022&lt;/td&gt;
-&lt;td&gt;Include Logon timing (GPO, FSLogix, Authentication, etc.)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.4&lt;/td&gt;
-&lt;td&gt;04/14/2022&lt;/td&gt;
-&lt;td&gt;In Session Bandwidths &amp;amp; Latencies: The connection type is shown if RDP Short Path is used (Public, Private). See: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.5&lt;/td&gt;
-&lt;td&gt;05/03/2022&lt;/td&gt;
-&lt;td&gt;New visualization: Logon timing per day and category over the time&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.6&lt;/td&gt;
-&lt;td&gt;10/11/2022&lt;/td&gt;
-&lt;td&gt;New visualization: Connections over time, unhealthy session hosts, graphic performance&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.7&lt;/td&gt;
-&lt;td&gt;11/03/2022&lt;/td&gt;
-&lt;td&gt;Optimization for charts to show data over a large time frame&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.8&lt;/td&gt;
-&lt;td&gt;11/14/2022&lt;/td&gt;
-&lt;td&gt;A new tab “Resources”, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.9&lt;/td&gt;
-&lt;td&gt;11/18/2022&lt;/td&gt;
-&lt;td&gt;A new tab “Resources”, to show orphan VMs (where the session host object is missing)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.0&lt;/td&gt;
-&lt;td&gt;12/01/2022&lt;/td&gt;
-&lt;td&gt;Changed the description for the estimated available bandwidth&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.1&lt;/td&gt;
-&lt;td&gt;12/09/2022&lt;/td&gt;
-&lt;td&gt;Added orphan disks and orphan nics to the “Resources” tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop, version 1.0.1.84 (comming soon))&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.2&lt;/td&gt;
-&lt;td&gt;02/02/2023&lt;/td&gt;
-&lt;td&gt;Added “Water Markings” to query session information by the feature &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/watermarking&quot;&gt;WaterMarking&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.3&lt;/td&gt;
-&lt;td&gt;02/20/2023&lt;/td&gt;
-&lt;td&gt;Added “Unresponding AVD Agents” in the tab “Resources” to identify running VM with a non responding AVD agent&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.4&lt;/td&gt;
-&lt;td&gt;02/21/2023&lt;/td&gt;
-&lt;td&gt;Added new tab “FSLogix” to show the size, usage and free space of the FSLogix profiles&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.5&lt;/td&gt;
-&lt;td&gt;03/08/2023&lt;/td&gt;
-&lt;td&gt;Fix in the time selector; allow to selecte multiple host pools; show active sessions with user name and started desktop/remote app&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.6&lt;/td&gt;
-&lt;td&gt;03/31/2023&lt;/td&gt;
-&lt;td&gt;Add: Show office container size and usage (ODFC) in the FSLogix tab (additional to the profile container)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.7&lt;/td&gt;
-&lt;td&gt;07/01/2023&lt;/td&gt;
-&lt;td&gt;Fix/Workaround: VHDFreeSpace is stored as text in MByte and not in GByte if the value is less then 1 GByte&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.8&lt;/td&gt;
-&lt;td&gt;10/13/2023&lt;/td&gt;
-&lt;td&gt;Add: Show the last heart beat time in the Orphan session hosts view and warns, if the heart beat is longer then 90 days ago&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don’t generate costs&lt;/p&gt;
-</description>
-        <pubDate>Fri, 13 Oct 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Azure Monitor</category>
-        
-        <category>Log Analytics</category>
-        
-      </item>
-    
-      <item>
-        <title>Updating a Golden Master VM from Windows 10 multi-user to Windows 11 multi-user</title>
-        <description>&lt;p&gt;The Golden-Master approach is a common way to deploy applications and desktops as session hosts in Azure Virtual Desktop. The approach is very simple, and the rollout of new session hosts is very fast - while applications are installed and the host configured. Using PowerShell, &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, or &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra&lt;/a&gt; simplifies the process while the original Golden Master VM survives and can be updated with OS and application updates over time.&lt;/p&gt;
-&lt;p&gt;The process looks like this:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Installing the Golden Master VM in Azure with Windows multi-user
-&lt;ul&gt;
-&lt;li&gt;Running Windows Update&lt;/li&gt;
-&lt;li&gt;Installing the applications&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Configuring the VM&lt;/li&gt;
-&lt;li&gt;Grabbing an image with PowerShell, &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra&lt;/a&gt;, etc., &lt;strong&gt;without destroying&lt;/strong&gt; the Golden Master VM&lt;/li&gt;
-&lt;li&gt;Using the image to deploy multiple session hosts&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;It is a very easy approach, and often, the applications and the configuration of the master are done with a software deployment solution (like Intune, ECM). But there are also deployments where the master was customized manually, including the configuration and applications. In this case, changing the underlying OS can be a challenge.&lt;/p&gt;
-&lt;h3 id=&quot;windows-10-multi-user&quot;&gt;Windows 10 multi-user&lt;/h3&gt;
-&lt;p&gt;There are a lot of manual customized Golden Masters with Windows 10 multi-user. Unfortunately, Windows Update mostly does not offer an in-place-upgrade to Windows 11 multi-user. Even the following approaches are not working for Windows 10 multi-user:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Downloading Windows 11 and trying to upgrade the VM -&amp;gt; Doesn’t work, while the ISO files of Windows 11 are not multi-user&lt;/li&gt;
-&lt;li&gt;Forcing Windows Update to install Windows 11 -&amp;gt; That is mostly not enough (see below)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;preparing-your-vm&quot;&gt;Preparing your VM&lt;/h3&gt;
-&lt;p&gt;To update to Windows 11 multi-user, your VM must have trusted launch-, secure boot-enabled, and a vTPM.&lt;/p&gt;
-&lt;p&gt;You can do this in the following ways:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Your VM is Generation V1:
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/&quot;&gt;Creating a Windows Azure VM Generation V2 from a V1 VM&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Your VM is Generation V2 without a trusted launch-enabled security type:
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://blog.itprocloud.de/Migrate-Azure-VM-To-Trusted-Launch/&quot;&gt;Updating or cloning a Azure VM with standard security to trusted launch with secure boot and vTPM&lt;/a&gt; or&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/&quot;&gt;Creating a Windows Azure VM Generation V2 from a V1 VM&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;forcing-windows-update&quot;&gt;Forcing Windows Update&lt;/h3&gt;
-&lt;p&gt;You can force Windows Update to show Windows 11 as an option.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Log in to the new Golden Master
-&lt;ul&gt;
-&lt;li&gt;Modify the local policy to force Windows Update to install Windows 11 22h2: Local Computer Policy\Computer Configuration\Administrative Templates\Windows Components\Windows Update\Windows Updates for Business\Select the target Feature Update version&lt;/li&gt;
-&lt;li&gt;Run Windows Update&lt;/li&gt;
-&lt;li&gt;Update to Windows 11&lt;/li&gt;
-&lt;li&gt;Reboot&lt;/li&gt;
-&lt;li&gt;Remove the local policy entries&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Your Golden Master is ready and converted from Windows 10 to 11 multi-user&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;https://youtu.be/T8lJnepnEKk&quot;&gt;Link to the YouTube video.&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Update-11-22h2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;If you got the following error message: &lt;strong&gt;The PC must support TPM 2.0.&lt;/strong&gt;, you have forgotten to migrate your VM to a V2 Generation with trusted lauch-enabled.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 07 Oct 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Update-Windows-10-Multi-user-to-Windows-11-Multi-user/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Update-Windows-10-Multi-user-to-Windows-11-Multi-user/</guid>
-        
-        
-        <category>Azure</category>
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Updating or cloning a Azure VM with standard security to trusted launch with secure boot and vTPM</title>
-        <description>&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; If your source VM is based on the &lt;strong&gt;VM generation V1&lt;/strong&gt;, follow this post to convert your VM: &lt;a href=&quot;https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/&quot;&gt;Creating a Windows Azure VM Generation V2 from a V2 VM&lt;/a&gt;. Also, follow the link if you want to have an exact copy (and not a clone) of your VM.&lt;/p&gt;
-&lt;p&gt;If you once installed an Azure VM with the standard of security, you can not convert this VM into a trusted launch-enabled VM with secure boot and vTPM. But that is sometimes necessary, e.g., if you want to upgrade from Windows 10 multi-user to Windows 11 multi-user.&lt;/p&gt;
-&lt;p&gt;But there is a way to do that. You could capture your existing VM and store the image in a secure boot enabled. Compute Gallery definition in Azure. From this image version, you can create a new VM with a security-type trusted launch.&lt;/p&gt;
-&lt;h3 id=&quot;prepare-an-azure-compute-gallery&quot;&gt;Prepare an Azure Compute Gallery&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Create an Azure Compute Gallery “Conversion_Gallery” in the same resource group of your VM&lt;/li&gt;
-&lt;li&gt;Add an Image Definition “Secure-VM”
-&lt;ul&gt;
-&lt;li&gt;Security Type: Trusted Launch&lt;/li&gt;
-&lt;li&gt;OS state: Generalized&lt;/li&gt;
-&lt;li&gt;Tick “Accelerated networking” if this is enabled on your original VM&lt;/li&gt;
-&lt;li&gt;Fill Publisher, Offer, SKU with some information&lt;/li&gt;
-&lt;li&gt;Click Review+Create, Create&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/To-TrustedLaunch-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;capturing-the-original-vm&quot;&gt;Capturing the original VM&lt;/h3&gt;
-&lt;p&gt;I’m using &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to prevent that I must sysprep my original VM. &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; first makes a clone of the original VM and runs sysprep on the clone. In the end, I have an image in a compute gallery and the untouched original VM.&lt;/p&gt;
-&lt;p&gt;In &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Azure -&amp;gt; Virtual Machines -&amp;gt; Resource Group -&amp;gt; Right-click the VM and select “Create a template image”&lt;/li&gt;
-&lt;li&gt;Enter an image name (no spaces)&lt;/li&gt;
-&lt;li&gt;Select the resource group of the VM as Target RG&lt;/li&gt;
-&lt;li&gt;Tick “Use Azure Compute Galleries”&lt;/li&gt;
-&lt;li&gt;Select your Gallery and Gallery definition&lt;/li&gt;
-&lt;li&gt;Your region from the list&lt;/li&gt;
-&lt;li&gt;Hit “Capture”&lt;/li&gt;
-&lt;li&gt;This will take a while to clone the VM, create an image and upload it to the image gallery.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/To-TrustedLaunch-03.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/To-TrustedLaunch-04.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/To-TrustedLaunch-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Note: You can delete the also-created custom image (we only need the gallery image)&lt;/p&gt;
-&lt;h3 id=&quot;deploying-a-new-secure-boot-enabled-vm-from-the-image&quot;&gt;Deploying a new secure boot-enabled VM from the image&lt;/h3&gt;
-&lt;p&gt;With &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; or in the Azure Portal, you can create a new VM from that image containing all the applications. Please note that the new VM has a new name and compute identity.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Go to the gallery definition in the Azure Portal and select your uploaded version.&lt;/li&gt;
-&lt;li&gt;Hit + Create VM&lt;/li&gt;
-&lt;li&gt;Fill out all parameters and ensure that you select the security type “Trusted Launch”&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/To-TrustedLaunch-06.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/To-TrustedLaunch-07.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;After the deployment, you have a new trusted launch-enabled VM based on your - still existing - original VM.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 07 Oct 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Migrate-Azure-VM-To-Trusted-Launch/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Migrate-Azure-VM-To-Trusted-Launch/</guid>
-        
-        
-        <category>Azure</category>
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Creating a Windows Azure VM Generation V2 from a V1 VM</title>
-        <description>&lt;p&gt;Microsoft has provided different VM sizes over the last years and also introduced the VM Generation V2 at the end of 2019. V2 VMs are different from V1 VMs and have the following advantages:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;UEFI&lt;/strong&gt; based (no longer bios-based)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Enhanced OS support&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Faster boot and disk support&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Advanced Security Features&lt;/strong&gt;, like Secure Boot, which ensures the integrity of the boot process, and BitLocker encryption, which enhances data protection&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Today, I expect that the most deployed VMs are V2, but I still see older V1 versions - including in my own environment. For example, I have several Golden Masters for Azure Virtual Desktop running Windows 10 22/h2 Multi-User. We still see V1 types because of the missing simple migration path. There is no native way in the Azure Portal to do this.&lt;/p&gt;
-&lt;p&gt;While I wanted to upgrade my Windows 10 Golden Masters to Windows 11, I came to the point of discovering that Windows 11 needs a V2 generation VM (for upgrading, trusted launch, vTPM, and secure boot must also be enabled).&lt;/p&gt;
-&lt;p&gt;After some research, I figured out that this is really not simple. I found a good blog post from &lt;a href=&quot;https://charbelnemnom.com/migrate-gen1-to-gen2-vms-on-azure/&quot;&gt;Charbel Nemnom&lt;/a&gt;, who provides a step-by-step solution. The solution is still complex, so I decided to write a PowerShell script to handle this complex process more easily.&lt;/p&gt;
-&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
-&lt;p&gt;We have our V1 virtual machine we want to convert. Instead of converting, we are building a new virtual machine (V2) with the converted OS disk of our V1 VM. So, in the end, we have two identical VMs: The original V1 VM and the V2 VM. If anything doesn’t work, we still have our original VM.&lt;/p&gt;
-&lt;p&gt;But takes some time, and the full process takes hours (for the script).&lt;/p&gt;
-&lt;p&gt;After configuring the script, the script enters the following steps:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Deallocates the V1 VM&lt;/li&gt;
-&lt;li&gt;Creates the new V2 VM with the same size in the same network, optional with trusted launch, secure boot, and vTPM&lt;/li&gt;
-&lt;li&gt;Makes a snapshot of the V1 OS disk and, from the snapshot, a cloned OS disk (still V1)&lt;/li&gt;
-&lt;li&gt;Creates an empty V2 disk with the same size and type as the V1 OS disk(this disk is supposed to be our converted OS disk)&lt;/li&gt;
-&lt;li&gt;Attaches the empty V2 disk and the cloned V1 OS disk to the new V2 VM&lt;/li&gt;
-&lt;li&gt;The script runs itself on the V2 VM
-&lt;ul&gt;
-&lt;li&gt;Preparing the partitions of the attached disks&lt;/li&gt;
-&lt;li&gt;Formatting the partitions&lt;/li&gt;
-&lt;li&gt;Capturing the cloned V1 OS partition using DISM (that takes some time; in my last conversion, it took nearly 4 hours)&lt;/li&gt;
-&lt;li&gt;Apply the captured image to the prepared partition of the empty V2 disk&lt;/li&gt;
-&lt;li&gt;Write the UEFI partition of the formerly empty V2 disk&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Deallocates the V2 VM&lt;/li&gt;
-&lt;li&gt;Detach the attached disks&lt;/li&gt;
-&lt;li&gt;Swap the OS disk with the no longer empty V2 disk (the now converted OS disk of the V1 VM)&lt;/li&gt;
-&lt;li&gt;Starting the V2 VM&lt;/li&gt;
-&lt;li&gt;Doing some cleanup: Deleting the snapshot, the old V2 OS disk, the cloned V1 OS disk&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Done&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/V1-V2-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;how-to-use-the-script&quot;&gt;How to use the script&lt;/h3&gt;
-&lt;p&gt;Open the script in a PowerShell editor like ISE (or VS Code). Connect to your Azure subscription using &lt;em&gt;Connect-AzAccount&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Modify the script to match your:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Your subscription Id&lt;/li&gt;
-&lt;li&gt;Your source V1 VM (name and resource group)&lt;/li&gt;
-&lt;li&gt;Your new V2 VM (name and resource group - ensure to have a different name or resource group; another name of the VM doesn’t reflect the computer name after the process)&lt;/li&gt;
-&lt;li&gt;Set $enabledTrustedLaunch = $true to also create your V2 VM trusted launch enabled, incl. secure boot and vTPM&lt;/li&gt;
-&lt;li&gt;The tempDiskSizeGb must be large enough to contain the temporary OS (Server 2022) and the content of the OS disk of the V1 VM (512 should be fine if the disk of the V1 VM is 128 GByte)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;That’s all. You can run the script and come back after some hours to see the result.&lt;/p&gt;
-&lt;h3 id=&quot;hints&quot;&gt;Hints&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;If the VM size doesn’t support V2, modify the target VM size in the script&lt;/li&gt;
-&lt;li&gt;If something fails: Cleanup the temporarily created resources manually (snapshot, empty V2 disk, cloned V1 disk, and V2 VM)&lt;/li&gt;
-&lt;li&gt;Upgrading to Windows 11 multi-user: Check-out this video&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;where-is-the-script&quot;&gt;Where is the script&lt;/h3&gt;
-&lt;p&gt;You can find the script on github: &lt;a href=&quot;https://gist.github.com/MarcelMeurer/aab2ef8f36d7c634beebea771f54bf30&quot;&gt;Create-V2-From-V1-VM.ps1&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sat, 07 Oct 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</guid>
-        
-        
-        <category>Azure</category>
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
 &lt;p&gt;Are you interested in the new “Hydra for Azure Virtual Desktop” solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/19/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/13/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
@@ -480,7 +102,7 @@
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/19/2023&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/13/2023&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
@@ -492,6 +114,11 @@
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.8.05.0&lt;/td&gt;
+&lt;td&gt;2023-10-13&lt;/td&gt;
+&lt;td&gt;Add: Support for different VM sizes (Bas_v2, Bls_v2, Bats_v2, etc.); Update of the imaging script&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.8.01.0&lt;/td&gt;
 &lt;td&gt;2023-09-19&lt;/td&gt;
@@ -1452,12 +1079,390 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/19/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/13/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Tue, 19 Sep 2023 00:00:00 +0200</pubDate>
+        <pubDate>Fri, 13 Oct 2023 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
         
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
+        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Log Type&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
+&lt;td&gt;Details about the session hosts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnections&lt;/td&gt;
+&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDErrors&lt;/td&gt;
+&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, …)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDFeeds&lt;/td&gt;
+&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
+&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDManagement&lt;/td&gt;
+&lt;td&gt;Log about administrative tasks&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDCheckpoints&lt;/td&gt;
+&lt;td&gt;Detailed information related to logins, errors, …&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnectionNetworkData&lt;/td&gt;
+&lt;td&gt;Network information (bandwidth and RTT)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that (use version 1.7.25 or higher):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;After a while, the workbook is visible as a new template in: &lt;strong&gt;Log Analytics -&amp;gt; Workbooks -&amp;gt; Azure Virtual Desktop -&amp;gt; AVD - Deep-Insights&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;” occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
+&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Version&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1&lt;/td&gt;
+&lt;td&gt;01/28/2022&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.2&lt;/td&gt;
+&lt;td&gt;02/17/2022&lt;/td&gt;
+&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); see &lt;a href=&quot;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&quot;&gt;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&lt;/a&gt; &lt;br /&gt;&lt;br /&gt;Name changed to AVD - Deep-Insights&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.3&lt;/td&gt;
+&lt;td&gt;03/16/2022&lt;/td&gt;
+&lt;td&gt;Include Logon timing (GPO, FSLogix, Authentication, etc.)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.4&lt;/td&gt;
+&lt;td&gt;04/14/2022&lt;/td&gt;
+&lt;td&gt;In Session Bandwidths &amp;amp; Latencies: The connection type is shown if RDP Short Path is used (Public, Private). See: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.5&lt;/td&gt;
+&lt;td&gt;05/03/2022&lt;/td&gt;
+&lt;td&gt;New visualization: Logon timing per day and category over the time&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6&lt;/td&gt;
+&lt;td&gt;10/11/2022&lt;/td&gt;
+&lt;td&gt;New visualization: Connections over time, unhealthy session hosts, graphic performance&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7&lt;/td&gt;
+&lt;td&gt;11/03/2022&lt;/td&gt;
+&lt;td&gt;Optimization for charts to show data over a large time frame&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.8&lt;/td&gt;
+&lt;td&gt;11/14/2022&lt;/td&gt;
+&lt;td&gt;A new tab “Resources”, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.9&lt;/td&gt;
+&lt;td&gt;11/18/2022&lt;/td&gt;
+&lt;td&gt;A new tab “Resources”, to show orphan VMs (where the session host object is missing)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.0&lt;/td&gt;
+&lt;td&gt;12/01/2022&lt;/td&gt;
+&lt;td&gt;Changed the description for the estimated available bandwidth&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.1&lt;/td&gt;
+&lt;td&gt;12/09/2022&lt;/td&gt;
+&lt;td&gt;Added orphan disks and orphan nics to the “Resources” tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop, version 1.0.1.84 (comming soon))&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.2&lt;/td&gt;
+&lt;td&gt;02/02/2023&lt;/td&gt;
+&lt;td&gt;Added “Water Markings” to query session information by the feature &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/watermarking&quot;&gt;WaterMarking&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.3&lt;/td&gt;
+&lt;td&gt;02/20/2023&lt;/td&gt;
+&lt;td&gt;Added “Unresponding AVD Agents” in the tab “Resources” to identify running VM with a non responding AVD agent&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.4&lt;/td&gt;
+&lt;td&gt;02/21/2023&lt;/td&gt;
+&lt;td&gt;Added new tab “FSLogix” to show the size, usage and free space of the FSLogix profiles&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.5&lt;/td&gt;
+&lt;td&gt;03/08/2023&lt;/td&gt;
+&lt;td&gt;Fix in the time selector; allow to selecte multiple host pools; show active sessions with user name and started desktop/remote app&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.6&lt;/td&gt;
+&lt;td&gt;03/31/2023&lt;/td&gt;
+&lt;td&gt;Add: Show office container size and usage (ODFC) in the FSLogix tab (additional to the profile container)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.7&lt;/td&gt;
+&lt;td&gt;07/01/2023&lt;/td&gt;
+&lt;td&gt;Fix/Workaround: VHDFreeSpace is stored as text in MByte and not in GByte if the value is less then 1 GByte&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.8&lt;/td&gt;
+&lt;td&gt;10/13/2023&lt;/td&gt;
+&lt;td&gt;Add: Show the last heart beat time in the Orphan session hosts view and warns, if the heart beat is longer then 90 days ago&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don’t generate costs&lt;/p&gt;
+</description>
+        <pubDate>Fri, 13 Oct 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Azure Monitor</category>
+        
+        <category>Log Analytics</category>
+        
+      </item>
+    
+      <item>
+        <title>Updating a Golden Master VM from Windows 10 multi-user to Windows 11 multi-user</title>
+        <description>&lt;p&gt;The Golden-Master approach is a common way to deploy applications and desktops as session hosts in Azure Virtual Desktop. The approach is very simple, and the rollout of new session hosts is very fast - while applications are installed and the host configured. Using PowerShell, &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, or &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra&lt;/a&gt; simplifies the process while the original Golden Master VM survives and can be updated with OS and application updates over time.&lt;/p&gt;
+&lt;p&gt;The process looks like this:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Installing the Golden Master VM in Azure with Windows multi-user
+&lt;ul&gt;
+&lt;li&gt;Running Windows Update&lt;/li&gt;
+&lt;li&gt;Installing the applications&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Configuring the VM&lt;/li&gt;
+&lt;li&gt;Grabbing an image with PowerShell, &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;, &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra&lt;/a&gt;, etc., &lt;strong&gt;without destroying&lt;/strong&gt; the Golden Master VM&lt;/li&gt;
+&lt;li&gt;Using the image to deploy multiple session hosts&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It is a very easy approach, and often, the applications and the configuration of the master are done with a software deployment solution (like Intune, ECM). But there are also deployments where the master was customized manually, including the configuration and applications. In this case, changing the underlying OS can be a challenge.&lt;/p&gt;
+&lt;h3 id=&quot;windows-10-multi-user&quot;&gt;Windows 10 multi-user&lt;/h3&gt;
+&lt;p&gt;There are a lot of manual customized Golden Masters with Windows 10 multi-user. Unfortunately, Windows Update mostly does not offer an in-place-upgrade to Windows 11 multi-user. Even the following approaches are not working for Windows 10 multi-user:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Downloading Windows 11 and trying to upgrade the VM -&amp;gt; Doesn’t work, while the ISO files of Windows 11 are not multi-user&lt;/li&gt;
+&lt;li&gt;Forcing Windows Update to install Windows 11 -&amp;gt; That is mostly not enough (see below)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;preparing-your-vm&quot;&gt;Preparing your VM&lt;/h3&gt;
+&lt;p&gt;To update to Windows 11 multi-user, your VM must have trusted launch-, secure boot-enabled, and a vTPM.&lt;/p&gt;
+&lt;p&gt;You can do this in the following ways:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Your VM is Generation V1:
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/&quot;&gt;Creating a Windows Azure VM Generation V2 from a V1 VM&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Your VM is Generation V2 without a trusted launch-enabled security type:
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://blog.itprocloud.de/Migrate-Azure-VM-To-Trusted-Launch/&quot;&gt;Updating or cloning a Azure VM with standard security to trusted launch with secure boot and vTPM&lt;/a&gt; or&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/&quot;&gt;Creating a Windows Azure VM Generation V2 from a V1 VM&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;forcing-windows-update&quot;&gt;Forcing Windows Update&lt;/h3&gt;
+&lt;p&gt;You can force Windows Update to show Windows 11 as an option.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Log in to the new Golden Master
+&lt;ul&gt;
+&lt;li&gt;Modify the local policy to force Windows Update to install Windows 11 22h2: Local Computer Policy\Computer Configuration\Administrative Templates\Windows Components\Windows Update\Windows Updates for Business\Select the target Feature Update version&lt;/li&gt;
+&lt;li&gt;Run Windows Update&lt;/li&gt;
+&lt;li&gt;Update to Windows 11&lt;/li&gt;
+&lt;li&gt;Reboot&lt;/li&gt;
+&lt;li&gt;Remove the local policy entries&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Your Golden Master is ready and converted from Windows 10 to 11 multi-user&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&quot;https://youtu.be/T8lJnepnEKk&quot;&gt;Link to the YouTube video.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Update-11-22h2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;If you got the following error message: &lt;strong&gt;The PC must support TPM 2.0.&lt;/strong&gt;, you have forgotten to migrate your VM to a V2 Generation with trusted lauch-enabled.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 07 Oct 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Update-Windows-10-Multi-user-to-Windows-11-Multi-user/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Update-Windows-10-Multi-user-to-Windows-11-Multi-user/</guid>
+        
+        
+        <category>Azure</category>
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Updating or cloning a Azure VM with standard security to trusted launch with secure boot and vTPM</title>
+        <description>&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; If your source VM is based on the &lt;strong&gt;VM generation V1&lt;/strong&gt;, follow this post to convert your VM: &lt;a href=&quot;https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/&quot;&gt;Creating a Windows Azure VM Generation V2 from a V2 VM&lt;/a&gt;. Also, follow the link if you want to have an exact copy (and not a clone) of your VM.&lt;/p&gt;
+&lt;p&gt;If you once installed an Azure VM with the standard of security, you can not convert this VM into a trusted launch-enabled VM with secure boot and vTPM. But that is sometimes necessary, e.g., if you want to upgrade from Windows 10 multi-user to Windows 11 multi-user.&lt;/p&gt;
+&lt;p&gt;But there is a way to do that. You could capture your existing VM and store the image in a secure boot enabled. Compute Gallery definition in Azure. From this image version, you can create a new VM with a security-type trusted launch.&lt;/p&gt;
+&lt;h3 id=&quot;prepare-an-azure-compute-gallery&quot;&gt;Prepare an Azure Compute Gallery&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Create an Azure Compute Gallery “Conversion_Gallery” in the same resource group of your VM&lt;/li&gt;
+&lt;li&gt;Add an Image Definition “Secure-VM”
+&lt;ul&gt;
+&lt;li&gt;Security Type: Trusted Launch&lt;/li&gt;
+&lt;li&gt;OS state: Generalized&lt;/li&gt;
+&lt;li&gt;Tick “Accelerated networking” if this is enabled on your original VM&lt;/li&gt;
+&lt;li&gt;Fill Publisher, Offer, SKU with some information&lt;/li&gt;
+&lt;li&gt;Click Review+Create, Create&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/To-TrustedLaunch-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;capturing-the-original-vm&quot;&gt;Capturing the original VM&lt;/h3&gt;
+&lt;p&gt;I’m using &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to prevent that I must sysprep my original VM. &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; first makes a clone of the original VM and runs sysprep on the clone. In the end, I have an image in a compute gallery and the untouched original VM.&lt;/p&gt;
+&lt;p&gt;In &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Azure -&amp;gt; Virtual Machines -&amp;gt; Resource Group -&amp;gt; Right-click the VM and select “Create a template image”&lt;/li&gt;
+&lt;li&gt;Enter an image name (no spaces)&lt;/li&gt;
+&lt;li&gt;Select the resource group of the VM as Target RG&lt;/li&gt;
+&lt;li&gt;Tick “Use Azure Compute Galleries”&lt;/li&gt;
+&lt;li&gt;Select your Gallery and Gallery definition&lt;/li&gt;
+&lt;li&gt;Your region from the list&lt;/li&gt;
+&lt;li&gt;Hit “Capture”&lt;/li&gt;
+&lt;li&gt;This will take a while to clone the VM, create an image and upload it to the image gallery.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/To-TrustedLaunch-03.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/To-TrustedLaunch-04.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/To-TrustedLaunch-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Note: You can delete the also-created custom image (we only need the gallery image)&lt;/p&gt;
+&lt;h3 id=&quot;deploying-a-new-secure-boot-enabled-vm-from-the-image&quot;&gt;Deploying a new secure boot-enabled VM from the image&lt;/h3&gt;
+&lt;p&gt;With &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; or in the Azure Portal, you can create a new VM from that image containing all the applications. Please note that the new VM has a new name and compute identity.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Go to the gallery definition in the Azure Portal and select your uploaded version.&lt;/li&gt;
+&lt;li&gt;Hit + Create VM&lt;/li&gt;
+&lt;li&gt;Fill out all parameters and ensure that you select the security type “Trusted Launch”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/To-TrustedLaunch-06.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/To-TrustedLaunch-07.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;After the deployment, you have a new trusted launch-enabled VM based on your - still existing - original VM.&lt;/p&gt;
+</description>
+        <pubDate>Sat, 07 Oct 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Migrate-Azure-VM-To-Trusted-Launch/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Migrate-Azure-VM-To-Trusted-Launch/</guid>
+        
+        
+        <category>Azure</category>
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Creating a Windows Azure VM Generation V2 from a V1 VM</title>
+        <description>&lt;p&gt;Microsoft has provided different VM sizes over the last years and also introduced the VM Generation V2 at the end of 2019. V2 VMs are different from V1 VMs and have the following advantages:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;UEFI&lt;/strong&gt; based (no longer bios-based)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Enhanced OS support&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Faster boot and disk support&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Advanced Security Features&lt;/strong&gt;, like Secure Boot, which ensures the integrity of the boot process, and BitLocker encryption, which enhances data protection&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Today, I expect that the most deployed VMs are V2, but I still see older V1 versions - including in my own environment. For example, I have several Golden Masters for Azure Virtual Desktop running Windows 10 22/h2 Multi-User. We still see V1 types because of the missing simple migration path. There is no native way in the Azure Portal to do this.&lt;/p&gt;
+&lt;p&gt;While I wanted to upgrade my Windows 10 Golden Masters to Windows 11, I came to the point of discovering that Windows 11 needs a V2 generation VM (for upgrading, trusted launch, vTPM, and secure boot must also be enabled).&lt;/p&gt;
+&lt;p&gt;After some research, I figured out that this is really not simple. I found a good blog post from &lt;a href=&quot;https://charbelnemnom.com/migrate-gen1-to-gen2-vms-on-azure/&quot;&gt;Charbel Nemnom&lt;/a&gt;, who provides a step-by-step solution. The solution is still complex, so I decided to write a PowerShell script to handle this complex process more easily.&lt;/p&gt;
+&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
+&lt;p&gt;We have our V1 virtual machine we want to convert. Instead of converting, we are building a new virtual machine (V2) with the converted OS disk of our V1 VM. So, in the end, we have two identical VMs: The original V1 VM and the V2 VM. If anything doesn’t work, we still have our original VM.&lt;/p&gt;
+&lt;p&gt;But takes some time, and the full process takes hours (for the script).&lt;/p&gt;
+&lt;p&gt;After configuring the script, the script enters the following steps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Deallocates the V1 VM&lt;/li&gt;
+&lt;li&gt;Creates the new V2 VM with the same size in the same network, optional with trusted launch, secure boot, and vTPM&lt;/li&gt;
+&lt;li&gt;Makes a snapshot of the V1 OS disk and, from the snapshot, a cloned OS disk (still V1)&lt;/li&gt;
+&lt;li&gt;Creates an empty V2 disk with the same size and type as the V1 OS disk(this disk is supposed to be our converted OS disk)&lt;/li&gt;
+&lt;li&gt;Attaches the empty V2 disk and the cloned V1 OS disk to the new V2 VM&lt;/li&gt;
+&lt;li&gt;The script runs itself on the V2 VM
+&lt;ul&gt;
+&lt;li&gt;Preparing the partitions of the attached disks&lt;/li&gt;
+&lt;li&gt;Formatting the partitions&lt;/li&gt;
+&lt;li&gt;Capturing the cloned V1 OS partition using DISM (that takes some time; in my last conversion, it took nearly 4 hours)&lt;/li&gt;
+&lt;li&gt;Apply the captured image to the prepared partition of the empty V2 disk&lt;/li&gt;
+&lt;li&gt;Write the UEFI partition of the formerly empty V2 disk&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Deallocates the V2 VM&lt;/li&gt;
+&lt;li&gt;Detach the attached disks&lt;/li&gt;
+&lt;li&gt;Swap the OS disk with the no longer empty V2 disk (the now converted OS disk of the V1 VM)&lt;/li&gt;
+&lt;li&gt;Starting the V2 VM&lt;/li&gt;
+&lt;li&gt;Doing some cleanup: Deleting the snapshot, the old V2 OS disk, the cloned V1 OS disk&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Done&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/V1-V2-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;how-to-use-the-script&quot;&gt;How to use the script&lt;/h3&gt;
+&lt;p&gt;Open the script in a PowerShell editor like ISE (or VS Code). Connect to your Azure subscription using &lt;em&gt;Connect-AzAccount&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;Modify the script to match your:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Your subscription Id&lt;/li&gt;
+&lt;li&gt;Your source V1 VM (name and resource group)&lt;/li&gt;
+&lt;li&gt;Your new V2 VM (name and resource group - ensure to have a different name or resource group; another name of the VM doesn’t reflect the computer name after the process)&lt;/li&gt;
+&lt;li&gt;Set $enabledTrustedLaunch = $true to also create your V2 VM trusted launch enabled, incl. secure boot and vTPM&lt;/li&gt;
+&lt;li&gt;The tempDiskSizeGb must be large enough to contain the temporary OS (Server 2022) and the content of the OS disk of the V1 VM (512 should be fine if the disk of the V1 VM is 128 GByte)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That’s all. You can run the script and come back after some hours to see the result.&lt;/p&gt;
+&lt;h3 id=&quot;hints&quot;&gt;Hints&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;If the VM size doesn’t support V2, modify the target VM size in the script&lt;/li&gt;
+&lt;li&gt;If something fails: Cleanup the temporarily created resources manually (snapshot, empty V2 disk, cloned V1 disk, and V2 VM)&lt;/li&gt;
+&lt;li&gt;Upgrading to Windows 11 multi-user: Check-out this video&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;where-is-the-script&quot;&gt;Where is the script&lt;/h3&gt;
+&lt;p&gt;You can find the script on github: &lt;a href=&quot;https://gist.github.com/MarcelMeurer/aab2ef8f36d7c634beebea771f54bf30&quot;&gt;Create-V2-From-V1-VM.ps1&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 07 Oct 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</guid>
+        
+        
+        <category>Azure</category>
         
         <category>Windows Virtual Desktop</category>
         
