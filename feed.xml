@@ -5,9 +5,73 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 17 Oct 2023 14:47:27 +0200</pubDate>
-    <lastBuildDate>Tue, 17 Oct 2023 14:47:27 +0200</lastBuildDate>
+    <pubDate>Mon, 23 Oct 2023 19:37:13 +0200</pubDate>
+    <lastBuildDate>Mon, 23 Oct 2023 19:37:13 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>How to get the Client IP Address in Azure Virtual Desktop</title>
+        <description>&lt;p&gt;While migrating Virtual Desktop Environments to AVD, I got another challenge from the past: Sometimes, companies use the client IP address to identify the user’s location to map a specific printer in the location.&lt;/p&gt;
+&lt;p&gt;Unfortunately, AVD didn’t provide this client’s IP address. Even the property of &lt;em&gt;WTSQuerySessionInformation&lt;/em&gt; is empty. I only get the internet-faced IP address if I try to use the diagnostic settings. But not the client’s own address.&lt;/p&gt;
+&lt;p&gt;But there is a solution/workaround: If clients are using RDP Shortpath (public or private), we can grab the information locally to do some printer mappings. The good thing is that RDP Shortpath is enabled by default (except for the HTML 5 web client).&lt;/p&gt;
+&lt;p&gt;The RDAgent, installed on each session host, reports a lot of data to the backend (logs). You can configure the diagnostic settings to store this data to log analytics or some other data stores. Some of those logs are also on the session host in the event log.&lt;/p&gt;
+&lt;p&gt;The event log &lt;strong&gt;“RemoteDesktopServices”&lt;/strong&gt; contains the log entries. The source &lt;strong&gt;“Microsoft.RDInfra.Diagnostics.DataSink.RestPipelineSink”&lt;/strong&gt; contains data about RDP Shortpath connection, including the IP address of the client:&lt;/p&gt;
+&lt;p&gt;We can use the activity ID to match the information to a specific user on the host. The correlation user/activity ID is stored in the log from the source “Microsoft.RDInfra.RDAgent.ConnectionTrackingService.DefaultConnectionTrackingService”.&lt;/p&gt;
+&lt;p&gt;I built a small tool to read the event log continuously. AvdClientIp reads the single entries, extracts the data, and matches the data by the activity ID.&lt;/p&gt;
+&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
+&lt;p&gt;The installation of AvdClientIp will create a scheduled task with the name “ITPC-AVD-ClientIP”. This task starts with the computer and monitors the RemoteDesktopServices event log. If a client IP is detected, the tool writes the client IP into the users’ registry in &lt;strong&gt;HKEY_CURRENT_USER\Volatile Environment&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ClientIpValue		-&amp;gt; IPv4&lt;/li&gt;
+&lt;li&gt;ClientIpUTC		-&amp;gt; The timestamp&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Client-IP-00.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
+&lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\AvdClientIp&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Key&lt;/th&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;th&gt;Default value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;HideUserNamesInLogfile&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Hides the user names in the logfile&lt;/td&gt;
+&lt;td&gt;0=false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Logging&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Enbale logging&lt;/td&gt;
+&lt;td&gt;1=true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+AvdClientIp writes a log file to *%AppData%\ITProCloud\AvdClientIp.log. *
+&lt;p&gt;Note: It would be much better if the RDAgent would store this information directly in the registry or provide the information with the WTSQuerySessionInformation. So, use this tool as a workaround until we get the data natively.&lt;/p&gt;
+&lt;h3 id=&quot;note&quot;&gt;Note&lt;/h3&gt;
+&lt;p&gt;It would be much better if the RDAgent would store this information directly in the registry or provide the information with the WTSQuerySessionInformation. So, use this tool as a workaround until we get the data natively.&lt;/p&gt;
+&lt;h3 id=&quot;kudos&quot;&gt;Kudos&lt;/h3&gt;
+&lt;p&gt;A big thank to &lt;a href=&quot;https://www.linkedin.com/in/j%C3%B6rg-hoffmann-078b3523/&quot;&gt;Jörg Hoffmann&lt;/a&gt; finding the right logs 👍&lt;/p&gt;
+&lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/AvdClientIp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/23/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 23 Oct 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>OneDrive Clean-Up for Azure Virtual Desktop</title>
@@ -123,8 +187,8 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log.
 &lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
 </description>
         <pubDate>Tue, 17 Oct 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</guid>
+        <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting-Copy/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting-Copy/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -1835,51 +1899,6 @@ $appExecutable = &amp;quot;finance.exe&amp;quot;
         <link>https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</guid>
         
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Azure Virtual Desktop - Login error Protocol Error Code 0x112f - Windows 11</title>
-        <description>&lt;p&gt;Login error: Protocol Error Code 0x112f&lt;/p&gt;
-&lt;p&gt;There are a lot of posts regarding this issue. I figured out that this old issue comes back in a specific combination with RDS settings and Windows 11.&lt;/p&gt;
-&lt;p&gt;If a user has multiple monitors and connecting to AVD, an error message is raised, if:
-The session uses all of the monitors
-AVCHardwareEncodePreferred is set to 1 (e.g., by using the GPO “Configure H.264/AVC hardware encoding for Remote Desktop Connections”)
-The operating system is Windows 11 (22H2) - I was not able to reproduce the issue with Windows 10 and with the same configuration&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Solution:&lt;/strong&gt;
-If policies are used: Unconfigure all protocol-related settings in Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session Host\Remote Session Environment.&lt;/p&gt;
-&lt;p&gt;Configure the protocol-related settings through the registry on the hosts or on the Golden Master (e.g., with a script in &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; or &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;). Important is the value for &lt;strong&gt;AVCHardwareEncodePreferred&lt;/strong&gt;. That should be 2 (which cannot be set with the GPO). The teams optimization is optional:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;Write-Host &amp;quot;RDS Settings&amp;quot;
-New-Item -Path &amp;quot;HKLM:\SOFTWARE&amp;quot; -Name &amp;quot;Policies&amp;quot; -ErrorAction Ignore
-New-Item -Path &amp;quot;HKLM:\SOFTWARE\Policies&amp;quot; -Name &amp;quot;Microsoft&amp;quot; -ErrorAction Ignore
-New-Item -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft&amp;quot; -Name &amp;quot;Windows NT&amp;quot; -ErrorAction Ignore
-New-Item -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT&amp;quot; -Name &amp;quot;Terminal Services&amp;quot; -ErrorAction Ignore
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;AVC444ModePreferred&amp;quot; -Value 0 -force  # if 1 - browser mm redirection is not workuing
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;AVCHardwareEncodePreferred&amp;quot; -Value 2 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;bEnumerateHWBeforeSW&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;fEnableRemoteFXAdvancedRemoteApp&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;fEnableTimeZoneRedirection&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;KeepAliveEnable&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;KeepAliveInterval&amp;quot; -Value 1 -force
-
-Write-Host &amp;quot;Teams Optimization&amp;quot;
-New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server&amp;quot; -Name &amp;quot;AddIns&amp;quot; -ErrorAction Ignore
-New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns&amp;quot; -Name &amp;quot;WebRTC Redirector&amp;quot; -ErrorAction Ignore
-New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector&amp;quot; -Name &amp;quot;Policy&amp;quot; -ErrorAction Ignore
-New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy&amp;quot; -Name &amp;quot;ShareClientDesktop &amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy&amp;quot; -Name &amp;quot;DisableRAILScreensharing  &amp;quot; -Value 0 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy&amp;quot; -Name &amp;quot;DisableRAILAppSharing&amp;quot; -Value 0 -force
-&lt;/code&gt;&lt;/pre&gt;</description>
-        <pubDate>Fri, 07 Apr 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-Login-error-Protocol-Error-Code-0x112f-Windows-11/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-Login-error-Protocol-Error-Code-0x112f-Windows-11/</guid>
-        
-        
-        <category>PowerShell</category>
         
         <category>Windows Virtual Desktop</category>
         

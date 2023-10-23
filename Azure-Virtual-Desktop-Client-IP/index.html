@@ -6,27 +6,27 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>INTERNAL Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these | ITProCloud Blog</title>
+<title>How to get the Client IP Address in Azure Virtual Desktop | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>INTERNAL Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these | ITProCloud Blog</title>
+<title>How to get the Client IP Address in Azure Virtual Desktop | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="INTERNAL Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these" />
+<meta property="og:title" content="How to get the Client IP Address in Azure Virtual Desktop" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Windows Virtual Desktop (WVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance." />
-<meta property="og:description" content="Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Windows Virtual Desktop (WVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance." />
-<link rel="canonical" href="https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data-INTERNAL/" />
-<meta property="og:url" content="https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data-INTERNAL/" />
+<meta name="description" content="While migrating Virtual Desktop Environments to AVD, I got another challenge from the past: Sometimes, companies use the client IP address to identify the user’s location to map a specific printer in the location." />
+<meta property="og:description" content="While migrating Virtual Desktop Environments to AVD, I got another challenge from the past: Sometimes, companies use the client IP address to identify the user’s location to map a specific printer in the location." />
+<link rel="canonical" href="https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/" />
+<meta property="og:url" content="https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="https://blog.itprocloud.de/assets/images/LogicApp-AAD-AzureMonitor-008.png" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/AVD-Client-IP-00.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2020-10-13T00:00:00+02:00" />
+<meta property="article:published_time" content="2023-10-23T00:00:00+02:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/LogicApp-AAD-AzureMonitor-008.png" />
-<meta property="twitter:title" content="INTERNAL Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/AVD-Client-IP-00.png" />
+<meta property="twitter:title" content="How to get the Client IP Address in Azure Virtual Desktop" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/LogicApp-AAD-AzureMonitor-008.png","datePublished":"2020-10-13T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data-INTERNAL/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data-INTERNAL/","author":{"@type":"Person","name":"mm"},"headline":"INTERNAL Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these","dateModified":"2020-10-13T00:00:00+02:00","description":"Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Windows Virtual Desktop (WVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance.","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/AVD-Client-IP-00.png","datePublished":"2023-10-23T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/","author":{"@type":"Person","name":"mm"},"headline":"How to get the Client IP Address in Azure Virtual Desktop","dateModified":"2023-10-23T00:00:00+02:00","description":"While migrating Virtual Desktop Environments to AVD, I got another challenge from the past: Sometimes, companies use the client IP address to identify the user’s location to map a specific printer in the location.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -366,19 +366,19 @@
     </p>
     <ul>
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://twitter.com/intent/tweet?text=INTERNAL Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these&url=https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data-INTERNAL/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=How to get the Client IP Address in Azure Virtual Desktop&url=https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                 <i class="fab fa-twitter"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data-INTERNAL/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
                 <i class="fab fa-facebook-f"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data-INTERNAL/&title=INTERNAL Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these" onclick="window.open(this.href, 'width=550,height=435');return false;">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/&title=How to get the Client IP Address in Azure Virtual Desktop" onclick="window.open(this.href, 'width=550,height=435');return false;">
                 <i class="fab fa-linkedin-in"></i>
             </a>
         </li>
@@ -418,7 +418,7 @@
                 
 
                 <!-- Post Title -->
-                <h1 class="posttitle">INTERNAL Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these</h1>
+                <h1 class="posttitle">How to get the Client IP Address in Azure Virtual Desktop</h1>
 
             </div>
 
@@ -430,7 +430,7 @@
             
 
             
-            <img class="featured-image img-fluid" src="/assets/images/LogicApp-AAD-AzureMonitor-008.png" alt="INTERNAL Push Azure AD User properties into Azure Monitor Log Analytics to build Windows Virtual Desktop (WVD) performance data based on these">
+            <img class="featured-image img-fluid" src="/assets/images/AVD-Client-IP-00.png" alt="How to get the Client IP Address in Azure Virtual Desktop">
             
 
             
@@ -441,62 +441,56 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Windows Virtual Desktop (WVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance.</p>
-<p>I do that using Azure Monitor for WVD/AVD (<a href="https://www.sepago.de/en/azure-monitor-en/">https://www.sepago.de/en/azure-monitor-en/</a>) from sepago, which is also included in Nerdio Manager for WVD (<a href="https://getnerdio.com/nerdio-manager-for-wvd/">https://getnerdio.com/nerdio-manager-for-wvd/</a>).</p>
-<p>The solution gives you insight into the performance of the apps and hosts and allows you to build a cost calculation on a per-user base. If you want to query and analyze data by other properties - like the department - you have to include these properties from Azure AD into your log analytics workspace.</p>
-<p>I found an easy solution doing that with an Azure logic app. The logic app access the Azure AD tenant and queries the users and some defined properties and send it to log analytics. A challenge was to handle the challenge that you have to query multiple times to get all users from Azure AD (a single query gives you only a specific amount of users -&gt; Paging). I solved this using an “Until-loop” to get all users. The logic app pushed the users and their properties to the defined log analytics workspace. After this, the users and properties can be used in a KUSTO query. For example: To query the over-all session runtime by the department.</p>
-<h2 id="installation-and-configuration">Installation and configuration</h2>
-<p>Deploy the prepared logic app into your subscription using the “Deploy to Azure” button.</p>
-<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FLA-AADUsersToLogAnalytics-v2.json"><img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" /></a></p>
-<p>To query the Azure AD unattended, you need a service principal (a function account) with the right permission. Create the service principal in the Azure Portal:</p>
+                <p>While migrating Virtual Desktop Environments to AVD, I got another challenge from the past: Sometimes, companies use the client IP address to identify the user’s location to map a specific printer in the location.</p>
+<p>Unfortunately, AVD didn’t provide this client’s IP address. Even the property of <em>WTSQuerySessionInformation</em> is empty. I only get the internet-faced IP address if I try to use the diagnostic settings. But not the client’s own address.</p>
+<p>But there is a solution/workaround: If clients are using RDP Shortpath (public or private), we can grab the information locally to do some printer mappings. The good thing is that RDP Shortpath is enabled by default (except for the HTML 5 web client).</p>
+<p>The RDAgent, installed on each session host, reports a lot of data to the backend (logs). You can configure the diagnostic settings to store this data to log analytics or some other data stores. Some of those logs are also on the session host in the event log.</p>
+<p>The event log <strong>“RemoteDesktopServices”</strong> contains the log entries. The source <strong>“Microsoft.RDInfra.Diagnostics.DataSink.RestPipelineSink”</strong> contains data about RDP Shortpath connection, including the IP address of the client:</p>
+<p>We can use the activity ID to match the information to a specific user on the host. The correlation user/activity ID is stored in the log from the source “Microsoft.RDInfra.RDAgent.ConnectionTrackingService.DefaultConnectionTrackingService”.</p>
+<p>I built a small tool to read the event log continuously. AvdClientIp reads the single entries, extracts the data, and matches the data by the activity ID.</p>
+<h3 id="result">Result</h3>
+<p>The installation of AvdClientIp will create a scheduled task with the name “ITPC-AVD-ClientIP”. This task starts with the computer and monitors the RemoteDesktopServices event log. If a client IP is detected, the tool writes the client IP into the users’ registry in <strong>HKEY_CURRENT_USER\Volatile Environment</strong></p>
 <ul>
-<li>Azure Active Directory -&gt; App registrations -&gt; New registration and give it a name (e.g. svc_AzureAdUserReader4AzureMonitor) and press register
-<img src="../assets/images/LogicApp-AAD-AzureMonitor-001.png" alt="" /></li>
-<li>Go to Certificates and secrets -&gt; Add new client secret and type in a name (e.g. Key1) and expiration date (make a note into your calendar) and press add
-<img src="../assets/images/LogicApp-AAD-AzureMonitor-002.png" alt="" /></li>
-<li>Copy the generated secret for later use</li>
-<li>Go to Api permissions -&gt; Add a permission -&gt; select Microsoft Graph -&gt; Application permissions -&gt; select User.Read.All -&gt; click Add permissions
-<img src="../assets/images/LogicApp-AAD-AzureMonitor-003.png" alt="" /></li>
-<li>Click Grant admin consent to allow this setting (you have to be in the right role to do that)
-<img src="../assets/images/LogicApp-AAD-AzureMonitor-004.png" alt="" /></li>
-<li>Go to overview and copy the application id and directory id for later use</li>
+<li>ClientIpValue		-&gt; IPv4</li>
+<li>ClientIpUTC		-&gt; The timestamp</li>
 </ul>
-<p>To upload the data to your Azure Monitor / log analytics workspace, you need the workspace id and key.</p>
-<ul>
-<li>Go to your log analytics workspace -&gt; select Advanced settings -&gt; Agents management -&gt; copy the workspace id and primary key for later use
-<img src="../assets/images/LogicApp-AAD-AzureMonitor-005.png" alt="" /></li>
-</ul>
-<p>Go to your deployed logic app and click edit.</p>
-<ul>
-<li>
-<p>Expand “Until 2”</p>
-</li>
-<li>
-<p>Click on http. Enter the data from your service principal into the fields Tenant (Directory id), client id, and secret
-<img src="../assets/images/LogicApp-AAD-AzureMonitor-006.png" alt="" /></p>
-</li>
-<li>
-<p>Click on Connections and add a new one (Add new)</p>
-</li>
-<li>
-<ul>
-<li>Give a name (e.g. ToLogAnalytics), the primary key and workspace id from log analytics and press create
-<img src="../assets/images/LogicApp-AAD-AzureMonitor-007.png" alt="" /></li>
-</ul>
-</li>
-</ul>
-<p>Save the logic app and press run to test it.</p>
-<p>If everything looks good, our logic app will write the user data to log analytics once a day.</p>
-<p><img src="../assets/images/LogicApp-AAD-AzureMonitor-008.png" alt="" /></p>
-<p>You can query the data from log analytics with “ITPC_CTX_ADUsers_CL”. Keep in mind that it takes a while (30 minutes) to build the first upload schema.</p>
-<p><img src="../assets/images/LogicApp-AAD-AzureMonitor-009.png" alt="" /></p>
-<p><strong>Hint:</strong></p>
-<p>You can modify the filter and the properties you get back, modifying the query URL. The URL can be modified in “Initialize variable” in the logic app.</p>
-<p><img src="../assets/images/LogicApp-AAD-AzureMonitor-010.png" alt="" /></p>
-<p>The default is:</p>
-<pre><code>https://graph.microsoft.com/v1.0/users?$filter=accountEnabled eq true  and userType eq 'Member'&amp;$select=userPrincipalName,onPremisesSamAccountName,employeeId,officeLocation,department
-</code></pre>
-<p>A list of valid properties is here: <a href="https://docs.microsoft.com/de-de/graph/api/resources/user?view=graph-rest-1.0">https://docs.microsoft.com/de-de/graph/api/resources/user?view=graph-rest-1.0</a></p>
+<p><img src="../assets/images/AVD-Client-IP-00.png" alt="AADBrowser" /></p>
+<h3 id="logging-and-configuration">Logging and configuration</h3>
+<p>The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\AvdClientIp</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Type</th>
+<th>Value</th>
+<th>Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>HideUserNamesInLogfile</td>
+<td>Reg_DWORD</td>
+<td>Hides the user names in the logfile</td>
+<td>0=false</td>
+</tr>
+<tr>
+<td>Logging</td>
+<td>Reg_DWORD</td>
+<td>Enbale logging</td>
+<td>1=true</td>
+</tr>
+</tbody>
+</table>
+<br/>
+AvdClientIp writes a log file to *%AppData%\ITProCloud\AvdClientIp.log. *
+<p>Note: It would be much better if the RDAgent would store this information directly in the registry or provide the information with the WTSQuerySessionInformation. So, use this tool as a workaround until we get the data natively.</p>
+<h3 id="note">Note</h3>
+<p>It would be much better if the RDAgent would store this information directly in the registry or provide the information with the WTSQuerySessionInformation. So, use this tool as a workaround until we get the data natively.</p>
+<h3 id="kudos">Kudos</h3>
+<p>A big thank to <a href="https://www.linkedin.com/in/j%C3%B6rg-hoffmann-078b3523/">Jörg Hoffmann</a> finding the right logs 👍</p>
+<h3 id="download">Download</h3>
+<p><a href="../assets/files/AvdClientIp.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 10/23/2023</strong></a></p>
+<p>Please feel free to send me ideas for improvements.</p>
 
             </div>
 
@@ -506,7 +500,7 @@
             <!-- Post Date -->
             <p>
             <small>
-                <span class="post-date"><time class="post-date" datetime="2020-10-13">13 Oct 2020</time></span>           
+                <span class="post-date"><time class="post-date" datetime="2023-10-23">23 Oct 2023</time></span>           
                 
                 </small>
             </p>
@@ -515,6 +509,14 @@
             <div class="after-post-cats">
                 <ul class="tags mb-4">
                     
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
+                    </li>
                     
                 </ul>
             </div>
@@ -532,10 +534,8 @@
             <!-- Prev/Next -->
             <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
             
-            <a class="prev d-block col-md-6" href="/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/"> &laquo; Push Azure AD User properties into Azure Monitor Log Analytics to build Azure Windows Virtual Desktop (WVD) performance data based on these</a>
+            <a class="prev d-block col-md-6" href="/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting-Copy/"> &laquo; OneDrive Clean-Up for Azure Virtual Desktop</a>
             
-            
-            <a class="next d-block col-md-6 text-lg-right" href="/Windows-Virtual-Desktop-Admin-CustomScripts/">WVD Admin - Custom Scripts to run administrative tasks &raquo; </a>
             
             <div class="clearfix"></div>
             </div>
