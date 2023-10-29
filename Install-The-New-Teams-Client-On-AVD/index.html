@@ -6,27 +6,27 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>Deallocate an Azure VM from itself | ITProCloud Blog</title>
+<title>Install the New Teams Client on Azure Virtual Desktop (previe) - AVD | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Deallocate an Azure VM from itself | ITProCloud Blog</title>
+<title>Install the New Teams Client on Azure Virtual Desktop (previe) - AVD | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Deallocate an Azure VM from itself" />
+<meta property="og:title" content="Install the New Teams Client on Azure Virtual Desktop (previe) - AVD" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="These days I’m dealing with the automation of starting and stopping Azure virtual machines. I do this to avoid unnecessary costs for customers running Citrix or RDS workers on Azure. I translated a piece of my work into a PowerShell script to de-allocate the VM on which it is running." />
-<meta property="og:description" content="These days I’m dealing with the automation of starting and stopping Azure virtual machines. I do this to avoid unnecessary costs for customers running Citrix or RDS workers on Azure. I translated a piece of my work into a PowerShell script to de-allocate the VM on which it is running." />
-<link rel="canonical" href="https://blog.itprocloud.de/Deallocate-an-Azure-VM-from-itself/" />
-<meta property="og:url" content="https://blog.itprocloud.de/Deallocate-an-Azure-VM-from-itself/" />
+<meta name="description" content="Microsoft made the New Teams client available for VDIs (preview)" />
+<meta property="og:description" content="Microsoft made the New Teams client available for VDIs (preview)" />
+<link rel="canonical" href="https://blog.itprocloud.de/Install-The-New-Teams-Client-On-AVD/" />
+<meta property="og:url" content="https://blog.itprocloud.de/Install-The-New-Teams-Client-On-AVD/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="https://blog.itprocloud.de/wp-content/uploads/2018/04/de-alloc-01-.png" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/AVD-New-Teams-00.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2018-01-16T00:00:00+01:00" />
+<meta property="article:published_time" content="2023-10-29T00:00:00+02:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://blog.itprocloud.de/wp-content/uploads/2018/04/de-alloc-01-.png" />
-<meta property="twitter:title" content="Deallocate an Azure VM from itself" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/AVD-New-Teams-00.png" />
+<meta property="twitter:title" content="Install the New Teams Client on Azure Virtual Desktop (previe) - AVD" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","image":"https://blog.itprocloud.de/wp-content/uploads/2018/04/de-alloc-01-.png","datePublished":"2018-01-16T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Deallocate-an-Azure-VM-from-itself/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Deallocate-an-Azure-VM-from-itself/","author":{"@type":"Person","name":"mm"},"headline":"Deallocate an Azure VM from itself","dateModified":"2018-01-16T00:00:00+01:00","description":"These days I’m dealing with the automation of starting and stopping Azure virtual machines. I do this to avoid unnecessary costs for customers running Citrix or RDS workers on Azure. I translated a piece of my work into a PowerShell script to de-allocate the VM on which it is running.","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/AVD-New-Teams-00.png","datePublished":"2023-10-29T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Install-The-New-Teams-Client-On-AVD/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Install-The-New-Teams-Client-On-AVD/","author":{"@type":"Person","name":"mm"},"headline":"Install the New Teams Client on Azure Virtual Desktop (previe) - AVD","dateModified":"2023-10-29T00:00:00+02:00","description":"Microsoft made the New Teams client available for VDIs (preview)","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -366,19 +366,19 @@
     </p>
     <ul>
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://twitter.com/intent/tweet?text=Deallocate an Azure VM from itself&url=https://blog.itprocloud.de/Deallocate-an-Azure-VM-from-itself/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Install the New Teams Client on Azure Virtual Desktop (previe) - AVD&url=https://blog.itprocloud.de/Install-The-New-Teams-Client-On-AVD/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                 <i class="fab fa-twitter"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Deallocate-an-Azure-VM-from-itself/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Install-The-New-Teams-Client-On-AVD/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
                 <i class="fab fa-facebook-f"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Deallocate-an-Azure-VM-from-itself/&title=Deallocate an Azure VM from itself" onclick="window.open(this.href, 'width=550,height=435');return false;">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Install-The-New-Teams-Client-On-AVD/&title=Install the New Teams Client on Azure Virtual Desktop (previe) - AVD" onclick="window.open(this.href, 'width=550,height=435');return false;">
                 <i class="fab fa-linkedin-in"></i>
             </a>
         </li>
@@ -418,7 +418,7 @@
                 
 
                 <!-- Post Title -->
-                <h1 class="posttitle">Deallocate an Azure VM from itself</h1>
+                <h1 class="posttitle">Install the New Teams Client on Azure Virtual Desktop (previe) - AVD</h1>
 
             </div>
 
@@ -430,7 +430,7 @@
             
 
             
-            <img class="featured-image img-fluid" src="/wp-content/uploads/2018/04/de-alloc-01-.png" alt="Deallocate an Azure VM from itself">
+            <img class="featured-image img-fluid" src="/assets/images/AVD-New-Teams-00.png" alt="Install the New Teams Client on Azure Virtual Desktop (previe) - AVD">
             
 
             
@@ -441,77 +441,47 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>These days I’m dealing with the automation of starting and stopping Azure virtual machines. I do this to avoid unnecessary costs for customers running Citrix or RDS workers on Azure. I translated a piece of my work into a PowerShell script to de-allocate the VM on which it is running.</p>
-<h3 id="azure-instance-metadata-service">Azure Instance Metadata Service</h3>
-<p>To get information about the running VM I use Azure Instance Metadata Service (<a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/instance-metadata-service">https://docs.microsoft.com/en-us/azure/virtual-machines/windows/instance-metadata-service</a>). This information contains the public IP address, VM size, os type and a lot more. To identify this Azure VM for later deallocation later, I need some specific information: the vmId. You can get meta data using PowerShell:</p>
-<pre><code>`$md``=``Invoke-RestMethod` `-Headers` `@{``&quot;Metadata&quot;``=``&quot;true&quot;``}` `-URI` `http://169.254.169.254/metadata/instance``?``api-version=2017-08-01`
+                <h3 id="microsoft-made-the-new-teams-client-available-for-vdis-preview">Microsoft made the New Teams client available for VDIs (preview)</h3>
+<p>The new client is based on a different technology than the classic client and should require fewer resources, which is especially important for Azure Virtual Desktop from a cost perspective.</p>
+<p>Microsoft has documented the installation here: <a href="https://learn.microsoft.com/microsoftteams/new-teams-vdi-requirements-deploy">Link</a></p>
+<p>I have created a small PowerShell script to automate the complete installation. The script also installs WebView2 and makes the settings for sideloading and AVD. I use the script in <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a> to install the new team client on hosts without sessions or directly on the master.</p>
+<p>The script can also be run directly in administrator mode interactively, Intune, API, etc.</p>
+<p>After the installation, the new Teams client is visible in the start menu. In addition, the team’s administrator can configure whether the new team’s client is proposed.</p>
+<p><strong>Important:</strong></p>
+<ul>
+<li>In line 4, set the value for $acceptEula to $true if you agree to Microsoft’s EULA.</li>
+<li>Please make sure that the path “%UserProfile%\AppData\Local\Packages\MSTeams_8wekyb3d8bbwe\LocalCache\Microsoft\MSTeams” is not excluded from the FSlogix profile by the Redirections.xml.</li>
+</ul>
+<pre><code># Set $acceptEula to $true to accepp the eula:
+# Eula for Webview2: https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section
+
+$acceptEula=$false
+
+if ($acceptEula -eq $false) {
+	throw &quot;Accept the EULA first&quot;
+}
+
+# Set IsWVDEnvironment to 1
+New-Item -Path &quot;HKLM:\SOFTWARE\Microsoft&quot; -Name &quot;Teams&quot; -Force -ErrorAction Ignore
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Microsoft\Teams&quot; -Name &quot;IsWVDEnvironment&quot; -Value 1 -force
+
+# Allow side-loading for trusted apps
+New-Item -Path &quot;HKLM:\Software\Policies\Microsoft\Windows&quot; -Name &quot;Appx&quot; -Force -ErrorAction Ignore
+New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\Windows\Appx&quot; -Name &quot;AllowAllTrustedApps&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\Windows\Appx&quot; -Name &quot;AllowDevelopmentWithoutDevLicense&quot; -Value 1 -force
+
+# Download and install WebView2
+(New-Object System.Net.WebClient).DownloadFile(&quot;https://go.microsoft.com/fwlink/p/?LinkId=2124703&quot;, &quot;$($env:temp)\WebView2.exe&quot;)
+Start-Process -FilePath &quot;$($env:temp)\WebView2.exe&quot; -Wait -ArgumentList &quot;/silent /install&quot; -ErrorAction SilentlyContinue
+
+# Download and install the New Teams
+(New-Object System.Net.WebClient).DownloadFile(&quot;https://go.microsoft.com/fwlink/?linkid=2243204&quot;, &quot;$($env:temp)\TeamsBootstrapper.exe&quot;)
+$rv=Start-Process -FilePath &quot;$($env:temp)\TeamsBootstrapper.exe&quot; -Wait -ArgumentList &quot;-p&quot; -PassThru -ErrorAction SilentlyContinue
+$rv.ExitCode
 </code></pre>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-01-.png" alt="de-alloc-0" /></a></p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-01.png" alt="de-alloc-01" /></a></p>
-<p>$md.compute.vmId contains the unique identifier for the running VM. I will use this id later to match the correct VM for deallocating.</p>
-<h3 id="service-principal-account">Service Principal Account</h3>
-<p>I want to deallocate the VM automatically without logging-in myself. Therefore I have to use a service principal account. It is pretty easy to create a service principal account:</p>
-<p>Go to the Azure portal, open the Azure Active Directory of your subscription(s) and choose „App registration“ – “New application registration”:</p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-02.png" alt="de-alloc-02" /></a></p>
-<p>Give your app a name (e.g.: PowerShell-Services) and enter a sign-on URL. User <a href="http://localhost">http://localhost</a> for this URL and click “Create”.</p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-03.png" alt="de-alloc-03" /></a></p>
-<p>Select the previously created app, select “Keys” and go on: Enter a name, select an expiration time and save the configuration: Important: copy your key directly after saving it:</p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-04.png" alt="de-alloc-04" /></a></p>
-<p>Also, copy the application id for later use:</p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-05.png" alt="de-alloc-05" /></a></p>
-<p>And last: copy the tenant id from your Azure Active Directory by selecting it and click on “Properties”:</p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-06.png" alt="de-alloc-06" /></a></p>
-<p>You have all the data you need to logon unattended now:</p>
-<p><strong>App-id:</strong></p>
-<p>21acad78-9006-4f22-9156-xxxxxxxxxxxxx</p>
-<p><strong>App-key:</strong></p>
-<p>sjsgUk7a5hgaTkZGuOGeLxxxxxxxxxxxxxxxJ0lXs2/o=</p>
-<p><strong>Tenant-id:</strong></p>
-<p>06522f94-0d15-4fba-aac8-xxxxxxxxxxxxxxx</p>
-<h3 id="give-the-right-permissions">Give the right permissions</h3>
-<p>In my case, I will use this single app/service principal to shut down and deallocate every VM in my Azure subscription (this can be different in your case and can be a security breach if another user gets the logon data from your PowerShell script). To give the app the right to work with VM I added in on subscription level: Select Subscriptions -&gt; subscription -&gt; Access Control (IAM) -&gt; Add</p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-07.png" alt="de-alloc-07" /></a></p>
-<p><strong>Role:</strong> Virtual Machine Contributor*</p>
-<p><strong>Assign to:</strong> Azure AD user, group, or application</p>
-<p><strong>Select:</strong> You application/service principal</p>
-<p><strong>Save</strong></p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-08.png" alt="de-alloc-08" /></a></p>
-<p>* The app/service principal has the permission to start/stop/modify/… all VM’s in the subscription. If you need more granularity you can create custom roles (<a href="https://www.sepago.de/blog/2017/07/13/preventing-administrative-users-to-change-critical-network-settings-in-an-azure-hub">https://www.sepago.de/blog/2017/07/13/preventing-administrative-users-to-change-critical-network-settings-in-an-azure-hub</a>)</p>
-<h3 id="the-script">The script</h3>
-<p>To find from your VM the corresponding one in Azure use this PowerShell script with the service principal credentials and deallocate it:</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$AppId</span><span class="o">=</span><span class="s2">"21acad78-9006-4f22-9156-xxxxxxxxxxxxx"</span><span class="w">
-</span><span class="nv">$AppKey</span><span class="o">=</span><span class="s2">"sjsgUk7a5hgaTkZGuOGeLxxxxxxxxxxxxxxxJ0lXs2/o="</span><span class="w">
-</span><span class="nv">$TenantId</span><span class="o">=</span><span class="s2">"06522f94-0d15-4fba-aac8-xxxxxxxxxxxxxxx"</span><span class="w">
-
-</span><span class="nv">$md</span><span class="o">=</span><span class="n">Invoke-RestMethod</span><span class="w"> </span><span class="nt">-Headers</span><span class="w"> </span><span class="p">@{</span><span class="s2">"Metadata"</span><span class="o">=</span><span class="s2">"true"</span><span class="p">}</span><span class="w"> </span><span class="nt">-URI</span><span class="w"> </span><span class="nx">http://169.254.169.254/metadata/instance</span><span class="nf">?</span><span class="nx">api-version</span><span class="o">=</span><span class="nx">2017-08-01</span><span class="w">
-
-</span><span class="nv">$Cred</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">New-Object</span><span class="w"> </span><span class="nx">System.Management.Automation.PSCredential</span><span class="w"> </span><span class="p">(</span><span class="nv">$AppId</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">ConvertTo-SecureString</span><span class="w"> </span><span class="nv">$AppKey</span><span class="w"> </span><span class="nt">-AsPlainText</span><span class="w"> </span><span class="nt">-Force</span><span class="p">))</span><span class="w">
-
-</span><span class="n">Login-AzureRmAccount</span><span class="w"> </span><span class="nt">-Credential</span><span class="w"> </span><span class="nv">$cred</span><span class="w"> </span><span class="nt">-ServicePrincipal</span><span class="w"> </span><span class="nt">-TenantId</span><span class="w"> </span><span class="nv">$TenantId</span><span class="w">
-
-</span><span class="c"># enumerate subscriptions</span><span class="w">
-</span><span class="nv">$subscritions</span><span class="o">=</span><span class="n">Get-AzureRmSubscription</span><span class="w">
-</span><span class="nx">foreach</span><span class="w"> </span><span class="p">(</span><span class="nv">$subscription</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nv">$subscritions</span><span class="p">)</span><span class="w">
-</span><span class="p">{</span><span class="w">
-    </span><span class="n">Write-Host</span><span class="p">(</span><span class="s2">"Working on subscription: </span><span class="si">$(</span><span class="nv">$subscription</span><span class="o">.</span><span class="nf">name</span><span class="si">)</span><span class="s2">"</span><span class="p">)</span><span class="w">
-    </span><span class="n">Get-AzureRmSubscription</span><span class="w"> </span><span class="nt">-SubscriptionId</span><span class="w"> </span><span class="nv">$subscription</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="o">|</span><span class="n">Out-Null</span><span class="w">
-    </span><span class="nv">$vms</span><span class="o">=</span><span class="n">Get-AzureRmVM</span><span class="w">
-    </span><span class="nx">Write-Host</span><span class="p">(</span><span class="s2">"Number of VMs: </span><span class="si">$(</span><span class="nv">$vms</span><span class="o">.</span><span class="nf">Count</span><span class="si">)</span><span class="s2">"</span><span class="p">)</span><span class="w">
-    </span><span class="nv">$vm</span><span class="o">=</span><span class="p">@(</span><span class="nv">$vms</span><span class="w"> </span><span class="err">|</span><span class="w"> </span><span class="err">where</span><span class="w"> </span><span class="err">vmId</span><span class="w"> </span><span class="err">-EQ</span><span class="w"> </span><span class="nv">$md</span><span class="err">.compute.vmId</span><span class="p">)</span><span class="w">
-    </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$vm</span><span class="w"> </span><span class="o">-ne</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-        </span><span class="n">Write-Host</span><span class="p">(</span><span class="s2">"Deallocating </span><span class="si">$(</span><span class="nv">$vm</span><span class="o">.</span><span class="nf">Name</span><span class="si">)</span><span class="s2">"</span><span class="p">)</span><span class="w">
-        </span><span class="n">Stop-AzureRmVM</span><span class="w"> </span><span class="nt">-Id</span><span class="w"> </span><span class="nv">$vm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nv">$vm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="nt">-Force</span><span class="w">
-    </span><span class="p">}</span><span class="w"> </span><span class="kr">else</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-        </span><span class="n">Write-Host</span><span class="p">(</span><span class="s2">"VM not found in this subscription"</span><span class="p">)</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
-<p>Hint:</p>
-<p><a href="https://twitter.com/skillriver">@skillriver</a> wrote a blog shutting to Shutdown and Deallocate an Azure VM using <em>Managed Service Identity</em>. This avoids to create an Azure AD application:</p>
-<p><a href="https://gotoguy.blog/2018/01/17/shutdown-and-deallocate-an-azure-vm-using-managed-service-identity-and-instance-metadata-service/">https://gotoguy.blog/2018/01/17/shutdown-and-deallocate-an-azure-vm-using-managed-service-identity-and-instance-metadata-service/</a></p>
-<p>First published on: <a href="https://www.sepago.de/blog/deallocate-an-azure-vm-from-itself/">https://www.sepago.de/blog/deallocate-an-azure-vm-from-itself/</a></p>
+<p>You can also add the script as a custom script in WVDAdmin or in Hydra:</p>
+<p><img src="../assets/images/AVD-New-Teams-01.png.png" alt="" />
+<img src="../assets/images/AVD-New-Teams-02.png.png" alt="" /></p>
 
             </div>
 
@@ -521,7 +491,7 @@
             <!-- Post Date -->
             <p>
             <small>
-                <span class="post-date"><time class="post-date" datetime="2018-01-16">16 Jan 2018</time></span>           
+                <span class="post-date"><time class="post-date" datetime="2023-10-29">29 Oct 2023</time></span>           
                 
                 </small>
             </p>
@@ -532,11 +502,11 @@
                     
                     
                     <li>
-                        <a class="smoothscroll" href="/categories#Azure-VM">Azure VM</a>
+                        <a class="smoothscroll" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop</a>
                     </li>
                     
                     <li>
-                        <a class="smoothscroll" href="/categories#PowerShell">PowerShell</a>
+                        <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
                     </li>
                     
                 </ul>
@@ -555,10 +525,8 @@
             <!-- Prev/Next -->
             <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
             
-            <a class="prev d-block col-md-6" href="/How-to-use-http-delete,-put,-head,-connections,-connect-with-an-Azure-Web-App/"> &laquo; How to use http delete, put, head, connections, connect with an Azure Web App</a>
+            <a class="prev d-block col-md-6" href="/Azure-Virtual-Desktop-Client-IP/"> &laquo; How to get the Client IP Address in Azure Virtual Desktop</a>
             
-            
-            <a class="next d-block col-md-6 text-lg-right" href="/Monitoring-End-User-Computing-Environments-with-Azure-OMS-LogAnalytics-with-Deploy-to-Azure/">Monitoring End-User Computing Environments with Azure OMS LogAnalytics with Deploy to Azure &raquo; </a>
             
             <div class="clearfix"></div>
             </div>
