@@ -5,64 +5,9 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 29 Oct 2023 13:35:33 +0100</pubDate>
-    <lastBuildDate>Sun, 29 Oct 2023 13:35:33 +0100</lastBuildDate>
+    <pubDate>Sun, 29 Oct 2023 13:42:02 +0100</pubDate>
+    <lastBuildDate>Sun, 29 Oct 2023 13:42:02 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
-    
-      <item>
-        <title>Install the New Teams Client on Azure Virtual Desktop (preview) - AVD</title>
-        <description>&lt;h3 id=&quot;microsoft-made-the-new-teams-client-available-for-vdis-preview&quot;&gt;Microsoft made the New Teams client available for VDIs (preview)&lt;/h3&gt;
-&lt;p&gt;The new client is based on a different technology than the classic client and should require fewer resources, which is especially important for Azure Virtual Desktop from a cost perspective.&lt;/p&gt;
-&lt;p&gt;Microsoft has documented the installation here: &lt;a href=&quot;https://learn.microsoft.com/microsoftteams/new-teams-vdi-requirements-deploy&quot;&gt;Link&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;I have created a small PowerShell script to automate the complete installation. The script also installs WebView2 and makes the settings for sideloading and AVD. I use the script in &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; to install the new team client on hosts without sessions or directly on the master.&lt;/p&gt;
-&lt;p&gt;The script can also be run directly in administrator mode interactively, Intune, API, etc.&lt;/p&gt;
-&lt;p&gt;After the installation, the new Teams client is visible in the start menu. In addition, the team’s administrator can configure whether the new team’s client is proposed.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;In line 4, set the value for $acceptEula to $true if you agree to Microsoft’s EULA.&lt;/li&gt;
-&lt;li&gt;Please make sure that the path “%UserProfile%\AppData\Local\Packages\MSTeams_8wekyb3d8bbwe\LocalCache\Microsoft\MSTeams” is not excluded from the FSlogix profile by the Redirections.xml.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre&gt;&lt;code&gt;# Set $acceptEula to $true to accepp the eula:
-# Eula for Webview2: https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section
-
-$acceptEula=$false
-
-if ($acceptEula -eq $false) {
-	throw &amp;quot;Accept the EULA first&amp;quot;
-}
-
-# Set IsWVDEnvironment to 1
-New-Item -Path &amp;quot;HKLM:\SOFTWARE\Microsoft&amp;quot; -Name &amp;quot;Teams&amp;quot; -Force -ErrorAction Ignore
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Microsoft\Teams&amp;quot; -Name &amp;quot;IsWVDEnvironment&amp;quot; -Value 1 -force
-
-# Allow side-loading for trusted apps
-New-Item -Path &amp;quot;HKLM:\Software\Policies\Microsoft\Windows&amp;quot; -Name &amp;quot;Appx&amp;quot; -Force -ErrorAction Ignore
-New-ItemProperty -Path &amp;quot;HKLM:\Software\Policies\Microsoft\Windows\Appx&amp;quot; -Name &amp;quot;AllowAllTrustedApps&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\Software\Policies\Microsoft\Windows\Appx&amp;quot; -Name &amp;quot;AllowDevelopmentWithoutDevLicense&amp;quot; -Value 1 -force
-
-# Download and install WebView2
-(New-Object System.Net.WebClient).DownloadFile(&amp;quot;https://go.microsoft.com/fwlink/p/?LinkId=2124703&amp;quot;, &amp;quot;$($env:temp)\WebView2.exe&amp;quot;)
-Start-Process -FilePath &amp;quot;$($env:temp)\WebView2.exe&amp;quot; -Wait -ArgumentList &amp;quot;/silent /install&amp;quot; -ErrorAction SilentlyContinue
-
-# Download and install the New Teams
-(New-Object System.Net.WebClient).DownloadFile(&amp;quot;https://go.microsoft.com/fwlink/?linkid=2243204&amp;quot;, &amp;quot;$($env:temp)\TeamsBootstrapper.exe&amp;quot;)
-$rv=Start-Process -FilePath &amp;quot;$($env:temp)\TeamsBootstrapper.exe&amp;quot; -Wait -ArgumentList &amp;quot;-p&amp;quot; -PassThru -ErrorAction SilentlyContinue
-$rv.ExitCode
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;You can also add the script as a custom script in WVDAdmin or in Hydra:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-New-Teams-01.png.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/AVD-New-Teams-02.png.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sun, 29 Oct 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Install-The-New-Teams-Client-On-AVD/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Install-The-New-Teams-Client-On-AVD/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
     
       <item>
         <title>How to get the Client IP Address in Azure Virtual Desktop</title>
@@ -1821,6 +1766,138 @@ if ($false) {
         <pubDate>Wed, 28 Jun 2023 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>CountrySwitch - First Logon Experience and language selector and an app starter for remote apps on network paths for AVD</title>
+        <description>&lt;h2 id=&quot;first-logon-experience-and-language-selector-and-an-app-starter-for-remote-apps-on-network-paths&quot;&gt;First Logon Experience and language selector and an app starter for remote apps on network paths&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/11/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;select-the-language-users&quot;&gt;Select the language (users)&lt;/h2&gt;
+&lt;p&gt;In some environments, customers are running Azure on Windows 10/11 with multiple language packs installed. After the first login, users have to choose their language to customize the environment - that is not so easy, while users have to open the language settings and select the language. The first steps are outside the user’s language and are not easy to do for everyone.&lt;/p&gt;
+&lt;p&gt;I built a tool that makes it easier for users to select their language by clicking on the right flag. Currently, the following features are available:&lt;/p&gt;
+&lt;p&gt;Feature regarding the language selection:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The tool shows the installed language packages by a flag of the countries.&lt;/li&gt;
+&lt;li&gt;A welcome message in the present language welcomes the users.&lt;/li&gt;
+&lt;li&gt;The user selects the language settings with a click on the flag.&lt;/li&gt;
+&lt;li&gt;Hovering the mouse over a flag shows the country and language name.&lt;/li&gt;
+&lt;li&gt;The app configures the language settings (and does one logoff to apply the setting).&lt;/li&gt;
+&lt;li&gt;The PowerShell script CountrySwitch-User.ps1 in the program files folder is started to do some optional customizing (language code is in $languageTag)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;CountrySwitch is linked in all users’ start menu:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Startup: With parameter /RunOnce - Starts CountrySwitch at logon. The user will see the language selector only if the user is new and didn’t select a language once (HKCU:\SOFTWARE\ITProCloud\CountrySwitch\Completed is set to 1 )&lt;/li&gt;
+&lt;li&gt;Direct: Without parameters - Users can star CountrySwitch manually to select the language&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Note on Remote Apps&lt;/strong&gt;: Remote apps are ignoring the autostart folder. To have CountrySwitch enabled for remote app, please configure a local Startup script (local policy for users) with the following parameters:
+Name of script: “C:\Program Files\ITProCloud.de\CountrySwitch\CountrySwitch.exe”
+Parameters:	/runonce&lt;/p&gt;
+&lt;h2 id=&quot;app-starter-for-remote-apps&quot;&gt;App Starter for remote apps&lt;/h2&gt;
+&lt;p&gt;CountrySwitch can also start a local or an application on a file share (which normally does not work directly with AVD). Publish CountrySwitch as a remote app with the following parameters:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;&amp;lt;path to executable with parameters&amp;gt;&amp;quot; &amp;quot;&amp;lt;Working directory&amp;gt;&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot; &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If a remote app is started with CountrySwitch, CountrySwitch first starts the PowerShell script CountrySwitch-App.ps1 in the program files folder to do some optional customization. The following parameters are set in the script:&lt;/p&gt;
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$languageTag = &amp;quot;unknown&amp;quot;,
+$appCommandline = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot;,
+$appWorkingDir = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;,
+$appParameter = &amp;quot;/db=vm1&amp;quot;,
+$appExecutable = &amp;quot;finance.exe&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The application starts after the PowerShell script finishes (CountrySwitch will run hidden and terminates after the start of the application (e.g., finance.exe).&lt;/p&gt;
+&lt;h2 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h2&gt;
+&lt;p&gt;CountrySwitch logs into %AppData%\ITProCloud&lt;/p&gt;
+&lt;p&gt;There are the following reg keys to optionally configure CountrySwitch:&lt;/p&gt;
+&lt;p&gt;HKLM:\SOFTWARE\Policies\ITProCloud\CountrySwitch (alls values are dword - 1 is true; 0 is false)&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Key&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;th&gt;Default value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Enabled&lt;/td&gt;
+&lt;td&gt;If false, the application will not show up (except for /remoteapp (App starter mode))&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ExitOnRunOnceCompleted&lt;/td&gt;
+&lt;td&gt;If the app is started with /runonce and the user has already completed the process, the application will not show up&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ExitOnSingleLanguage&lt;/td&gt;
+&lt;td&gt;If only one language is installed, don’t show up&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LogoffUserAfterSelectingNewLanguage logoff user after selecting a new language&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LogoffUserAfterSelectingSameLanguage&lt;/td&gt;
+&lt;td&gt;Logoff user after selecting the same language as the user is still using&lt;/td&gt;
+&lt;td&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RunUserScriptAfterSelectingLanguage&lt;/td&gt;
+&lt;td&gt;Runs the ps script CountrySwitch-User.ps1 -languageTag {xx-YY} after the user selects a language&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;DisableUserScriptForAppStarterMode&lt;/td&gt;
+&lt;td&gt;If true, the app starter mode for a remote app will no longer trigger CountrySwitch-App before starting the application&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+&lt;h2 id=&quot;release-notes&quot;&gt;Release notes&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Release&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1.3&lt;/td&gt;
+&lt;td&gt;2023-05-04&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1.4&lt;/td&gt;
+&lt;td&gt;2023-05-10&lt;/td&gt;
+&lt;td&gt;Update: CountrySwitch-User.ps1 had a typo&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1.7&lt;/td&gt;
+&lt;td&gt;2023-05-11&lt;/td&gt;
+&lt;td&gt;Fix: Avoid showing MSI installation screen for users if package unaccessible&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 05/11/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 11 May 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</guid>
         
         
         <category>Windows Virtual Desktop</category>
