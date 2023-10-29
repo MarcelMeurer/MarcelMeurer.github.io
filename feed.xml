@@ -5,12 +5,12 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 29 Oct 2023 13:28:53 +0100</pubDate>
-    <lastBuildDate>Sun, 29 Oct 2023 13:28:53 +0100</lastBuildDate>
+    <pubDate>Sun, 29 Oct 2023 13:30:38 +0100</pubDate>
+    <lastBuildDate>Sun, 29 Oct 2023 13:30:38 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
-        <title>Install the New Teams Client on Azure Virtual Desktop (previe) - AVD</title>
+        <title>Install the New Teams Client on Azure Virtual Desktop (preview) - AVD</title>
         <description>&lt;h3 id=&quot;microsoft-made-the-new-teams-client-available-for-vdis-preview&quot;&gt;Microsoft made the New Teams client available for VDIs (preview)&lt;/h3&gt;
 &lt;p&gt;The new client is based on a different technology than the classic client and should require fewer resources, which is especially important for Azure Virtual Desktop from a cost perspective.&lt;/p&gt;
 &lt;p&gt;Microsoft has documented the installation here: &lt;a href=&quot;https://learn.microsoft.com/microsoftteams/new-teams-vdi-requirements-deploy&quot;&gt;Link&lt;/a&gt;&lt;/p&gt;
