@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 29 Oct 2023 13:44:13 +0100</pubDate>
-    <lastBuildDate>Sun, 29 Oct 2023 13:44:13 +0100</lastBuildDate>
+    <pubDate>Sun, 29 Oct 2023 13:49:56 +0100</pubDate>
+    <lastBuildDate>Sun, 29 Oct 2023 13:49:56 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -50,8 +50,9 @@ $rv=Start-Process -FilePath &amp;quot;$($env:temp)\TeamsBootstrapper.exe&amp;quo
 $rv.ExitCode
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;You can also add the script as a custom script in WVDAdmin or in Hydra:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-New-Teams-01.png.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/AVD-New-Teams-02.png.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-New-Teams-01.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;img src=&quot;../assets/images/AVD-New-Teams-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 </description>
         <pubDate>Sun, 29 Oct 2023 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Install-The-New-Teams-Client-On-AVD/</link>
