@@ -443,7 +443,7 @@
                 <!-- End Toc -->
                 <p>Onboarding session hosts to Defender is very important for security reasons. Microsoft has documented the way to onboard these devices in different scenarios here: <a href="https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-vdi">https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-vdi</a></p>
 <p>While I often work with <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a> and also have some AAD native deployment, I decided to prepare an easy script to onboard this device automatically after the rollout. The script is generic, so it can also be used with other automation.</p>
-<p>To start, we need the  VDI onboarding script for non-persistent devices from <a href="htps://defender.microsoft.com/securitysettings/endpoints/onboarding">htps://defender.microsoft.com/securitysettings/endpoints/onboarding</a> - Make sure to download the right package.</p>
+<p>To start, we need the  VDI onboarding script for non-persistent devices from <a href="https://security.microsoft.com/securitysettings/endpoints/onboarding">https://security.microsoft.com/securitysettings/endpoints/onboarding</a> - Make sure to download the right package.</p>
 <p>To install Defender without the need to store the package (zip file) to share, we can encode the package to a base64 encoded string. After that, we can grab the string from the text file <em>WindowsDefenderATPOnboardingPackage.zip.txt</em> and put it into quotes in line 30.</p>
 <p>Step-by-step:</p>
 <ul>

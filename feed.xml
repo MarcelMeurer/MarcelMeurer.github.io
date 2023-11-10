@@ -5,260 +5,16 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 29 Oct 2023 14:12:58 +0100</pubDate>
-    <lastBuildDate>Sun, 29 Oct 2023 14:12:58 +0100</lastBuildDate>
+    <pubDate>Fri, 10 Nov 2023 13:35:35 +0100</pubDate>
+    <lastBuildDate>Fri, 10 Nov 2023 13:35:35 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
-    
-      <item>
-        <title>Install the New Teams Client on Azure Virtual Desktop (preview) - AVD</title>
-        <description>&lt;h3 id=&quot;microsoft-made-the-new-teams-client-available-for-vdis-preview&quot;&gt;Microsoft made the New Teams client available for VDIs (preview)&lt;/h3&gt;
-&lt;p&gt;The new client is based on a different technology than the classic client and should require fewer resources, which is especially important for Azure Virtual Desktop from a cost perspective.&lt;/p&gt;
-&lt;p&gt;Microsoft has documented the installation here: &lt;a href=&quot;https://learn.microsoft.com/microsoftteams/new-teams-vdi-requirements-deploy&quot;&gt;Link&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;I have created a small PowerShell script to automate the complete installation. The script also installs WebView2 and makes the settings for sideloading and AVD. I use the script in &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; to install the new team client on hosts without sessions or directly on the master.&lt;/p&gt;
-&lt;p&gt;The script can also be run directly in administrator mode interactively, Intune, API, etc.&lt;/p&gt;
-&lt;p&gt;After the installation, the new Teams client is visible in the start menu. In addition, the team’s administrator can configure whether the new team’s client is proposed.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;In line 4, set the value for $acceptEula to $true if you agree to Microsoft’s EULA.&lt;/li&gt;
-&lt;li&gt;Please make sure that the path “%UserProfile%\AppData\Local\Packages\MSTeams_8wekyb3d8bbwe\LocalCache\Microsoft\MSTeams” is not excluded from the FSlogix profile by the Redirections.xml.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;pre&gt;&lt;code&gt;# Set $acceptEula to $true to accepp the eula:
-# Eula for Webview2: https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section
-
-$acceptEula=$false
-
-if ($acceptEula -eq $false) {
-	throw &amp;quot;Accept the EULA first&amp;quot;
-}
-
-# Set IsWVDEnvironment to 1
-New-Item -Path &amp;quot;HKLM:\SOFTWARE\Microsoft&amp;quot; -Name &amp;quot;Teams&amp;quot; -Force -ErrorAction Ignore
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Microsoft\Teams&amp;quot; -Name &amp;quot;IsWVDEnvironment&amp;quot; -Value 1 -force
-
-# Allow side-loading for trusted apps
-New-Item -Path &amp;quot;HKLM:\Software\Policies\Microsoft\Windows&amp;quot; -Name &amp;quot;Appx&amp;quot; -Force -ErrorAction Ignore
-New-ItemProperty -Path &amp;quot;HKLM:\Software\Policies\Microsoft\Windows\Appx&amp;quot; -Name &amp;quot;AllowAllTrustedApps&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\Software\Policies\Microsoft\Windows\Appx&amp;quot; -Name &amp;quot;AllowDevelopmentWithoutDevLicense&amp;quot; -Value 1 -force
-
-# Download and install WebView2
-(New-Object System.Net.WebClient).DownloadFile(&amp;quot;https://go.microsoft.com/fwlink/p/?LinkId=2124703&amp;quot;, &amp;quot;$($env:temp)\WebView2.exe&amp;quot;)
-Start-Process -FilePath &amp;quot;$($env:temp)\WebView2.exe&amp;quot; -Wait -ArgumentList &amp;quot;/silent /install&amp;quot; -ErrorAction SilentlyContinue
-
-# Download and install the New Teams
-(New-Object System.Net.WebClient).DownloadFile(&amp;quot;https://go.microsoft.com/fwlink/?linkid=2243204&amp;quot;, &amp;quot;$($env:temp)\TeamsBootstrapper.exe&amp;quot;)
-$rv=Start-Process -FilePath &amp;quot;$($env:temp)\TeamsBootstrapper.exe&amp;quot; -Wait -ArgumentList &amp;quot;-p&amp;quot; -PassThru -ErrorAction SilentlyContinue
-$rv.ExitCode
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;You can also add the script as a custom script in WVDAdmin or in Hydra:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-New-Teams-04.png&quot; alt=&quot;&quot; /&gt;
-&lt;br/&gt;&lt;br/&gt;
-&lt;img src=&quot;../assets/images/Avd-New-Teams-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sun, 29 Oct 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Install-The-New-Teams-Client-On-AVD/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Install-The-New-Teams-Client-On-AVD/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>How to get the Client IP Address in Azure Virtual Desktop</title>
-        <description>&lt;p&gt;While migrating Virtual Desktop Environments to AVD, I got another challenge from the past: Sometimes, companies use the client IP address to identify the user’s location to map a specific printer in the location.&lt;/p&gt;
-&lt;p&gt;Unfortunately, AVD didn’t provide this client’s IP address. Even the property of &lt;em&gt;WTSQuerySessionInformation&lt;/em&gt; is empty. I only get the internet-faced IP address if I try to use the diagnostic settings. But not the client’s own address.&lt;/p&gt;
-&lt;p&gt;But there is a solution/workaround: If clients are using RDP Shortpath (public or private), we can grab the information locally to do some printer mappings. The good thing is that RDP Shortpath is enabled by default (except for the HTML 5 web client).&lt;/p&gt;
-&lt;p&gt;The RDAgent, installed on each session host, reports a lot of data to the backend (logs). You can configure the diagnostic settings to store this data to log analytics or some other data stores. Some of those logs are also on the session host in the event log.&lt;/p&gt;
-&lt;p&gt;The event log &lt;strong&gt;“RemoteDesktopServices”&lt;/strong&gt; contains the log entries. The source &lt;strong&gt;“Microsoft.RDInfra.Diagnostics.DataSink.RestPipelineSink”&lt;/strong&gt; contains data about RDP Shortpath connection, including the IP address of the client:&lt;/p&gt;
-&lt;p&gt;We can use the activity ID to match the information to a specific user on the host. The correlation user/activity ID is stored in the log from the source “Microsoft.RDInfra.RDAgent.ConnectionTrackingService.DefaultConnectionTrackingService”.&lt;/p&gt;
-&lt;p&gt;I built a small tool to read the event log continuously. AvdClientIp reads the single entries, extracts the data, and matches the data by the activity ID.&lt;/p&gt;
-&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
-&lt;p&gt;The installation of AvdClientIp will create a scheduled task with the name “ITPC-AVD-ClientIP”. This task starts with the computer and monitors the RemoteDesktopServices event log. If a client IP is detected, the tool writes the client IP into the users’ registry in &lt;strong&gt;HKEY_CURRENT_USER\Volatile Environment&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;ClientIpValue		-&amp;gt; IPv4&lt;/li&gt;
-&lt;li&gt;ClientIpUTC		-&amp;gt; The timestamp&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Client-IP-00.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
-&lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\AvdClientIp&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Key&lt;/th&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;th&gt;Default value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;HideUserNamesInLogfile&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Hides the user names in the logfile&lt;/td&gt;
-&lt;td&gt;0=false&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Logging&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Enbale logging&lt;/td&gt;
-&lt;td&gt;1=true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
-AvdClientIp writes a log file to *%AppData%\ITProCloud\AvdClientIp.log. *
-&lt;p&gt;Note: It would be much better if the RDAgent would store this information directly in the registry or provide the information with the WTSQuerySessionInformation. So, use this tool as a workaround until we get the data natively.&lt;/p&gt;
-&lt;h3 id=&quot;note&quot;&gt;Note&lt;/h3&gt;
-&lt;p&gt;It would be much better if the RDAgent would store this information directly in the registry or provide the information with the WTSQuerySessionInformation. So, use this tool as a workaround until we get the data natively.&lt;/p&gt;
-&lt;h3 id=&quot;kudos&quot;&gt;Kudos&lt;/h3&gt;
-&lt;p&gt;A big thank to &lt;a href=&quot;https://www.linkedin.com/in/j%C3%B6rg-hoffmann-078b3523/&quot;&gt;Jörg Hoffmann&lt;/a&gt; finding the right logs 👍&lt;/p&gt;
-&lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/AvdClientIp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/23/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 23 Oct 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>OneDrive Clean-Up for Azure Virtual Desktop</title>
-        <description>&lt;p&gt;Running OneDrive with Azure Virtual Desktop is a common scenario and enables users to work in a modern way with Teams and SharePoint. If FSLogix is used, there is a challenge in combination with OneDrive: Users can download OneDrive files to the host, and the data are stored in the profile. The profile size increases heavily and causes some extra costs on the storage account.&lt;/p&gt;
-&lt;p&gt;Having so many OneDrive files stored in the profile may make no sense in every case - if a user access a file, the file is downloaded automatically (on demand). And it’s mostly fine to “unpin” the file later if the file is no longer needed. The files are downloaded fast, while AVD and OneDrive are in the Microsoft cloud.&lt;/p&gt;
-&lt;h3 id=&quot;background&quot;&gt;Background:&lt;/h3&gt;
-&lt;p&gt;OneDrive files can have three different states:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Cloud:&lt;/strong&gt;
-The file content is in the cloud only. The file system simulates that the file exists. While the content is not on the disk, the files don’t need storage on the device. If a user opens such a file, the content is downloaded, and the file state change to On-Device.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;On-Device:&lt;/strong&gt;
-The file content is also on the local disk, and the files are using local storage.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Always:&lt;/strong&gt;
-The file content is also on the local disk, and the files are using local storage. OneDrive wouldn’t change the state to “Cloud”.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/ODClaenUp-02.png&quot; alt=&quot;&quot; /&gt;
-&lt;br/&gt;&lt;/p&gt;
-&lt;p&gt;OneDrive can change the state to “Cloud” on normal Windows 10/11 devices using storage sense. Based on the implementation of storage sense, this is not working for Azure Virtual Desktop (Multi-Session) with FSLogix profiles.&lt;/p&gt;
-&lt;p&gt;A solution to avoid profile blotting in combination with FSLogix is changing the state of OneDrive files to “Cloud” (unpin files). If files are unpinned, they are no longer using local storage, and the “Disk Compaction” of FSLogix would reduce the profile automatically over time (or have more space left for user data).&lt;/p&gt;
-&lt;p&gt;I built a small tool to solve this challenge (I didn’t find a native solution). The tool is called OneDrive CleanUp. OneDrive CleanUp can run in two ways:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Started automatically with the login of the user (after the installation, it creates a link in the start-up folder of the start menu). It directly starts in the background and validates and maybe unpin OneDrive files. This process is repeated every 30 minutes and during the logoff of the user.&lt;/li&gt;
-&lt;li&gt;Start the program with the parameter /RunOnce during the logoff using a (group) policy.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;I prefer the first method to ensure that OneDrive has time to react to the unpinning of files.&lt;/p&gt;
-&lt;p&gt;Example for method 2:
-&lt;img src=&quot;../assets/images/ODClaenUp-03.png&quot; alt=&quot;&quot; /&gt;
-&lt;br/&gt;&lt;/p&gt;
-&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
-&lt;p&gt;In my test, my profile grew to 8 GByte while I pinned some files in OneDrive, and after logoff, the profile went back to 800 MByte while the tool unpinned the OneDrive files.&lt;/p&gt;
-&lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
-&lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\OneDriveCleanUp&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Key&lt;/th&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;th&gt;Default value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Enabled&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;If false, the application will not check the files&lt;/td&gt;
-&lt;td&gt;1=true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;RunEachMinutes&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Check OneDrive files each minutes&lt;/td&gt;
-&lt;td&gt;30&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;AlwaysUnpinFilesOlderThenDays&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Unpin files older then days (0: disabled )&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;AllowMbytesOnDisk&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Allow the configured value in MByte on the local disk&lt;/td&gt;
-&lt;td&gt;5120&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;IgnoreFilesContaining&lt;/td&gt;
-&lt;td&gt;Reg_SZ&lt;/td&gt;
-&lt;td&gt;String with separated values (;). If the path of a file contains one of the values, the file is ignored&lt;/td&gt;
-&lt;td&gt;Empty&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
-OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
-&lt;p&gt;Example:
-&lt;img src=&quot;../assets/images/ODClaenUp-01.png&quot; alt=&quot;&quot; /&gt;
-&lt;br/&gt;&lt;/p&gt;
-&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
-&lt;p&gt;OneDrive CleanUp regularly checks all OneDrive paths and calculates the size of the disk. If the size is larger than the configured maximum size (AllowMbytesOnDisk), it unpins files to go under the configured size. It starts from the oldest to the newest file based on the LastAccessTime property.&lt;/p&gt;
-&lt;br/&gt;
-&lt;h3 id=&quot;release-notes&quot;&gt;Release notes&lt;/h3&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Release&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.4&lt;/td&gt;
-&lt;td&gt;2023-05-04&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.5&lt;/td&gt;
-&lt;td&gt;2023-07-13&lt;/td&gt;
-&lt;td&gt;Fix: Files larger than 2 GByte were counted wrong&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.6&lt;/td&gt;
-&lt;td&gt;2023-10-17&lt;/td&gt;
-&lt;td&gt;Fix: Files larger than 4 GByte were counted wrong&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
-&lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/OneDriveCleanUp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/17/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 17 Oct 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting-Copy/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting-Copy/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
 &lt;p&gt;Are you interested in the new “Hydra for Azure Virtual Desktop” solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/13/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/10/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
@@ -346,7 +102,7 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log.
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/13/2023&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/10/2023&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
@@ -358,6 +114,11 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log.
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.8.06.0&lt;/td&gt;
+&lt;td&gt;2023-11-10&lt;/td&gt;
+&lt;td&gt;Add: Support for Windows 23H2; Fix: Failure during the copy of an image to an image gallery; Change: Update of the deployment and imaging script&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.8.05.0&lt;/td&gt;
 &lt;td&gt;2023-10-13&lt;/td&gt;
@@ -1323,11 +1084,255 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/13/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/10/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Fri, 13 Oct 2023 00:00:00 +0200</pubDate>
+        <pubDate>Fri, 10 Nov 2023 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Install the New Teams Client on Azure Virtual Desktop (preview) - AVD</title>
+        <description>&lt;h3 id=&quot;microsoft-made-the-new-teams-client-available-for-vdis-preview&quot;&gt;Microsoft made the New Teams client available for VDIs (preview)&lt;/h3&gt;
+&lt;p&gt;The new client is based on a different technology than the classic client and should require fewer resources, which is especially important for Azure Virtual Desktop from a cost perspective.&lt;/p&gt;
+&lt;p&gt;Microsoft has documented the installation here: &lt;a href=&quot;https://learn.microsoft.com/microsoftteams/new-teams-vdi-requirements-deploy&quot;&gt;Link&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I have created a small PowerShell script to automate the complete installation. The script also installs WebView2 and makes the settings for sideloading and AVD. I use the script in &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; to install the new team client on hosts without sessions or directly on the master.&lt;/p&gt;
+&lt;p&gt;The script can also be run directly in administrator mode interactively, Intune, API, etc.&lt;/p&gt;
+&lt;p&gt;After the installation, the new Teams client is visible in the start menu. In addition, the team’s administrator can configure whether the new team’s client is proposed.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;In line 4, set the value for $acceptEula to $true if you agree to Microsoft’s EULA.&lt;/li&gt;
+&lt;li&gt;Please make sure that the path “%UserProfile%\AppData\Local\Packages\MSTeams_8wekyb3d8bbwe\LocalCache\Microsoft\MSTeams” is not excluded from the FSlogix profile by the Redirections.xml.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;# Set $acceptEula to $true to accepp the eula:
+# Eula for Webview2: https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section
+
+$acceptEula=$false
+
+if ($acceptEula -eq $false) {
+	throw &amp;quot;Accept the EULA first&amp;quot;
+}
+
+# Set IsWVDEnvironment to 1
+New-Item -Path &amp;quot;HKLM:\SOFTWARE\Microsoft&amp;quot; -Name &amp;quot;Teams&amp;quot; -Force -ErrorAction Ignore
+New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Microsoft\Teams&amp;quot; -Name &amp;quot;IsWVDEnvironment&amp;quot; -Value 1 -force
+
+# Allow side-loading for trusted apps
+New-Item -Path &amp;quot;HKLM:\Software\Policies\Microsoft\Windows&amp;quot; -Name &amp;quot;Appx&amp;quot; -Force -ErrorAction Ignore
+New-ItemProperty -Path &amp;quot;HKLM:\Software\Policies\Microsoft\Windows\Appx&amp;quot; -Name &amp;quot;AllowAllTrustedApps&amp;quot; -Value 1 -force
+New-ItemProperty -Path &amp;quot;HKLM:\Software\Policies\Microsoft\Windows\Appx&amp;quot; -Name &amp;quot;AllowDevelopmentWithoutDevLicense&amp;quot; -Value 1 -force
+
+# Download and install WebView2
+(New-Object System.Net.WebClient).DownloadFile(&amp;quot;https://go.microsoft.com/fwlink/p/?LinkId=2124703&amp;quot;, &amp;quot;$($env:temp)\WebView2.exe&amp;quot;)
+Start-Process -FilePath &amp;quot;$($env:temp)\WebView2.exe&amp;quot; -Wait -ArgumentList &amp;quot;/silent /install&amp;quot; -ErrorAction SilentlyContinue
+
+# Download and install the New Teams
+(New-Object System.Net.WebClient).DownloadFile(&amp;quot;https://go.microsoft.com/fwlink/?linkid=2243204&amp;quot;, &amp;quot;$($env:temp)\TeamsBootstrapper.exe&amp;quot;)
+$rv=Start-Process -FilePath &amp;quot;$($env:temp)\TeamsBootstrapper.exe&amp;quot; -Wait -ArgumentList &amp;quot;-p&amp;quot; -PassThru -ErrorAction SilentlyContinue
+$rv.ExitCode
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can also add the script as a custom script in WVDAdmin or in Hydra:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-New-Teams-04.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;br/&gt;
+&lt;img src=&quot;../assets/images/Avd-New-Teams-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 29 Oct 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Install-The-New-Teams-Client-On-AVD/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Install-The-New-Teams-Client-On-AVD/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>How to get the Client IP Address in Azure Virtual Desktop</title>
+        <description>&lt;p&gt;While migrating Virtual Desktop Environments to AVD, I got another challenge from the past: Sometimes, companies use the client IP address to identify the user’s location to map a specific printer in the location.&lt;/p&gt;
+&lt;p&gt;Unfortunately, AVD didn’t provide this client’s IP address. Even the property of &lt;em&gt;WTSQuerySessionInformation&lt;/em&gt; is empty. I only get the internet-faced IP address if I try to use the diagnostic settings. But not the client’s own address.&lt;/p&gt;
+&lt;p&gt;But there is a solution/workaround: If clients are using RDP Shortpath (public or private), we can grab the information locally to do some printer mappings. The good thing is that RDP Shortpath is enabled by default (except for the HTML 5 web client).&lt;/p&gt;
+&lt;p&gt;The RDAgent, installed on each session host, reports a lot of data to the backend (logs). You can configure the diagnostic settings to store this data to log analytics or some other data stores. Some of those logs are also on the session host in the event log.&lt;/p&gt;
+&lt;p&gt;The event log &lt;strong&gt;“RemoteDesktopServices”&lt;/strong&gt; contains the log entries. The source &lt;strong&gt;“Microsoft.RDInfra.Diagnostics.DataSink.RestPipelineSink”&lt;/strong&gt; contains data about RDP Shortpath connection, including the IP address of the client:&lt;/p&gt;
+&lt;p&gt;We can use the activity ID to match the information to a specific user on the host. The correlation user/activity ID is stored in the log from the source “Microsoft.RDInfra.RDAgent.ConnectionTrackingService.DefaultConnectionTrackingService”.&lt;/p&gt;
+&lt;p&gt;I built a small tool to read the event log continuously. AvdClientIp reads the single entries, extracts the data, and matches the data by the activity ID.&lt;/p&gt;
+&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
+&lt;p&gt;The installation of AvdClientIp will create a scheduled task with the name “ITPC-AVD-ClientIP”. This task starts with the computer and monitors the RemoteDesktopServices event log. If a client IP is detected, the tool writes the client IP into the users’ registry in &lt;strong&gt;HKEY_CURRENT_USER\Volatile Environment&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ClientIpValue		-&amp;gt; IPv4&lt;/li&gt;
+&lt;li&gt;ClientIpUTC		-&amp;gt; The timestamp&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Client-IP-00.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
+&lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\AvdClientIp&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Key&lt;/th&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;th&gt;Default value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;HideUserNamesInLogfile&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Hides the user names in the logfile&lt;/td&gt;
+&lt;td&gt;0=false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Logging&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Enbale logging&lt;/td&gt;
+&lt;td&gt;1=true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+AvdClientIp writes a log file to *%AppData%\ITProCloud\AvdClientIp.log. *
+&lt;p&gt;Note: It would be much better if the RDAgent would store this information directly in the registry or provide the information with the WTSQuerySessionInformation. So, use this tool as a workaround until we get the data natively.&lt;/p&gt;
+&lt;h3 id=&quot;note&quot;&gt;Note&lt;/h3&gt;
+&lt;p&gt;It would be much better if the RDAgent would store this information directly in the registry or provide the information with the WTSQuerySessionInformation. So, use this tool as a workaround until we get the data natively.&lt;/p&gt;
+&lt;h3 id=&quot;kudos&quot;&gt;Kudos&lt;/h3&gt;
+&lt;p&gt;A big thank to &lt;a href=&quot;https://www.linkedin.com/in/j%C3%B6rg-hoffmann-078b3523/&quot;&gt;Jörg Hoffmann&lt;/a&gt; finding the right logs 👍&lt;/p&gt;
+&lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/AvdClientIp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/23/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 23 Oct 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>OneDrive Clean-Up for Azure Virtual Desktop</title>
+        <description>&lt;p&gt;Running OneDrive with Azure Virtual Desktop is a common scenario and enables users to work in a modern way with Teams and SharePoint. If FSLogix is used, there is a challenge in combination with OneDrive: Users can download OneDrive files to the host, and the data are stored in the profile. The profile size increases heavily and causes some extra costs on the storage account.&lt;/p&gt;
+&lt;p&gt;Having so many OneDrive files stored in the profile may make no sense in every case - if a user access a file, the file is downloaded automatically (on demand). And it’s mostly fine to “unpin” the file later if the file is no longer needed. The files are downloaded fast, while AVD and OneDrive are in the Microsoft cloud.&lt;/p&gt;
+&lt;h3 id=&quot;background&quot;&gt;Background:&lt;/h3&gt;
+&lt;p&gt;OneDrive files can have three different states:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Cloud:&lt;/strong&gt;
+The file content is in the cloud only. The file system simulates that the file exists. While the content is not on the disk, the files don’t need storage on the device. If a user opens such a file, the content is downloaded, and the file state change to On-Device.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;On-Device:&lt;/strong&gt;
+The file content is also on the local disk, and the files are using local storage.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Always:&lt;/strong&gt;
+The file content is also on the local disk, and the files are using local storage. OneDrive wouldn’t change the state to “Cloud”.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/ODClaenUp-02.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;OneDrive can change the state to “Cloud” on normal Windows 10/11 devices using storage sense. Based on the implementation of storage sense, this is not working for Azure Virtual Desktop (Multi-Session) with FSLogix profiles.&lt;/p&gt;
+&lt;p&gt;A solution to avoid profile blotting in combination with FSLogix is changing the state of OneDrive files to “Cloud” (unpin files). If files are unpinned, they are no longer using local storage, and the “Disk Compaction” of FSLogix would reduce the profile automatically over time (or have more space left for user data).&lt;/p&gt;
+&lt;p&gt;I built a small tool to solve this challenge (I didn’t find a native solution). The tool is called OneDrive CleanUp. OneDrive CleanUp can run in two ways:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Started automatically with the login of the user (after the installation, it creates a link in the start-up folder of the start menu). It directly starts in the background and validates and maybe unpin OneDrive files. This process is repeated every 30 minutes and during the logoff of the user.&lt;/li&gt;
+&lt;li&gt;Start the program with the parameter /RunOnce during the logoff using a (group) policy.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I prefer the first method to ensure that OneDrive has time to react to the unpinning of files.&lt;/p&gt;
+&lt;p&gt;Example for method 2:
+&lt;img src=&quot;../assets/images/ODClaenUp-03.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
+&lt;p&gt;In my test, my profile grew to 8 GByte while I pinned some files in OneDrive, and after logoff, the profile went back to 800 MByte while the tool unpinned the OneDrive files.&lt;/p&gt;
+&lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
+&lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\OneDriveCleanUp&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Key&lt;/th&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;th&gt;Default value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Enabled&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;If false, the application will not check the files&lt;/td&gt;
+&lt;td&gt;1=true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RunEachMinutes&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Check OneDrive files each minutes&lt;/td&gt;
+&lt;td&gt;30&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AlwaysUnpinFilesOlderThenDays&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Unpin files older then days (0: disabled )&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AllowMbytesOnDisk&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Allow the configured value in MByte on the local disk&lt;/td&gt;
+&lt;td&gt;5120&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;IgnoreFilesContaining&lt;/td&gt;
+&lt;td&gt;Reg_SZ&lt;/td&gt;
+&lt;td&gt;String with separated values (;). If the path of a file contains one of the values, the file is ignored&lt;/td&gt;
+&lt;td&gt;Empty&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
+&lt;p&gt;Example:
+&lt;img src=&quot;../assets/images/ODClaenUp-01.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
+&lt;p&gt;OneDrive CleanUp regularly checks all OneDrive paths and calculates the size of the disk. If the size is larger than the configured maximum size (AllowMbytesOnDisk), it unpins files to go under the configured size. It starts from the oldest to the newest file based on the LastAccessTime property.&lt;/p&gt;
+&lt;br/&gt;
+&lt;h3 id=&quot;release-notes&quot;&gt;Release notes&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Release&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.4&lt;/td&gt;
+&lt;td&gt;2023-05-04&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.5&lt;/td&gt;
+&lt;td&gt;2023-07-13&lt;/td&gt;
+&lt;td&gt;Fix: Files larger than 2 GByte were counted wrong&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.6&lt;/td&gt;
+&lt;td&gt;2023-10-17&lt;/td&gt;
+&lt;td&gt;Fix: Files larger than 4 GByte were counted wrong&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+&lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/OneDriveCleanUp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/17/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 17 Oct 2023 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting-Copy/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting-Copy/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -1718,7 +1723,7 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
         <title>Onboard AVD pooled session hosts to Defender automatically with a script</title>
         <description>&lt;p&gt;Onboarding session hosts to Defender is very important for security reasons. Microsoft has documented the way to onboard these devices in different scenarios here: &lt;a href=&quot;https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-vdi&quot;&gt;https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-vdi&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;While I often work with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; and also have some AAD native deployment, I decided to prepare an easy script to onboard this device automatically after the rollout. The script is generic, so it can also be used with other automation.&lt;/p&gt;
-&lt;p&gt;To start, we need the  VDI onboarding script for non-persistent devices from &lt;a href=&quot;htps://defender.microsoft.com/securitysettings/endpoints/onboarding&quot;&gt;htps://defender.microsoft.com/securitysettings/endpoints/onboarding&lt;/a&gt; - Make sure to download the right package.&lt;/p&gt;
+&lt;p&gt;To start, we need the  VDI onboarding script for non-persistent devices from &lt;a href=&quot;https://security.microsoft.com/securitysettings/endpoints/onboarding&quot;&gt;https://security.microsoft.com/securitysettings/endpoints/onboarding&lt;/a&gt; - Make sure to download the right package.&lt;/p&gt;
 &lt;p&gt;To install Defender without the need to store the package (zip file) to share, we can encode the package to a base64 encoded string. After that, we can grab the string from the text file &lt;em&gt;WindowsDefenderATPOnboardingPackage.zip.txt&lt;/em&gt; and put it into quotes in line 30.&lt;/p&gt;
 &lt;p&gt;Step-by-step:&lt;/p&gt;
 &lt;ul&gt;
