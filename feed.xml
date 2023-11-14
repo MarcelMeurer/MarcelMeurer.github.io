@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 10 Nov 2023 16:03:10 +0100</pubDate>
-    <lastBuildDate>Fri, 10 Nov 2023 16:03:10 +0100</lastBuildDate>
+    <pubDate>Tue, 14 Nov 2023 17:42:18 +0100</pubDate>
+    <lastBuildDate>Tue, 14 Nov 2023 17:42:18 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -1331,8 +1331,8 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log.
 &lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
 </description>
         <pubDate>Tue, 17 Oct 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting-Copy/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting-Copy/</guid>
+        <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</guid>
         
         
         <category>Windows Virtual Desktop</category>
