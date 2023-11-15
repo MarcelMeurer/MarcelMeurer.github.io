@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logos/icon.png">
+
+<title>Microsoft Azure and hibernated Virtual Machines and Azure Virtual Desktop Hibernation  | ITProCloud Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Microsoft Azure and hibernated Virtual Machines and Azure Virtual Desktop Hibernation | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Microsoft Azure and hibernated Virtual Machines and Azure Virtual Desktop Hibernation" />
+<meta name="author" content="mm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Microsoft introduced a new feature for Virtual Machines: Hibernation (link to MS post). That is awesome and allows totally new scenarios, not even for Azure Virtual Desktop. But used with Azure Virtual Desktop, hibernation gives new possibilities to provide desktop. I certainly don’t need to mention that a hibernated VM has no compute costs." />
+<meta property="og:description" content="Microsoft introduced a new feature for Virtual Machines: Hibernation (link to MS post). That is awesome and allows totally new scenarios, not even for Azure Virtual Desktop. But used with Azure Virtual Desktop, hibernation gives new possibilities to provide desktop. I certainly don’t need to mention that a hibernated VM has no compute costs." />
+<link rel="canonical" href="https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Hibernation-Hibernate-VM-Session-Host/" />
+<meta property="og:url" content="https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Hibernation-Hibernate-VM-Session-Host/" />
+<meta property="og:site_name" content="ITProCloud Blog" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/AVD-Hibernation-01.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2023-11-15T00:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/AVD-Hibernation-01.png" />
+<meta property="twitter:title" content="Microsoft Azure and hibernated Virtual Machines and Azure Virtual Desktop Hibernation" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/AVD-Hibernation-01.png","datePublished":"2023-11-15T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Hibernation-Hibernate-VM-Session-Host/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Hibernation-Hibernate-VM-Session-Host/","author":{"@type":"Person","name":"mm"},"headline":"Microsoft Azure and hibernated Virtual Machines and Azure Virtual Desktop Hibernation","dateModified":"2023-11-15T00:00:00+01:00","description":"Microsoft introduced a new feature for Virtual Machines: Hibernation (link to MS post). That is awesome and allows totally new scenarios, not even for Azure Virtual Desktop. But used with Azure Virtual Desktop, hibernation gives new possibilities to provide desktop. I certainly don’t need to mention that a hibernated VM has no compute costs.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<!--- cookie banner --->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-page">
+	<!-- defer loading of font and font awesome -->
+	<!-- <noscript id="deferred-styles"> -->
+		<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"> -->
+	<!-- </noscript> -->
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logos/itpc-logo-bottom-text.png" alt="ITProCloud Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/tools"><b>Tools</b></a>
+                </li>
+				
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
+                </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (60)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (59)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (12)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+	
+				<!-- Original tag list (unsorted) 
+				
+				
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-VM">Azure VM (2)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (9)</a>
+						</li>
+						
+					
+				
+				-->
+								
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://twitter.com/MarcelMeurer"><i class="fab fa-twitter"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/marcel-meurer-15b46b98"><i class="fab fa-linkedin"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://github.com/MarcelMeurer"><i class="fab fa-github"></i></a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="mailto:marcel.meurer@itprocloud.com?subject=Request%20from%20ITProCloud.de"><i class="far fa-envelope"></i></a>
+                </li>
+
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">ITProCloud Blog</h1>
+    <p class="lead">
+        Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <section>
+    <div class="section-title">
+        <h2><span>Microsoft Azure and hibernated Virtual Machines and Azure Virtual Desktop Hibernation </span></h2>
+    </div>
+
+    <div class="article-post">
+	
+		<!-- change content to anchor styled output -->
+		<p>Microsoft introduced a new feature for Virtual Machines: Hibernation (link to MS post). That is awesome and allows totally new scenarios, not even for Azure Virtual Desktop. But used with Azure Virtual Desktop, hibernation gives new possibilities to provide desktop. I certainly don’t need to mention that a hibernated VM has no compute costs.</p>
+<p>Thanks a lot to Microsoft and the AVD product group for the invitation to the private preview and the encouragement to adapt my products accordingly.</p>
+      <h3 id="how-does-hibernation-work-in-azure">
+        
+        
+          How does hibernation work in Azure? <a href="#how-does-hibernation-work-in-azure"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h3>
+    
+<p>The possibility of hibernation can be configured during the rollout of new virtual machines (Gallery Images) or for existing virtual machines. For both cases: The VM type must support hibernation, and the OS disk must be large enough to store the OS, the pagefile, and the hibernation file (size of the memory). For existing VMs, the pagefile must be moved to C: before. For VMs or AVD session hosts, you can use the free <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">#WVDAdmin</a> tool to convert existing VMs or rollout new VMs (tick the checkbox). In both cases, the page file is moved to C: automatically.
+<img src="../assets/images/Avd-Hibernation-01.png" alt="" />
+<img src="../assets/images/Avd-Hibernation-02.png" alt="" /></p>
+<p>A VM or session host can be hibernated with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">#WVDAdmin</a> or <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">#Hydra</a>.
+<img src="../assets/images/Avd-Hibernation-03.png" alt="" />
+<img src="../assets/images/Avd-Hibernation-04.png" alt="" /></p>
+<p>The Virtual Machines note in <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">#WVDAdmin</a> shows the hibernation mode of a VM.
+<img src="../assets/images/Avd-Hibernation-05.png" alt="" /></p>
+<p>Important to know: You can not modify the disk of a hibernated VM. That includes not changing the disk type to HDD after the deallocation (that can be configured using Hydras’ autoscaling). Hint: I guess I found a way to do both. I would update this post if I validated this.</p>
+      <h3 id="hibernation-for-avd-personal-hosts">
+        
+        
+          Hibernation for AVD personal hosts <a href="#hibernation-for-avd-personal-hosts"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h3>
+    
+<p>VDI users have the highest benefit from using hibernation. After the work is done, they can hibernate the host and continue working later while all the applications stay open. Currently, the Microsoft AVD autoscaling cannot support the user with hibernation. If you are using <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a>, you can configure hibernation for VDI: Configure a timeout for a disconnected session and tic the box “Prefer hibernation” (the VM must support hibernation; convert an existing VM with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">#WVDAdmin</a>):
+<img src="../assets/images/Avd-Hibernation-06.png" alt="" /></p>
+<p>If the user disconnect, the session host will be hibernated by <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a>. If the user tries to reconnect (e.g., with Power-On-Connect), the VM starts, and the user can continue.</p>
+<p>Additionally, tick the two boxes “Prefer hibernation” and “Handle user-initiated hibernation (Experimental)” in Autoscale and Autoshutdown to allow a user with the proper rights to hibernate inside of Windows. In this case, <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> ensures that the VM goes into the correct hibernation mode.
+<img src="../assets/images/Avd-Hibernation-07.png" alt="" /></p>
+      <h3 id="hibernation-for-avd-pooled-hosts">
+        
+        
+          Hibernation for AVD pooled hosts <a href="#hibernation-for-avd-pooled-hosts"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h3>
+    
+<p>Awaking a VM is in the physical world faster than starting Windows. So it could make sense to prefer hibernation to bring hosts down if they are no longer needed and awake the hosts on demand. <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> also allows autoscaling with hibernation if you tick  “Prefer hibernation” in Autoscale and Autoshutdown.
+But how big is the speed advantage? I did some measurements to figure this out. For this case, I used a VM (DS3 v2), 256 GByte OS-disk and did several starts with several options.</p>
+<p>In every scenario, I measured three values:</p>
+<ul>
+<li>X: Seconds to bring the VM from deallocated to running</li>
+<li>Y: Seconds from deallocated to be available in AVD</li>
+<li>Z: Seconds to deallocate/hibernate the VM</li>
+</ul>
+<br/>
+<p><strong>Scenario 1:</strong> Hibernated VM (withou session), OS-disk is HDD</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>x: deallocated to running</th>
+<th>y: deallocated to be available</th>
+<th>z: hibernate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>18</td>
+<td>86</td>
+<td>64</td>
+</tr>
+<tr>
+<td>2</td>
+<td>18</td>
+<td>80</td>
+<td>63</td>
+</tr>
+<tr>
+<td>3</td>
+<td>18</td>
+<td>87</td>
+<td>64</td>
+</tr>
+<tr>
+<td>4</td>
+<td>17</td>
+<td>83</td>
+<td>64</td>
+</tr>
+<tr>
+<td>5</td>
+<td>17</td>
+<td>81</td>
+<td>51</td>
+</tr>
+<tr>
+<td>6</td>
+<td>8</td>
+<td>94</td>
+<td>69</td>
+</tr>
+<tr>
+<td><strong>Avg:</strong></td>
+<td>17.7</td>
+<td>85.2</td>
+<td>62.5</td>
+</tr>
+</tbody>
+</table>
+<br/>
+<p><strong>Scenario 2:</strong> Hibernated VM (withou session), OS-disk is Premium</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>x: deallocated to running</th>
+<th>y: deallocated to be available</th>
+<th>z: hibernate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>26</td>
+<td>49</td>
+<td>45</td>
+</tr>
+<tr>
+<td>2</td>
+<td>17</td>
+<td>56</td>
+<td>59</td>
+</tr>
+<tr>
+<td>3</td>
+<td>21</td>
+<td>56</td>
+<td>61</td>
+</tr>
+<tr>
+<td>4</td>
+<td>26</td>
+<td>55</td>
+<td>44</td>
+</tr>
+<tr>
+<td>5</td>
+<td>39</td>
+<td>72</td>
+<td>48</td>
+</tr>
+<tr>
+<td>6</td>
+<td>17</td>
+<td>56</td>
+<td>44</td>
+</tr>
+<tr>
+<td><strong>Avg:</strong></td>
+<td>24.3</td>
+<td>57.3</td>
+<td>50.2</td>
+</tr>
+</tbody>
+</table>
+ <br/>
+<p><strong>Scenario 3:</strong> Deallocated VM, OS-disk is HDD</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>x: deallocated to running</th>
+<th>y: deallocated to be available</th>
+<th>z: deallocate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>17</td>
+<td>117</td>
+<td>40</td>
+</tr>
+<tr>
+<td>2</td>
+<td>20</td>
+<td>119</td>
+<td>44</td>
+</tr>
+<tr>
+<td>3</td>
+<td>16</td>
+<td>113</td>
+<td>44</td>
+</tr>
+<tr>
+<td>4</td>
+<td>15</td>
+<td>102</td>
+<td>39</td>
+</tr>
+<tr>
+<td>5</td>
+<td>15</td>
+<td>110</td>
+<td>50</td>
+</tr>
+<tr>
+<td>6</td>
+<td>21</td>
+<td>111</td>
+<td>67</td>
+</tr>
+<tr>
+<td><strong>Avg:</strong></td>
+<td>17.3</td>
+<td>112</td>
+<td>47.3</td>
+</tr>
+</tbody>
+</table>
+<br/>
+<p><strong>Scenario 4:</strong> Deallocated VM, OS-disk is Premium</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>x: deallocated to running</th>
+<th>y: deallocated to be available</th>
+<th>z: deallocate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>20</td>
+<td>81</td>
+<td>44</td>
+</tr>
+<tr>
+<td>2</td>
+<td>20</td>
+<td>77</td>
+<td>43</td>
+</tr>
+<tr>
+<td>3</td>
+<td>13</td>
+<td>85</td>
+<td>36</td>
+</tr>
+<tr>
+<td>4</td>
+<td>49</td>
+<td>113</td>
+<td>37</td>
+</tr>
+<tr>
+<td>5</td>
+<td>23</td>
+<td>82</td>
+<td>45</td>
+</tr>
+<tr>
+<td>6</td>
+<td>18</td>
+<td>42</td>
+<td>38</td>
+</tr>
+<tr>
+<td><strong>Avg:</strong></td>
+<td>23.8</td>
+<td>80</td>
+<td>40.5</td>
+</tr>
+</tbody>
+</table>
+<br/>
+<p>The time for a hibernated host to become available in AVD is <strong>23% faster</strong> than starting a deallocated host.</p>
+<p>Hibernation is <strong>23%</strong> faster than the deallocation and allocation of a VM or session host. While you need bigger OS disks for hibernation and while you cannot use Hydras’ advantages of switching disk types (to HDD after deallocation and to premium before starting a host). So, it’s up to you to use hibernation for pooled hosts. I would go the start/stop way for pooled hosts to continue using smaller disks and the HDD-type switching feature. But for personal / VDI hosts, it can make absolute sense: It’s an excellent user experience for the end-users.</p>
+      <h3 id="fazit">
+        
+        
+          Fazit: <a href="#fazit"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h3>
+    
+<p>As I mentioned before, I’m thrilled to be involved in the preview to prepare my tools and solutions around AVD. Hibernation is fantastic and, especially for personal host pools, a great experience. Feel free to check out my tools (I only list the new features around hibernation):</p>
+<p><strong><a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> - my free community solution to work with AVD</strong></p>
+<ul>
+<li>Hibernate and awake session hosts</li>
+<li>Hibernate and awake VMs</li>
+<li>Rollout session hosts based on a custom image with hibernation enabled</li>
+<li>Reconfigure suitable VMs to use hibernation</li>
+<li>List all VMs and show the hibernation state</li>
+</ul>
+<p><strong><a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> - free for up to 6 hosts per pool</strong></p>
+<ul>
+<li>Hibernate and awake session hosts / VMs</li>
+<li>Next week: Rollout session hosts based on a custom image with hibernation enabled</li>
+<li>Autoscaling with “Prefer Hibernation” for pooled hosts</li>
+<li>Autoscaling with “Prefer Hibernation” for VDIs (preserves the user session)</li>
+<li>Hibernates a VDI after a session is disconnected for a while</li>
+<li>Hibernates a VDI after a user-initiated hibernation inside of Windows</li>
+</ul>
+<p>Please let me know what you think about using hibernation in AVD.</p>
+<p><em>Side-note</em>: I figured out that the AVD agent is currently not giving the backend the information that the host hibernates. The effect is that the host seems to be available for a few minutes in the Azure Portal or third-party tools. After a longer timeout, AVD reports “unavailable”. That is different from deallocating a host.</p>
+
+		<!--<p>Microsoft introduced a new feature for Virtual Machines: Hibernation (link to MS post). That is awesome and allows totally new scenarios, not even for Azure Virtual Desktop. But used with Azure Virtual Desktop, hibernation gives new possibilities to provide desktop. I certainly don’t need to mention that a hibernated VM has no compute costs.</p>
+<p>Thanks a lot to Microsoft and the AVD product group for the invitation to the private preview and the encouragement to adapt my products accordingly.</p>
+<h3 id="how-does-hibernation-work-in-azure">How does hibernation work in Azure?</h3>
+<p>The possibility of hibernation can be configured during the rollout of new virtual machines (Gallery Images) or for existing virtual machines. For both cases: The VM type must support hibernation, and the OS disk must be large enough to store the OS, the pagefile, and the hibernation file (size of the memory). For existing VMs, the pagefile must be moved to C: before. For VMs or AVD session hosts, you can use the free <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">#WVDAdmin</a> tool to convert existing VMs or rollout new VMs (tick the checkbox). In both cases, the page file is moved to C: automatically.
+<img src="../assets/images/Avd-Hibernation-01.png" alt="" />
+<img src="../assets/images/Avd-Hibernation-02.png" alt="" /></p>
+<p>A VM or session host can be hibernated with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">#WVDAdmin</a> or <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">#Hydra</a>.
+<img src="../assets/images/Avd-Hibernation-03.png" alt="" />
+<img src="../assets/images/Avd-Hibernation-04.png" alt="" /></p>
+<p>The Virtual Machines note in <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">#WVDAdmin</a> shows the hibernation mode of a VM.
+<img src="../assets/images/Avd-Hibernation-05.png" alt="" /></p>
+<p>Important to know: You can not modify the disk of a hibernated VM. That includes not changing the disk type to HDD after the deallocation (that can be configured using Hydras’ autoscaling). Hint: I guess I found a way to do both. I would update this post if I validated this.</p>
+<h3 id="hibernation-for-avd-personal-hosts">Hibernation for AVD personal hosts</h3>
+<p>VDI users have the highest benefit from using hibernation. After the work is done, they can hibernate the host and continue working later while all the applications stay open. Currently, the Microsoft AVD autoscaling cannot support the user with hibernation. If you are using <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a>, you can configure hibernation for VDI: Configure a timeout for a disconnected session and tic the box “Prefer hibernation” (the VM must support hibernation; convert an existing VM with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">#WVDAdmin</a>):
+<img src="../assets/images/Avd-Hibernation-06.png" alt="" /></p>
+<p>If the user disconnect, the session host will be hibernated by <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a>. If the user tries to reconnect (e.g., with Power-On-Connect), the VM starts, and the user can continue.</p>
+<p>Additionally, tick the two boxes “Prefer hibernation” and “Handle user-initiated hibernation (Experimental)” in Autoscale and Autoshutdown to allow a user with the proper rights to hibernate inside of Windows. In this case, <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> ensures that the VM goes into the correct hibernation mode.
+<img src="../assets/images/Avd-Hibernation-07.png" alt="" /></p>
+<h3 id="hibernation-for-avd-pooled-hosts">Hibernation for AVD pooled hosts</h3>
+<p>Awaking a VM is in the physical world faster than starting Windows. So it could make sense to prefer hibernation to bring hosts down if they are no longer needed and awake the hosts on demand. <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> also allows autoscaling with hibernation if you tick  “Prefer hibernation” in Autoscale and Autoshutdown.
+But how big is the speed advantage? I did some measurements to figure this out. For this case, I used a VM (DS3 v2), 256 GByte OS-disk and did several starts with several options.</p>
+<p>In every scenario, I measured three values:</p>
+<ul>
+<li>X: Seconds to bring the VM from deallocated to running</li>
+<li>Y: Seconds from deallocated to be available in AVD</li>
+<li>Z: Seconds to deallocate/hibernate the VM</li>
+</ul>
+<br/>
+<p><strong>Scenario 1:</strong> Hibernated VM (withou session), OS-disk is HDD</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>x: deallocated to running</th>
+<th>y: deallocated to be available</th>
+<th>z: hibernate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>18</td>
+<td>86</td>
+<td>64</td>
+</tr>
+<tr>
+<td>2</td>
+<td>18</td>
+<td>80</td>
+<td>63</td>
+</tr>
+<tr>
+<td>3</td>
+<td>18</td>
+<td>87</td>
+<td>64</td>
+</tr>
+<tr>
+<td>4</td>
+<td>17</td>
+<td>83</td>
+<td>64</td>
+</tr>
+<tr>
+<td>5</td>
+<td>17</td>
+<td>81</td>
+<td>51</td>
+</tr>
+<tr>
+<td>6</td>
+<td>8</td>
+<td>94</td>
+<td>69</td>
+</tr>
+<tr>
+<td><strong>Avg:</strong></td>
+<td>17.7</td>
+<td>85.2</td>
+<td>62.5</td>
+</tr>
+</tbody>
+</table>
+<br/>
+<p><strong>Scenario 2:</strong> Hibernated VM (withou session), OS-disk is Premium</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>x: deallocated to running</th>
+<th>y: deallocated to be available</th>
+<th>z: hibernate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>26</td>
+<td>49</td>
+<td>45</td>
+</tr>
+<tr>
+<td>2</td>
+<td>17</td>
+<td>56</td>
+<td>59</td>
+</tr>
+<tr>
+<td>3</td>
+<td>21</td>
+<td>56</td>
+<td>61</td>
+</tr>
+<tr>
+<td>4</td>
+<td>26</td>
+<td>55</td>
+<td>44</td>
+</tr>
+<tr>
+<td>5</td>
+<td>39</td>
+<td>72</td>
+<td>48</td>
+</tr>
+<tr>
+<td>6</td>
+<td>17</td>
+<td>56</td>
+<td>44</td>
+</tr>
+<tr>
+<td><strong>Avg:</strong></td>
+<td>24.3</td>
+<td>57.3</td>
+<td>50.2</td>
+</tr>
+</tbody>
+</table>
+ <br/>
+<p><strong>Scenario 3:</strong> Deallocated VM, OS-disk is HDD</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>x: deallocated to running</th>
+<th>y: deallocated to be available</th>
+<th>z: deallocate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>17</td>
+<td>117</td>
+<td>40</td>
+</tr>
+<tr>
+<td>2</td>
+<td>20</td>
+<td>119</td>
+<td>44</td>
+</tr>
+<tr>
+<td>3</td>
+<td>16</td>
+<td>113</td>
+<td>44</td>
+</tr>
+<tr>
+<td>4</td>
+<td>15</td>
+<td>102</td>
+<td>39</td>
+</tr>
+<tr>
+<td>5</td>
+<td>15</td>
+<td>110</td>
+<td>50</td>
+</tr>
+<tr>
+<td>6</td>
+<td>21</td>
+<td>111</td>
+<td>67</td>
+</tr>
+<tr>
+<td><strong>Avg:</strong></td>
+<td>17.3</td>
+<td>112</td>
+<td>47.3</td>
+</tr>
+</tbody>
+</table>
+<br/>
+<p><strong>Scenario 4:</strong> Deallocated VM, OS-disk is Premium</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>x: deallocated to running</th>
+<th>y: deallocated to be available</th>
+<th>z: deallocate</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>20</td>
+<td>81</td>
+<td>44</td>
+</tr>
+<tr>
+<td>2</td>
+<td>20</td>
+<td>77</td>
+<td>43</td>
+</tr>
+<tr>
+<td>3</td>
+<td>13</td>
+<td>85</td>
+<td>36</td>
+</tr>
+<tr>
+<td>4</td>
+<td>49</td>
+<td>113</td>
+<td>37</td>
+</tr>
+<tr>
+<td>5</td>
+<td>23</td>
+<td>82</td>
+<td>45</td>
+</tr>
+<tr>
+<td>6</td>
+<td>18</td>
+<td>42</td>
+<td>38</td>
+</tr>
+<tr>
+<td><strong>Avg:</strong></td>
+<td>23.8</td>
+<td>80</td>
+<td>40.5</td>
+</tr>
+</tbody>
+</table>
+<br/>
+<p>The time for a hibernated host to become available in AVD is <strong>23% faster</strong> than starting a deallocated host.</p>
+<p>Hibernation is <strong>23%</strong> faster than the deallocation and allocation of a VM or session host. While you need bigger OS disks for hibernation and while you cannot use Hydras’ advantages of switching disk types (to HDD after deallocation and to premium before starting a host). So, it’s up to you to use hibernation for pooled hosts. I would go the start/stop way for pooled hosts to continue using smaller disks and the HDD-type switching feature. But for personal / VDI hosts, it can make absolute sense: It’s an excellent user experience for the end-users.</p>
+<h3 id="fazit">Fazit:</h3>
+<p>As I mentioned before, I’m thrilled to be involved in the preview to prepare my tools and solutions around AVD. Hibernation is fantastic and, especially for personal host pools, a great experience. Feel free to check out my tools (I only list the new features around hibernation):</p>
+<p><strong><a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> - my free community solution to work with AVD</strong></p>
+<ul>
+<li>Hibernate and awake session hosts</li>
+<li>Hibernate and awake VMs</li>
+<li>Rollout session hosts based on a custom image with hibernation enabled</li>
+<li>Reconfigure suitable VMs to use hibernation</li>
+<li>List all VMs and show the hibernation state</li>
+</ul>
+<p><strong><a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> - free for up to 6 hosts per pool</strong></p>
+<ul>
+<li>Hibernate and awake session hosts / VMs</li>
+<li>Next week: Rollout session hosts based on a custom image with hibernation enabled</li>
+<li>Autoscaling with “Prefer Hibernation” for pooled hosts</li>
+<li>Autoscaling with “Prefer Hibernation” for VDIs (preserves the user session)</li>
+<li>Hibernates a VDI after a session is disconnected for a while</li>
+<li>Hibernates a VDI after a user-initiated hibernation inside of Windows</li>
+</ul>
+<p>Please let me know what you think about using hibernation in AVD.</p>
+<p><em>Side-note</em>: I figured out that the AVD agent is currently not giving the backend the information that the host hibernates. The effect is that the host seems to be available for a few minutes in the Azure Portal or third-party tools. After a longer timeout, AVD reports “unavailable”. That is different from deallocating a host.</p>
+-->
+	
+    
+</section>
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div id="allTags" class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore by tags <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-VM">Azure VM (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (9)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (12)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (9)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-AD">Azure AD (4)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#OneDrive">OneDrive (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-IoT">Azure IoT (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Functions">Azure Functions (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Marketplace">Azure Marketplace (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (8)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (60)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (59)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Webapp">Azure Webapp (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#ADConnect">ADConnect (1)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 text-center text-lg-left">
+                Copyright © 2023 ITProCloud Blog 
+            </div>
+            <div class="col-md-4 col-sm-4 text-center text-lg-left">
+                <a href="/Impressum">Impressum</a>/<a href="/ImpressumEn">Imprint</a> - 
+                <a href="/privacyDe">Datenschutz</a> - 
+				<a href="/privacyEn">Privacy</a>
+            </div>
+            <div class="col-md-3 col-sm-3 text-center text-lg-right">    
+                <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+
+<!-- Start Cookie Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+<script>
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#eaf7f7",
+      "text": "#5c7291"
+    },
+    "button": {
+      "background": "#56cbdb",
+      "text": "#ffffff"
+    }
+  },
+  "position": "bottom-right",
+  "content": {
+    "message": 'This website uses cookies to ensure you get the best experience on our website.<br/><a href="/privacyEn">Privacy policy</a><br/><br/>Diese Website verwendet Cookies, um dir mehr Benutzerfreundlichkeit zu bieten. Mit der Nutzung dieser Website stimmst du der Verwendung von Cookies zu.<br/><a href="/privacyDe">Datenschutzerklärung</a><br/><br/> ',
+    "href": "/privacyEn"
+  }
+});
+</script>
+<!-- End Cookie Plugin -->
+
+</body>
+</html>

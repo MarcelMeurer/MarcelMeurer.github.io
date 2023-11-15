@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 14 Nov 2023 17:42:18 +0100</pubDate>
-    <lastBuildDate>Tue, 14 Nov 2023 17:42:18 +0100</lastBuildDate>
+    <pubDate>Wed, 15 Nov 2023 16:37:11 +0100</pubDate>
+    <lastBuildDate>Wed, 15 Nov 2023 16:37:11 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -14,7 +14,7 @@
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
 &lt;p&gt;Are you interested in the new “Hydra for Azure Virtual Desktop” solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/10/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/15/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
@@ -102,7 +102,7 @@
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/10/2023&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/15/2023&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
@@ -114,6 +114,11 @@
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.8.07.0&lt;/td&gt;
+&lt;td&gt;2023-11-15&lt;/td&gt;
+&lt;td&gt;Add: Support for hibernation if available in the subscription&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.8.06.0&lt;/td&gt;
 &lt;td&gt;2023-11-10&lt;/td&gt;
@@ -1084,9 +1089,9 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/10/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 11/15/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Fri, 10 Nov 2023 00:00:00 +0100</pubDate>
+        <pubDate>Wed, 15 Nov 2023 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
         
@@ -1094,6 +1099,299 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
         <category>Windows Virtual Desktop</category>
         
         <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Microsoft Azure and hibernated Virtual Machines and Azure Virtual Desktop Hibernation </title>
+        <description>&lt;p&gt;Microsoft introduced a new feature for Virtual Machines: Hibernation (link to MS post). That is awesome and allows totally new scenarios, not even for Azure Virtual Desktop. But used with Azure Virtual Desktop, hibernation gives new possibilities to provide desktop. I certainly don’t need to mention that a hibernated VM has no compute costs.&lt;/p&gt;
+&lt;p&gt;Thanks a lot to Microsoft and the AVD product group for the invitation to the private preview and the encouragement to adapt my products accordingly.&lt;/p&gt;
+&lt;h3 id=&quot;how-does-hibernation-work-in-azure&quot;&gt;How does hibernation work in Azure?&lt;/h3&gt;
+&lt;p&gt;The possibility of hibernation can be configured during the rollout of new virtual machines (Gallery Images) or for existing virtual machines. For both cases: The VM type must support hibernation, and the OS disk must be large enough to store the OS, the pagefile, and the hibernation file (size of the memory). For existing VMs, the pagefile must be moved to C: before. For VMs or AVD session hosts, you can use the free &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;#WVDAdmin&lt;/a&gt; tool to convert existing VMs or rollout new VMs (tick the checkbox). In both cases, the page file is moved to C: automatically.
+&lt;img src=&quot;../assets/images/Avd-Hibernation-01.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/Avd-Hibernation-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;A VM or session host can be hibernated with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;#WVDAdmin&lt;/a&gt; or &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;#Hydra&lt;/a&gt;.
+&lt;img src=&quot;../assets/images/Avd-Hibernation-03.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/Avd-Hibernation-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The Virtual Machines note in &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;#WVDAdmin&lt;/a&gt; shows the hibernation mode of a VM.
+&lt;img src=&quot;../assets/images/Avd-Hibernation-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Important to know: You can not modify the disk of a hibernated VM. That includes not changing the disk type to HDD after the deallocation (that can be configured using Hydras’ autoscaling). Hint: I guess I found a way to do both. I would update this post if I validated this.&lt;/p&gt;
+&lt;h3 id=&quot;hibernation-for-avd-personal-hosts&quot;&gt;Hibernation for AVD personal hosts&lt;/h3&gt;
+&lt;p&gt;VDI users have the highest benefit from using hibernation. After the work is done, they can hibernate the host and continue working later while all the applications stay open. Currently, the Microsoft AVD autoscaling cannot support the user with hibernation. If you are using &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt;, you can configure hibernation for VDI: Configure a timeout for a disconnected session and tic the box “Prefer hibernation” (the VM must support hibernation; convert an existing VM with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;#WVDAdmin&lt;/a&gt;):
+&lt;img src=&quot;../assets/images/Avd-Hibernation-06.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;If the user disconnect, the session host will be hibernated by &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt;. If the user tries to reconnect (e.g., with Power-On-Connect), the VM starts, and the user can continue.&lt;/p&gt;
+&lt;p&gt;Additionally, tick the two boxes “Prefer hibernation” and “Handle user-initiated hibernation (Experimental)” in Autoscale and Autoshutdown to allow a user with the proper rights to hibernate inside of Windows. In this case, &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; ensures that the VM goes into the correct hibernation mode.
+&lt;img src=&quot;../assets/images/Avd-Hibernation-07.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h3 id=&quot;hibernation-for-avd-pooled-hosts&quot;&gt;Hibernation for AVD pooled hosts&lt;/h3&gt;
+&lt;p&gt;Awaking a VM is in the physical world faster than starting Windows. So it could make sense to prefer hibernation to bring hosts down if they are no longer needed and awake the hosts on demand. &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; also allows autoscaling with hibernation if you tick  “Prefer hibernation” in Autoscale and Autoshutdown.
+But how big is the speed advantage? I did some measurements to figure this out. For this case, I used a VM (DS3 v2), 256 GByte OS-disk and did several starts with several options.&lt;/p&gt;
+&lt;p&gt;In every scenario, I measured three values:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;X: Seconds to bring the VM from deallocated to running&lt;/li&gt;
+&lt;li&gt;Y: Seconds from deallocated to be available in AVD&lt;/li&gt;
+&lt;li&gt;Z: Seconds to deallocate/hibernate the VM&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br/&gt;
+&lt;p&gt;&lt;strong&gt;Scenario 1:&lt;/strong&gt; Hibernated VM (withou session), OS-disk is HDD&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;x: deallocated to running&lt;/th&gt;
+&lt;th&gt;y: deallocated to be available&lt;/th&gt;
+&lt;th&gt;z: hibernate&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;td&gt;86&lt;/td&gt;
+&lt;td&gt;64&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;td&gt;80&lt;/td&gt;
+&lt;td&gt;63&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;td&gt;87&lt;/td&gt;
+&lt;td&gt;64&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;17&lt;/td&gt;
+&lt;td&gt;83&lt;/td&gt;
+&lt;td&gt;64&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;17&lt;/td&gt;
+&lt;td&gt;81&lt;/td&gt;
+&lt;td&gt;51&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6&lt;/td&gt;
+&lt;td&gt;8&lt;/td&gt;
+&lt;td&gt;94&lt;/td&gt;
+&lt;td&gt;69&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Avg:&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;17.7&lt;/td&gt;
+&lt;td&gt;85.2&lt;/td&gt;
+&lt;td&gt;62.5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+&lt;p&gt;&lt;strong&gt;Scenario 2:&lt;/strong&gt; Hibernated VM (withou session), OS-disk is Premium&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;x: deallocated to running&lt;/th&gt;
+&lt;th&gt;y: deallocated to be available&lt;/th&gt;
+&lt;th&gt;z: hibernate&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;26&lt;/td&gt;
+&lt;td&gt;49&lt;/td&gt;
+&lt;td&gt;45&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;17&lt;/td&gt;
+&lt;td&gt;56&lt;/td&gt;
+&lt;td&gt;59&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;21&lt;/td&gt;
+&lt;td&gt;56&lt;/td&gt;
+&lt;td&gt;61&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;26&lt;/td&gt;
+&lt;td&gt;55&lt;/td&gt;
+&lt;td&gt;44&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;39&lt;/td&gt;
+&lt;td&gt;72&lt;/td&gt;
+&lt;td&gt;48&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6&lt;/td&gt;
+&lt;td&gt;17&lt;/td&gt;
+&lt;td&gt;56&lt;/td&gt;
+&lt;td&gt;44&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Avg:&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;24.3&lt;/td&gt;
+&lt;td&gt;57.3&lt;/td&gt;
+&lt;td&gt;50.2&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+ &lt;br/&gt;
+&lt;p&gt;&lt;strong&gt;Scenario 3:&lt;/strong&gt; Deallocated VM, OS-disk is HDD&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;x: deallocated to running&lt;/th&gt;
+&lt;th&gt;y: deallocated to be available&lt;/th&gt;
+&lt;th&gt;z: deallocate&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;17&lt;/td&gt;
+&lt;td&gt;117&lt;/td&gt;
+&lt;td&gt;40&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;20&lt;/td&gt;
+&lt;td&gt;119&lt;/td&gt;
+&lt;td&gt;44&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;16&lt;/td&gt;
+&lt;td&gt;113&lt;/td&gt;
+&lt;td&gt;44&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;15&lt;/td&gt;
+&lt;td&gt;102&lt;/td&gt;
+&lt;td&gt;39&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;15&lt;/td&gt;
+&lt;td&gt;110&lt;/td&gt;
+&lt;td&gt;50&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6&lt;/td&gt;
+&lt;td&gt;21&lt;/td&gt;
+&lt;td&gt;111&lt;/td&gt;
+&lt;td&gt;67&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Avg:&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;17.3&lt;/td&gt;
+&lt;td&gt;112&lt;/td&gt;
+&lt;td&gt;47.3&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+&lt;p&gt;&lt;strong&gt;Scenario 4:&lt;/strong&gt; Deallocated VM, OS-disk is Premium&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;x: deallocated to running&lt;/th&gt;
+&lt;th&gt;y: deallocated to be available&lt;/th&gt;
+&lt;th&gt;z: deallocate&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;td&gt;20&lt;/td&gt;
+&lt;td&gt;81&lt;/td&gt;
+&lt;td&gt;44&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;20&lt;/td&gt;
+&lt;td&gt;77&lt;/td&gt;
+&lt;td&gt;43&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3&lt;/td&gt;
+&lt;td&gt;13&lt;/td&gt;
+&lt;td&gt;85&lt;/td&gt;
+&lt;td&gt;36&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;td&gt;49&lt;/td&gt;
+&lt;td&gt;113&lt;/td&gt;
+&lt;td&gt;37&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;5&lt;/td&gt;
+&lt;td&gt;23&lt;/td&gt;
+&lt;td&gt;82&lt;/td&gt;
+&lt;td&gt;45&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;6&lt;/td&gt;
+&lt;td&gt;18&lt;/td&gt;
+&lt;td&gt;42&lt;/td&gt;
+&lt;td&gt;38&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Avg:&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;23.8&lt;/td&gt;
+&lt;td&gt;80&lt;/td&gt;
+&lt;td&gt;40.5&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+&lt;p&gt;The time for a hibernated host to become available in AVD is &lt;strong&gt;23% faster&lt;/strong&gt; than starting a deallocated host.&lt;/p&gt;
+&lt;p&gt;Hibernation is &lt;strong&gt;23%&lt;/strong&gt; faster than the deallocation and allocation of a VM or session host. While you need bigger OS disks for hibernation and while you cannot use Hydras’ advantages of switching disk types (to HDD after deallocation and to premium before starting a host). So, it’s up to you to use hibernation for pooled hosts. I would go the start/stop way for pooled hosts to continue using smaller disks and the HDD-type switching feature. But for personal / VDI hosts, it can make absolute sense: It’s an excellent user experience for the end-users.&lt;/p&gt;
+&lt;h3 id=&quot;fazit&quot;&gt;Fazit:&lt;/h3&gt;
+&lt;p&gt;As I mentioned before, I’m thrilled to be involved in the preview to prepare my tools and solutions around AVD. Hibernation is fantastic and, especially for personal host pools, a great experience. Feel free to check out my tools (I only list the new features around hibernation):&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; - my free community solution to work with AVD&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Hibernate and awake session hosts&lt;/li&gt;
+&lt;li&gt;Hibernate and awake VMs&lt;/li&gt;
+&lt;li&gt;Rollout session hosts based on a custom image with hibernation enabled&lt;/li&gt;
+&lt;li&gt;Reconfigure suitable VMs to use hibernation&lt;/li&gt;
+&lt;li&gt;List all VMs and show the hibernation state&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra&lt;/a&gt; - free for up to 6 hosts per pool&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Hibernate and awake session hosts / VMs&lt;/li&gt;
+&lt;li&gt;Next week: Rollout session hosts based on a custom image with hibernation enabled&lt;/li&gt;
+&lt;li&gt;Autoscaling with “Prefer Hibernation” for pooled hosts&lt;/li&gt;
+&lt;li&gt;Autoscaling with “Prefer Hibernation” for VDIs (preserves the user session)&lt;/li&gt;
+&lt;li&gt;Hibernates a VDI after a session is disconnected for a while&lt;/li&gt;
+&lt;li&gt;Hibernates a VDI after a user-initiated hibernation inside of Windows&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Please let me know what you think about using hibernation in AVD.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Side-note&lt;/em&gt;: I figured out that the AVD agent is currently not giving the backend the information that the host hibernates. The effect is that the host seems to be available for a few minutes in the Azure Portal or third-party tools. After a longer timeout, AVD reports “unavailable”. That is different from deallocating a host.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 15 Nov 2023 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Hibernation-Hibernate-VM-Session-Host/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Hibernation-Hibernate-VM-Session-Host/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Azure Monitor</category>
+        
+        <category>Log Analytics</category>
         
       </item>
     
@@ -1792,41 +2090,6 @@ if ($false) {
         <pubDate>Tue, 22 Aug 2023 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Rollout-AVD-SessionHost-To-Defender-Automatically-with-a-script/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Rollout-AVD-SessionHost-To-Defender-Automatically-with-a-script/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Session hosts are not available in Azure Virtual Desktop, but VMs are running. </title>
-        <description>&lt;p&gt;During June/July, I got several emails that session hosts were not available in AVD, but the VMs were in a running state. Rebooting the host sometimes helps, and the host was shown as available. We figured out that the issue was caused by a not running RDAgentBootLoader service on affected hosts. Starting the service (or the host) resolved the issue. Right now, I don’t know the root cause of why the RDAgentBootLoader was not started or failed.&lt;/p&gt;
-&lt;p&gt;To workaround this behavior by implementing a scheduled task, start with the host and monitors the service for the first 30 minutes. The service will be started if it’s not running.&lt;/p&gt;
-&lt;p&gt;The scheduled task will automatically be created for new deployments with &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; or &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;) from version 06/27/2023.&lt;/p&gt;
-&lt;p&gt;If you want to build your own scheduled task, you can use this script:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;	$interval=30
-	$run=$true
-	$counter=0
-	$serviceName=&amp;quot;RDAgentBootLoader&amp;quot;
-	do {
-		Start-Sleep -Seconds $interval
-		$service=Get-Service -Name $serviceName -ErrorAction SilentlyContinue
-		if ($service -ne $null -and $service.Status -ne [System.ServiceProcess.ServiceControllerStatus](4)) {
-			Write-Host &amp;quot;Starting service: $serviceName&amp;quot;
-			Start-Service -Name $serviceName -ErrorAction SilentlyContinue
-		}
-		$counter++
-		if ($counter -gt 10) {$interval=90}
-		if ($counter -gt 20) {$run=$false}
-	} while ($run)
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;PS: Maybe it makes sense to monitor the service during the runtime of the VM in the future.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 28 Jun 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/</guid>
         
         
         <category>Windows Virtual Desktop</category>
