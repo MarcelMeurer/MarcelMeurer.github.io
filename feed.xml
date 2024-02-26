@@ -5,9 +5,86 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 23 Jan 2024 14:17:33 +0100</pubDate>
-    <lastBuildDate>Tue, 23 Jan 2024 14:17:33 +0100</lastBuildDate>
+    <pubDate>Mon, 26 Feb 2024 10:31:05 +0100</pubDate>
+    <lastBuildDate>Mon, 26 Feb 2024 10:31:05 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Imaging, Rollout and Manage Azure Virtual Desktop on Azure Stack HCI with Hydra</title>
+        <description>&lt;h3 id=&quot;manage-azure-virtual-desktop-on-azure-stack-hci-with-a-hrefhttpsgithubcommarcelmeurerwvd-hydrahydraa&quot;&gt;Manage Azure Virtual Desktop on Azure Stack HCI with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; is the one-stop solution for managing and operating AVD in a clever and easy way. Hydra supports administrators in managing user sessions, creating images without losing the Golden Master, deploying and re-deploying session hosts, and automating daily tasks with a powerful and easy-to-use engine. This and much more for single and multiple tenants.&lt;/p&gt;
+&lt;p&gt;Right now, starting from version 1.0.6, Hydra supports hosts on &lt;strong&gt;Azure Stack HCI 22H3&lt;/strong&gt;. Does mean you can leverage the feature set of Hydra to handle hosts on HCI in mostly the same way as hosts in Azure:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Autoscaling of pooled and personal host pools&lt;/li&gt;
+&lt;li&gt;Let user start their personal hosts&lt;/li&gt;
+&lt;li&gt;Create images from Azure VMs and store them in a custom location (on HCI)&lt;/li&gt;
+&lt;li&gt;Create multiple hosts with a click&lt;/li&gt;
+&lt;li&gt;Replace hosts with hosts based on an updated image&lt;/li&gt;
+&lt;li&gt;Automat the daily tasks with scripts and collections&lt;/li&gt;
+&lt;li&gt;Handle user sessions independently from the host type (HCI vs. Azure VM)&lt;/li&gt;
+&lt;li&gt;Using the Hydra agent to show and terminate processes&lt;/li&gt;
+&lt;li&gt;…&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Autoscaling is especially important, while Microsoft announced &lt;strong&gt;charging 1 US cent per core and hour&lt;/strong&gt; for a running host on HCI. Additionally, the self-service for users of personal hosts is nice as well, while power-on-connect is not available for HCI right now.&lt;/p&gt;
+&lt;h4 id=&quot;how-does-hydra-integrate-hosts-on-hci&quot;&gt;How does Hydra integrate hosts on HCI&lt;/h4&gt;
+&lt;p&gt;There is no need for a special configuration. If Hydra reads a custom location in Azure, it automatically offers the networks in the location as a target to roll out new hosts. Existing hosts on HCI are also automatically handled by Hydra. The only &lt;strong&gt;requirement is Azure Stack HCI 22H3&lt;/strong&gt; with a configured resource bridge.&lt;/p&gt;
+&lt;p&gt;Finally, there is nearly no difference between hosts in Azure or on HCI for Hydra. Theoretically, a host pool can contain both types of hosts (if it makes sense). The difference between both types of hosts is the location/custom location.&lt;/p&gt;
+&lt;p&gt;And yes, some configurations are unavailable for HCI hosts, like switching the disk types.&lt;/p&gt;
+&lt;h4 id=&quot;how-to-configure-autoscaling&quot;&gt;How to configure autoscaling&lt;/h4&gt;
+&lt;p&gt;Autoscaling works in the same way as hosts in Azure. Follow the documentation to configure autoscaling: &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra?tab=readme-ov-file#scaling&quot;&gt;https://github.com/MarcelMeurer/WVD-Hydra?tab=readme-ov-file#scaling&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;As shown in the screenshot, Hydra starts session hosts automatically before users try to log in. And in the other direction, if users are logging off at the end of the work day.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/HCI-Hydra-002.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Please note that Power-On-Connect is not working for HCI right now.&lt;/p&gt;
+&lt;h4 id=&quot;how-to-give-users-access-to-start-their-personal-hosts&quot;&gt;How to give users access to start their personal hosts&lt;/h4&gt;
+&lt;p&gt;Give users or a user group the role “User” in Hydra. After this, users can access Hydra and only see the menu item “My Sessions &amp;amp; Hosts”. From this, users can start/stop/restart the personal hosts or log off their sessions.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/HCI-Hydra-006.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h4 id=&quot;how-to-create-a-custom-image-and-do-a-roll-out&quot;&gt;How to create a custom image and do a roll out&lt;/h4&gt;
+&lt;p&gt;Creating images based on a “Golden Master” is one of the strengths of Hydra. Compared to a manual approach, Hydra always runs the imaging process of a clone of the Golden Master. This is important to avoid that sysprep destroying the Golden Master. So, with Hydra, administrators can use the original Golden Master to update and maintain the image the next time. The imaging process looks like this:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/HCI-Hydra-003.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;After creating the image, the clone is deleted during the clean-up.
+Imaging for HCI works in the same way, but we must consider a few points right now:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;We can only use an Azure VM as a master – not a VM on HCI&lt;/li&gt;
+&lt;li&gt;While we cannot use Trusted Launch for custom images in HCI, our Golden Master must have the &lt;strong&gt;security type “Standard”&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We can create a custom image for HCI with the following steps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Create your Golden Master VM in Azure (not HCI)
+&lt;ul&gt;
+&lt;li&gt;Use a Windows 11 (multi-user) marketplace image&lt;/li&gt;
+&lt;li&gt;Security type: &lt;strong&gt;Standard&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Login to the VM&lt;/li&gt;
+&lt;li&gt;Optionally: Join to an AD domain&lt;/li&gt;
+&lt;li&gt;Install Windows Updates&lt;/li&gt;
+&lt;li&gt;Install Applications&lt;/li&gt;
+&lt;li&gt;Go to the Hydra portal -&amp;gt; Image Builder -&amp;gt; Create an Image&lt;/li&gt;
+&lt;li&gt;Select your Golden Master VM&lt;/li&gt;
+&lt;li&gt;Select a Target Resource Group to store the Azure image&lt;/li&gt;
+&lt;li&gt;In the section “Azure Stack HCI” select the custom location&lt;/li&gt;
+&lt;li&gt;Optionally configure the other two options&lt;/li&gt;
+&lt;li&gt;Click on “Create Image”&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Caution:&lt;/strong&gt; Never let Hydra delete an image that is being used by a virtual machine. VMs can no longer be started or stopped if the base image is deleted. Only deletion would work.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/HCI-Hydra-004.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The VM will be cloned, and the image will be transferred to the custom location (that could take a while). After that, you can create new hosts in a host pool by configuring the rollout configuration in the Hydra settings “New Session Host Rollout” of the host pool:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/HCI-Hydra-005.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Click on the plus icon in the session host list of a host pool to roll out hosts with the custom image.&lt;/p&gt;
+&lt;h4 id=&quot;a-hrefhttpsyoutubeji6plhjvcysee-a-short-video-on-how-to-work-with-hydra-and-azure-stack-hcia&quot;&gt;&lt;a href=&quot;https://youtu.be/ji6_pLhJVCY&quot;&gt;See a short video on how to work with Hydra and Azure Stack HCI&lt;/a&gt;&lt;/h4&gt;
+</description>
+        <pubDate>Sat, 24 Feb 2024 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Hydra-For-Azure-Stack-HCI-Deplyoment-Management/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Hydra-For-Azure-Stack-HCI-Deplyoment-Management/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Azure Stack HCI</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -2019,87 +2096,6 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log.
         
         
         <category>Azure</category>
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Onboard AVD pooled session hosts to Defender automatically with a script</title>
-        <description>&lt;p&gt;Onboarding session hosts to Defender is very important for security reasons. Microsoft has documented the way to onboard these devices in different scenarios here: &lt;a href=&quot;https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-vdi&quot;&gt;https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-vdi&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;While I often work with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; and also have some AAD native deployment, I decided to prepare an easy script to onboard this device automatically after the rollout. The script is generic, so it can also be used with other automation.&lt;/p&gt;
-&lt;p&gt;To start, we need the  VDI onboarding script for non-persistent devices from &lt;a href=&quot;https://security.microsoft.com/securitysettings/endpoints/onboarding&quot;&gt;https://security.microsoft.com/securitysettings/endpoints/onboarding&lt;/a&gt; - Make sure to download the right package.&lt;/p&gt;
-&lt;p&gt;To install Defender without the need to store the package (zip file) to share, we can encode the package to a base64 encoded string. After that, we can grab the string from the text file &lt;em&gt;WindowsDefenderATPOnboardingPackage.zip.txt&lt;/em&gt; and put it into quotes in line 30.&lt;/p&gt;
-&lt;p&gt;Step-by-step:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Save the PowerShell script to your local disk&lt;/li&gt;
-&lt;li&gt;Change &lt;em&gt;$false&lt;/em&gt; into &lt;em&gt;$true&lt;/em&gt; in line 22&lt;/li&gt;
-&lt;li&gt;Download the onboarding script and store it in the same folder&lt;/li&gt;
-&lt;li&gt;Run the PowerShell script&lt;/li&gt;
-&lt;li&gt;Open the text file &lt;em&gt;WindowsDefenderATPOnboardingPackage.zip.txt&lt;/em&gt; and put it into quotes in line 30&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The script can then be run after the rollout to join the device to Defender. In Hydra, you can add the script as a new script into Scripts and Collections (with your onboarding script encoded in line 25 and $false in line 22).
-&lt;br/&gt;
-&lt;img src=&quot;../assets/images/AVD-DefenderOnboarding-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Add the script to the Deployment Configuration -&amp;gt; Run script or script collection after deployment:
-&lt;br/&gt;
-&lt;img src=&quot;../assets/images/AVD-DefenderOnboarding-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The next device is automatically onboarded to Defender.&lt;/p&gt;
-&lt;h3 id=&quot;the-script&quot;&gt;The script:&lt;/h3&gt;
-&lt;pre&gt;&lt;code&gt;# Script to prepare and onboard AVD non-persistent hosts to Microsoft Defender
-
-# test if fuction LogWriter available
-if (!(Test-Path function:LogWriter)) {
-    function LogWriter($message) {
-        Write-Host $message
-    }
-}
-Add-Type -AssemblyName System.IO.Compression.FileSystem
-
-$DefenderFile=&amp;quot;WindowsDefenderATPOnboardingPackage.zip&amp;quot;
-$ScriptPath = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
-
-function UnzipFile
-{
-    param([string]$zipfile, [string]$out)
-    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $out)
-}
-
-
-# set it to $true to generate the base64 string from your dowloaded WindowsDefenderATPOnboardingPackage.zip - that must run locally
-if ($false) {
-    # Generate base64 file fron DefenderFile
-    # Download VDI onboarding script for non-persistent devices from: https://defender.microsoft.com/securitysettings/endpoints/onboarding
-    LogWriter(&amp;quot;Generate base64 file fron DefenderFile&amp;quot;)
-    $WindowsDefenderATPOnboardingPackage=[System.Convert]::ToBase64String((Get-Content -Path &amp;quot;$ScriptPath\$DefenderFile&amp;quot; -Encoding Byte))
-    $WindowsDefenderATPOnboardingPackage | Out-File &amp;quot;$ScriptPath\$($DefenderFile).txt&amp;quot; -Encoding UTF8
-} else {
-    LogWriter(&amp;quot;Read base64 file fron DefenderFile&amp;quot;)
-    $WindowsDefenderATPOnboardingPackage =&amp;quot;&amp;lt;put your base64 encoded string here&amp;gt;&amp;quot;
-    # Clean up the temp folder
-    LogWriter(&amp;quot;Cleaning up the temp folder&amp;quot;)
-    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; -Force -ErrorAction SilentlyContinue
-    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; -Recurse -Force -ErrorAction SilentlyContinue
-    LogWriter(&amp;quot;Create the Defender files&amp;quot;)
-    Set-Content -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; -Value ([System.Convert]::FromBase64String($WindowsDefenderATPOnboardingPackage)) -Encoding Byte
-    UnzipFile &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; 
-    
-    # start the test.cmd with cmd.exe in the extracted folder
-    LogWriter(&amp;quot;Starting the onboarding&amp;quot;)
-    Start-Process -FilePath &amp;quot;$env:windir\system32\cmd.exe&amp;quot; -ArgumentList &amp;quot;/c WindowsDefenderATPOnboardingScript.cmd&amp;quot; -WorkingDirectory &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; -Wait -PassThru
-
-    # Clean up the temp folder
-    LogWriter(&amp;quot;Cleaning up the temp folder&amp;quot;)
-    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&amp;quot; -Force -ErrorAction SilentlyContinue
-    Remove-Item -Path &amp;quot;$env:temp\WindowsDefenderATPOnboardingPackage&amp;quot; -Recurse -Force -ErrorAction SilentlyContinue
-}
-&lt;/code&gt;&lt;/pre&gt;</description>
-        <pubDate>Tue, 22 Aug 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Rollout-AVD-SessionHost-To-Defender-Automatically-with-a-script/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Rollout-AVD-SessionHost-To-Defender-Automatically-with-a-script/</guid>
-        
         
         <category>Windows Virtual Desktop</category>
         
