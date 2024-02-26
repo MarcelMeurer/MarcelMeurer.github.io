@@ -5,15 +5,15 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 26 Feb 2024 10:31:05 +0100</pubDate>
-    <lastBuildDate>Mon, 26 Feb 2024 10:31:05 +0100</lastBuildDate>
+    <pubDate>Mon, 26 Feb 2024 18:42:47 +0100</pubDate>
+    <lastBuildDate>Mon, 26 Feb 2024 18:42:47 +0100</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
         <title>Imaging, Rollout and Manage Azure Virtual Desktop on Azure Stack HCI with Hydra</title>
         <description>&lt;h3 id=&quot;manage-azure-virtual-desktop-on-azure-stack-hci-with-a-hrefhttpsgithubcommarcelmeurerwvd-hydrahydraa&quot;&gt;Manage Azure Virtual Desktop on Azure Stack HCI with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; is the one-stop solution for managing and operating AVD in a clever and easy way. Hydra supports administrators in managing user sessions, creating images without losing the Golden Master, deploying and re-deploying session hosts, and automating daily tasks with a powerful and easy-to-use engine. This and much more for single and multiple tenants.&lt;/p&gt;
-&lt;p&gt;Right now, starting from version 1.0.6, Hydra supports hosts on &lt;strong&gt;Azure Stack HCI 22H3&lt;/strong&gt;. Does mean you can leverage the feature set of Hydra to handle hosts on HCI in mostly the same way as hosts in Azure:&lt;/p&gt;
+&lt;p&gt;Right now, starting from version 1.0.6, Hydra supports hosts on &lt;strong&gt;Azure Stack HCI 23H2&lt;/strong&gt;. Does mean you can leverage the feature set of Hydra to handle hosts on HCI in mostly the same way as hosts in Azure:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Autoscaling of pooled and personal host pools&lt;/li&gt;
 &lt;li&gt;Let user start their personal hosts&lt;/li&gt;
