@@ -487,7 +487,8 @@
             <div class="col-md-4 col-sm-4 text-center text-lg-left">
                 <a href="/Impressum">Impressum</a>/<a href="/ImpressumEn">Imprint</a> - 
                 <a href="/privacyDe">Datenschutz</a> - 
-				<a href="/privacyEn">Privacy</a>
+				<a href="/privacyEn">Privacy</a> - 
+				<a href="#" id="open_preferences_center">Update cookies preferences</a>
             </div>
             <div class="col-md-3 col-sm-3 text-center text-lg-right">    
                 <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
@@ -515,28 +516,29 @@
 
 
 
-<!-- Start Cookie Plugin -->
-<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
-<script>
-window.cookieconsent.initialise({
-  "palette": {
-    "popup": {
-      "background": "#eaf7f7",
-      "text": "#5c7291"
-    },
-    "button": {
-      "background": "#56cbdb",
-      "text": "#ffffff"
-    }
-  },
-  "position": "bottom-right",
-  "content": {
-    "message": 'This website uses cookies to ensure you get the best experience on our website.<br/><a href="/privacyEn">Privacy policy</a><br/><br/>Diese Website verwendet Cookies, um dir mehr Benutzerfreundlichkeit zu bieten. Mit der Nutzung dieser Website stimmst du der Verwendung von Cookies zu.<br/><a href="/privacyDe">Datenschutzerklärung</a><br/><br/> ',
-    "href": "/privacyEn"
-  }
+<!-- Cookie Consent by TermsFeed https://www.TermsFeed.com created on https://www.cookieconsent.com/ -->
+<script type="text/javascript" src="https://www.termsfeed.com/public/cookie-consent/4.1.0/cookie-consent.js" charset="UTF-8"></script>
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({"notice_banner_type":"simple","consent_type":"express","palette":"light","language":"en","page_load_consent_levels":["strictly-necessary"],"notice_banner_reject_button_hide":false,"preferences_center_close_button_hide":false,"page_refresh_confirmation_buttons":false,"website_name":"blo.ITProCloud.de","website_privacy_policy_url":"https://blog.itprocloud.de/privacyEn/"});
 });
 </script>
-<!-- End Cookie Plugin -->
+
+<!-- Google Analytics -->
+<!-- Google tag (gtag.js) -->
+<script type="text/plain" data-cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=G-LPJZ1BMG3V">
+</script>
+<script type="text/plain" data-cookie-consent="tracking">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LPJZ1BMG3V');
+</script>
+<!-- end of Google Analytics-->
+
+<noscript>Free cookie consent management tool by <a href="https://www.termsfeed.com/">TermsFeed</a></noscript>
+<!-- End Cookie Consent by TermsFeed https://www.TermsFeed.com -->
 
 </body>
 </html>
