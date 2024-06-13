@@ -636,7 +636,7 @@ if ($global:Hydra_ServiceAccount_PSC -eq $null) {
 }
 
 LogWriter(&quot;Configuring FSLogix&quot;)
-$fileServer=&quot;avdaadstorage.file.core.windows.net&quot;
+$fileServer=&quot;$($($global:Hydra_ServiceAccount_PSC.UserName).Split('\')[1]).file.core.windows.net&quot;
 $profileShare=&quot;\\$($fileServer)\profiles&quot;
 
 New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
@@ -893,7 +893,7 @@ if ($global:Hydra_ServiceAccount_PSC -eq $null) {
 }
 
 LogWriter(&quot;Configuring FSLogix&quot;)
-$fileServer=&quot;avdaadstorage.file.core.windows.net&quot;
+$fileServer=&quot;$($($global:Hydra_ServiceAccount_PSC.UserName).Split('\')[1]).file.core.windows.net&quot;
 $profileShare=&quot;\\$($fileServer)\profiles&quot;
 
 New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
