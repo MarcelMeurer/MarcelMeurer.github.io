@@ -6,27 +6,27 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>AVD issue: SessionHost unhealthy SxsStack listener is not ready - Code -2147467259 | ITProCloud Blog</title>
+<title>How to image a Golden Master VM based on a plan to a compute gallery definition | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>AVD issue: SessionHost unhealthy SxsStack listener is not ready - Code -2147467259 | ITProCloud Blog</title>
+<title>How to image a Golden Master VM based on a plan to a compute gallery definition | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="AVD issue: SessionHost unhealthy SxsStack listener is not ready - Code -2147467259" />
+<meta property="og:title" content="How to image a Golden Master VM based on a plan to a compute gallery definition" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A few days ago, I got an email from a customer concerning that a lot of Azure Virtual Desktop (AVD) session hosts showing an error message from the internal health check:" />
-<meta property="og:description" content="A few days ago, I got an email from a customer concerning that a lot of Azure Virtual Desktop (AVD) session hosts showing an error message from the internal health check:" />
-<link rel="canonical" href="https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259/" />
-<meta property="og:url" content="https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259/" />
+<meta name="description" content="The Azure Marketplace offers many preconfigured VMs, which are preconfigured images from a third-party vendor used to deploy a VM. One popular offering is “CIS Hardened Image Level 1 on Microsoft Windows 11 Enterprise—Gen 2.” The Center for Internet Security Inc. has hardened the Windows 11 image and provides it through the marketplace for a small fee. That is called a “Plan” for a VM." />
+<meta property="og:description" content="The Azure Marketplace offers many preconfigured VMs, which are preconfigured images from a third-party vendor used to deploy a VM. One popular offering is “CIS Hardened Image Level 1 on Microsoft Windows 11 Enterprise—Gen 2.” The Center for Internet Security Inc. has hardened the Windows 11 image and provides it through the marketplace for a small fee. That is called a “Plan” for a VM." />
+<link rel="canonical" href="https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/" />
+<meta property="og:url" content="https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="https://blog.itprocloud.de/assets/images/Hydra/SxsIssue-01.png" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/Gallery-Plan-03.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2021-11-16T00:00:00+01:00" />
+<meta property="article:published_time" content="2024-06-20T00:00:00+02:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Hydra/SxsIssue-01.png" />
-<meta property="twitter:title" content="AVD issue: SessionHost unhealthy SxsStack listener is not ready - Code -2147467259" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Gallery-Plan-03.png" />
+<meta property="twitter:title" content="How to image a Golden Master VM based on a plan to a compute gallery definition" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/Hydra/SxsIssue-01.png","datePublished":"2021-11-16T00:00:00+01:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-and-error-SessionHost-unhealthy-SxsStack-listener-is-not-ready-Code-2147467259/","author":{"@type":"Person","name":"mm"},"headline":"AVD issue: SessionHost unhealthy SxsStack listener is not ready - Code -2147467259","dateModified":"2021-11-16T00:00:00+01:00","description":"A few days ago, I got an email from a customer concerning that a lot of Azure Virtual Desktop (AVD) session hosts showing an error message from the internal health check:","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/Gallery-Plan-03.png","datePublished":"2024-06-20T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/","author":{"@type":"Person","name":"mm"},"headline":"How to image a Golden Master VM based on a plan to a compute gallery definition","dateModified":"2024-06-20T00:00:00+02:00","description":"The Azure Marketplace offers many preconfigured VMs, which are preconfigured images from a third-party vendor used to deploy a VM. One popular offering is “CIS Hardened Image Level 1 on Microsoft Windows 11 Enterprise—Gen 2.” The Center for Internet Security Inc. has hardened the Windows 11 image and provides it through the marketplace for a small fee. That is called a “Plan” for a VM.","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -46,7 +46,7 @@
 
 
 
-<body class="layout-page">
+<body class="layout-post">
 	<!-- defer loading of font and font awesome -->
 	<!-- <noscript id="deferred-styles"> -->
 		<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"> -->
@@ -362,35 +362,193 @@
 <!-- Content
 ================================================== -->
 <div class="main-content">
-    <section>
-    <div class="section-title">
-        <h2><span>AVD issue: SessionHost unhealthy SxsStack listener is not ready - Code -2147467259</span></h2>
-    </div>
+    <!-- Begin Article
+================================================== -->
+<div class="container">
+    <div class="row">
 
-    <div class="article-post">
-	
-		<!-- change content to anchor styled output -->
-		<p>A few days ago, I got an email from a customer concerning that a lot of Azure Virtual Desktop (AVD) session hosts showing an error message from the internal health check:</p>
-<p><strong>SessionHost unhealthy SxSStack listener is not ready - Code -2147467259</strong></p>
-<p>Unfortunately, there was no failed event log from the WVDAgent in the application log. But the RemoteDesktopServices log shows some issues with the SxSStack as expected. Reinstalling the AVD agents doesn’t resolve the issue. But we found an easier way to bring the hosts back to life: Uninstalling the SxS Stack package and rebooting the host.</p>
-<p>We used PowerShell to create a single-line script and Hydra to execute it on all affected session host:</p>
-<pre><code>Uninstall-Package -Name &quot;Remote Desktop Services SxS Network Stack&quot; -AllVersions -Force
-</code></pre>
-<p><img src="../assets/images/Hydra/SxsIssue-02.png" alt="" /></p>
-<p>The short script can be deployed with #WVDAdmin, #Hydra, or any other solution having access to the hosts.</p>
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=How to image a Golden Master VM based on a plan to a compute gallery definition&url=https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
 
-		<!--<p>A few days ago, I got an email from a customer concerning that a lot of Azure Virtual Desktop (AVD) session hosts showing an error message from the internal health check:</p>
-<p><strong>SessionHost unhealthy SxSStack listener is not ready - Code -2147467259</strong></p>
-<p>Unfortunately, there was no failed event log from the WVDAgent in the application log. But the RemoteDesktopServices log shows some issues with the SxSStack as expected. Reinstalling the AVD agents doesn’t resolve the issue. But we found an easier way to bring the hosts back to life: Uninstalling the SxS Stack package and rebooting the host.</p>
-<p>We used PowerShell to create a single-line script and Hydra to execute it on all affected session host:</p>
-<pre><code>Uninstall-Package -Name &quot;Remote Desktop Services SxS Network Stack&quot; -AllVersions -Force
-</code></pre>
-<p><img src="../assets/images/Hydra/SxsIssue-02.png" alt="" /></p>
-<p>The short script can be deployed with #WVDAdmin, #Hydra, or any other solution having access to the hosts.</p>
--->
-	
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/&title=How to image a Golden Master VM based on a plan to a compute gallery definition" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+    </ul>
     
-</section>
+    <div class="sep">
+    </div>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
+    
+</div>
+
+        </div>
+
+        <!-- Post -->
+        
+
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
+
+                <!-- Author Box -->
+                
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                        
+                        <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
+                        
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href="https://blog.itprocloud.de">Marcel</a><a target="_blank" href="https://twitter.com/MarcelMeurer" class="btn follow">Follow</a>
+                        <span class="author-description">That's me: Marcel</span>
+                    </div>
+                </div>
+                
+
+                <!-- Post Title -->
+                <h1 class="posttitle">How to image a Golden Master VM based on a plan to a compute gallery definition</h1>
+
+            </div>
+
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
+
+            <!-- Post Featured Image -->
+            
+
+            
+            <img class="featured-image img-fluid" src="/assets/images/Gallery-Plan-03.png" alt="How to image a Golden Master VM based on a plan to a compute gallery definition">
+            
+
+            
+            <!-- End Featured Image -->
+
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <p>The Azure Marketplace offers many preconfigured VMs, which are preconfigured images from a third-party vendor used to deploy a VM. One popular offering is “CIS Hardened Image Level 1 on Microsoft Windows 11 Enterprise—Gen 2.” The Center for Internet Security Inc. has hardened the Windows 11 image and provides it through the marketplace for a small fee. That is called a “Plan” for a VM.</p>
+<p>That image can be used for a Golden Master: Install your application on top, create an image, and deploy multiple session hosts / virtual machines in your Azure Virtual Desktop environment (and yes, that also costs a bit more for each deployed host). Unfortunately, it’s not so easy to capture an image directly into an Azure Compute Gallery definition - which is needed if you want to deploy trusted launch VMs afterward.</p>
+<p>When attempting to capture an image directly into a Compute Gallery Definition using <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a> (to create loss-less images), you may encounter the following error message:</p>
+<p><strong>The resource with id ‘/subscriptions/xxxxxxxxxxx/resourceGroups/WVD_Templates/providers/Microsoft.Compute/virtualMachines/TEMP_T-CIS-Plan-01_2024-06-19_19-19-51’ has a different plan [’{“name”:“cis-windows11-enterprise-l1-gen2”,“publisher”:“center-for-internet-security-inc”,“product”:“cis-windows-enterprise”,“promotionCode”:null}’] than the parent gallery image plan [‘null’]</strong></p>
+<p>The error message gives a hint. The Compute Gallery Definition must be prepared to accept image versions with a plan (the market place image). Therefore, we have to create a matching Compute Gallery Definition. But first, we have to figure out the “Purchase plan name”, “Purchase plan publisher name”, and “Purchase plan product name”. If you already have deployed the VM / your Golden Master. You can grab the information form the JSON-view of the VM:</p>
+<p><img src="../assets/images/Gallery-Plan-01.png" alt="" /></p>
+<p>Later, we will use the following data to configure the Compute Gallery Definition:</p>
+<p><strong>Name = Purchase plan name: cis-windows11-enterprise-l1-gen2</strong> </br>
+<strong>Publisher = Purchase plan publisher name: center-for-internet-security-inc</strong> </br>
+<strong>Product = Purchase plan product name: cis-windows-enterprise</strong> </br></p>
+<p>Now, we can start creating the Compute Gallery Definition. If you don’t already have a Compute Gallery, create it first. Click on Add -&gt; VM image definition. Fill out the formula, e.g.:</p>
+<ul>
+<li>VM image definition name: <strong>Custom-CIS-Image_TrustedLaunch</strong></li>
+<li>Security type: <strong>Trusted launch</strong> (not support); that allows you to create trusted launch enabled hosts later</li>
+<li>Publisher: <strong>ITProCloud</strong></li>
+<li>Offer: <strong>CIS-Image-Custom-TrustedLaunch</strong></li>
+<li>SKU: <strong>A</strong></li>
+</ul>
+<p>(The combination of Publisher/Offer/SKU must be unique in a Compute Gallery)</p>
+<p><img src="../assets/images/Gallery-Plan-02.png" alt="" /></p>
+<p>NEXT -&gt; NEXT -&gt; Publishing options:</p>
+<p>That page is important for the plan configuration to store the CIS image. Fill out the fields for “Purchase plan name”, “Purchase plan publisher name”, and “Purchase plan product name” with the noted values:</p>
+<p><img src="../assets/images/Gallery-Plan-03.png" alt="" /></p>
+<p>Click Review + Create -&gt; Create</p>
+<p><img src="../assets/images/Gallery-Plan-04.png" alt="" /></p>
+<p>Finally, you can create a loss-less image with <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a> directly into the Gallery Definition:</p>
+<p><img src="../assets/images/Gallery-Plan-05.png" alt="" /></p>
+
+            </div>
+
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2024-06-20">20 Jun 2024</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Azure-Stack-HCI">Azure Stack HCI</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            <a class="prev d-block col-md-6" href="/Windows-Virtual-Desktop-Admin/"> &laquo; WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</a>
+            
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
+        </div>
+        <!-- End Post -->
+
+    </div>
+</div>
+<!-- End Article
+================================================== -->
+
+<!-- Begin Comments
+================================================== -->
+
+<!--End Comments
+================================================== -->
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
 </div>
 
 
@@ -488,6 +646,8 @@
 
 <script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
 
+
+<script id="dsq-count-scr" src="//.disqus.com/count.js"></script>
 
 
 <!-- Cookie Consent by TermsFeed https://www.TermsFeed.com created on https://www.cookieconsent.com/ -->

@@ -5,9 +5,52 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 13 Jun 2024 09:29:01 +0200</pubDate>
-    <lastBuildDate>Thu, 13 Jun 2024 09:29:01 +0200</lastBuildDate>
+    <pubDate>Thu, 20 Jun 2024 16:56:40 +0200</pubDate>
+    <lastBuildDate>Thu, 20 Jun 2024 16:56:40 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>How to image a Golden Master VM based on a plan to a compute gallery definition</title>
+        <description>&lt;p&gt;The Azure Marketplace offers many preconfigured VMs, which are preconfigured images from a third-party vendor used to deploy a VM. One popular offering is “CIS Hardened Image Level 1 on Microsoft Windows 11 Enterprise—Gen 2.” The Center for Internet Security Inc. has hardened the Windows 11 image and provides it through the marketplace for a small fee. That is called a “Plan” for a VM.&lt;/p&gt;
+&lt;p&gt;That image can be used for a Golden Master: Install your application on top, create an image, and deploy multiple session hosts / virtual machines in your Azure Virtual Desktop environment (and yes, that also costs a bit more for each deployed host). Unfortunately, it’s not so easy to capture an image directly into an Azure Compute Gallery definition - which is needed if you want to deploy trusted launch VMs afterward.&lt;/p&gt;
+&lt;p&gt;When attempting to capture an image directly into a Compute Gallery Definition using &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; (to create loss-less images), you may encounter the following error message:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;The resource with id ‘/subscriptions/xxxxxxxxxxx/resourceGroups/WVD_Templates/providers/Microsoft.Compute/virtualMachines/TEMP_T-CIS-Plan-01_2024-06-19_19-19-51’ has a different plan [’{“name”:“cis-windows11-enterprise-l1-gen2”,“publisher”:“center-for-internet-security-inc”,“product”:“cis-windows-enterprise”,“promotionCode”:null}’] than the parent gallery image plan [‘null’]&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;The error message gives a hint. The Compute Gallery Definition must be prepared to accept image versions with a plan (the market place image). Therefore, we have to create a matching Compute Gallery Definition. But first, we have to figure out the “Purchase plan name”, “Purchase plan publisher name”, and “Purchase plan product name”. If you already have deployed the VM / your Golden Master. You can grab the information form the JSON-view of the VM:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Gallery-Plan-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Later, we will use the following data to configure the Compute Gallery Definition:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Name = Purchase plan name: cis-windows11-enterprise-l1-gen2&lt;/strong&gt; &lt;/br&gt;
+&lt;strong&gt;Publisher = Purchase plan publisher name: center-for-internet-security-inc&lt;/strong&gt; &lt;/br&gt;
+&lt;strong&gt;Product = Purchase plan product name: cis-windows-enterprise&lt;/strong&gt; &lt;/br&gt;&lt;/p&gt;
+&lt;p&gt;Now, we can start creating the Compute Gallery Definition. If you don’t already have a Compute Gallery, create it first. Click on Add -&amp;gt; VM image definition. Fill out the formula, e.g.:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;VM image definition name: &lt;strong&gt;Custom-CIS-Image_TrustedLaunch&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Security type: &lt;strong&gt;Trusted launch&lt;/strong&gt; (not support); that allows you to create trusted launch enabled hosts later&lt;/li&gt;
+&lt;li&gt;Publisher: &lt;strong&gt;ITProCloud&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Offer: &lt;strong&gt;CIS-Image-Custom-TrustedLaunch&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;SKU: &lt;strong&gt;A&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;(The combination of Publisher/Offer/SKU must be unique in a Compute Gallery)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Gallery-Plan-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;NEXT -&amp;gt; NEXT -&amp;gt; Publishing options:&lt;/p&gt;
+&lt;p&gt;That page is important for the plan configuration to store the CIS image. Fill out the fields for “Purchase plan name”, “Purchase plan publisher name”, and “Purchase plan product name” with the noted values:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Gallery-Plan-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Click Review + Create -&amp;gt; Create&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Gallery-Plan-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Finally, you can create a loss-less image with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; directly into the Gallery Definition:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Gallery-Plan-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 20 Jun 2024 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Azure Stack HCI</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -2036,78 +2079,6 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log.
         <pubDate>Sat, 07 Oct 2023 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Migrate-Azure-VM-To-Trusted-Launch/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Migrate-Azure-VM-To-Trusted-Launch/</guid>
-        
-        
-        <category>Azure</category>
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Creating a Windows Azure VM Generation V2 from a V1 VM</title>
-        <description>&lt;p&gt;Microsoft has provided different VM sizes over the last years and also introduced the VM Generation V2 at the end of 2019. V2 VMs are different from V1 VMs and have the following advantages:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;UEFI&lt;/strong&gt; based (no longer bios-based)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Enhanced OS support&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Faster boot and disk support&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Advanced Security Features&lt;/strong&gt;, like Secure Boot, which ensures the integrity of the boot process, and BitLocker encryption, which enhances data protection&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Today, I expect that the most deployed VMs are V2, but I still see older V1 versions - including in my own environment. For example, I have several Golden Masters for Azure Virtual Desktop running Windows 10 22/h2 Multi-User. We still see V1 types because of the missing simple migration path. There is no native way in the Azure Portal to do this.&lt;/p&gt;
-&lt;p&gt;While I wanted to upgrade my Windows 10 Golden Masters to Windows 11, I came to the point of discovering that Windows 11 needs a V2 generation VM (for upgrading, trusted launch, vTPM, and secure boot must also be enabled).&lt;/p&gt;
-&lt;p&gt;After some research, I figured out that this is really not simple. I found a good blog post from &lt;a href=&quot;https://charbelnemnom.com/migrate-gen1-to-gen2-vms-on-azure/&quot;&gt;Charbel Nemnom&lt;/a&gt;, who provides a step-by-step solution. The solution is still complex, so I decided to write a PowerShell script to handle this complex process more easily.&lt;/p&gt;
-&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
-&lt;p&gt;We have our V1 virtual machine we want to convert. Instead of converting, we are building a new virtual machine (V2) with the converted OS disk of our V1 VM. So, in the end, we have two identical VMs: The original V1 VM and the V2 VM. If anything doesn’t work, we still have our original VM.&lt;/p&gt;
-&lt;p&gt;But takes some time, and the full process takes hours (for the script).&lt;/p&gt;
-&lt;p&gt;After configuring the script, the script enters the following steps:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Deallocates the V1 VM&lt;/li&gt;
-&lt;li&gt;Creates the new V2 VM with the same size in the same network, optional with trusted launch, secure boot, and vTPM&lt;/li&gt;
-&lt;li&gt;Makes a snapshot of the V1 OS disk and, from the snapshot, a cloned OS disk (still V1)&lt;/li&gt;
-&lt;li&gt;Creates an empty V2 disk with the same size and type as the V1 OS disk(this disk is supposed to be our converted OS disk)&lt;/li&gt;
-&lt;li&gt;Attaches the empty V2 disk and the cloned V1 OS disk to the new V2 VM&lt;/li&gt;
-&lt;li&gt;The script runs itself on the V2 VM
-&lt;ul&gt;
-&lt;li&gt;Preparing the partitions of the attached disks&lt;/li&gt;
-&lt;li&gt;Formatting the partitions&lt;/li&gt;
-&lt;li&gt;Capturing the cloned V1 OS partition using DISM (that takes some time; in my last conversion, it took nearly 4 hours)&lt;/li&gt;
-&lt;li&gt;Apply the captured image to the prepared partition of the empty V2 disk&lt;/li&gt;
-&lt;li&gt;Write the UEFI partition of the formerly empty V2 disk&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Deallocates the V2 VM&lt;/li&gt;
-&lt;li&gt;Detach the attached disks&lt;/li&gt;
-&lt;li&gt;Swap the OS disk with the no longer empty V2 disk (the now converted OS disk of the V1 VM)&lt;/li&gt;
-&lt;li&gt;Starting the V2 VM&lt;/li&gt;
-&lt;li&gt;Doing some cleanup: Deleting the snapshot, the old V2 OS disk, the cloned V1 OS disk&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Done&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/V1-V2-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;how-to-use-the-script&quot;&gt;How to use the script&lt;/h3&gt;
-&lt;p&gt;Open the script in a PowerShell editor like ISE (or VS Code). Connect to your Azure subscription using &lt;em&gt;Connect-AzAccount&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;Modify the script to match your:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Your subscription Id&lt;/li&gt;
-&lt;li&gt;Your source V1 VM (name and resource group)&lt;/li&gt;
-&lt;li&gt;Your new V2 VM (name and resource group - ensure to have a different name or resource group; another name of the VM doesn’t reflect the computer name after the process)&lt;/li&gt;
-&lt;li&gt;Set $enabledTrustedLaunch = $true to also create your V2 VM trusted launch enabled, incl. secure boot and vTPM&lt;/li&gt;
-&lt;li&gt;The tempDiskSizeGb must be large enough to contain the temporary OS (Server 2022) and the content of the OS disk of the V1 VM (512 should be fine if the disk of the V1 VM is 128 GByte)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;That’s all. You can run the script and come back after some hours to see the result.&lt;/p&gt;
-&lt;h3 id=&quot;hints&quot;&gt;Hints&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;If the VM size doesn’t support V2, modify the target VM size in the script&lt;/li&gt;
-&lt;li&gt;If something fails: Cleanup the temporarily created resources manually (snapshot, empty V2 disk, cloned V1 disk, and V2 VM)&lt;/li&gt;
-&lt;li&gt;Upgrading to Windows 11 multi-user: Check-out this video&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;where-is-the-script&quot;&gt;Where is the script&lt;/h3&gt;
-&lt;p&gt;You can find the script on github: &lt;a href=&quot;https://gist.github.com/MarcelMeurer/aab2ef8f36d7c634beebea771f54bf30&quot;&gt;Create-V2-From-V1-VM.ps1&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sat, 07 Oct 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</guid>
         
         
         <category>Azure</category>
