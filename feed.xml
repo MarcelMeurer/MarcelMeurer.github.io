@@ -5,9 +5,67 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 20 Jun 2024 17:02:06 +0200</pubDate>
-    <lastBuildDate>Thu, 20 Jun 2024 17:02:06 +0200</lastBuildDate>
+    <pubDate>Sun, 23 Jun 2024 17:00:56 +0200</pubDate>
+    <lastBuildDate>Sun, 23 Jun 2024 17:00:56 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>How to image a Confidential Golden Master VM and deploy confidential Session Hosts for Azure Virtual Desktop</title>
+        <description>&lt;p&gt;Azure confidential VMs offer strong security and confidentiality for customers by isolating data. That can also make sene for Azure Virtual Desktop. One of my favorite deployment methods is the Golden Master apporach with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;. Hydra allows image creation without losing the Golden Master. So, a Golden Master can be updated and imaged unlimitedly. Tip: Imaging, including patching, can be automated and scheduled with Hydra.&lt;/p&gt;
+&lt;p&gt;Note: Hydra version 1.0.7.3 or newer is needed for confidential support. To update Hydra: Click on the avatar (roboter icon) in the upper right corner and select: “Update Engine”. After a while, reload the Hydra Portal website.&lt;/p&gt;
+&lt;p&gt;First, we create a Golden Master:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a Golden Master. Ensure that you create the Golden Master as a Confidential VM. Select a confidential VM size and security type &lt;strong&gt;Confidential virtual machines&lt;/strong&gt;
+&lt;img src=&quot;../assets/images/Confidential-Imaging-01.png&quot; alt=&quot;&quot; /&gt;
+To encrypt also the OS disk, select &lt;strong&gt;Confidential OS disk encryption&lt;/strong&gt;:
+&lt;img src=&quot;../assets/images/Confidential-Imaging-02.png&quot; alt=&quot;&quot; /&gt;
+Configure the other settings.&lt;/li&gt;
+&lt;li&gt;Install all applications and updates&lt;/li&gt;
+&lt;li&gt;Do some configurations&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Confidential images can only be stored in specific Azure compute gallery definitions. Create a new gallery definition for confidential VM:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Use an existing compute gallery or create a new compute gallery&lt;/li&gt;
+&lt;li&gt;Click on Add -&amp;gt; VM image definition
+&lt;img src=&quot;../assets/images/Confidential-Imaging-03.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;li&gt;The security type must be &lt;strong&gt;Confidential&lt;/strong&gt;
+&lt;img src=&quot;../assets/images/Confidential-Imaging-04.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;li&gt;Enter a name and fill out the fields Publisher, Offer, and SKU (the combination of publisher, offer, and SKU must be unique in the gallery)&lt;/li&gt;
+&lt;li&gt;Click on review and create to create the gallery definition
+&lt;img src=&quot;../assets/images/Confidential-Imaging-05.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To create an image, go to your Hydra installation and open Image Builder -&amp;gt; Create an image&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Select your confidential Golden Master from the virtual machine list&lt;/li&gt;
+&lt;li&gt;Select the resource group of the Golden Master VM&lt;/li&gt;
+&lt;li&gt;Select the compute gallery definition in the Azure Compute Gallery section&lt;/li&gt;
+&lt;li&gt;Configure the locations where the image should be available&lt;/li&gt;
+&lt;li&gt;Click on Create Image&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Confidential-Imaging-06.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Important: The golden master &lt;strong&gt;must&lt;/strong&gt; also be a confidential VM. The encryption configuration of the OS disk is also stored and will be used by rolling out session hosts based on that image.
+Hint: If the OS disk is encrypted, the imaging process will take longer. A clone is created during the imaging (and later deleted), and the disk is decrypted. This will take a while.&lt;/p&gt;
+&lt;p&gt;After an image is created, we can configure the rollout configuration of our confidential host pool.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;In Hydra: Dashboard -&amp;gt; Your host pool -&amp;gt; Configuration -&amp;gt; New Session Host Rollout&lt;/li&gt;
+&lt;li&gt;Configure all settings&lt;/li&gt;
+&lt;li&gt;Select a  confidential virtual machine size (type confidential in the field to show the sizes):
+&lt;img src=&quot;../assets/images/Confidential-Imaging-07.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
+&lt;li&gt;Save&lt;/li&gt;
+&lt;li&gt;From the session host list of the pool, click on the plus icon to deploy confidential hosts&lt;/li&gt;
+&lt;li&gt;Done&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 23 Jun 2024 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Capturing-and-Deploying-Confidential-Session-Hosts/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Capturing-and-Deploying-Confidential-Session-Hosts/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>How to image a Golden Master VM based on a plan to a compute gallery definition</title>
@@ -2017,66 +2075,6 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log.
         <pubDate>Sat, 07 Oct 2023 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Update-Windows-10-Multi-user-to-Windows-11-Multi-user/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Update-Windows-10-Multi-user-to-Windows-11-Multi-user/</guid>
-        
-        
-        <category>Azure</category>
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Updating or cloning a Azure VM with standard security to trusted launch with secure boot and vTPM</title>
-        <description>&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; If your source VM is based on the &lt;strong&gt;VM generation V1&lt;/strong&gt;, follow this post to convert your VM: &lt;a href=&quot;https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/&quot;&gt;Creating a Windows Azure VM Generation V2 from a V2 VM&lt;/a&gt;. Also, follow the link if you want to have an exact copy (and not a clone) of your VM.&lt;/p&gt;
-&lt;p&gt;If you once installed an Azure VM with the standard of security, you can not convert this VM into a trusted launch-enabled VM with secure boot and vTPM. But that is sometimes necessary, e.g., if you want to upgrade from Windows 10 multi-user to Windows 11 multi-user.&lt;/p&gt;
-&lt;p&gt;But there is a way to do that. You could capture your existing VM and store the image in a secure boot enabled. Compute Gallery definition in Azure. From this image version, you can create a new VM with a security-type trusted launch.&lt;/p&gt;
-&lt;h3 id=&quot;prepare-an-azure-compute-gallery&quot;&gt;Prepare an Azure Compute Gallery&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;Create an Azure Compute Gallery “Conversion_Gallery” in the same resource group of your VM&lt;/li&gt;
-&lt;li&gt;Add an Image Definition “Secure-VM”
-&lt;ul&gt;
-&lt;li&gt;Security Type: Trusted Launch&lt;/li&gt;
-&lt;li&gt;OS state: Generalized&lt;/li&gt;
-&lt;li&gt;Tick “Accelerated networking” if this is enabled on your original VM&lt;/li&gt;
-&lt;li&gt;Fill Publisher, Offer, SKU with some information&lt;/li&gt;
-&lt;li&gt;Click Review+Create, Create&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/To-TrustedLaunch-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;capturing-the-original-vm&quot;&gt;Capturing the original VM&lt;/h3&gt;
-&lt;p&gt;I’m using &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to prevent that I must sysprep my original VM. &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; first makes a clone of the original VM and runs sysprep on the clone. In the end, I have an image in a compute gallery and the untouched original VM.&lt;/p&gt;
-&lt;p&gt;In &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt;:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Azure -&amp;gt; Virtual Machines -&amp;gt; Resource Group -&amp;gt; Right-click the VM and select “Create a template image”&lt;/li&gt;
-&lt;li&gt;Enter an image name (no spaces)&lt;/li&gt;
-&lt;li&gt;Select the resource group of the VM as Target RG&lt;/li&gt;
-&lt;li&gt;Tick “Use Azure Compute Galleries”&lt;/li&gt;
-&lt;li&gt;Select your Gallery and Gallery definition&lt;/li&gt;
-&lt;li&gt;Your region from the list&lt;/li&gt;
-&lt;li&gt;Hit “Capture”&lt;/li&gt;
-&lt;li&gt;This will take a while to clone the VM, create an image and upload it to the image gallery.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/To-TrustedLaunch-03.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/To-TrustedLaunch-04.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/To-TrustedLaunch-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Note: You can delete the also-created custom image (we only need the gallery image)&lt;/p&gt;
-&lt;h3 id=&quot;deploying-a-new-secure-boot-enabled-vm-from-the-image&quot;&gt;Deploying a new secure boot-enabled VM from the image&lt;/h3&gt;
-&lt;p&gt;With &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; or in the Azure Portal, you can create a new VM from that image containing all the applications. Please note that the new VM has a new name and compute identity.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Go to the gallery definition in the Azure Portal and select your uploaded version.&lt;/li&gt;
-&lt;li&gt;Hit + Create VM&lt;/li&gt;
-&lt;li&gt;Fill out all parameters and ensure that you select the security type “Trusted Launch”&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/To-TrustedLaunch-06.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/To-TrustedLaunch-07.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;After the deployment, you have a new trusted launch-enabled VM based on your - still existing - original VM.&lt;/p&gt;
-</description>
-        <pubDate>Sat, 07 Oct 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Migrate-Azure-VM-To-Trusted-Launch/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Migrate-Azure-VM-To-Trusted-Launch/</guid>
         
         
         <category>Azure</category>

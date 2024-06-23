@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logos/icon.png">
+
+<title>How to image a Confidential Golden Master VM and deploy confidential Session Hosts for Azure Virtual Desktop | ITProCloud Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>How to image a Confidential Golden Master VM and deploy confidential Session Hosts for Azure Virtual Desktop | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="How to image a Confidential Golden Master VM and deploy confidential Session Hosts for Azure Virtual Desktop" />
+<meta name="author" content="mm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Azure confidential VMs offer strong security and confidentiality for customers by isolating data. That can also make sene for Azure Virtual Desktop. One of my favorite deployment methods is the Golden Master apporach with Hydra for Azure Virtual Desktop. Hydra allows image creation without losing the Golden Master. So, a Golden Master can be updated and imaged unlimitedly. Tip: Imaging, including patching, can be automated and scheduled with Hydra." />
+<meta property="og:description" content="Azure confidential VMs offer strong security and confidentiality for customers by isolating data. That can also make sene for Azure Virtual Desktop. One of my favorite deployment methods is the Golden Master apporach with Hydra for Azure Virtual Desktop. Hydra allows image creation without losing the Golden Master. So, a Golden Master can be updated and imaged unlimitedly. Tip: Imaging, including patching, can be automated and scheduled with Hydra." />
+<link rel="canonical" href="https://blog.itprocloud.de/AVD-Capturing-and-Deploying-Confidential-Session-Hosts/" />
+<meta property="og:url" content="https://blog.itprocloud.de/AVD-Capturing-and-Deploying-Confidential-Session-Hosts/" />
+<meta property="og:site_name" content="ITProCloud Blog" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/Confidential-Imaging-07.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-06-23T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Confidential-Imaging-07.png" />
+<meta property="twitter:title" content="How to image a Confidential Golden Master VM and deploy confidential Session Hosts for Azure Virtual Desktop" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/Confidential-Imaging-07.png","datePublished":"2024-06-23T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Capturing-and-Deploying-Confidential-Session-Hosts/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Capturing-and-Deploying-Confidential-Session-Hosts/","author":{"@type":"Person","name":"mm"},"headline":"How to image a Confidential Golden Master VM and deploy confidential Session Hosts for Azure Virtual Desktop","dateModified":"2024-06-23T00:00:00+02:00","description":"Azure confidential VMs offer strong security and confidentiality for customers by isolating data. That can also make sene for Azure Virtual Desktop. One of my favorite deployment methods is the Golden Master apporach with Hydra for Azure Virtual Desktop. Hydra allows image creation without losing the Golden Master. So, a Golden Master can be updated and imaged unlimitedly. Tip: Imaging, including patching, can be automated and scheduled with Hydra.","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<!--- cookie banner --->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-post">
+	<!-- defer loading of font and font awesome -->
+	<!-- <noscript id="deferred-styles"> -->
+		<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"> -->
+	<!-- </noscript> -->
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logos/itpc-logo-bottom-text.png" alt="ITProCloud Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/tools"><b>Tools</b></a>
+                </li>
+				
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
+                </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (63)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (62)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (12)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+	
+				<!-- Original tag list (unsorted) 
+				
+				
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-VM">Azure VM (2)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (9)</a>
+						</li>
+						
+					
+				
+				-->
+								
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://twitter.com/MarcelMeurer"><i class="fab fa-twitter"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/marcel-meurer-15b46b98"><i class="fab fa-linkedin"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://github.com/MarcelMeurer"><i class="fab fa-github"></i></a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="mailto:marcel.meurer@itprocloud.com?subject=Request%20from%20ITProCloud.de"><i class="far fa-envelope"></i></a>
+                </li>
+
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">ITProCloud Blog</h1>
+    <p class="lead">
+        Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <!-- Begin Article
+================================================== -->
+<div class="container">
+    <div class="row">
+
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=How to image a Confidential Golden Master VM and deploy confidential Session Hosts for Azure Virtual Desktop&url=https://blog.itprocloud.de/AVD-Capturing-and-Deploying-Confidential-Session-Hosts/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/AVD-Capturing-and-Deploying-Confidential-Session-Hosts/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/AVD-Capturing-and-Deploying-Confidential-Session-Hosts/&title=How to image a Confidential Golden Master VM and deploy confidential Session Hosts for Azure Virtual Desktop" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+    </ul>
+    
+    <div class="sep">
+    </div>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
+    
+</div>
+
+        </div>
+
+        <!-- Post -->
+        
+
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
+
+                <!-- Author Box -->
+                
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                        
+                        <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
+                        
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href="https://blog.itprocloud.de">Marcel</a><a target="_blank" href="https://twitter.com/MarcelMeurer" class="btn follow">Follow</a>
+                        <span class="author-description">That's me: Marcel</span>
+                    </div>
+                </div>
+                
+
+                <!-- Post Title -->
+                <h1 class="posttitle">How to image a Confidential Golden Master VM and deploy confidential Session Hosts for Azure Virtual Desktop</h1>
+
+            </div>
+
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
+
+            <!-- Post Featured Image -->
+            
+
+            
+            <img class="featured-image img-fluid" src="/assets/images/Confidential-Imaging-07.png" alt="How to image a Confidential Golden Master VM and deploy confidential Session Hosts for Azure Virtual Desktop">
+            
+
+            
+            <!-- End Featured Image -->
+
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <p>Azure confidential VMs offer strong security and confidentiality for customers by isolating data. That can also make sene for Azure Virtual Desktop. One of my favorite deployment methods is the Golden Master apporach with <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>. Hydra allows image creation without losing the Golden Master. So, a Golden Master can be updated and imaged unlimitedly. Tip: Imaging, including patching, can be automated and scheduled with Hydra.</p>
+<p>Note: Hydra version 1.0.7.3 or newer is needed for confidential support. To update Hydra: Click on the avatar (roboter icon) in the upper right corner and select: “Update Engine”. After a while, reload the Hydra Portal website.</p>
+<p>First, we create a Golden Master:</p>
+<ul>
+<li>Create a Golden Master. Ensure that you create the Golden Master as a Confidential VM. Select a confidential VM size and security type <strong>Confidential virtual machines</strong>
+<img src="../assets/images/Confidential-Imaging-01.png" alt="" />
+To encrypt also the OS disk, select <strong>Confidential OS disk encryption</strong>:
+<img src="../assets/images/Confidential-Imaging-02.png" alt="" />
+Configure the other settings.</li>
+<li>Install all applications and updates</li>
+<li>Do some configurations</li>
+</ul>
+<p>Confidential images can only be stored in specific Azure compute gallery definitions. Create a new gallery definition for confidential VM:</p>
+<ul>
+<li>Use an existing compute gallery or create a new compute gallery</li>
+<li>Click on Add -&gt; VM image definition
+<img src="../assets/images/Confidential-Imaging-03.png" alt="" /></li>
+<li>The security type must be <strong>Confidential</strong>
+<img src="../assets/images/Confidential-Imaging-04.png" alt="" /></li>
+<li>Enter a name and fill out the fields Publisher, Offer, and SKU (the combination of publisher, offer, and SKU must be unique in the gallery)</li>
+<li>Click on review and create to create the gallery definition
+<img src="../assets/images/Confidential-Imaging-05.png" alt="" /></li>
+</ul>
+<p>To create an image, go to your Hydra installation and open Image Builder -&gt; Create an image</p>
+<ul>
+<li>Select your confidential Golden Master from the virtual machine list</li>
+<li>Select the resource group of the Golden Master VM</li>
+<li>Select the compute gallery definition in the Azure Compute Gallery section</li>
+<li>Configure the locations where the image should be available</li>
+<li>Click on Create Image</li>
+</ul>
+<p><img src="../assets/images/Confidential-Imaging-06.png" alt="" /></p>
+<p>Important: The golden master <strong>must</strong> also be a confidential VM. The encryption configuration of the OS disk is also stored and will be used by rolling out session hosts based on that image.
+Hint: If the OS disk is encrypted, the imaging process will take longer. A clone is created during the imaging (and later deleted), and the disk is decrypted. This will take a while.</p>
+<p>After an image is created, we can configure the rollout configuration of our confidential host pool.</p>
+<ul>
+<li>In Hydra: Dashboard -&gt; Your host pool -&gt; Configuration -&gt; New Session Host Rollout</li>
+<li>Configure all settings</li>
+<li>Select a  confidential virtual machine size (type confidential in the field to show the sizes):
+<img src="../assets/images/Confidential-Imaging-07.png" alt="" /></li>
+<li>Save</li>
+<li>From the session host list of the pool, click on the plus icon to deploy confidential hosts</li>
+<li>Done</li>
+</ul>
+
+            </div>
+
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2024-06-23">23 Jun 2024</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            <a class="prev d-block col-md-6" href="/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/"> &laquo; How to image a Golden Master VM based on a plan to a compute gallery definition</a>
+            
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
+        </div>
+        <!-- End Post -->
+
+    </div>
+</div>
+<!-- End Article
+================================================== -->
+
+<!-- Begin Comments
+================================================== -->
+
+<!--End Comments
+================================================== -->
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div id="allTags" class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore by tags <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-VM">Azure VM (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (9)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (12)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (9)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-AD">Azure AD (4)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#OneDrive">OneDrive (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-IoT">Azure IoT (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Functions">Azure Functions (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Marketplace">Azure Marketplace (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (8)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (63)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (62)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Webapp">Azure Webapp (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#ADConnect">ADConnect (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Stack-HCI">Azure Stack HCI (1)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 text-center text-lg-left">
+                Copyright © 2024 ITProCloud Blog 
+            </div>
+            <div class="col-md-4 col-sm-4 text-center text-lg-left">
+                <a href="/Impressum">Impressum</a>/<a href="/ImpressumEn">Imprint</a> - 
+                <a href="/privacyDe">Datenschutz</a> - 
+				<a href="/privacyEn">Privacy</a> - 
+				<a href="#" id="open_preferences_center">Update cookies preferences</a>
+            </div>
+            <div class="col-md-3 col-sm-3 text-center text-lg-right">    
+                <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+<script id="dsq-count-scr" src="//.disqus.com/count.js"></script>
+
+
+<!-- Cookie Consent by TermsFeed https://www.TermsFeed.com created on https://www.cookieconsent.com/ -->
+<script type="text/javascript" src="https://www.termsfeed.com/public/cookie-consent/4.1.0/cookie-consent.js" charset="UTF-8"></script>
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({"notice_banner_type":"simple","consent_type":"express","palette":"light","language":"en","page_load_consent_levels":["strictly-necessary"],"notice_banner_reject_button_hide":false,"preferences_center_close_button_hide":false,"page_refresh_confirmation_buttons":false,"website_name":"blog.ITProCloud.de","website_privacy_policy_url":"https://blog.itprocloud.de/privacyEn/"});
+});
+</script>
+
+<!-- Google Analytics -->
+<!-- Google tag (gtag.js) -->
+<script type="text/plain" data-cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=G-LPJZ1BMG3V">
+</script>
+<script type="text/plain" data-cookie-consent="tracking">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LPJZ1BMG3V');
+</script>
+<!-- end of Google Analytics-->
+
+<noscript>Free cookie consent management tool by <a href="https://www.termsfeed.com/">TermsFeed</a></noscript>
+<!-- End Cookie Consent by TermsFeed https://www.TermsFeed.com -->
+
+</body>
+</html>
