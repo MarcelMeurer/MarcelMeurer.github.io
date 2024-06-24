@@ -451,7 +451,7 @@
                 
                 <!-- End Toc -->
                 <p>Azure confidential VMs offer strong security and confidentiality for customers by isolating data. That can also make sene for Azure Virtual Desktop. One of my favorite deployment methods is the Golden Master apporach with <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>. Hydra allows image creation without losing the Golden Master. So, a Golden Master can be updated and imaged unlimitedly. Tip: Imaging, including patching, can be automated and scheduled with Hydra.</p>
-<p>Note: Hydra version 1.0.7.4 or newer is needed for confidential support. To update Hydra: Click on the avatar (roboter icon) in the upper right corner and select: “Update Engine”. After a while, reload the Hydra Portal website.</p>
+<p>Note: Hydra version 1.0.7.3 or newer is needed for confidential support. To update Hydra: Click on the avatar (roboter icon) in the upper right corner and select: “Update Engine”. After a while, reload the Hydra Portal website.</p>
 <p>First, we create a Golden Master:</p>
 <ul>
 <li>Create a Golden Master. Ensure that you create the Golden Master as a Confidential VM. Select a confidential VM size and security type <strong>Confidential virtual machines</strong>
@@ -494,7 +494,7 @@ Hint: If the OS disk is encrypted, the imaging process will take longer. A clone
 <li>From the session host list of the pool, click on the plus icon to deploy confidential hosts</li>
 <li>Done</li>
 </ul>
-<p>Hint: There is another option for non-trusted-launch VMs: This kind of VM-images can be stored to a <strong>Confidential Supported</strong> galery definition with Hydra. Finally, you can create new hosts based on that Confidential suported Galery Definition Versions.</p>
+<p>Hint: There is another option for non-trusted-launch VMs: This kind of VM-images can be stored to a <strong>Confidential Supported</strong> gallery definition with Hydra. Finally, you can create new hosts based on that Confidential suported Gallery Definition Versions.</p>
 
             </div>
 
