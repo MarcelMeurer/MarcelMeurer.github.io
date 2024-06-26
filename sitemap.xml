@@ -321,10 +321,6 @@
 <lastmod>2024-02-24T00:00:00+01:00</lastmod>
 </url>
 <url>
-<loc>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</loc>
-<lastmod>2024-06-13T00:00:00+02:00</lastmod>
-</url>
-<url>
 <loc>https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/</loc>
 <lastmod>2024-06-20T00:00:00+02:00</lastmod>
 </url>
@@ -335,6 +331,10 @@
 <url>
 <loc>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</loc>
 <lastmod>2024-06-24T00:00:00+02:00</lastmod>
+</url>
+<url>
+<loc>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</loc>
+<lastmod>2024-06-26T00:00:00+02:00</lastmod>
 </url>
 <url>
 <loc>https://blog.itprocloud.de/about</loc>
