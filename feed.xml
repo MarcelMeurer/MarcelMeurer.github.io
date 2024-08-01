@@ -5,15 +5,15 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 01 Aug 2024 12:07:13 +0200</pubDate>
-    <lastBuildDate>Thu, 01 Aug 2024 12:07:13 +0200</lastBuildDate>
+    <pubDate>Thu, 01 Aug 2024 12:20:22 +0200</pubDate>
+    <lastBuildDate>Thu, 01 Aug 2024 12:20:22 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
         <title>Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)</title>
         <description>&lt;p&gt;Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates).&lt;/p&gt;
 &lt;p&gt;Also, my solution, &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;, uses the API to install Windows updates. That also includes draining, starting, installing, rebooting, etc. - all that is needed to update an existing host or a golden master. E.g.: Example of the script collection for an update:&lt;/p&gt;
-&lt;image&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WSUS-API-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;Unfortunately, a Microsoft patch broke the functionality of the Windows Update API. That is documented here: &lt;a href=&quot;https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;&gt;https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;If you have a broken computer, you will see the following error message: Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)
 &lt;img src=&quot;../assets/images/WSUS-API-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
