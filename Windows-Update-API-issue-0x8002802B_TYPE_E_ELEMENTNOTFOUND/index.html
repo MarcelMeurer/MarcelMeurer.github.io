@@ -391,43 +391,43 @@ $updateSession = New-Object -ComObject Microsoft.Update.Session
 
 $updatesKb=&quot;&quot;
 
-LogWriter(&quot;Checking for updates&quot;)
+write-host(&quot;Checking for updates&quot;)
 $result = $updateSearcher.Search(&quot;IsInstalled=0 and Type='Software' and IsHidden=0&quot;)
 
 if ($result.Updates.Count -EQ 0) {
-	OutputWriter(&quot;No new updates found&quot;)
+	write-host(&quot;No new updates found&quot;)
 }
 else {
     try {
         $updateDownloader = $updateSession.CreateUpdateDownloader()
         $result.Updates|foreach {
-            LogWriter(&quot;Found: $($_.Title)&quot;)
+            write-host(&quot;Found: $($_.Title)&quot;)
             $updatesKb=$updatesKb+$_.KBArticleIDs+&quot; &quot;
             $updateCollection.Add($_)|Out-Null
         }
-        LogWriter(&quot;Downloading updates&quot;)
+        write-host(&quot;Downloading updates&quot;)
         $updateDownloader.Updates = $updateCollection
         $updateDownloads = $updateDownloader.Download()
         if (($updateDownloads.HResult -EQ 0) -AND ($updateDownloads.ResultCode -EQ 2)) {
-            LogWriter(&quot;Downloads success&quot;)
+            write-host(&quot;Downloads success&quot;)
         }
         else {
-            LogWriter(&quot;Downloads failed&quot;)
+            write-host(&quot;Downloads failed&quot;)
             Write-host(&quot;ScriptReturnMessage:{Download failed}:ScriptReturnMessage&quot;)
             exit
         }
-        LogWriter(&quot;Installing updates&quot;)
+        write-host(&quot;Installing updates&quot;)
         $updateInstaller = New-Object -ComObject Microsoft.Update.Installer
         $updateInstaller.Updates = $updateCollection
         $updateDownloads = $updateInstaller.Install()
 
-        OutputWriter(&quot;Applied updates: $updatesKb&quot;)
+        write-host(&quot;Applied updates: $updatesKb&quot;)
     } catch {
         if (($_ -like &quot;*0x8002802B*&quot;) -and (Get-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -ErrorAction Ignore).&quot;1931709068&quot; -ne 0) {
             # Update API issue: https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc
             $hotFixKirUrl=&quot;https://download.microsoft.com/download/3944f364-6483-49ab-af0d-3e2bd80dedaf/Windows%2011%2022H2%20KB5039302%20240711_20301%20Known%20Issue%20Rollback.msi&quot;
             try {
-                LogWriter (&quot;Try to download KIR file to bring Windows Update API back&quot;)
+                write-host (&quot;Try to download KIR file to bring Windows Update API back&quot;)
                 (New-Object System.Net.WebClient).DownloadFile($hotFixKirUrl, &quot;$env:temp\KIRKB5039302.msi&quot;)
                 Start-Process msiexec.exe -Wait -ArgumentList '/I $env:temp\KIRKB5039302.msi /quiet'
                 if (-not (Test-Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot;)) {
@@ -435,13 +435,13 @@ else {
                 }
                 New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -Value 0 -Force -ErrorAction SilentlyContinue
             } catch {
-                LogWriter (&quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&quot;)
+                write-host (&quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&quot;)
                 throw $_
             }
             # A reboot is required
-            OutputWriter(&quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;)
+            write-host(&quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;)
         } else {
-            LogWriter (&quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&quot;)
+            write-host (&quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&quot;)
             throw $_
         }
     }
@@ -470,43 +470,43 @@ $updateSession = New-Object -ComObject Microsoft.Update.Session
 
 $updatesKb=&quot;&quot;
 
-LogWriter(&quot;Checking for updates&quot;)
+write-host(&quot;Checking for updates&quot;)
 $result = $updateSearcher.Search(&quot;IsInstalled=0 and Type='Software' and IsHidden=0&quot;)
 
 if ($result.Updates.Count -EQ 0) {
-	OutputWriter(&quot;No new updates found&quot;)
+	write-host(&quot;No new updates found&quot;)
 }
 else {
     try {
         $updateDownloader = $updateSession.CreateUpdateDownloader()
         $result.Updates|foreach {
-            LogWriter(&quot;Found: $($_.Title)&quot;)
+            write-host(&quot;Found: $($_.Title)&quot;)
             $updatesKb=$updatesKb+$_.KBArticleIDs+&quot; &quot;
             $updateCollection.Add($_)|Out-Null
         }
-        LogWriter(&quot;Downloading updates&quot;)
+        write-host(&quot;Downloading updates&quot;)
         $updateDownloader.Updates = $updateCollection
         $updateDownloads = $updateDownloader.Download()
         if (($updateDownloads.HResult -EQ 0) -AND ($updateDownloads.ResultCode -EQ 2)) {
-            LogWriter(&quot;Downloads success&quot;)
+            write-host(&quot;Downloads success&quot;)
         }
         else {
-            LogWriter(&quot;Downloads failed&quot;)
+            write-host(&quot;Downloads failed&quot;)
             Write-host(&quot;ScriptReturnMessage:{Download failed}:ScriptReturnMessage&quot;)
             exit
         }
-        LogWriter(&quot;Installing updates&quot;)
+        write-host(&quot;Installing updates&quot;)
         $updateInstaller = New-Object -ComObject Microsoft.Update.Installer
         $updateInstaller.Updates = $updateCollection
         $updateDownloads = $updateInstaller.Install()
 
-        OutputWriter(&quot;Applied updates: $updatesKb&quot;)
+        write-host(&quot;Applied updates: $updatesKb&quot;)
     } catch {
         if (($_ -like &quot;*0x8002802B*&quot;) -and (Get-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -ErrorAction Ignore).&quot;1931709068&quot; -ne 0) {
             # Update API issue: https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc
             $hotFixKirUrl=&quot;https://download.microsoft.com/download/3944f364-6483-49ab-af0d-3e2bd80dedaf/Windows%2011%2022H2%20KB5039302%20240711_20301%20Known%20Issue%20Rollback.msi&quot;
             try {
-                LogWriter (&quot;Try to download KIR file to bring Windows Update API back&quot;)
+                write-host (&quot;Try to download KIR file to bring Windows Update API back&quot;)
                 (New-Object System.Net.WebClient).DownloadFile($hotFixKirUrl, &quot;$env:temp\KIRKB5039302.msi&quot;)
                 Start-Process msiexec.exe -Wait -ArgumentList '/I $env:temp\KIRKB5039302.msi /quiet'
                 if (-not (Test-Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot;)) {
@@ -514,13 +514,13 @@ else {
                 }
                 New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -Value 0 -Force -ErrorAction SilentlyContinue
             } catch {
-                LogWriter (&quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&quot;)
+                write-host (&quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&quot;)
                 throw $_
             }
             # A reboot is required
-            OutputWriter(&quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;)
+            write-host(&quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;)
         } else {
-            LogWriter (&quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&quot;)
+            write-host (&quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&quot;)
             throw $_
         }
     }

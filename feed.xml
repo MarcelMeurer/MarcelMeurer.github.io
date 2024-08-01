@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 01 Aug 2024 12:24:27 +0200</pubDate>
-    <lastBuildDate>Thu, 01 Aug 2024 12:24:27 +0200</lastBuildDate>
+    <pubDate>Thu, 01 Aug 2024 12:32:37 +0200</pubDate>
+    <lastBuildDate>Thu, 01 Aug 2024 12:32:37 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
     
       <item>
@@ -32,43 +32,43 @@ $updateSession = New-Object -ComObject Microsoft.Update.Session
 
 $updatesKb=&amp;quot;&amp;quot;
 
-LogWriter(&amp;quot;Checking for updates&amp;quot;)
+write-host(&amp;quot;Checking for updates&amp;quot;)
 $result = $updateSearcher.Search(&amp;quot;IsInstalled=0 and Type='Software' and IsHidden=0&amp;quot;)
 
 if ($result.Updates.Count -EQ 0) {
-	OutputWriter(&amp;quot;No new updates found&amp;quot;)
+	write-host(&amp;quot;No new updates found&amp;quot;)
 }
 else {
     try {
         $updateDownloader = $updateSession.CreateUpdateDownloader()
         $result.Updates|foreach {
-            LogWriter(&amp;quot;Found: $($_.Title)&amp;quot;)
+            write-host(&amp;quot;Found: $($_.Title)&amp;quot;)
             $updatesKb=$updatesKb+$_.KBArticleIDs+&amp;quot; &amp;quot;
             $updateCollection.Add($_)|Out-Null
         }
-        LogWriter(&amp;quot;Downloading updates&amp;quot;)
+        write-host(&amp;quot;Downloading updates&amp;quot;)
         $updateDownloader.Updates = $updateCollection
         $updateDownloads = $updateDownloader.Download()
         if (($updateDownloads.HResult -EQ 0) -AND ($updateDownloads.ResultCode -EQ 2)) {
-            LogWriter(&amp;quot;Downloads success&amp;quot;)
+            write-host(&amp;quot;Downloads success&amp;quot;)
         }
         else {
-            LogWriter(&amp;quot;Downloads failed&amp;quot;)
+            write-host(&amp;quot;Downloads failed&amp;quot;)
             Write-host(&amp;quot;ScriptReturnMessage:{Download failed}:ScriptReturnMessage&amp;quot;)
             exit
         }
-        LogWriter(&amp;quot;Installing updates&amp;quot;)
+        write-host(&amp;quot;Installing updates&amp;quot;)
         $updateInstaller = New-Object -ComObject Microsoft.Update.Installer
         $updateInstaller.Updates = $updateCollection
         $updateDownloads = $updateInstaller.Install()
 
-        OutputWriter(&amp;quot;Applied updates: $updatesKb&amp;quot;)
+        write-host(&amp;quot;Applied updates: $updatesKb&amp;quot;)
     } catch {
         if (($_ -like &amp;quot;*0x8002802B*&amp;quot;) -and (Get-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot; -Name &amp;quot;1931709068&amp;quot; -ErrorAction Ignore).&amp;quot;1931709068&amp;quot; -ne 0) {
             # Update API issue: https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc
             $hotFixKirUrl=&amp;quot;https://download.microsoft.com/download/3944f364-6483-49ab-af0d-3e2bd80dedaf/Windows%2011%2022H2%20KB5039302%20240711_20301%20Known%20Issue%20Rollback.msi&amp;quot;
             try {
-                LogWriter (&amp;quot;Try to download KIR file to bring Windows Update API back&amp;quot;)
+                write-host (&amp;quot;Try to download KIR file to bring Windows Update API back&amp;quot;)
                 (New-Object System.Net.WebClient).DownloadFile($hotFixKirUrl, &amp;quot;$env:temp\KIRKB5039302.msi&amp;quot;)
                 Start-Process msiexec.exe -Wait -ArgumentList '/I $env:temp\KIRKB5039302.msi /quiet'
                 if (-not (Test-Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot;)) {
@@ -76,13 +76,13 @@ else {
                 }
                 New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot; -Name &amp;quot;1931709068&amp;quot; -Value 0 -Force -ErrorAction SilentlyContinue
             } catch {
-                LogWriter (&amp;quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&amp;quot;)
+                write-host (&amp;quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&amp;quot;)
                 throw $_
             }
             # A reboot is required
-            OutputWriter(&amp;quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&amp;quot;)
+            write-host(&amp;quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&amp;quot;)
         } else {
-            LogWriter (&amp;quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&amp;quot;)
+            write-host (&amp;quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&amp;quot;)
             throw $_
         }
     }
