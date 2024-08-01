@@ -6,27 +6,27 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>Azure Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin | ITProCloud Blog</title>
+<title>Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND) | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>Azure Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin | ITProCloud Blog</title>
+<title>Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND) | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v4.2.0" />
-<meta property="og:title" content="Azure Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin" />
+<meta property="og:title" content="Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Azure Windows Virtual Desktop - Spring Release / Spring Update goes public today. I’m tremendously happy about that while this is the next big step that we have eagerly awaited." />
-<meta property="og:description" content="Azure Windows Virtual Desktop - Spring Release / Spring Update goes public today. I’m tremendously happy about that while this is the next big step that we have eagerly awaited." />
-<link rel="canonical" href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/" />
-<meta property="og:url" content="https://blog.itprocloud.de/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/" />
+<meta name="description" content="Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates)." />
+<meta property="og:description" content="Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates)." />
+<link rel="canonical" href="https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/" />
+<meta property="og:url" content="https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="https://blog.itprocloud.de/assets/images/WVDAdmin/WVDAdminSpringRelease.png" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/WSUS-API-01.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2020-04-30T00:00:00+02:00" />
+<meta property="article:published_time" content="2024-08-01T00:00:00+02:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/WVDAdmin/WVDAdminSpringRelease.png" />
-<meta property="twitter:title" content="Azure Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/WSUS-API-01.png" />
+<meta property="twitter:title" content="Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)" />
 <script type="application/ld+json">
-{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/WVDAdmin/WVDAdminSpringRelease.png","datePublished":"2020-04-30T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/","author":{"@type":"Person","name":"mm"},"headline":"Azure Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin","dateModified":"2020-04-30T00:00:00+02:00","description":"Azure Windows Virtual Desktop - Spring Release / Spring Update goes public today. I’m tremendously happy about that while this is the next big step that we have eagerly awaited.","@context":"https://schema.org"}</script>
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/WSUS-API-01.png","datePublished":"2024-08-01T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/","author":{"@type":"Person","name":"mm"},"headline":"Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)","dateModified":"2024-08-01T00:00:00+02:00","description":"Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates).","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -375,19 +375,19 @@
     </p>
     <ul>
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://twitter.com/intent/tweet?text=Azure Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin&url=https://blog.itprocloud.de/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)&url=https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                 <i class="fab fa-twitter"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
                 <i class="fab fa-facebook-f"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/&title=Azure Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin" onclick="window.open(this.href, 'width=550,height=435');return false;">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/&title=Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)" onclick="window.open(this.href, 'width=550,height=435');return false;">
                 <i class="fab fa-linkedin-in"></i>
             </a>
         </li>
@@ -427,7 +427,7 @@
                 
 
                 <!-- Post Title -->
-                <h1 class="posttitle">Azure Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin</h1>
+                <h1 class="posttitle">Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)</h1>
 
             </div>
 
@@ -439,7 +439,7 @@
             
 
             
-            <img class="featured-image img-fluid" src="/assets/images/WVDAdmin/WVDAdminSpringRelease.png" alt="Azure Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin">
+            <img class="featured-image img-fluid" src="/assets/images/WSUS-API-01.png" alt="Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)">
             
 
             
@@ -450,55 +450,84 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>Azure Windows Virtual Desktop - Spring Release / Spring Update goes public today. I’m tremendously happy about that while this is the next big step that we have eagerly awaited.</p>
-<p>The spring release gives us some feature and changes that make it even easier to deploy apps and desktops to users:</p>
-<ul>
-<li>Add groups instead of users to desktops and apps</li>
-<li>Full integration of the administration of WVD/AVD in the Azure Portal</li>
-<li>Using a native ARM deployment instead of the WVD/AVD tenant API</li>
-<li>Linking app groups and desktops into workspaces</li>
-<li>and a lot of more things</li>
-</ul>
-<p>Even the administration of WVD/AVD was missing before. This was one reason to build WVDAdmin. I was often asked in the past if WVDAdmin will be unnecessary after the spring release of WVD. My answer: Sure, for the administration, WVDAdmin will not be that important anymore, but some features still add value. That’s why I decided months ago to develop WVDAdmin further and also prepare it for the “Spring Release”. So I am proud to announce that WVDAdmin is ready for the Spring Release starting with the already available version 1.5.</p>
-<p>To enable the Spring Release feature set a registry key (the current version will have this enabled by default):</p>
-<pre><code>HKCU\Software\ITProCloud\WVDAdmin
+                <p>Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates).</p>
+<p>Also, my solution, <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>, uses the API to install Windows updates. That also includes draining, starting, installing, rebooting, etc. - all that is needed to update an existing host or a golden master. E.g.: Example of the script collection for an update:</p>
+<image>
+<p>Unfortunately, a Microsoft patch broke the functionality of the Windows Update API. That is documented here: <a href="https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc">https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc</a></p>
+<p>If you have a broken computer, you will see the following error message: Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)
+<img src="../assets/images/WSUS-API-01.png" alt="" /></p>
+<p>The documentation also explains how to resolve the issue using a KIR (known issue recovery), which requires some handwork or automation. To make this as easy as possible for users of <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>, I added the installation of the KIR as part of the “BuiltIn: OS Install Windows Updates”. Finally, it downloads and installs the KIR package and activates it. A final reboot is needed to bring it to work. If you are using the script as part of the script collection (see image above), it will first patch the host and install updates on the second try of running the “BuiltIn: OS Install Windows Updates”.</p>
+<p>To get the updated built-in scripts, you can click on the icon in the upper-right corner inside of the scripts page:
+<img src="../assets/images/WSUS-API-02.png" alt="" /></p>
+<p>Finally, you should have the updated script (reload the site first):
+<img src="../assets/images/WSUS-API-03.png" alt="" /></p>
+<p>After that, the Windows update procedure is working as expected:
+<img src="../assets/images/WSUS-API-04.png" alt="" /></p>
+<p>Do you want to adapt your scripts? Here is my implementation. Feel free to use it:</p>
+<pre><code># Install Windows security updates directly over the internet. VM downloads the packages directly from Microsoft using the Windows Update service. A restart is required after the installation, which can be done with the script collection &quot;OS Install Windows Updates&quot;.
+$updateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
+$updateSearcher = New-Object -ComObject Microsoft.Update.Searcher
+$updateSession = New-Object -ComObject Microsoft.Update.Session
 
-(Reg_DWord) &quot;FeatureSet&quot; = 1
+$updatesKb=&quot;&quot;
+
+LogWriter(&quot;Checking for updates&quot;)
+$result = $updateSearcher.Search(&quot;IsInstalled=0 and Type='Software' and IsHidden=0&quot;)
+
+if ($result.Updates.Count -EQ 0) {
+	OutputWriter(&quot;No new updates found&quot;)
+}
+else {
+    try {
+        $updateDownloader = $updateSession.CreateUpdateDownloader()
+        $result.Updates|foreach {
+            LogWriter(&quot;Found: $($_.Title)&quot;)
+            $updatesKb=$updatesKb+$_.KBArticleIDs+&quot; &quot;
+            $updateCollection.Add($_)|Out-Null
+        }
+        LogWriter(&quot;Downloading updates&quot;)
+        $updateDownloader.Updates = $updateCollection
+        $updateDownloads = $updateDownloader.Download()
+        if (($updateDownloads.HResult -EQ 0) -AND ($updateDownloads.ResultCode -EQ 2)) {
+            LogWriter(&quot;Downloads success&quot;)
+        }
+        else {
+            LogWriter(&quot;Downloads failed&quot;)
+            Write-host(&quot;ScriptReturnMessage:{Download failed}:ScriptReturnMessage&quot;)
+            exit
+        }
+        LogWriter(&quot;Installing updates&quot;)
+        $updateInstaller = New-Object -ComObject Microsoft.Update.Installer
+        $updateInstaller.Updates = $updateCollection
+        $updateDownloads = $updateInstaller.Install()
+
+        OutputWriter(&quot;Applied updates: $updatesKb&quot;)
+    } catch {
+        if (($_ -like &quot;*0x8002802B*&quot;) -and (Get-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -ErrorAction Ignore).&quot;1931709068&quot; -ne 0) {
+            # Update API issue: https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc
+            $hotFixKirUrl=&quot;https://download.microsoft.com/download/3944f364-6483-49ab-af0d-3e2bd80dedaf/Windows%2011%2022H2%20KB5039302%20240711_20301%20Known%20Issue%20Rollback.msi&quot;
+            try {
+                LogWriter (&quot;Try to download KIR file to bring Windows Update API back&quot;)
+                (New-Object System.Net.WebClient).DownloadFile($hotFixKirUrl, &quot;$env:temp\KIRKB5039302.msi&quot;)
+                Start-Process msiexec.exe -Wait -ArgumentList '/I $env:temp\KIRKB5039302.msi /quiet'
+                if (-not (Test-Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot;)) {
+                    New-Item -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Force -ErrorAction SilentlyContinue
+                }
+                New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -Value 0 -Force -ErrorAction SilentlyContinue
+            } catch {
+                LogWriter (&quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&quot;)
+                throw $_
+            }
+            # A reboot is required
+            OutputWriter(&quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;)
+        } else {
+            LogWriter (&quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&quot;)
+            throw $_
+        }
+    }
+}
+
 </code></pre>
-<p><img src="../assets/images/WVDAdmin/SpringReleaseRegistry.png" alt="AADBrowser" /></p>
-<p>First, register the new service provide Microsoft.DesktopVirtualization on your Azure subscription (one-time process). You must be owner of this subscription to do this. Go to your subscription -&gt; Resource providers -&gt;  search for “Microsoft.DesktopVirtualization” and click register:</p>
-<p><img src="../assets/images/WVDAdmin/ResourceProvider.png" alt="AADBrowser" /></p>
-<p>If you restart WVDAdmin you will see the new note “WVD V2” which displays your resources in the Spring Release. Please make sure that your service principal has the right permission to create and administrate your resources (the sp needs owner permission to the resource group containing your host pool, app groups, … to assign users and groups).</p>
-<p><img src="../assets/images/WVDAdmin/SpringReleaseGui.png" alt="AADBrowser" /></p>
-<p>But what can you do with WVDAdmin compared to the portal integration? You can (e.g.):</p>
-<ul>
-<li>Administrate all resources with a Windows GUI</li>
-<li>Create “golden images” from template/master VMs</li>
-<li>Rollout several session hosts into differents host pools (in both WVD/AVD releases)</li>
-<li>Re-use you created WVDAdmin images without any change</li>
-<li>Higher flexibility rolling out new session hosts in different ways (you can use different VMSizes and images in one host pool)</li>
-<li>Easy to use user administration to send messages, logoff, disconnect or shadowing users over the full environment (filterable)</li>
-<li>…</li>
-</ul>
-<p>From an architectural perspective, the “Spring Update” is really close to the previews release. But there are a few differences:</p>
-<ul>
-<li>WVD tenant and tenant groups are no longer used</li>
-<li>“Workspaces” summarize multiple apps and desktop groups. These apps and desktops are shown in the client grouped by workspaces</li>
-<li>All resources like host pools, app groups are ARM resources in the Azure portal.</li>
-<li>App groups must be in the same region as the host pools</li>
-<li>A Workspace can group apps and desktop groups in the same region</li>
-<li>The regions of the session hosts are completely independent of the regions of the host pools (which is great)</li>
-<li>Today you have only a few regions to roll out host pools and workspaces (which is not so important because you can rollout the   session hosts in any region)</li>
-<li>And you can assign groups to apps and desktops</li>
-<li>…</li>
-</ul>
-<p><img src="../assets/images/WVDAdmin/SpringReleaseVSWVD.png" alt="AADBrowser" /></p>
-<p>Check out my video rolling out session hosts from an existing WVD/AVD image into the spring update (sorry for the bad sound - I will change this later):</p>
-<iframe width="800" height="815" src="https://www.youtube-nocookie.com/embed/Nb97VBiNQLI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<p>More details and download: <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">WVDAdmin</a></p>
-<p>And get additional information from <a href="https://www.linkedin.com/pulse/next-big-innovation-windows-virtual-desktop-here-freek-berson/">Freek Berson</a></p>
-<p>Official announcement: <a href="https://www.microsoft.com/en-us/microsoft-365/blog/2020/04/30/enable-remote-work-faster-new-windows-virtual-desktop-capabilities/">https://www.microsoft.com/en-us/microsoft-365/blog/2020/04/30/enable-remote-work-faster-new-windows-virtual-desktop-capabilities/</a></p>
-
             </div>
 
             <!-- Rating -->
@@ -507,7 +536,7 @@
             <!-- Post Date -->
             <p>
             <small>
-                <span class="post-date"><time class="post-date" datetime="2020-04-30">30 Apr 2020</time></span>           
+                <span class="post-date"><time class="post-date" datetime="2024-08-01">01 Aug 2024</time></span>           
                 
                 </small>
             </p>
@@ -541,10 +570,8 @@
             <!-- Prev/Next -->
             <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
             
-            <a class="prev d-block col-md-6" href="/Windows-Virtual-Desktop-Add-Users-and-Groups-to-WVD/"> &laquo; Using Azure AD groups to assign users to Azure Windows Virtual Desktop (WVD)</a>
+            <a class="prev d-block col-md-6" href="/Windows-Virtual-Desktop-Admin/"> &laquo; WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</a>
             
-            
-            <a class="next d-block col-md-6 text-lg-right" href="/Windows-Virtual-Desktop-Migrate-from-Fall-to-Spring/">Migrate Azure Windows Virtual Desktop Host Pools from Fall to Spring Release - WVD &raquo; </a>
             
             <div class="clearfix"></div>
             </div>

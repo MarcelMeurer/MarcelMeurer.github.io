@@ -5,9 +5,100 @@
     <description>Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 04 Jul 2024 14:42:02 +0200</pubDate>
-    <lastBuildDate>Thu, 04 Jul 2024 14:42:02 +0200</lastBuildDate>
+    <pubDate>Thu, 01 Aug 2024 12:05:09 +0200</pubDate>
+    <lastBuildDate>Thu, 01 Aug 2024 12:05:09 +0200</lastBuildDate>
     <generator>Jekyll v4.2.0</generator>
+    
+      <item>
+        <title>Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)</title>
+        <description>&lt;p&gt;Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates).&lt;/p&gt;
+&lt;p&gt;Also, my solution, &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;, uses the API to install Windows updates. That also includes draining, starting, installing, rebooting, etc. - all that is needed to update an existing host or a golden master. E.g.: Example of the script collection for an update:&lt;/p&gt;
+&lt;image&gt;
+&lt;p&gt;Unfortunately, a Microsoft patch broke the functionality of the Windows Update API. That is documented here: &lt;a href=&quot;https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;&gt;https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;If you have a broken computer, you will see the following error message: Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)
+&lt;img src=&quot;../assets/images/WSUS-API-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The documentation also explains how to resolve the issue using a KIR (known issue recovery), which requires some handwork or automation. To make this as easy as possible for users of &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;, I added the installation of the KIR as part of the “BuiltIn: OS Install Windows Updates”. Finally, it downloads and installs the KIR package and activates it. A final reboot is needed to bring it to work. If you are using the script as part of the script collection (see image above), it will first patch the host and install updates on the second try of running the “BuiltIn: OS Install Windows Updates”.&lt;/p&gt;
+&lt;p&gt;To get the updated built-in scripts, you can click on the icon in the upper-right corner inside of the scripts page:
+&lt;img src=&quot;../assets/images/WSUS-API-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Finally, you should have the updated script (reload the site first):
+&lt;img src=&quot;../assets/images/WSUS-API-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;After that, the Windows update procedure is working as expected:
+&lt;img src=&quot;../assets/images/WSUS-API-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Do you want to adapt your scripts? Here is my implementation. Feel free to use it:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Install Windows security updates directly over the internet. VM downloads the packages directly from Microsoft using the Windows Update service. A restart is required after the installation, which can be done with the script collection &amp;quot;OS Install Windows Updates&amp;quot;.
+$updateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
+$updateSearcher = New-Object -ComObject Microsoft.Update.Searcher
+$updateSession = New-Object -ComObject Microsoft.Update.Session
+
+$updatesKb=&amp;quot;&amp;quot;
+
+LogWriter(&amp;quot;Checking for updates&amp;quot;)
+$result = $updateSearcher.Search(&amp;quot;IsInstalled=0 and Type='Software' and IsHidden=0&amp;quot;)
+
+if ($result.Updates.Count -EQ 0) {
+	OutputWriter(&amp;quot;No new updates found&amp;quot;)
+}
+else {
+    try {
+        $updateDownloader = $updateSession.CreateUpdateDownloader()
+        $result.Updates|foreach {
+            LogWriter(&amp;quot;Found: $($_.Title)&amp;quot;)
+            $updatesKb=$updatesKb+$_.KBArticleIDs+&amp;quot; &amp;quot;
+            $updateCollection.Add($_)|Out-Null
+        }
+        LogWriter(&amp;quot;Downloading updates&amp;quot;)
+        $updateDownloader.Updates = $updateCollection
+        $updateDownloads = $updateDownloader.Download()
+        if (($updateDownloads.HResult -EQ 0) -AND ($updateDownloads.ResultCode -EQ 2)) {
+            LogWriter(&amp;quot;Downloads success&amp;quot;)
+        }
+        else {
+            LogWriter(&amp;quot;Downloads failed&amp;quot;)
+            Write-host(&amp;quot;ScriptReturnMessage:{Download failed}:ScriptReturnMessage&amp;quot;)
+            exit
+        }
+        LogWriter(&amp;quot;Installing updates&amp;quot;)
+        $updateInstaller = New-Object -ComObject Microsoft.Update.Installer
+        $updateInstaller.Updates = $updateCollection
+        $updateDownloads = $updateInstaller.Install()
+
+        OutputWriter(&amp;quot;Applied updates: $updatesKb&amp;quot;)
+    } catch {
+        if (($_ -like &amp;quot;*0x8002802B*&amp;quot;) -and (Get-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot; -Name &amp;quot;1931709068&amp;quot; -ErrorAction Ignore).&amp;quot;1931709068&amp;quot; -ne 0) {
+            # Update API issue: https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc
+            $hotFixKirUrl=&amp;quot;https://download.microsoft.com/download/3944f364-6483-49ab-af0d-3e2bd80dedaf/Windows%2011%2022H2%20KB5039302%20240711_20301%20Known%20Issue%20Rollback.msi&amp;quot;
+            try {
+                LogWriter (&amp;quot;Try to download KIR file to bring Windows Update API back&amp;quot;)
+                (New-Object System.Net.WebClient).DownloadFile($hotFixKirUrl, &amp;quot;$env:temp\KIRKB5039302.msi&amp;quot;)
+                Start-Process msiexec.exe -Wait -ArgumentList '/I $env:temp\KIRKB5039302.msi /quiet'
+                if (-not (Test-Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot;)) {
+                    New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot; -Force -ErrorAction SilentlyContinue
+                }
+                New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot; -Name &amp;quot;1931709068&amp;quot; -Value 0 -Force -ErrorAction SilentlyContinue
+            } catch {
+                LogWriter (&amp;quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&amp;quot;)
+                throw $_
+            }
+            # A reboot is required
+            OutputWriter(&amp;quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&amp;quot;)
+        } else {
+            LogWriter (&amp;quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&amp;quot;)
+            throw $_
+        }
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;</description>
+        <pubDate>Thu, 01 Aug 2024 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -1992,130 +2083,6 @@ AvdClientIp writes a log file to *%AppData%\ITProCloud\AvdClientIp.log. *
         <pubDate>Mon, 23 Oct 2023 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>OneDrive Clean-Up for Azure Virtual Desktop</title>
-        <description>&lt;p&gt;Running OneDrive with Azure Virtual Desktop is a common scenario and enables users to work in a modern way with Teams and SharePoint. If FSLogix is used, there is a challenge in combination with OneDrive: Users can download OneDrive files to the host, and the data are stored in the profile. The profile size increases heavily and causes some extra costs on the storage account.&lt;/p&gt;
-&lt;p&gt;Having so many OneDrive files stored in the profile may make no sense in every case - if a user access a file, the file is downloaded automatically (on demand). And it’s mostly fine to “unpin” the file later if the file is no longer needed. The files are downloaded fast, while AVD and OneDrive are in the Microsoft cloud.&lt;/p&gt;
-&lt;h3 id=&quot;background&quot;&gt;Background:&lt;/h3&gt;
-&lt;p&gt;OneDrive files can have three different states:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Cloud:&lt;/strong&gt;
-The file content is in the cloud only. The file system simulates that the file exists. While the content is not on the disk, the files don’t need storage on the device. If a user opens such a file, the content is downloaded, and the file state change to On-Device.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;On-Device:&lt;/strong&gt;
-The file content is also on the local disk, and the files are using local storage.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Always:&lt;/strong&gt;
-The file content is also on the local disk, and the files are using local storage. OneDrive wouldn’t change the state to “Cloud”.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/ODClaenUp-02.png&quot; alt=&quot;&quot; /&gt;
-&lt;br/&gt;&lt;/p&gt;
-&lt;p&gt;OneDrive can change the state to “Cloud” on normal Windows 10/11 devices using storage sense. Based on the implementation of storage sense, this is not working for Azure Virtual Desktop (Multi-Session) with FSLogix profiles.&lt;/p&gt;
-&lt;p&gt;A solution to avoid profile blotting in combination with FSLogix is changing the state of OneDrive files to “Cloud” (unpin files). If files are unpinned, they are no longer using local storage, and the “Disk Compaction” of FSLogix would reduce the profile automatically over time (or have more space left for user data).&lt;/p&gt;
-&lt;p&gt;I built a small tool to solve this challenge (I didn’t find a native solution). The tool is called OneDrive CleanUp. OneDrive CleanUp can run in two ways:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Started automatically with the login of the user (after the installation, it creates a link in the start-up folder of the start menu). It directly starts in the background and validates and maybe unpin OneDrive files. This process is repeated every 30 minutes and during the logoff of the user.&lt;/li&gt;
-&lt;li&gt;Start the program with the parameter /RunOnce during the logoff using a (group) policy.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;I prefer the first method to ensure that OneDrive has time to react to the unpinning of files.&lt;/p&gt;
-&lt;p&gt;Example for method 2:
-&lt;img src=&quot;../assets/images/ODClaenUp-03.png&quot; alt=&quot;&quot; /&gt;
-&lt;br/&gt;&lt;/p&gt;
-&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
-&lt;p&gt;In my test, my profile grew to 8 GByte while I pinned some files in OneDrive, and after logoff, the profile went back to 800 MByte while the tool unpinned the OneDrive files.&lt;/p&gt;
-&lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
-&lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\OneDriveCleanUp&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Key&lt;/th&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;th&gt;Default value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Enabled&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;If false, the application will not check the files&lt;/td&gt;
-&lt;td&gt;1=true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;RunEachMinutes&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Check OneDrive files each minutes&lt;/td&gt;
-&lt;td&gt;30&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;AlwaysUnpinFilesOlderThenDays&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Unpin files older then days (0: disabled )&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;AllowMbytesOnDisk&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Allow the configured value in MByte on the local disk&lt;/td&gt;
-&lt;td&gt;5120&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;IgnoreFilesContaining&lt;/td&gt;
-&lt;td&gt;Reg_SZ&lt;/td&gt;
-&lt;td&gt;String with separated values (;). If the path of a file contains one of the values, the file is ignored&lt;/td&gt;
-&lt;td&gt;Empty&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
-OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
-&lt;p&gt;Example:
-&lt;img src=&quot;../assets/images/ODClaenUp-01.png&quot; alt=&quot;&quot; /&gt;
-&lt;br/&gt;&lt;/p&gt;
-&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
-&lt;p&gt;OneDrive CleanUp regularly checks all OneDrive paths and calculates the size of the disk. If the size is larger than the configured maximum size (AllowMbytesOnDisk), it unpins files to go under the configured size. It starts from the oldest to the newest file based on the LastAccessTime property.&lt;/p&gt;
-&lt;br/&gt;
-&lt;h3 id=&quot;release-notes&quot;&gt;Release notes&lt;/h3&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Release&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.4&lt;/td&gt;
-&lt;td&gt;2023-05-04&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.5&lt;/td&gt;
-&lt;td&gt;2023-07-13&lt;/td&gt;
-&lt;td&gt;Fix: Files larger than 2 GByte were counted wrong&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.6&lt;/td&gt;
-&lt;td&gt;2023-10-17&lt;/td&gt;
-&lt;td&gt;Fix: Files larger than 4 GByte were counted wrong&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
-&lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/OneDriveCleanUp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/17/2023&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 17 Oct 2023 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</guid>
         
         
         <category>Windows Virtual Desktop</category>
