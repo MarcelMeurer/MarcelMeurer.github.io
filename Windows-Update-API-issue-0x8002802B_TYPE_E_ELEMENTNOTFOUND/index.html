@@ -1,4 +1,376 @@
-<p>Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates).</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logos/icon.png">
+
+<title>Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND) | ITProCloud Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND) | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v4.2.0" />
+<meta property="og:title" content="Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)" />
+<meta name="author" content="mm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates)." />
+<meta property="og:description" content="Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates)." />
+<link rel="canonical" href="https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/" />
+<meta property="og:url" content="https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/" />
+<meta property="og:site_name" content="ITProCloud Blog" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/WSUS-API-04.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-08-01T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/WSUS-API-04.png" />
+<meta property="twitter:title" content="Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)" />
+<script type="application/ld+json">
+{"@type":"BlogPosting","image":"https://blog.itprocloud.de/assets/images/WSUS-API-04.png","datePublished":"2024-08-01T00:00:00+02:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/","author":{"@type":"Person","name":"mm"},"headline":"Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)","dateModified":"2024-08-01T00:00:00+02:00","description":"Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates).","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<!--- cookie banner --->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-page">
+	<!-- defer loading of font and font awesome -->
+	<!-- <noscript id="deferred-styles"> -->
+		<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"> -->
+	<!-- </noscript> -->
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logos/itpc-logo-bottom-text.png" alt="ITProCloud Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/tools"><b>Tools</b></a>
+                </li>
+				
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
+                </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (65)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (64)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (12)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+	
+				<!-- Original tag list (unsorted) 
+				
+				
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-VM">Azure VM (2)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (9)</a>
+						</li>
+						
+					
+				
+				-->
+								
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://twitter.com/MarcelMeurer"><i class="fab fa-twitter"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/marcel-meurer-15b46b98"><i class="fab fa-linkedin"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://github.com/MarcelMeurer"><i class="fab fa-github"></i></a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="mailto:marcel.meurer@itprocloud.com?subject=Request%20from%20ITProCloud.de"><i class="far fa-envelope"></i></a>
+                </li>
+
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">ITProCloud Blog</h1>
+    <p class="lead">
+        Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <section>
+    <div class="section-title">
+        <h2><span>Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)</span></h2>
+    </div>
+
+    <div class="article-post">
+	
+		<!-- change content to anchor styled output -->
+		<p>Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates).</p>
 <p>Also, my solution, <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>, uses the API to install Windows updates. That also includes draining, starting, installing, rebooting, etc. - all that is needed to update an existing host or a golden master. E.g.: Example of the script collection for an update:</p>
 <p><img src="../assets/images/WSUS-API-05.png" alt="" /></p>
 <p>Unfortunately, a Microsoft patch broke the functionality of the Windows Update API. That is documented here: <a href="https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc">https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc</a></p>
@@ -76,3 +448,210 @@ else {
 }
 
 </code></pre>
+
+		<!--<p>Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates).</p>
+<p>Also, my solution, <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>, uses the API to install Windows updates. That also includes draining, starting, installing, rebooting, etc. - all that is needed to update an existing host or a golden master. E.g.: Example of the script collection for an update:</p>
+<p><img src="../assets/images/WSUS-API-05.png" alt="" /></p>
+<p>Unfortunately, a Microsoft patch broke the functionality of the Windows Update API. That is documented here: <a href="https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc">https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc</a></p>
+<p>If you have a broken computer, you will see the following error message: Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)
+<img src="../assets/images/WSUS-API-01.png" alt="" /></p>
+<p>The documentation also explains how to resolve the issue using a KIR (known issue recovery), which requires some handwork or automation. To make this as easy as possible for users of <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>, I added the installation of the KIR as part of the “BuiltIn: OS Install Windows Updates”. Finally, it downloads and installs the KIR package and activates it. A final reboot is needed to bring it to work. If you are using the script as part of the script collection (see image above), it will first patch the host and install updates on the second try of running the “BuiltIn: OS Install Windows Updates”.</p>
+<p>To get the updated built-in scripts, you can click on the icon in the upper-right corner inside of the scripts page:
+<img src="../assets/images/WSUS-API-02.png" alt="" /></p>
+<p>Finally, you should have the updated script (reload the site first):
+<img src="../assets/images/WSUS-API-03.png" alt="" /></p>
+<p>After that, the Windows update procedure is working as expected:
+<img src="../assets/images/WSUS-API-04.png" alt="" /></p>
+<p>Do you want to adapt your scripts? Here is my implementation. Feel free to use it:</p>
+<pre><code># Install Windows security updates directly over the internet. VM downloads the packages directly from Microsoft using the Windows Update service. A restart is required after the installation, which can be done with the script collection &quot;OS Install Windows Updates&quot;.
+$updateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
+$updateSearcher = New-Object -ComObject Microsoft.Update.Searcher
+$updateSession = New-Object -ComObject Microsoft.Update.Session
+
+$updatesKb=&quot;&quot;
+
+LogWriter(&quot;Checking for updates&quot;)
+$result = $updateSearcher.Search(&quot;IsInstalled=0 and Type='Software' and IsHidden=0&quot;)
+
+if ($result.Updates.Count -EQ 0) {
+	OutputWriter(&quot;No new updates found&quot;)
+}
+else {
+    try {
+        $updateDownloader = $updateSession.CreateUpdateDownloader()
+        $result.Updates|foreach {
+            LogWriter(&quot;Found: $($_.Title)&quot;)
+            $updatesKb=$updatesKb+$_.KBArticleIDs+&quot; &quot;
+            $updateCollection.Add($_)|Out-Null
+        }
+        LogWriter(&quot;Downloading updates&quot;)
+        $updateDownloader.Updates = $updateCollection
+        $updateDownloads = $updateDownloader.Download()
+        if (($updateDownloads.HResult -EQ 0) -AND ($updateDownloads.ResultCode -EQ 2)) {
+            LogWriter(&quot;Downloads success&quot;)
+        }
+        else {
+            LogWriter(&quot;Downloads failed&quot;)
+            Write-host(&quot;ScriptReturnMessage:{Download failed}:ScriptReturnMessage&quot;)
+            exit
+        }
+        LogWriter(&quot;Installing updates&quot;)
+        $updateInstaller = New-Object -ComObject Microsoft.Update.Installer
+        $updateInstaller.Updates = $updateCollection
+        $updateDownloads = $updateInstaller.Install()
+
+        OutputWriter(&quot;Applied updates: $updatesKb&quot;)
+    } catch {
+        if (($_ -like &quot;*0x8002802B*&quot;) -and (Get-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -ErrorAction Ignore).&quot;1931709068&quot; -ne 0) {
+            # Update API issue: https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc
+            $hotFixKirUrl=&quot;https://download.microsoft.com/download/3944f364-6483-49ab-af0d-3e2bd80dedaf/Windows%2011%2022H2%20KB5039302%20240711_20301%20Known%20Issue%20Rollback.msi&quot;
+            try {
+                LogWriter (&quot;Try to download KIR file to bring Windows Update API back&quot;)
+                (New-Object System.Net.WebClient).DownloadFile($hotFixKirUrl, &quot;$env:temp\KIRKB5039302.msi&quot;)
+                Start-Process msiexec.exe -Wait -ArgumentList '/I $env:temp\KIRKB5039302.msi /quiet'
+                if (-not (Test-Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot;)) {
+                    New-Item -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Force -ErrorAction SilentlyContinue
+                }
+                New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -Value 0 -Force -ErrorAction SilentlyContinue
+            } catch {
+                LogWriter (&quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&quot;)
+                throw $_
+            }
+            # A reboot is required
+            OutputWriter(&quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;)
+        } else {
+            LogWriter (&quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&quot;)
+            throw $_
+        }
+    }
+}
+
+</code></pre>-->
+	
+    
+</section>
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div id="allTags" class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore by tags <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-VM">Azure VM (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (9)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (12)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (9)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-AD">Azure AD (4)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#OneDrive">OneDrive (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-IoT">Azure IoT (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Functions">Azure Functions (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Marketplace">Azure Marketplace (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (8)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (65)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (64)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Webapp">Azure Webapp (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#ADConnect">ADConnect (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Stack-HCI">Azure Stack HCI (1)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 text-center text-lg-left">
+                Copyright © 2024 ITProCloud Blog 
+            </div>
+            <div class="col-md-4 col-sm-4 text-center text-lg-left">
+                <a href="/Impressum">Impressum</a>/<a href="/ImpressumEn">Imprint</a> - 
+                <a href="/privacyDe">Datenschutz</a> - 
+				<a href="/privacyEn">Privacy</a> - 
+				<a href="#" id="open_preferences_center">Update cookies preferences</a>
+            </div>
+            <div class="col-md-3 col-sm-3 text-center text-lg-right">    
+                <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+
+<!-- Cookie Consent by TermsFeed https://www.TermsFeed.com created on https://www.cookieconsent.com/ -->
+<script type="text/javascript" src="https://www.termsfeed.com/public/cookie-consent/4.1.0/cookie-consent.js" charset="UTF-8"></script>
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({"notice_banner_type":"simple","consent_type":"express","palette":"light","language":"en","page_load_consent_levels":["strictly-necessary"],"notice_banner_reject_button_hide":false,"preferences_center_close_button_hide":false,"page_refresh_confirmation_buttons":false,"website_name":"blog.ITProCloud.de","website_privacy_policy_url":"https://blog.itprocloud.de/privacyEn/"});
+});
+</script>
+
+<!-- Google Analytics -->
+<!-- Google tag (gtag.js) -->
+<script type="text/plain" data-cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=G-LPJZ1BMG3V">
+</script>
+<script type="text/plain" data-cookie-consent="tracking">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LPJZ1BMG3V');
+</script>
+<!-- end of Google Analytics-->
+
+<noscript>Free cookie consent management tool by <a href="https://www.termsfeed.com/">TermsFeed</a></noscript>
+<!-- End Cookie Consent by TermsFeed https://www.TermsFeed.com -->
+
+</body>
+</html>
