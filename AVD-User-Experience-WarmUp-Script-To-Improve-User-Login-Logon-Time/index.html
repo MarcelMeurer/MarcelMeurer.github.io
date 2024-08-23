@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logos/icon.png">
+
+<title>Improve AVD User Experience: Warm-Up to decreas User login time | ITProCloud Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Improve AVD User Experience: Warm-Up to decreas User login time | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v4.3.3" />
+<meta property="og:title" content="Improve AVD User Experience: Warm-Up to decreas User login time" />
+<meta name="author" content="mm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="If you are running Azure Virtual Desktop with FSLogix, the first login to a host takes longer than the following logins. I also wrote about this effect (I call is Cold vs. Warm start) a few weeks ago here: https://lnkd.in/eEQHP5gA and https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM" />
+<meta property="og:description" content="If you are running Azure Virtual Desktop with FSLogix, the first login to a host takes longer than the following logins. I also wrote about this effect (I call is Cold vs. Warm start) a few weeks ago here: https://lnkd.in/eEQHP5gA and https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM" />
+<link rel="canonical" href="https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/" />
+<meta property="og:url" content="https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/" />
+<meta property="og:site_name" content="ITProCloud Blog" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/AVD-UX-WarmUp-00.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2024-08-23T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/AVD-UX-WarmUp-00.png" />
+<meta property="twitter:title" content="Improve AVD User Experience: Warm-Up to decreas User login time" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2024-08-23T00:00:00+02:00","datePublished":"2024-08-23T00:00:00+02:00","description":"If you are running Azure Virtual Desktop with FSLogix, the first login to a host takes longer than the following logins. I also wrote about this effect (I call is Cold vs. Warm start) a few weeks ago here: https://lnkd.in/eEQHP5gA and https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM","headline":"Improve AVD User Experience: Warm-Up to decreas User login time","image":"https://blog.itprocloud.de/assets/images/AVD-UX-WarmUp-00.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<!--- cookie banner --->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-page">
+	<!-- defer loading of font and font awesome -->
+	<!-- <noscript id="deferred-styles"> -->
+		<!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous"> -->
+	<!-- </noscript> -->
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logos/itpc-logo-bottom-text.png" alt="ITProCloud Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/tools"><b>Tools</b></a>
+                </li>
+				
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
+                </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (66)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (65)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (12)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+	
+				<!-- Original tag list (unsorted) 
+				
+				
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-VM">Azure VM (2)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (9)</a>
+						</li>
+						
+					
+				
+				-->
+								
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://twitter.com/MarcelMeurer"><i class="fab fa-twitter"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/marcel-meurer-15b46b98"><i class="fab fa-linkedin"></i></a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://github.com/MarcelMeurer"><i class="fab fa-github"></i></a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="mailto:marcel.meurer@itprocloud.com?subject=Request%20from%20ITProCloud.de"><i class="far fa-envelope"></i></a>
+                </li>
+
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">ITProCloud Blog</h1>
+    <p class="lead">
+        Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <section>
+    <div class="section-title">
+        <h2><span>Improve AVD User Experience: Warm-Up to decreas User login time</span></h2>
+    </div>
+
+    <div class="article-post">
+	
+		<!-- change content to anchor styled output -->
+		<p>If you are running Azure Virtual Desktop with FSLogix, the first login to a host takes longer than the following logins. I also wrote about this effect (I call is Cold vs. Warm start) a few weeks ago here: <a href="https://lnkd.in/eEQHP5gA">https://lnkd.in/eEQHP5gA</a> and <a href="https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM">https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM</a></p>
+<p>In short, If a VM is started in Azure, the first login of a user takes much longer than the login of the following users to this VM. And: It makes no difference if the first user logs in one or 30 minutes after starting the VM. I did a lot of tests by running <em>ProcMon, FileActivityWatch, and RegistryChangesView</em> in the system context to capture events during the first login 🤓. I can clearly see dependencies to AppX packages on the VM. In my tests, processing of AppX packages for the first user took 120 seconds, and for the next user, only a few seconds. Right now, I cannot reproduce the first AppX processing without a user logging into the host (but I’m working on that). The first user will also see a black screen during the login.</p>
+<p>Therefore, I did another test: Create a temporary local user on the VM directly after the start and make a login (autogenerated passwords and direct deletion of the users after the login).</p>
+<p>The result is as expected: After the start of the VM, the warmup user triggers the AppX processing and other “initializations.” The next - regular - user experiences a much faster login while that is technically the second login for the VM.</p>
+<p>I wrote a script to automate a local logon after each VM/host’s start. That may not be the best way to handle this solution, but it is a workaround until I find a more pragmatic solution without a warm-up user.</p>
+<p><img src="../assets/images/AVD-UX-WarmUp-01.png" alt="" />
+<img src="../assets/images/AVD-UX-WarmUp-02.png" alt="" /></p>
+      <h2 id="how-does-it-work">
+        
+        
+          How does it work? <a href="#how-does-it-work"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>The script is started directly after the start of a VM/host and runs in the context of the computer. The following steps happen:</p>
+<ul>
+<li>Temporarily, allow RDS logon without validation computer certificates (only for the system account)</li>
+<li>Generate a local user (warm-up user) with a random password. The account automatically expires after 10 minutes</li>
+<li>Add the user to the Remote Desktop User Group</li>
+<li>Configure the sign-on via RDS to localhost</li>
+<li>The warm-up user connects via RDS to localhost (the first user logon)</li>
+<li>Wait 5 minutes</li>
+<li>Logoff the user</li>
+<li>Remove the user account</li>
+<li>Remove the user profile from disk</li>
+</ul>
+<p>There are some additional error-handling routines in the script.</p>
+<p><strong>Pro tip:</strong> If you ever search for a way to get session information with PowerShell without parsing qwinsta.exe or quser.exe, check the script. It also contains a PowerShell method to log off a specific session.</p>
+      <h2 id="install-the-warm-up-user-script">
+        
+        
+          Install the warm-up user script <a href="#install-the-warm-up-user-script"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>You can install the script on an existing host or on your Golden Master / Template VM (which you hopefully capture loss-less with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">WVDAdmin</a> or <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>). Copy the script to the VM and run the following command in an administrative PowerShell:</p>
+<p><strong>.\WarmUp.ps -Mode Install</strong></p>
+<p>This copies the script to C:\windows\WarmUp.ps1 and creates a scheduled task to start the script automatically with the computer.</p>
+      <h2 id="the-script">
+        
+        
+          The script <a href="#the-script"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+<p>Save it as WarmUp.ps1 or download it from here: <a href="https://gist.github.com/MarcelMeurer/1044690ed2619c145305e8cc335948a5">WarmUp.ps1</a></p>
+<pre><code>param(
+	[string] $Mode
+)
+
+Add-Type -Language CSharp -TypeDefinition @'
+using System;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Collections.Generic;
+namespace Rds {
+    public static class Sessions {
+        [DllImport(&quot;wtsapi32.dll&quot;)]
+        static extern IntPtr WTSOpenServer([MarshalAs(UnmanagedType.LPStr)] String pServerName);
+        [DllImport(&quot;wtsapi32.dll&quot;)]
+        static extern void WTSCloseServer(IntPtr hServer);
+        [DllImport(&quot;wtsapi32.dll&quot;)]
+        static extern Int32 WTSEnumerateSessions(IntPtr hServer,
+            [MarshalAs(UnmanagedType.U4)] Int32 Reserved,
+            [MarshalAs(UnmanagedType.U4)] Int32 Version, ref IntPtr ppSessionInfo,
+            [MarshalAs(UnmanagedType.U4)] ref Int32 pCount);
+        [DllImport(&quot;wtsapi32.dll&quot;)]
+        static extern void WTSFreeMemory(IntPtr pMemory);
+        [DllImport(&quot;Wtsapi32.dll&quot;)]
+        static extern bool WTSQuerySessionInformation(System.IntPtr hServer, int sessionId, WTS_INFO_CLASS wtsInfoClass, out System.IntPtr ppBuffer, out uint pBytesReturned);
+        [DllImport(&quot;Wtsapi32.dll&quot;)]
+        static extern bool WTSLogoffSession(System.IntPtr hServer, int sessionId, bool wait);
+        [StructLayout(LayoutKind.Sequential)]
+        private struct WTS_SESSION_INFO {
+            public Int32 SessionID;
+            [MarshalAs(UnmanagedType.LPStr)]
+            public String pWinStationName;
+            public WtsConnect State;
+        }
+        public enum WTS_INFO_CLASS {
+            WTSInitialProgram,
+            WTSApplicationName,
+            WTSWorkingDirectory,
+            WTSOEMId,
+            WTSSessionId,
+            WTSUserName,
+            WTSWinStationName,
+            WTSDomainName,
+            WTSConnectState,
+            WTSClientBuildNumber,
+            WTSClientName,
+            WTSClientDirectory,
+            WTSClientProductId,
+            WTSClientHardwareId,
+            WTSClientAddress,
+            WTSClientDisplay,
+            WTSClientProtocolType,
+            WTSIdleTime,
+            WTSLogonTime,
+            WTSIncomingBytes,
+            WTSOutgoingBytes,
+            WTSIncomingFrames,
+            WTSOutgoingFrames,
+            WTSClientInfo,
+            WTSSessionInfo,
+            WTSSessionInfoEx,
+            WTSConfigInfo,
+            WTSValidationInfo,
+            WTSSessionAddressV4,
+            WTSIsRemoteSession
+        }
+        public enum WtsConnect {
+            Active,
+            Connected,
+            ConnectQuery,
+            Shadow,
+            Disconnected,
+            Idle,
+            Listen,
+            Reset,
+            Down,
+            Init
+        }
+        public class WtsSessionInformation {
+            public string InitialProgram;
+            public string ApplicationName;
+            public string WorkingDirectory;
+            public string OEMId;
+            public int SessionId;
+            public string UserName;
+            public string WinStationName;
+            public string DomainName;
+            public WtsConnect ConnectState;
+            public string ConnectStateString;
+            public int ClientBuildNumber;
+            public string ClientName;
+            public string ClientDirectory;
+        }
+        public static IntPtr OpenServer(String name) {
+            IntPtr server = WTSOpenServer(name);
+            return server;
+        }
+        public static void CloseServer(IntPtr serverHandle) {
+            WTSCloseServer(serverHandle);
+        }
+        public static bool LogoffSession(int id, bool waitForLogoff) {
+            IntPtr serverHandle = IntPtr.Zero;
+            serverHandle = OpenServer(Environment.MachineName);
+            IntPtr sessionInfoPtr = IntPtr.Zero;
+            try {
+                return WTSLogoffSession(serverHandle, id, waitForLogoff);
+            } catch (Exception e) {
+                Console.WriteLine(&quot;Exception querying session information: &quot; + e.ToString());
+            } finally {
+                WTSFreeMemory(sessionInfoPtr);
+                CloseServer(serverHandle);
+            }
+            return false;
+        }
+        public static WtsSessionInformation GetSession(string userName) {
+            var sessions=GetSessions();
+            return sessions.FirstOrDefault(n=&gt;string.Equals(n.UserName, userName, StringComparison.InvariantCultureIgnoreCase));
+            
+        }
+        public static List &lt; WtsSessionInformation &gt; GetSessions() {
+            var wtsList = new List &lt; WtsSessionInformation &gt; ();
+            IntPtr serverHandle = IntPtr.Zero;
+            serverHandle = OpenServer(Environment.MachineName);
+            IntPtr sessionInfoPtr = IntPtr.Zero;
+            try {
+                IntPtr sPtr = IntPtr.Zero;
+                Int32 sessionCount = 0;
+                Int32 retVal = WTSEnumerateSessions(serverHandle, 0, 1, ref sessionInfoPtr, ref sessionCount);
+                Int32 dataSize = Marshal.SizeOf(typeof(WTS_SESSION_INFO));
+                Int64 currentSession = (long) sessionInfoPtr;
+                uint bytes = 0;
+                if (retVal != 0) {
+                    for (int i = 0; i &lt; sessionCount; i++) {
+                        WTS_SESSION_INFO si = (WTS_SESSION_INFO) Marshal.PtrToStructure((System.IntPtr) currentSession, typeof(WTS_SESSION_INFO));
+                        currentSession += dataSize;
+                        var wts = new WtsSessionInformation();
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSUserName, out sPtr, out bytes)) {
+                            wts.UserName = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSDomainName, out sPtr, out bytes)) {
+                            wts.DomainName = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSWinStationName, out sPtr, out bytes)) {
+                            wts.WinStationName = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSSessionId, out sPtr, out bytes)) {
+                            wts.SessionId = Marshal.ReadInt32(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSInitialProgram, out sPtr, out bytes)) {
+                            wts.InitialProgram = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSApplicationName, out sPtr, out bytes)) {
+                            wts.ApplicationName = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSWorkingDirectory, out sPtr, out bytes)) {
+                            wts.WorkingDirectory = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSConnectState, out sPtr, out bytes)) {
+                            wts.ConnectState = (WtsConnect) Marshal.ReadInt32(sPtr);
+                            wts.ConnectStateString = wts.ConnectState.ToString();
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSClientBuildNumber, out sPtr, out bytes)) {
+                            wts.ClientBuildNumber = Marshal.ReadInt32(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSClientName, out sPtr, out bytes)) {
+                            wts.ClientName = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSClientDirectory, out sPtr, out bytes)) {
+                            wts.ClientDirectory = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (!string.IsNullOrEmpty(wts.UserName)) wtsList.Add(wts);
+                    }
+                }
+                return wtsList;
+            } catch (Exception e) {
+                Console.WriteLine(&quot;Exception querying session information: &quot; + e.ToString());
+            } finally {
+                WTSFreeMemory(sessionInfoPtr);
+                CloseServer(serverHandle);
+            }
+            return null;
+        }
+    }
+}
+'@
+
+$LogDir=&quot;$($env:windir)\system32\LogFiles&quot;
+$LogFile=&quot;$($LogDir)\AVD.WarmUp.log&quot;
+function LogWriter($message) {
+	$message = &quot;$(Get-Date ([datetime]::UtcNow) -Format &quot;o&quot;) $message&quot;
+	write-host($message)
+	if ([System.IO.Directory]::Exists($LogDir)) { try { write-output($message) | Out-File $LogFile -Append } catch {} }
+}
+
+if ($mode -like &quot;install&quot;) {
+    LogWriter(&quot;Copy script to windir&quot;)
+    Copy-Item &quot;$($MyInvocation.InvocationName)&quot; -Destination ($env:windir + &quot;\WarmUp.ps1&quot;) 
+
+    LogWriter(&quot;Creating schedule task to run the script at startup&quot;)
+    $action = New-ScheduledTaskAction -Execute &quot;$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe&quot; -Argument &quot;-executionPolicy Unrestricted -File `&quot;$($env:windir)\WarmUp.ps1`&quot;&quot;
+    $trigger = New-ScheduledTaskTrigger	-AtStartup
+    $principal = New-ScheduledTaskPrincipal 'NT Authority\SYSTEM' -RunLevel Highest
+    $settingsSet = New-ScheduledTaskSettingsSet
+    $task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
+    Register-ScheduledTask -TaskName 'ITPC-AVD-WarmUpUser' -InputObject $task -ErrorAction Ignore
+    Enable-ScheduledTask -TaskName 'ITPC-AVD-WarmUpUser'
+} else {
+
+    $localUserName = &quot;warmup-user&quot;
+
+    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#' #$%^&amp;*()-_=+[]{}|;:,.&lt;&gt;?'
+    $localUserPWPlain = -join (1..32 | ForEach-Object { Get-Random -InputObject $characters.ToCharArray() }) +&quot;!@1aA&quot;
+
+    $localUserPW =  ConvertTo-SecureString -String $localUserPWPlain -AsPlainText -Force # https://www.sharepointdiary.com/2020/04/powershell-generate-random-password.html
+
+
+    # Store default configuration
+    LogWriter(&quot;Getting local configuration to use saved credentials for the warmup user&quot;)
+    $oldAuthenticationLevelOverride=$null
+    if (Test-Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot;) {
+        $oldAuthenticationLevelOverride = Get-ItemProperty -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -ErrorAction SilentlyContinue
+    } else {
+        New-Item -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Force -ErrorAction SilentlyContinue
+    }
+    if ($oldAuthenticationLevelOverride -eq $null) {$oldAuthenticationLevelOverride = 99} else {$oldAuthenticationLevelOverride = $oldAuthenticationLevelOverride.AuthenticationLevelOverride}
+
+
+    try {
+        LogWriter(&quot;Modifying configuration to login warmup user with stored credentials&quot;)
+        # Set temporary configuration to allow user logins
+        New-ItemProperty -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -Value 0 -Force
+        New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;DisablePasswordSaving&quot; -Value 1 -Force
+
+        # Prepare temporary local user
+        if ((Get-LocalUser -Name $localUserName -ErrorAction SilentlyContinue) -ne $null) {
+            LogWriter(&quot;Removing existing local warmup user&quot;)
+            Remove-LocalUser -Name $localUserName
+        }
+        LogWriter(&quot;Adding local user&quot;)
+        $localUser = New-LocalUser -Name $localUserName -Password $localUserPW -AccountExpires (Get-Date).AddMinutes(10) -PasswordNeverExpires -UserMayNotChangePassword
+        # Add user to remote desktop group
+        LogWriter(&quot;Adding user to the remote desktop group&quot;)
+        Add-LocalGroupMember -SID &quot;S-1-5-32-555&quot; -Member $localUserName -ErrorAction SilentlyContinue
+
+        # Login user
+        LogWriter(&quot;Adding credentials of the warmup user to the key store&quot;)
+        cmdkey /generic:TERMSRV/localhost /user:&quot;$($env:Computername)\$($localUserName)&quot; /pass:$localUserPWPlain
+        $startTime=Get-Date
+
+
+	$i=0
+	do {
+            LogWriter(&quot;Login in user warmup user&quot;)
+            if ($mstsc) {
+		$mstsc.Kill()
+		Start-Sleep -Seconds 6
+	    }
+            $mstsc = Start-Process -PassThru -FilePath &quot;mstsc.exe&quot; -ArgumentList &quot;/v:localhost&quot;
+    
+            # Wait for the user to login 
+            LogWriter(&quot;Waiting a few seconds&quot;)
+            Start-Sleep -Seconds 20
+            $i++		
+	} while ([Rds.Sessions]::GetSession($localUserName) -eq $null -and $i -le 10)
+
+        # Remove credentials
+        LogWriter(&quot;Removing credentials from the key store&quot;)
+        cmdkey /delete:TERMSRV/localhost
+
+        # Check, if user is connected
+        $session=[Rds.Sessions]::GetSession($localUserName)
+
+        if ($session -eq $null) {
+            LogWriter(&quot;Warning: Warm-up user is not connected. So, the workaround is not working for some reasons&quot;)
+        } else {
+            # Let the user for a while in the session and then logoff
+            LogWriter(&quot;Let the user logged in for a while&quot;)
+            Start-Sleep -Seconds 300
+            LogWriter(&quot;Logoff user&quot;)
+            [Rds.Sessions]::LogoffSession($session.SessionId, $true)
+            # Remove profile of the user
+            try {
+                LogWriter(&quot;Delete profile of the warm-up user&quot;)
+                @(Get-CimInstance -Class Win32_UserProfile | Where-Object { $_.Loaded -eq $false -and ($_.LocalPath.split('\')[-1] -like $localUserName -or $_.LocalPath.split('\')[-1] -like &quot;$($localUserName).*&quot;)}) | Remove-CimInstance
+
+            } catch {
+                LogWriter(&quot;Error: Cannot delete the profile of the warmup user: $_&quot;)
+            }
+
+        }
+        LogWriter(&quot;Terminate mstsc.exe, if running&quot;)
+        $mstsc.Kill()
+    } catch {
+        LogWriter(&quot;Error: $_&quot;)
+    } finally {
+        # Remove user
+        LogWriter(&quot;Disable and remove user&quot;)
+        Remove-LocalGroupMember -SID &quot;S-1-5-32-555&quot; -Member $localUserName
+        Disable-LocalUser -Name  $localUserName -ErrorAction SilentlyContinue
+        Remove-LocalUser -Name $localUserName -ErrorAction SilentlyContinue
+
+        # Restore default configuration
+        LogWriter(&quot;Restoring local configuration&quot;)
+        if ($oldAuthenticationLevelOverride -eq 99) {
+            Remove-ItemProperty &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -Force
+        } else {
+            New-ItemProperty -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -Value $oldAuthenticationLevelOverride -Force
+        }
+    }
+    LogWriter(&quot;Done&quot;)
+}
+</code></pre>
+
+		<!--<p>If you are running Azure Virtual Desktop with FSLogix, the first login to a host takes longer than the following logins. I also wrote about this effect (I call is Cold vs. Warm start) a few weeks ago here: <a href="https://lnkd.in/eEQHP5gA">https://lnkd.in/eEQHP5gA</a> and <a href="https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM">https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM</a></p>
+<p>In short, If a VM is started in Azure, the first login of a user takes much longer than the login of the following users to this VM. And: It makes no difference if the first user logs in one or 30 minutes after starting the VM. I did a lot of tests by running <em>ProcMon, FileActivityWatch, and RegistryChangesView</em> in the system context to capture events during the first login 🤓. I can clearly see dependencies to AppX packages on the VM. In my tests, processing of AppX packages for the first user took 120 seconds, and for the next user, only a few seconds. Right now, I cannot reproduce the first AppX processing without a user logging into the host (but I’m working on that). The first user will also see a black screen during the login.</p>
+<p>Therefore, I did another test: Create a temporary local user on the VM directly after the start and make a login (autogenerated passwords and direct deletion of the users after the login).</p>
+<p>The result is as expected: After the start of the VM, the warmup user triggers the AppX processing and other “initializations.” The next - regular - user experiences a much faster login while that is technically the second login for the VM.</p>
+<p>I wrote a script to automate a local logon after each VM/host’s start. That may not be the best way to handle this solution, but it is a workaround until I find a more pragmatic solution without a warm-up user.</p>
+<p><img src="../assets/images/AVD-UX-WarmUp-01.png" alt="" />
+<img src="../assets/images/AVD-UX-WarmUp-02.png" alt="" /></p>
+<h2 id="how-does-it-work">How does it work?</h2>
+<p>The script is started directly after the start of a VM/host and runs in the context of the computer. The following steps happen:</p>
+<ul>
+<li>Temporarily, allow RDS logon without validation computer certificates (only for the system account)</li>
+<li>Generate a local user (warm-up user) with a random password. The account automatically expires after 10 minutes</li>
+<li>Add the user to the Remote Desktop User Group</li>
+<li>Configure the sign-on via RDS to localhost</li>
+<li>The warm-up user connects via RDS to localhost (the first user logon)</li>
+<li>Wait 5 minutes</li>
+<li>Logoff the user</li>
+<li>Remove the user account</li>
+<li>Remove the user profile from disk</li>
+</ul>
+<p>There are some additional error-handling routines in the script.</p>
+<p><strong>Pro tip:</strong> If you ever search for a way to get session information with PowerShell without parsing qwinsta.exe or quser.exe, check the script. It also contains a PowerShell method to log off a specific session.</p>
+<h2 id="install-the-warm-up-user-script">Install the warm-up user script</h2>
+<p>You can install the script on an existing host or on your Golden Master / Template VM (which you hopefully capture loss-less with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">WVDAdmin</a> or <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>). Copy the script to the VM and run the following command in an administrative PowerShell:</p>
+<p><strong>.\WarmUp.ps -Mode Install</strong></p>
+<p>This copies the script to C:\windows\WarmUp.ps1 and creates a scheduled task to start the script automatically with the computer.</p>
+<h2 id="the-script">The script</h2>
+<p>Save it as WarmUp.ps1 or download it from here: <a href="https://gist.github.com/MarcelMeurer/1044690ed2619c145305e8cc335948a5">WarmUp.ps1</a></p>
+<pre><code>param(
+	[string] $Mode
+)
+
+Add-Type -Language CSharp -TypeDefinition @'
+using System;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Collections.Generic;
+namespace Rds {
+    public static class Sessions {
+        [DllImport(&quot;wtsapi32.dll&quot;)]
+        static extern IntPtr WTSOpenServer([MarshalAs(UnmanagedType.LPStr)] String pServerName);
+        [DllImport(&quot;wtsapi32.dll&quot;)]
+        static extern void WTSCloseServer(IntPtr hServer);
+        [DllImport(&quot;wtsapi32.dll&quot;)]
+        static extern Int32 WTSEnumerateSessions(IntPtr hServer,
+            [MarshalAs(UnmanagedType.U4)] Int32 Reserved,
+            [MarshalAs(UnmanagedType.U4)] Int32 Version, ref IntPtr ppSessionInfo,
+            [MarshalAs(UnmanagedType.U4)] ref Int32 pCount);
+        [DllImport(&quot;wtsapi32.dll&quot;)]
+        static extern void WTSFreeMemory(IntPtr pMemory);
+        [DllImport(&quot;Wtsapi32.dll&quot;)]
+        static extern bool WTSQuerySessionInformation(System.IntPtr hServer, int sessionId, WTS_INFO_CLASS wtsInfoClass, out System.IntPtr ppBuffer, out uint pBytesReturned);
+        [DllImport(&quot;Wtsapi32.dll&quot;)]
+        static extern bool WTSLogoffSession(System.IntPtr hServer, int sessionId, bool wait);
+        [StructLayout(LayoutKind.Sequential)]
+        private struct WTS_SESSION_INFO {
+            public Int32 SessionID;
+            [MarshalAs(UnmanagedType.LPStr)]
+            public String pWinStationName;
+            public WtsConnect State;
+        }
+        public enum WTS_INFO_CLASS {
+            WTSInitialProgram,
+            WTSApplicationName,
+            WTSWorkingDirectory,
+            WTSOEMId,
+            WTSSessionId,
+            WTSUserName,
+            WTSWinStationName,
+            WTSDomainName,
+            WTSConnectState,
+            WTSClientBuildNumber,
+            WTSClientName,
+            WTSClientDirectory,
+            WTSClientProductId,
+            WTSClientHardwareId,
+            WTSClientAddress,
+            WTSClientDisplay,
+            WTSClientProtocolType,
+            WTSIdleTime,
+            WTSLogonTime,
+            WTSIncomingBytes,
+            WTSOutgoingBytes,
+            WTSIncomingFrames,
+            WTSOutgoingFrames,
+            WTSClientInfo,
+            WTSSessionInfo,
+            WTSSessionInfoEx,
+            WTSConfigInfo,
+            WTSValidationInfo,
+            WTSSessionAddressV4,
+            WTSIsRemoteSession
+        }
+        public enum WtsConnect {
+            Active,
+            Connected,
+            ConnectQuery,
+            Shadow,
+            Disconnected,
+            Idle,
+            Listen,
+            Reset,
+            Down,
+            Init
+        }
+        public class WtsSessionInformation {
+            public string InitialProgram;
+            public string ApplicationName;
+            public string WorkingDirectory;
+            public string OEMId;
+            public int SessionId;
+            public string UserName;
+            public string WinStationName;
+            public string DomainName;
+            public WtsConnect ConnectState;
+            public string ConnectStateString;
+            public int ClientBuildNumber;
+            public string ClientName;
+            public string ClientDirectory;
+        }
+        public static IntPtr OpenServer(String name) {
+            IntPtr server = WTSOpenServer(name);
+            return server;
+        }
+        public static void CloseServer(IntPtr serverHandle) {
+            WTSCloseServer(serverHandle);
+        }
+        public static bool LogoffSession(int id, bool waitForLogoff) {
+            IntPtr serverHandle = IntPtr.Zero;
+            serverHandle = OpenServer(Environment.MachineName);
+            IntPtr sessionInfoPtr = IntPtr.Zero;
+            try {
+                return WTSLogoffSession(serverHandle, id, waitForLogoff);
+            } catch (Exception e) {
+                Console.WriteLine(&quot;Exception querying session information: &quot; + e.ToString());
+            } finally {
+                WTSFreeMemory(sessionInfoPtr);
+                CloseServer(serverHandle);
+            }
+            return false;
+        }
+        public static WtsSessionInformation GetSession(string userName) {
+            var sessions=GetSessions();
+            return sessions.FirstOrDefault(n=&gt;string.Equals(n.UserName, userName, StringComparison.InvariantCultureIgnoreCase));
+            
+        }
+        public static List &lt; WtsSessionInformation &gt; GetSessions() {
+            var wtsList = new List &lt; WtsSessionInformation &gt; ();
+            IntPtr serverHandle = IntPtr.Zero;
+            serverHandle = OpenServer(Environment.MachineName);
+            IntPtr sessionInfoPtr = IntPtr.Zero;
+            try {
+                IntPtr sPtr = IntPtr.Zero;
+                Int32 sessionCount = 0;
+                Int32 retVal = WTSEnumerateSessions(serverHandle, 0, 1, ref sessionInfoPtr, ref sessionCount);
+                Int32 dataSize = Marshal.SizeOf(typeof(WTS_SESSION_INFO));
+                Int64 currentSession = (long) sessionInfoPtr;
+                uint bytes = 0;
+                if (retVal != 0) {
+                    for (int i = 0; i &lt; sessionCount; i++) {
+                        WTS_SESSION_INFO si = (WTS_SESSION_INFO) Marshal.PtrToStructure((System.IntPtr) currentSession, typeof(WTS_SESSION_INFO));
+                        currentSession += dataSize;
+                        var wts = new WtsSessionInformation();
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSUserName, out sPtr, out bytes)) {
+                            wts.UserName = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSDomainName, out sPtr, out bytes)) {
+                            wts.DomainName = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSWinStationName, out sPtr, out bytes)) {
+                            wts.WinStationName = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSSessionId, out sPtr, out bytes)) {
+                            wts.SessionId = Marshal.ReadInt32(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSInitialProgram, out sPtr, out bytes)) {
+                            wts.InitialProgram = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSApplicationName, out sPtr, out bytes)) {
+                            wts.ApplicationName = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSWorkingDirectory, out sPtr, out bytes)) {
+                            wts.WorkingDirectory = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSConnectState, out sPtr, out bytes)) {
+                            wts.ConnectState = (WtsConnect) Marshal.ReadInt32(sPtr);
+                            wts.ConnectStateString = wts.ConnectState.ToString();
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSClientBuildNumber, out sPtr, out bytes)) {
+                            wts.ClientBuildNumber = Marshal.ReadInt32(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSClientName, out sPtr, out bytes)) {
+                            wts.ClientName = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSClientDirectory, out sPtr, out bytes)) {
+                            wts.ClientDirectory = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (!string.IsNullOrEmpty(wts.UserName)) wtsList.Add(wts);
+                    }
+                }
+                return wtsList;
+            } catch (Exception e) {
+                Console.WriteLine(&quot;Exception querying session information: &quot; + e.ToString());
+            } finally {
+                WTSFreeMemory(sessionInfoPtr);
+                CloseServer(serverHandle);
+            }
+            return null;
+        }
+    }
+}
+'@
+
+$LogDir=&quot;$($env:windir)\system32\LogFiles&quot;
+$LogFile=&quot;$($LogDir)\AVD.WarmUp.log&quot;
+function LogWriter($message) {
+	$message = &quot;$(Get-Date ([datetime]::UtcNow) -Format &quot;o&quot;) $message&quot;
+	write-host($message)
+	if ([System.IO.Directory]::Exists($LogDir)) { try { write-output($message) | Out-File $LogFile -Append } catch {} }
+}
+
+if ($mode -like &quot;install&quot;) {
+    LogWriter(&quot;Copy script to windir&quot;)
+    Copy-Item &quot;$($MyInvocation.InvocationName)&quot; -Destination ($env:windir + &quot;\WarmUp.ps1&quot;) 
+
+    LogWriter(&quot;Creating schedule task to run the script at startup&quot;)
+    $action = New-ScheduledTaskAction -Execute &quot;$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe&quot; -Argument &quot;-executionPolicy Unrestricted -File `&quot;$($env:windir)\WarmUp.ps1`&quot;&quot;
+    $trigger = New-ScheduledTaskTrigger	-AtStartup
+    $principal = New-ScheduledTaskPrincipal 'NT Authority\SYSTEM' -RunLevel Highest
+    $settingsSet = New-ScheduledTaskSettingsSet
+    $task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
+    Register-ScheduledTask -TaskName 'ITPC-AVD-WarmUpUser' -InputObject $task -ErrorAction Ignore
+    Enable-ScheduledTask -TaskName 'ITPC-AVD-WarmUpUser'
+} else {
+
+    $localUserName = &quot;warmup-user&quot;
+
+    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#' #$%^&amp;*()-_=+[]{}|;:,.&lt;&gt;?'
+    $localUserPWPlain = -join (1..32 | ForEach-Object { Get-Random -InputObject $characters.ToCharArray() }) +&quot;!@1aA&quot;
+
+    $localUserPW =  ConvertTo-SecureString -String $localUserPWPlain -AsPlainText -Force # https://www.sharepointdiary.com/2020/04/powershell-generate-random-password.html
+
+
+    # Store default configuration
+    LogWriter(&quot;Getting local configuration to use saved credentials for the warmup user&quot;)
+    $oldAuthenticationLevelOverride=$null
+    if (Test-Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot;) {
+        $oldAuthenticationLevelOverride = Get-ItemProperty -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -ErrorAction SilentlyContinue
+    } else {
+        New-Item -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Force -ErrorAction SilentlyContinue
+    }
+    if ($oldAuthenticationLevelOverride -eq $null) {$oldAuthenticationLevelOverride = 99} else {$oldAuthenticationLevelOverride = $oldAuthenticationLevelOverride.AuthenticationLevelOverride}
+
+
+    try {
+        LogWriter(&quot;Modifying configuration to login warmup user with stored credentials&quot;)
+        # Set temporary configuration to allow user logins
+        New-ItemProperty -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -Value 0 -Force
+        New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;DisablePasswordSaving&quot; -Value 1 -Force
+
+        # Prepare temporary local user
+        if ((Get-LocalUser -Name $localUserName -ErrorAction SilentlyContinue) -ne $null) {
+            LogWriter(&quot;Removing existing local warmup user&quot;)
+            Remove-LocalUser -Name $localUserName
+        }
+        LogWriter(&quot;Adding local user&quot;)
+        $localUser = New-LocalUser -Name $localUserName -Password $localUserPW -AccountExpires (Get-Date).AddMinutes(10) -PasswordNeverExpires -UserMayNotChangePassword
+        # Add user to remote desktop group
+        LogWriter(&quot;Adding user to the remote desktop group&quot;)
+        Add-LocalGroupMember -SID &quot;S-1-5-32-555&quot; -Member $localUserName -ErrorAction SilentlyContinue
+
+        # Login user
+        LogWriter(&quot;Adding credentials of the warmup user to the key store&quot;)
+        cmdkey /generic:TERMSRV/localhost /user:&quot;$($env:Computername)\$($localUserName)&quot; /pass:$localUserPWPlain
+        $startTime=Get-Date
+
+
+	$i=0
+	do {
+            LogWriter(&quot;Login in user warmup user&quot;)
+            if ($mstsc) {
+		$mstsc.Kill()
+		Start-Sleep -Seconds 6
+	    }
+            $mstsc = Start-Process -PassThru -FilePath &quot;mstsc.exe&quot; -ArgumentList &quot;/v:localhost&quot;
+    
+            # Wait for the user to login 
+            LogWriter(&quot;Waiting a few seconds&quot;)
+            Start-Sleep -Seconds 20
+            $i++		
+	} while ([Rds.Sessions]::GetSession($localUserName) -eq $null -and $i -le 10)
+
+        # Remove credentials
+        LogWriter(&quot;Removing credentials from the key store&quot;)
+        cmdkey /delete:TERMSRV/localhost
+
+        # Check, if user is connected
+        $session=[Rds.Sessions]::GetSession($localUserName)
+
+        if ($session -eq $null) {
+            LogWriter(&quot;Warning: Warm-up user is not connected. So, the workaround is not working for some reasons&quot;)
+        } else {
+            # Let the user for a while in the session and then logoff
+            LogWriter(&quot;Let the user logged in for a while&quot;)
+            Start-Sleep -Seconds 300
+            LogWriter(&quot;Logoff user&quot;)
+            [Rds.Sessions]::LogoffSession($session.SessionId, $true)
+            # Remove profile of the user
+            try {
+                LogWriter(&quot;Delete profile of the warm-up user&quot;)
+                @(Get-CimInstance -Class Win32_UserProfile | Where-Object { $_.Loaded -eq $false -and ($_.LocalPath.split('\')[-1] -like $localUserName -or $_.LocalPath.split('\')[-1] -like &quot;$($localUserName).*&quot;)}) | Remove-CimInstance
+
+            } catch {
+                LogWriter(&quot;Error: Cannot delete the profile of the warmup user: $_&quot;)
+            }
+
+        }
+        LogWriter(&quot;Terminate mstsc.exe, if running&quot;)
+        $mstsc.Kill()
+    } catch {
+        LogWriter(&quot;Error: $_&quot;)
+    } finally {
+        # Remove user
+        LogWriter(&quot;Disable and remove user&quot;)
+        Remove-LocalGroupMember -SID &quot;S-1-5-32-555&quot; -Member $localUserName
+        Disable-LocalUser -Name  $localUserName -ErrorAction SilentlyContinue
+        Remove-LocalUser -Name $localUserName -ErrorAction SilentlyContinue
+
+        # Restore default configuration
+        LogWriter(&quot;Restoring local configuration&quot;)
+        if ($oldAuthenticationLevelOverride -eq 99) {
+            Remove-ItemProperty &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -Force
+        } else {
+            New-ItemProperty -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -Value $oldAuthenticationLevelOverride -Force
+        }
+    }
+    LogWriter(&quot;Done&quot;)
+}
+</code></pre>-->
+	
+    
+</section>
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div id="allTags" class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore by tags <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-VM">Azure VM (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (9)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (12)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (9)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-AD">Azure AD (4)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#OneDrive">OneDrive (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-IoT">Azure IoT (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Functions">Azure Functions (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Marketplace">Azure Marketplace (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (8)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (66)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (65)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Webapp">Azure Webapp (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#ADConnect">ADConnect (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Stack-HCI">Azure Stack HCI (1)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 text-center text-lg-left">
+                Copyright © 2024 ITProCloud Blog 
+            </div>
+            <div class="col-md-4 col-sm-4 text-center text-lg-left">
+                <a href="/Impressum">Impressum</a>/<a href="/ImpressumEn">Imprint</a> - 
+                <a href="/privacyDe">Datenschutz</a> - 
+				<a href="/privacyEn">Privacy</a> - 
+				<a href="#" id="open_preferences_center">Update cookies preferences</a>
+            </div>
+            <div class="col-md-3 col-sm-3 text-center text-lg-right">    
+                <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+
+<!-- Cookie Consent by TermsFeed https://www.TermsFeed.com created on https://www.cookieconsent.com/ -->
+<script type="text/javascript" src="https://www.termsfeed.com/public/cookie-consent/4.1.0/cookie-consent.js" charset="UTF-8"></script>
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({"notice_banner_type":"simple","consent_type":"express","palette":"light","language":"en","page_load_consent_levels":["strictly-necessary"],"notice_banner_reject_button_hide":false,"preferences_center_close_button_hide":false,"page_refresh_confirmation_buttons":false,"website_name":"blog.ITProCloud.de","website_privacy_policy_url":"https://blog.itprocloud.de/privacyEn/"});
+});
+</script>
+
+<!-- Google Analytics -->
+<!-- Google tag (gtag.js) -->
+<script type="text/plain" data-cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=G-LPJZ1BMG3V">
+</script>
+<script type="text/plain" data-cookie-consent="tracking">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LPJZ1BMG3V');
+</script>
+<!-- end of Google Analytics-->
+
+<noscript>Free cookie consent management tool by <a href="https://www.termsfeed.com/">TermsFeed</a></noscript>
+<!-- End Cookie Consent by TermsFeed https://www.TermsFeed.com -->
+
+</body>
+</html>
