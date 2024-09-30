@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 30 Sep 2024 10:25:59 +0200</pubDate>
-    <lastBuildDate>Mon, 30 Sep 2024 10:25:59 +0200</lastBuildDate>
+    <pubDate>Mon, 30 Sep 2024 14:31:32 +0200</pubDate>
+    <lastBuildDate>Mon, 30 Sep 2024 14:31:32 +0200</lastBuildDate>
     <generator>Jekyll v4.3.3</generator>
     
       <item>
@@ -18,7 +18,7 @@
 &lt;/blockquote&gt;
 &lt;p&gt;The session hosts are also going into the &lt;strong&gt;“Need Assistance”&lt;/strong&gt; mode - even if users can still log in and continue working. It’s also reported, that the time stamp of the error message stays.&lt;/p&gt;
 &lt;p&gt;The issue is related to the AVD agent testing a UDP connection to the given (Microsoft) IP. This is a normal behaviour and can fail if customers are not allowing this connection through the firewall. If that is not working, connections are made via TCP. So far - so good. Unfortunately, the AVD agent shows this as an error, bringing the host into the &lt;strong&gt;“Need Assistance”&lt;/strong&gt; mode.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Important: Session hosts in this state do not count on the capacity of a pool in Hydra. It also can break autoscaling if you run Hydra version 1.0.8.5 or less. Also hosts in this state are &lt;strong&gt;not&lt;/strong&gt; deallocated automatically - they stay running until the error disappears.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Important: Session hosts in this state do not count on the capacity of a pool in Hydra. It also can break autoscaling if you run Hydra version 1.0.8.7 or less. Also hosts in this state are &lt;strong&gt;not&lt;/strong&gt; deallocated automatically - they stay running until the error disappears.&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;../assets/images/NA-Hydra.png&quot; alt=&quot;Download&quot; /&gt;&lt;/p&gt;
 &lt;h2 id=&quot;what-can-we-do&quot;&gt;What can we do?&lt;/h2&gt;
 &lt;h3 id=&quot;allowing-udp-communication-to-specific-ports-preferred&quot;&gt;Allowing UDP communication to specific ports (preferred)&lt;/h3&gt;
@@ -31,8 +31,8 @@
 &lt;p&gt;You can test the connection with the tool &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/troubleshoot-rdp-shortpath&quot;&gt;avdnettest.exe&lt;/a&gt; from Microsoft:
 &lt;img src=&quot;../assets/images/NA-avdnettest.png&quot; alt=&quot;Download&quot; /&gt;&lt;/p&gt;
 &lt;br/&gt;
-&lt;h3 id=&quot;update-hydra&quot;&gt;Update Hydra&lt;/h3&gt;
-&lt;p&gt;There is a new release of Hydra available from 09/26/2024 (v1.0.8.6) containing a hotfix to handle failed hosts. This will not remove the error message but should show the correct sessions and handle autoscaling also for hosts in the &lt;strong&gt;“Need Assistance”&lt;/strong&gt; mode. Please monitor your environment after update/hotfix: &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra?tab=readme-ov-file#updates-and-releases&quot;&gt;How to update Hydra&lt;/a&gt;
+&lt;h3 id=&quot;update-hydra-also-preferred&quot;&gt;Update Hydra (also preferred)&lt;/h3&gt;
+&lt;p&gt;There is a new release of Hydra available from 09/30/2024 (v1.0.8.7) containing a hotfix to handle failed hosts. This will not remove the error message but should show the correct sessions and handle autoscaling also for hosts in the &lt;strong&gt;“Need Assistance”&lt;/strong&gt; mode. Please monitor your environment after update/hotfix: &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra?tab=readme-ov-file#updates-and-releases&quot;&gt;How to update Hydra&lt;/a&gt;
 &lt;br/&gt;&lt;/p&gt;
 &lt;h3 id=&quot;disabling-udp-temporary-workaround&quot;&gt;Disabling UDP temporary (workaround)&lt;/h3&gt;
 &lt;p&gt;If option one is not possible, or the error messages are not disappearing, we can disable the use of UDP &lt;a href=&quot;https://admx.help/?Category=Windows_10_2016&amp;amp;Policy=Microsoft.Policies.TerminalServer::TS_SELECT_TRANSPORT&quot;&gt;via GPO&lt;/a&gt; or reg keys. The following script disables UDP, and it should also remove the error message. You can &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra/blob/main/README.md#scripts-and-script-collections&quot;&gt;create the script in Hydra&lt;/a&gt; and run it on the hosts (test it with one host first):&lt;/p&gt;
