@@ -408,7 +408,7 @@
       </h2>
     
 <p>You can install the script on an existing host or on your Golden Master / Template VM (which you hopefully capture loss-less with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">WVDAdmin</a> or <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>). Copy the script to the VM and run the following command in an administrative PowerShell:</p>
-<p><strong>.\WarmUp.ps -Mode Install</strong></p>
+<p><strong>.\WarmUp.ps1 -Mode Install</strong></p>
 <p>This copies the script to C:\windows\WarmUp.ps1 and creates a scheduled task to start the script automatically with the computer.</p>
       <h2 id="the-script">
         
@@ -766,7 +766,7 @@ if ($mode -like &quot;install&quot;) {
 <p><strong>Pro tip:</strong> If you ever search for a way to get session information with PowerShell without parsing qwinsta.exe or quser.exe, check the script. It also contains a PowerShell method to log off a specific session.</p>
 <h2 id="install-the-warm-up-user-script">Install the warm-up user script</h2>
 <p>You can install the script on an existing host or on your Golden Master / Template VM (which you hopefully capture loss-less with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">WVDAdmin</a> or <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>). Copy the script to the VM and run the following command in an administrative PowerShell:</p>
-<p><strong>.\WarmUp.ps -Mode Install</strong></p>
+<p><strong>.\WarmUp.ps1 -Mode Install</strong></p>
 <p>This copies the script to C:\windows\WarmUp.ps1 and creates a scheduled task to start the script automatically with the computer.</p>
 <h2 id="the-script">The script</h2>
 <p>Save it as WarmUp.ps1 or download it from here: <a href="https://gist.github.com/MarcelMeurer/1044690ed2619c145305e8cc335948a5">WarmUp.ps1</a></p>
