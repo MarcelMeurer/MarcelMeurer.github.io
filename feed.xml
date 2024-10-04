@@ -5,9 +5,144 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 02 Oct 2024 13:42:09 +0200</pubDate>
-    <lastBuildDate>Wed, 02 Oct 2024 13:42:09 +0200</lastBuildDate>
+    <pubDate>Fri, 04 Oct 2024 09:05:32 +0200</pubDate>
+    <lastBuildDate>Fri, 04 Oct 2024 09:05:32 +0200</lastBuildDate>
     <generator>Jekyll v4.3.3</generator>
+    
+      <item>
+        <title>OneDrive Clean-Up for Azure Virtual Desktop</title>
+        <description>&lt;p&gt;Running OneDrive with Azure Virtual Desktop is a common scenario and enables users to work in a modern way with Teams and SharePoint. If FSLogix is used, there is a challenge in combination with OneDrive: Users can download OneDrive files to the host, and the data are stored in the profile. The profile size increases heavily and causes some extra costs on the storage account.&lt;/p&gt;
+&lt;p&gt;Having so many OneDrive files stored in the profile may make no sense in every case - if a user access a file, the file is downloaded automatically (on demand). And it’s mostly fine to “unpin” the file later if the file is no longer needed. The files are downloaded fast, while AVD and OneDrive are in the Microsoft cloud.&lt;/p&gt;
+&lt;h3 id=&quot;background&quot;&gt;Background:&lt;/h3&gt;
+&lt;p&gt;OneDrive files can have three different states:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Cloud:&lt;/strong&gt;
+The file content is in the cloud only. The file system simulates that the file exists. While the content is not on the disk, the files don’t need storage on the device. If a user opens such a file, the content is downloaded, and the file state change to On-Device.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;On-Device:&lt;/strong&gt;
+The file content is also on the local disk, and the files are using local storage.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Always:&lt;/strong&gt;
+The file content is also on the local disk, and the files are using local storage. OneDrive wouldn’t change the state to “Cloud”.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/ODClaenUp-02.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;OneDrive can change the state to “Cloud” on normal Windows 10/11 devices using storage sense. Based on the implementation of storage sense, this is not working for Azure Virtual Desktop (Multi-Session) with FSLogix profiles.&lt;/p&gt;
+&lt;p&gt;A solution to avoid profile blotting in combination with FSLogix is changing the state of OneDrive files to “Cloud” (unpin files). If files are unpinned, they are no longer using local storage, and the “Disk Compaction” of FSLogix would reduce the profile automatically over time (or have more space left for user data).&lt;/p&gt;
+&lt;p&gt;I built a small tool to solve this challenge (I didn’t find a native solution). The tool is called OneDrive CleanUp. OneDrive CleanUp can run in two ways:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Started automatically with the login of the user (after the installation, it creates a link in the start-up folder of the start menu). It directly starts in the background and validates and maybe unpin OneDrive files. This process is repeated every 30 minutes and during the logoff of the user.&lt;/li&gt;
+&lt;li&gt;Start the program with the parameter /RunOnce during the logoff using a (group) policy.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I prefer the first method to ensure that OneDrive has time to react to the unpinning of files.&lt;/p&gt;
+&lt;p&gt;Example for method 2:
+&lt;img src=&quot;../assets/images/ODClaenUp-03.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
+&lt;p&gt;In my test, my profile grew to 8 GByte while I pinned some files in OneDrive, and after logoff, the profile went back to 800 MByte while the tool unpinned the OneDrive files.&lt;/p&gt;
+&lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
+&lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\OneDriveCleanUp&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Key&lt;/th&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;th&gt;Default value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Enabled&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;If false, the application will not check the files&lt;/td&gt;
+&lt;td&gt;1=true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RunEachMinutes&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Check OneDrive files each minutes&lt;/td&gt;
+&lt;td&gt;30&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AlwaysUnpinFilesOlderThenDays&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Unpin files older then days (0: disabled )&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AllowMbytesOnDisk&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Allow the configured value in MByte on the local disk&lt;/td&gt;
+&lt;td&gt;5120&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;IgnoreFilesContaining&lt;/td&gt;
+&lt;td&gt;Reg_SZ&lt;/td&gt;
+&lt;td&gt;String with separated values (;). If the path of a file contains one of the values, the file is ignored&lt;/td&gt;
+&lt;td&gt;Empty&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RunAtLogoff&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Run a last check while the user log off (can delay the logoff)&lt;/td&gt;
+&lt;td&gt;0=false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
+&lt;p&gt;Example:
+&lt;img src=&quot;../assets/images/ODClaenUp-01.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
+&lt;p&gt;OneDrive CleanUp regularly checks all OneDrive paths and calculates the size of the disk. If the size is larger than the configured maximum size (AllowMbytesOnDisk), it unpins files to go under the configured size. It starts from the oldest to the newest file based on the LastAccessTime property.&lt;/p&gt;
+&lt;br/&gt;
+&lt;h3 id=&quot;release-notes&quot;&gt;Release notes&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Release&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.4&lt;/td&gt;
+&lt;td&gt;2023-05-04&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.5&lt;/td&gt;
+&lt;td&gt;2023-07-13&lt;/td&gt;
+&lt;td&gt;Fix: Files larger than 2 GByte were counted wrong&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.6&lt;/td&gt;
+&lt;td&gt;2023-10-17&lt;/td&gt;
+&lt;td&gt;Fix: Files larger than 4 GByte were counted wrong&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.7&lt;/td&gt;
+&lt;td&gt;2024-10-03&lt;/td&gt;
+&lt;td&gt;Add: Feature: RunAtLogoff with a default value of 0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+&lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/OneDriveCleanUp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/03/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 03 Oct 2024 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>AVD Need Assistance - NAT shape is Undetermined when probing turn:20.202.248.2:3478?Udp TURN relay health check failed ...</title>
@@ -2155,83 +2290,6 @@ Hint: If the OS disk is encrypted, the imaging process will take longer. A clone
         <category>Windows Virtual Desktop</category>
         
         <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Imaging, Rollout and Manage Azure Virtual Desktop on Azure Stack HCI with Hydra</title>
-        <description>&lt;h3 id=&quot;manage-azure-virtual-desktop-on-azure-stack-hci-with-a-hrefhttpsgithubcommarcelmeurerwvd-hydrahydraa&quot;&gt;Manage Azure Virtual Desktop on Azure Stack HCI with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra&lt;/a&gt;&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; is the one-stop solution for managing and operating AVD in a clever and easy way. Hydra supports administrators in managing user sessions, creating images without losing the Golden Master, deploying and re-deploying session hosts, and automating daily tasks with a powerful and easy-to-use engine. This and much more for single and multiple tenants.&lt;/p&gt;
-&lt;p&gt;Right now, starting from version 1.0.6, Hydra supports hosts on &lt;strong&gt;Azure Stack HCI 23H2&lt;/strong&gt;. Does mean you can leverage the feature set of Hydra to handle hosts on HCI in mostly the same way as hosts in Azure:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Autoscaling of pooled and personal host pools&lt;/li&gt;
-&lt;li&gt;Let user start their personal hosts&lt;/li&gt;
-&lt;li&gt;Create images from Azure VMs and store them in a custom location (on HCI)&lt;/li&gt;
-&lt;li&gt;Create multiple hosts with a click&lt;/li&gt;
-&lt;li&gt;Replace hosts with hosts based on an updated image&lt;/li&gt;
-&lt;li&gt;Automat the daily tasks with scripts and collections&lt;/li&gt;
-&lt;li&gt;Handle user sessions independently from the host type (HCI vs. Azure VM)&lt;/li&gt;
-&lt;li&gt;Using the Hydra agent to show and terminate processes&lt;/li&gt;
-&lt;li&gt;…&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Autoscaling is especially important, while Microsoft announced &lt;strong&gt;charging 1 US cent per core and hour&lt;/strong&gt; for a running host on HCI. Additionally, the self-service for users of personal hosts is nice as well, while power-on-connect is not available for HCI right now.&lt;/p&gt;
-&lt;h4 id=&quot;how-does-hydra-integrate-hosts-on-hci&quot;&gt;How does Hydra integrate hosts on HCI&lt;/h4&gt;
-&lt;p&gt;There is no need for a special configuration. If Hydra reads a custom location in Azure, it automatically offers the networks in the location as a target to roll out new hosts. Existing hosts on HCI are also automatically handled by Hydra. The only &lt;strong&gt;requirement is Azure Stack HCI 22H3&lt;/strong&gt; with a configured resource bridge.&lt;/p&gt;
-&lt;p&gt;Finally, there is nearly no difference between hosts in Azure or on HCI for Hydra. Theoretically, a host pool can contain both types of hosts (if it makes sense). The difference between both types of hosts is the location/custom location.&lt;/p&gt;
-&lt;p&gt;And yes, some configurations are unavailable for HCI hosts, like switching the disk types.&lt;/p&gt;
-&lt;h4 id=&quot;how-to-configure-autoscaling&quot;&gt;How to configure autoscaling&lt;/h4&gt;
-&lt;p&gt;Autoscaling works in the same way as hosts in Azure. Follow the documentation to configure autoscaling: &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra?tab=readme-ov-file#scaling&quot;&gt;https://github.com/MarcelMeurer/WVD-Hydra?tab=readme-ov-file#scaling&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;As shown in the screenshot, Hydra starts session hosts automatically before users try to log in. And in the other direction, if users are logging off at the end of the work day.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/HCI-Hydra-002.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Please note that Power-On-Connect is not working for HCI right now.&lt;/p&gt;
-&lt;h4 id=&quot;how-to-give-users-access-to-start-their-personal-hosts&quot;&gt;How to give users access to start their personal hosts&lt;/h4&gt;
-&lt;p&gt;Give users or a user group the role “User” in Hydra. After this, users can access Hydra and only see the menu item “My Sessions &amp;amp; Hosts”. From this, users can start/stop/restart the personal hosts or log off their sessions.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/HCI-Hydra-006.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h4 id=&quot;how-to-create-a-custom-image-and-do-a-roll-out&quot;&gt;How to create a custom image and do a roll out&lt;/h4&gt;
-&lt;p&gt;Creating images based on a “Golden Master” is one of the strengths of Hydra. Compared to a manual approach, Hydra always runs the imaging process of a clone of the Golden Master. This is important to avoid that sysprep destroying the Golden Master. So, with Hydra, administrators can use the original Golden Master to update and maintain the image the next time. The imaging process looks like this:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/HCI-Hydra-003.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;After creating the image, the clone is deleted during the clean-up.
-Imaging for HCI works in the same way, but we must consider a few points right now:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;We can only use an Azure VM as a master – not a VM on HCI&lt;/li&gt;
-&lt;li&gt;While we cannot use Trusted Launch for custom images in HCI, our Golden Master must have the &lt;strong&gt;security type “Standard”&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;We can create a custom image for HCI with the following steps:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Create your Golden Master VM in Azure (not HCI)
-&lt;ul&gt;
-&lt;li&gt;Use a Windows 11 (multi-user) marketplace image&lt;/li&gt;
-&lt;li&gt;Security type: &lt;strong&gt;Standard&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Login to the VM&lt;/li&gt;
-&lt;li&gt;Optionally: Join to an AD domain&lt;/li&gt;
-&lt;li&gt;Install Windows Updates&lt;/li&gt;
-&lt;li&gt;Install Applications&lt;/li&gt;
-&lt;li&gt;Go to the Hydra portal -&amp;gt; Image Builder -&amp;gt; Create an Image&lt;/li&gt;
-&lt;li&gt;Select your Golden Master VM&lt;/li&gt;
-&lt;li&gt;Select a Target Resource Group to store the Azure image&lt;/li&gt;
-&lt;li&gt;In the section “Azure Stack HCI” select the custom location&lt;/li&gt;
-&lt;li&gt;Optionally configure the other two options&lt;/li&gt;
-&lt;li&gt;Click on “Create Image”&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Caution:&lt;/strong&gt; Never let Hydra delete an image that is being used by a virtual machine. VMs can no longer be started or stopped if the base image is deleted. Only deletion would work.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/HCI-Hydra-004.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The VM will be cloned, and the image will be transferred to the custom location (that could take a while). After that, you can create new hosts in a host pool by configuring the rollout configuration in the Hydra settings “New Session Host Rollout” of the host pool:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/HCI-Hydra-005.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Click on the plus icon in the session host list of a host pool to roll out hosts with the custom image.&lt;/p&gt;
-&lt;h4 id=&quot;a-hrefhttpsyoutubeji6plhjvcysee-a-short-video-on-how-to-work-with-hydra-and-azure-stack-hcia&quot;&gt;&lt;a href=&quot;https://youtu.be/ji6_pLhJVCY&quot;&gt;See a short video on how to work with Hydra and Azure Stack HCI&lt;/a&gt;&lt;/h4&gt;
-</description>
-        <pubDate>Sat, 24 Feb 2024 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Hydra-For-Azure-Stack-HCI-Deplyoment-Management/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Hydra-For-Azure-Stack-HCI-Deplyoment-Management/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Azure Stack HCI</category>
         
       </item>
     
