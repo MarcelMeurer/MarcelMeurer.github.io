@@ -5,9 +5,40 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 04 Oct 2024 09:05:32 +0200</pubDate>
-    <lastBuildDate>Fri, 04 Oct 2024 09:05:32 +0200</lastBuildDate>
+    <pubDate>Tue, 08 Oct 2024 18:22:58 +0200</pubDate>
+    <lastBuildDate>Tue, 08 Oct 2024 18:22:58 +0200</lastBuildDate>
     <generator>Jekyll v4.3.3</generator>
+    
+      <item>
+        <title>Entra Dynamic Device Groups for Azure Virtual Desktop - Host Pools, Resource Groups and Subscriptions</title>
+        <description>&lt;p&gt;I was searching for an option to group all AVD hosts (Entra and hybrid joined) of a pool in a dynamic device group. Unfortunately, I didn’t find a perfect solution that works without modifying the device objects through the Graph API (or AD for hybrid joined devices (extensionAttributes)). If one of the readers knows a good solution for this, please share it.&lt;/p&gt;
+&lt;p&gt;Therefore, I checked the different properties of a device in Entra to find one I can use to create a dynamic device group. I prefer having a naming schema reflecting the specific host pools. AVD-DESIGN-001 and up counting would be a good match to identify all hosts of my pool “Design”. The rule is simple:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-02.png&quot; alt=&quot;&quot; /&gt;
+&lt;code&gt;(device.displayName -startsWith &amp;quot;AVD-DESIGN-&amp;quot;)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;After a while, the group contains all hosts/VMs matching this schema. The query can also be made more complex by including/excluding specific Windows types (multi-user or single-user OS).&lt;/p&gt;
+&lt;p&gt;I also found another interesting property in the devices for Entra joined VMs (not for hybrid joined):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The property “physicalIds” contains a list of strings. One string reflects the Azure resource ID of the virtual machine (the session hosts the linked VM):&lt;/p&gt;
+&lt;p&gt;The resource ID in Azure has a default schema that reflects the subscription ID, resource group name, provider, and the name of the resource. Some resources also have subtypes, which is not important for our VMs. The resource ID is always in the device property and is written with the join of the device to Entra.&lt;/p&gt;
+&lt;p&gt;We can now build dynamic device groups based on the resource group or subscription. If you are using different resource groups for your host pools, you can also use this method to group the VMs — independent from the naming concept. Or you can group all the VMs of your AVD subscription and combine them to validate the display names. That makes your dynamic group more resilient and excludes VMs from other subscriptions.&lt;/p&gt;
+&lt;p&gt;Here is an example of grouping all VMs in the resource group “WVD.Design2” in the given subscription:
+&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-04.png&quot; alt=&quot;&quot; /&gt;
+&lt;code&gt;(device.devicePhysicalIds -any (_ -startsWith&amp;quot;[AzureResourceId]:/subscriptions/dcdce2ee-****-****-****-************/resourceGroups/wvd.Design2/providers/Microsoft.Compute/virtualMachines/&amp;quot;))&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;After a while, all VMs/hosts are members of the group.&lt;/p&gt;
+&lt;p&gt;Even if that doesn’t solve my challenge very well, it’s a nice workaround or at least increased my insights.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 08 Oct 2024 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Entra</category>
+        
+      </item>
     
       <item>
         <title>OneDrive Clean-Up for Azure Virtual Desktop</title>
@@ -2244,47 +2275,6 @@ Hint: If the OS disk is encrypted, the imaging process will take longer. A clone
         <pubDate>Sun, 23 Jun 2024 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/AVD-Capturing-and-Deploying-Confidential-Session-Hosts/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Capturing-and-Deploying-Confidential-Session-Hosts/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>How to image a Golden Master VM based on a plan to a compute gallery definition</title>
-        <description>&lt;p&gt;The Azure Marketplace offers many preconfigured VMs, which are preconfigured images from a third-party vendor used to deploy a VM. One popular offering is “CIS Hardened Image Level 1 on Microsoft Windows 11 Enterprise—Gen 2.” The Center for Internet Security Inc. has hardened the Windows 11 image and provides it through the marketplace for a small fee. That is called a “Plan” for a VM.&lt;/p&gt;
-&lt;p&gt;That image can be used for a Golden Master: Install your application on top, create an image, and deploy multiple session hosts / virtual machines in your Azure Virtual Desktop environment (and yes, that also costs a bit more for each deployed host). Unfortunately, it’s not so easy to capture an image directly into an Azure Compute Gallery definition - which is needed if you want to deploy trusted launch VMs afterward.&lt;/p&gt;
-&lt;p&gt;When attempting to capture an image directly into a Compute Gallery Definition using &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; (to create loss-less images), you may encounter the following error message:&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;The resource with id ‘/subscriptions/xxxxxxxxxxx/resourceGroups/WVD_Templates/providers/Microsoft.Compute/virtualMachines/TEMP_T-CIS-Plan-01_2024-06-19_19-19-51’ has a different plan [’{“name”:“cis-windows11-enterprise-l1-gen2”,“publisher”:“center-for-internet-security-inc”,“product”:“cis-windows-enterprise”,“promotionCode”:null}’] than the parent gallery image plan [‘null’]&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;The error message gives a hint. The Compute Gallery Definition must be prepared to accept image versions with a plan (the market place image). Therefore, we have to create a matching Compute Gallery Definition. But first, we have to figure out the “Purchase plan name”, “Purchase plan publisher name”, and “Purchase plan product name”. If you already have deployed the VM / your Golden Master. You can grab the information form the JSON-view of the VM:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Gallery-Plan-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Later, we will use the following data to configure the Compute Gallery Definition:&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Name = Purchase plan name: cis-windows11-enterprise-l1-gen2&lt;/strong&gt; &lt;/br&gt;
-&lt;strong&gt;Publisher = Purchase plan publisher name: center-for-internet-security-inc&lt;/strong&gt; &lt;/br&gt;
-&lt;strong&gt;Product = Purchase plan product name: cis-windows-enterprise&lt;/strong&gt; &lt;/br&gt;&lt;/p&gt;
-&lt;p&gt;Now, we can start creating the Compute Gallery Definition. If you don’t already have a Compute Gallery, create it first. Click on Add -&amp;gt; VM image definition. Fill out the formula, e.g.:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;VM image definition name: &lt;strong&gt;Custom-CIS-Image_TrustedLaunch&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Security type: &lt;strong&gt;Trusted launch&lt;/strong&gt; (not support); that allows you to create trusted launch enabled hosts later&lt;/li&gt;
-&lt;li&gt;Publisher: &lt;strong&gt;ITProCloud&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Offer: &lt;strong&gt;CIS-Image-Custom-TrustedLaunch&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;SKU: &lt;strong&gt;A&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;(The combination of Publisher/Offer/SKU must be unique in a Compute Gallery)&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Gallery-Plan-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;NEXT -&amp;gt; NEXT -&amp;gt; Publishing options:&lt;/p&gt;
-&lt;p&gt;That page is important for the plan configuration to store the CIS image. Fill out the fields for “Purchase plan name”, “Purchase plan publisher name”, and “Purchase plan product name” with the noted values:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Gallery-Plan-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Click Review + Create -&amp;gt; Create&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Gallery-Plan-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Finally, you can create a loss-less image with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; directly into the Gallery Definition:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Gallery-Plan-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-</description>
-        <pubDate>Thu, 20 Jun 2024 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/</guid>
         
         
         <category>Windows Virtual Desktop</category>
