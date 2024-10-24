@@ -5,1011 +5,16 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 24 Oct 2024 14:40:48 +0200</pubDate>
-    <lastBuildDate>Thu, 24 Oct 2024 14:40:48 +0200</lastBuildDate>
+    <pubDate>Thu, 24 Oct 2024 14:59:37 +0200</pubDate>
+    <lastBuildDate>Thu, 24 Oct 2024 14:59:37 +0200</lastBuildDate>
     <generator>Jekyll v4.3.3</generator>
-    
-      <item>
-        <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
-        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Log Type&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
-&lt;td&gt;Details about the session hosts&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDConnections&lt;/td&gt;
-&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDErrors&lt;/td&gt;
-&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, …)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDFeeds&lt;/td&gt;
-&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
-&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDManagement&lt;/td&gt;
-&lt;td&gt;Log about administrative tasks&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDCheckpoints&lt;/td&gt;
-&lt;td&gt;Detailed information related to logins, errors, …&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDConnectionNetworkData&lt;/td&gt;
-&lt;td&gt;Network information (bandwidth and RTT)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that (use version 1.7.25 or higher):&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;After a while, the workbook is visible as a new template in: &lt;strong&gt;Log Analytics -&amp;gt; Workbooks -&amp;gt; Azure Virtual Desktop -&amp;gt; AVD - Deep-Insights&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;” occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
-&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Version&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1&lt;/td&gt;
-&lt;td&gt;01/28/2022&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.2&lt;/td&gt;
-&lt;td&gt;02/17/2022&lt;/td&gt;
-&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); see &lt;a href=&quot;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&quot;&gt;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&lt;/a&gt; &lt;br /&gt;&lt;br /&gt;Name changed to AVD - Deep-Insights&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.3&lt;/td&gt;
-&lt;td&gt;03/16/2022&lt;/td&gt;
-&lt;td&gt;Include Logon timing (GPO, FSLogix, Authentication, etc.)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.4&lt;/td&gt;
-&lt;td&gt;04/14/2022&lt;/td&gt;
-&lt;td&gt;In Session Bandwidths &amp;amp; Latencies: The connection type is shown if RDP Short Path is used (Public, Private). See: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.5&lt;/td&gt;
-&lt;td&gt;05/03/2022&lt;/td&gt;
-&lt;td&gt;New visualization: Logon timing per day and category over the time&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.6&lt;/td&gt;
-&lt;td&gt;10/11/2022&lt;/td&gt;
-&lt;td&gt;New visualization: Connections over time, unhealthy session hosts, graphic performance&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.7&lt;/td&gt;
-&lt;td&gt;11/03/2022&lt;/td&gt;
-&lt;td&gt;Optimization for charts to show data over a large time frame&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.8&lt;/td&gt;
-&lt;td&gt;11/14/2022&lt;/td&gt;
-&lt;td&gt;A new tab “Resources”, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.9&lt;/td&gt;
-&lt;td&gt;11/18/2022&lt;/td&gt;
-&lt;td&gt;A new tab “Resources”, to show orphan VMs (where the session host object is missing)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.0&lt;/td&gt;
-&lt;td&gt;12/01/2022&lt;/td&gt;
-&lt;td&gt;Changed the description for the estimated available bandwidth&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.1&lt;/td&gt;
-&lt;td&gt;12/09/2022&lt;/td&gt;
-&lt;td&gt;Added orphan disks and orphan nics to the “Resources” tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop, version 1.0.1.84 (comming soon))&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.2&lt;/td&gt;
-&lt;td&gt;02/02/2023&lt;/td&gt;
-&lt;td&gt;Added “Water Markings” to query session information by the feature &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/watermarking&quot;&gt;WaterMarking&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.3&lt;/td&gt;
-&lt;td&gt;02/20/2023&lt;/td&gt;
-&lt;td&gt;Added “Unresponding AVD Agents” in the tab “Resources” to identify running VM with a non responding AVD agent&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.4&lt;/td&gt;
-&lt;td&gt;02/21/2023&lt;/td&gt;
-&lt;td&gt;Added new tab “FSLogix” to show the size, usage and free space of the FSLogix profiles&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.5&lt;/td&gt;
-&lt;td&gt;03/08/2023&lt;/td&gt;
-&lt;td&gt;Fix in the time selector; allow to selecte multiple host pools; show active sessions with user name and started desktop/remote app&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.6&lt;/td&gt;
-&lt;td&gt;03/31/2023&lt;/td&gt;
-&lt;td&gt;Add: Show office container size and usage (ODFC) in the FSLogix tab (additional to the profile container)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.7&lt;/td&gt;
-&lt;td&gt;07/01/2023&lt;/td&gt;
-&lt;td&gt;Fix/Workaround: VHDFreeSpace is stored as text in MByte and not in GByte if the value is less then 1 GByte&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.8&lt;/td&gt;
-&lt;td&gt;10/13/2023&lt;/td&gt;
-&lt;td&gt;Add: Show the last heart beat time in the Orphan session hosts view and warns, if the heart beat is longer then 90 days ago&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3.0&lt;/td&gt;
-&lt;td&gt;06/24/2024&lt;/td&gt;
-&lt;td&gt;Fix: Orphan resources are now including temporary orphan hosts&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3.1&lt;/td&gt;
-&lt;td&gt;10/24/2024&lt;/td&gt;
-&lt;td&gt;Add: Show “TURN” in session bandwidth and latency (if session was connected via TURN)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don’t generate costs&lt;/p&gt;
-</description>
-        <pubDate>Thu, 24 Oct 2024 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Azure Monitor</category>
-        
-        <category>Log Analytics</category>
-        
-      </item>
-    
-      <item>
-        <title>Entra Dynamic Device Groups for Azure Virtual Desktop - Host Pools, Resource Groups and Subscriptions</title>
-        <description>&lt;p&gt;I was searching for an option to group all AVD hosts (Entra and hybrid joined) of a pool in a dynamic device group. Unfortunately, I didn’t find a perfect solution that works without modifying the device objects through the Graph API (or AD for hybrid joined devices (extensionAttributes)). If one of the readers knows a good solution for this, please share it.&lt;/p&gt;
-&lt;p&gt;Therefore, I checked the different properties of a device in Entra to find one I can use to create a dynamic device group. I prefer having a naming schema reflecting the specific host pools. AVD-DESIGN-001 and up counting would be a good match to identify all hosts of my pool “Design”. The rule is simple:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-02.png&quot; alt=&quot;&quot; /&gt;
-&lt;code&gt;(device.displayName -startsWith &amp;quot;AVD-DESIGN-&amp;quot;)&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;After a while, the group contains all hosts/VMs matching this schema. The query can also be made more complex by including/excluding specific Windows types (multi-user or single-user OS).&lt;/p&gt;
-&lt;p&gt;I also found another interesting property in the devices for Entra joined VMs (not for hybrid joined):&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The property “physicalIds” contains a list of strings. One string reflects the Azure resource ID of the virtual machine (the session hosts the linked VM):&lt;/p&gt;
-&lt;p&gt;The resource ID in Azure has a default schema that reflects the subscription ID, resource group name, provider, and the name of the resource. Some resources also have subtypes, which is not important for our VMs. The resource ID is always in the device property and is written with the join of the device to Entra.&lt;/p&gt;
-&lt;p&gt;We can now build dynamic device groups based on the resource group or subscription. If you are using different resource groups for your host pools, you can also use this method to group the VMs — independent from the naming concept. Or you can group all the VMs of your AVD subscription and combine them to validate the display names. That makes your dynamic group more resilient and excludes VMs from other subscriptions.&lt;/p&gt;
-&lt;p&gt;Here is an example of grouping all VMs in the resource group “WVD.Design2” in the given subscription:
-&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-04.png&quot; alt=&quot;&quot; /&gt;
-&lt;code&gt;(device.devicePhysicalIds -any (_ -startsWith&amp;quot;[AzureResourceId]:/subscriptions/dcdce2ee-****-****-****-************/resourceGroups/wvd.Design2/providers/Microsoft.Compute/virtualMachines/&amp;quot;))&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;After a while, all VMs/hosts are members of the group.&lt;/p&gt;
-&lt;p&gt;Even if that doesn’t solve my challenge very well, it’s a nice workaround or at least increased my insights.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 08 Oct 2024 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Entra</category>
-        
-      </item>
-    
-      <item>
-        <title>OneDrive Clean-Up for Azure Virtual Desktop</title>
-        <description>&lt;p&gt;Running OneDrive with Azure Virtual Desktop is a common scenario and enables users to work in a modern way with Teams and SharePoint. If FSLogix is used, there is a challenge in combination with OneDrive: Users can download OneDrive files to the host, and the data are stored in the profile. The profile size increases heavily and causes some extra costs on the storage account.&lt;/p&gt;
-&lt;p&gt;Having so many OneDrive files stored in the profile may make no sense in every case - if a user access a file, the file is downloaded automatically (on demand). And it’s mostly fine to “unpin” the file later if the file is no longer needed. The files are downloaded fast, while AVD and OneDrive are in the Microsoft cloud.&lt;/p&gt;
-&lt;h3 id=&quot;background&quot;&gt;Background:&lt;/h3&gt;
-&lt;p&gt;OneDrive files can have three different states:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Cloud:&lt;/strong&gt;
-The file content is in the cloud only. The file system simulates that the file exists. While the content is not on the disk, the files don’t need storage on the device. If a user opens such a file, the content is downloaded, and the file state change to On-Device.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;On-Device:&lt;/strong&gt;
-The file content is also on the local disk, and the files are using local storage.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Always:&lt;/strong&gt;
-The file content is also on the local disk, and the files are using local storage. OneDrive wouldn’t change the state to “Cloud”.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/ODClaenUp-02.png&quot; alt=&quot;&quot; /&gt;
-&lt;br/&gt;&lt;/p&gt;
-&lt;p&gt;OneDrive can change the state to “Cloud” on normal Windows 10/11 devices using storage sense. Based on the implementation of storage sense, this is not working for Azure Virtual Desktop (Multi-Session) with FSLogix profiles.&lt;/p&gt;
-&lt;p&gt;A solution to avoid profile blotting in combination with FSLogix is changing the state of OneDrive files to “Cloud” (unpin files). If files are unpinned, they are no longer using local storage, and the “Disk Compaction” of FSLogix would reduce the profile automatically over time (or have more space left for user data).&lt;/p&gt;
-&lt;p&gt;I built a small tool to solve this challenge (I didn’t find a native solution). The tool is called OneDrive CleanUp. OneDrive CleanUp can run in two ways:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Started automatically with the login of the user (after the installation, it creates a link in the start-up folder of the start menu). It directly starts in the background and validates and maybe unpin OneDrive files. This process is repeated every 30 minutes and during the logoff of the user.&lt;/li&gt;
-&lt;li&gt;Start the program with the parameter /RunOnce during the logoff using a (group) policy.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;I prefer the first method to ensure that OneDrive has time to react to the unpinning of files.&lt;/p&gt;
-&lt;p&gt;Example for method 2:
-&lt;img src=&quot;../assets/images/ODClaenUp-03.png&quot; alt=&quot;&quot; /&gt;
-&lt;br/&gt;&lt;/p&gt;
-&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
-&lt;p&gt;In my test, my profile grew to 8 GByte while I pinned some files in OneDrive, and after logoff, the profile went back to 800 MByte while the tool unpinned the OneDrive files.&lt;/p&gt;
-&lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
-&lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\OneDriveCleanUp&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Key&lt;/th&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;th&gt;Default value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Enabled&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;If false, the application will not check the files&lt;/td&gt;
-&lt;td&gt;1=true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;RunEachMinutes&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Check OneDrive files each minutes&lt;/td&gt;
-&lt;td&gt;30&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;AlwaysUnpinFilesOlderThenDays&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Unpin files older then days (0: disabled )&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;AllowMbytesOnDisk&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Allow the configured value in MByte on the local disk&lt;/td&gt;
-&lt;td&gt;5120&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;IgnoreFilesContaining&lt;/td&gt;
-&lt;td&gt;Reg_SZ&lt;/td&gt;
-&lt;td&gt;String with separated values (;). If the path of a file contains one of the values, the file is ignored&lt;/td&gt;
-&lt;td&gt;Empty&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;RunAtLogoff&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Run a last check while the user log off (can delay the logoff)&lt;/td&gt;
-&lt;td&gt;0=false&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
-OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
-&lt;p&gt;Example:
-&lt;img src=&quot;../assets/images/ODClaenUp-01.png&quot; alt=&quot;&quot; /&gt;
-&lt;br/&gt;&lt;/p&gt;
-&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
-&lt;p&gt;OneDrive CleanUp regularly checks all OneDrive paths and calculates the size of the disk. If the size is larger than the configured maximum size (AllowMbytesOnDisk), it unpins files to go under the configured size. It starts from the oldest to the newest file based on the LastAccessTime property.&lt;/p&gt;
-&lt;br/&gt;
-&lt;h3 id=&quot;release-notes&quot;&gt;Release notes&lt;/h3&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Release&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.4&lt;/td&gt;
-&lt;td&gt;2023-05-04&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.5&lt;/td&gt;
-&lt;td&gt;2023-07-13&lt;/td&gt;
-&lt;td&gt;Fix: Files larger than 2 GByte were counted wrong&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.6&lt;/td&gt;
-&lt;td&gt;2023-10-17&lt;/td&gt;
-&lt;td&gt;Fix: Files larger than 4 GByte were counted wrong&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.7&lt;/td&gt;
-&lt;td&gt;2024-10-03&lt;/td&gt;
-&lt;td&gt;Add: Feature: RunAtLogoff with a default value of 0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
-&lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/OneDriveCleanUp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/03/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 03 Oct 2024 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>AVD Need Assistance - NAT shape is Undetermined when probing turn:20.202.248.2:3478?Udp TURN relay health check failed ...</title>
-        <description>&lt;h1 id=&quot;current-issues-avd-agent-reports-an-issue-and-brings-the-hosts-into-strongneed-assistancestrong&quot;&gt;Current issues: AVD agent reports an issue and brings the hosts into &lt;strong&gt;“Need Assistance”&lt;/strong&gt;&lt;/h1&gt;
-&lt;p&gt;In the last September week, I got a lot of emails and team messages. Customers are seeing the following error message on session hosts in the Azure Portal and in Hydra:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;NAT shape is Undetermined when probing [turn:20.202.248.2:3478?Udp] TURN relay health check failed for server [turn:20.202.248.2:3478?Udp] - One or more errors occurred.-&amp;gt;Timed out waiting for Receive to complete - Code: -2147467259 - 2024-09-26T07:39:15.704086Z&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;The session hosts are also going into the &lt;strong&gt;“Need Assistance”&lt;/strong&gt; mode - even if users can still log in and continue working. It’s also reported, that the time stamp of the error message stays.&lt;/p&gt;
-&lt;p&gt;The issue is related to the AVD agent testing a UDP connection to the given (Microsoft) IP. This is a normal behaviour and can fail if customers are not allowing this connection through the firewall. If that is not working, connections are made via TCP. So far - so good. Unfortunately, the AVD agent shows this as an error, bringing the host into the &lt;strong&gt;“Need Assistance”&lt;/strong&gt; mode.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Important: Session hosts in this state do not count on the capacity of a pool in Hydra. It also can break autoscaling if you run Hydra version 1.0.8.7 or less. Also hosts in this state are &lt;strong&gt;not&lt;/strong&gt; deallocated automatically - they stay running until the error disappears.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/NA-Hydra.png&quot; alt=&quot;Download&quot; /&gt;&lt;/p&gt;
-&lt;h2 id=&quot;what-can-we-do&quot;&gt;What can we do?&lt;/h2&gt;
-&lt;h3 id=&quot;allowing-udp-communication-to-specific-ports-preferred&quot;&gt;Allowing UDP communication to specific ports (preferred)&lt;/h3&gt;
-&lt;p&gt;You can configure the firewall to allow communication to the mentioned ports if that is an option for your environment/company. In short, the following communication from the hosts to the internet must be possible:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Target: 20.202.0.0/16, Port 3478 UDP&lt;/li&gt;
-&lt;li&gt;Target: 20.202.0.0/16, Port 443 TCP&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/rdp-shortpath?tabs=public-networks&quot;&gt;Link to the blog post&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;You can test the connection with the tool &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/troubleshoot-rdp-shortpath&quot;&gt;avdnettest.exe&lt;/a&gt; from Microsoft:
-&lt;img src=&quot;../assets/images/NA-avdnettest.png&quot; alt=&quot;Download&quot; /&gt;&lt;/p&gt;
-&lt;br/&gt;
-&lt;h3 id=&quot;update-hydra-also-preferred&quot;&gt;Update Hydra (also preferred)&lt;/h3&gt;
-&lt;p&gt;There is a new release of Hydra available from 09/30/2024 (v1.0.8.7) containing a hotfix to handle failed hosts. This will not remove the error message but should show the correct sessions and handle autoscaling also for hosts in the &lt;strong&gt;“Need Assistance”&lt;/strong&gt; mode. Please monitor your environment after update/hotfix: &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra?tab=readme-ov-file#updates-and-releases&quot;&gt;How to update Hydra&lt;/a&gt;
-&lt;br/&gt;&lt;/p&gt;
-&lt;h3 id=&quot;disabling-udp-temporary-workaround&quot;&gt;Disabling UDP temporary (workaround)&lt;/h3&gt;
-&lt;p&gt;If option one is not possible, or the error messages are not disappearing, we can disable the use of UDP &lt;a href=&quot;https://admx.help/?Category=Windows_10_2016&amp;amp;Policy=Microsoft.Policies.TerminalServer::TS_SELECT_TRANSPORT&quot;&gt;via GPO&lt;/a&gt; or reg keys. The following script disables UDP, and it should also remove the error message. You can &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra/blob/main/README.md#scripts-and-script-collections&quot;&gt;create the script in Hydra&lt;/a&gt; and run it on the hosts (test it with one host first):&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;SelectTransport&amp;quot; -Value 1 -force # default: 0
-
-# Reset old failure state
-if (Test-Path -Path &amp;quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckReport&amp;quot;) {
-    Remove-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckReport&amp;quot; -Name &amp;quot;AgentHealthCheckReport&amp;quot; -ErrorAction SilentlyContinue
-    Remove-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckReport&amp;quot; -Name &amp;quot;AgentHealthCheckTimestamp&amp;quot; -ErrorAction SilentlyContinue
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;If you rollout a new host, make sure to reapply this settings. That can be done in Hydra -&amp;gt; Host Pool -&amp;gt; New Session Host Rollout -&amp;gt; Run script or script collection after deployment
-&lt;br/&gt;&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;It’s also a good idea to open a ticket to let Microsoft fix this issue with the service/AVD agent.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 26 Sep 2024 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Need-Assistance-NAT-shape-is-Undetermined-when-probing-TURN-relay-health-check-failed/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Need-Assistance-NAT-shape-is-Undetermined-when-probing-TURN-relay-health-check-failed/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>CountrySwitch - First Logon Experience and language selector and an app starter for remote apps on network paths for AVD</title>
-        <description>&lt;h2 id=&quot;first-logon-experience-and-language-selector-and-an-app-starter-for-remote-apps-on-network-paths&quot;&gt;First Logon Experience and language selector and an app starter for remote apps on network paths&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/16/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&quot;select-the-language-users&quot;&gt;Select the language (users)&lt;/h2&gt;
-&lt;p&gt;In some environments, customers are running Azure on Windows 10/11 with multiple language packs installed. After the first login, users have to choose their language to customize the environment - that is not so easy, while users have to open the language settings and select the language. The first steps are outside the user’s language and are not easy to do for everyone.&lt;/p&gt;
-&lt;p&gt;I built a tool that makes it easier for users to select their language by clicking on the right flag. Currently, the following features are available:&lt;/p&gt;
-&lt;p&gt;Feature regarding the language selection:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;The tool shows the installed language packages by a flag of the countries.&lt;/li&gt;
-&lt;li&gt;A welcome message in the present language welcomes the users.&lt;/li&gt;
-&lt;li&gt;The user selects the language settings with a click on the flag.&lt;/li&gt;
-&lt;li&gt;Hovering the mouse over a flag shows the country and language name.&lt;/li&gt;
-&lt;li&gt;The app configures the language settings (and does one logoff to apply the setting).&lt;/li&gt;
-&lt;li&gt;The PowerShell script CountrySwitch-User.ps1 in the program files folder is started to do some optional customizing (language code is in $languageTag)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;CountrySwitch is linked in all users’ start menu:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Startup: With parameter /RunOnce - Starts CountrySwitch at logon. The user will see the language selector only if the user is new and didn’t select a language once (HKCU:\SOFTWARE\ITProCloud\CountrySwitch\Completed is set to 1 )&lt;/li&gt;
-&lt;li&gt;Direct: Without parameters - Users can star CountrySwitch manually to select the language&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Note on Remote Apps&lt;/strong&gt;: Remote apps are ignoring the autostart folder. To have CountrySwitch enabled for remote app, please configure a local Startup script (local policy for users) with the following parameters:
-Name of script: “C:\Program Files\ITProCloud.de\CountrySwitch\CountrySwitch.exe”
-Parameters:	/runonce&lt;/p&gt;
-&lt;h2 id=&quot;app-starter-for-remote-apps&quot;&gt;App Starter for remote apps&lt;/h2&gt;
-&lt;p&gt;CountrySwitch can also start a local or an application on a file share (which normally does not work directly with AVD). Publish CountrySwitch as a remote app with the following parameters:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;&amp;lt;path to executable with parameters&amp;gt;&amp;quot; &amp;quot;&amp;lt;Working directory&amp;gt;&amp;quot;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot; &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;If a remote app is started with CountrySwitch, CountrySwitch first starts the PowerShell script CountrySwitch-App.ps1 in the program files folder to do some optional customization. The following parameters are set in the script:&lt;/p&gt;
-&lt;p&gt;Example:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$languageTag = &amp;quot;unknown&amp;quot;,
-$appCommandline = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot;,
-$appWorkingDir = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;,
-$appParameter = &amp;quot;/db=vm1&amp;quot;,
-$appExecutable = &amp;quot;finance.exe&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;The application starts after the PowerShell script finishes (CountrySwitch will run hidden and terminates after the start of the application (e.g., finance.exe).&lt;/p&gt;
-&lt;h2 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h2&gt;
-&lt;p&gt;CountrySwitch logs into %AppData%\ITProCloud&lt;/p&gt;
-&lt;p&gt;There are the following reg keys to optionally configure CountrySwitch:&lt;/p&gt;
-&lt;p&gt;HKLM:\SOFTWARE\Policies\ITProCloud\CountrySwitch (alls values are dword - 1 is true; 0 is false)&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Key&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;th&gt;Default value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Enabled&lt;/td&gt;
-&lt;td&gt;If false, the application will not show up (except for /remoteapp (App starter mode))&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;ExitOnRunOnceCompleted&lt;/td&gt;
-&lt;td&gt;If the app is started with /runonce and the user has already completed the process, the application will not show up&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;ExitOnSingleLanguage&lt;/td&gt;
-&lt;td&gt;If only one language is installed, don’t show up&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;LogoffUserAfterSelectingNewLanguage logoff user after selecting a new language&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;LogoffUserAfterSelectingSameLanguage&lt;/td&gt;
-&lt;td&gt;Logoff user after selecting the same language as the user is still using&lt;/td&gt;
-&lt;td&gt;false&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;RunUserScriptAfterSelectingLanguage&lt;/td&gt;
-&lt;td&gt;Runs the ps script CountrySwitch-User.ps1 -languageTag {xx-YY} after the user selects a language&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;DisableUserScriptForAppStarterMode&lt;/td&gt;
-&lt;td&gt;If true, the app starter mode for a remote app will no longer trigger CountrySwitch-App before starting the application&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
-&lt;h2 id=&quot;release-notes&quot;&gt;Release notes&lt;/h2&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Release&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1.3&lt;/td&gt;
-&lt;td&gt;2023-05-04&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1.4&lt;/td&gt;
-&lt;td&gt;2023-05-10&lt;/td&gt;
-&lt;td&gt;Update: CountrySwitch-User.ps1 had a typo&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1.7&lt;/td&gt;
-&lt;td&gt;2023-05-11&lt;/td&gt;
-&lt;td&gt;Fix: Avoid showing MSI installation screen for users if package unaccessible&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1.9&lt;/td&gt;
-&lt;td&gt;2024-09-16&lt;/td&gt;
-&lt;td&gt;Fix: Prevents that the logoff message is shown multiple times if the user multiple clicks on a flag&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/16/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 16 Sep 2024 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Improve AVD User Experience: Warm-Up to decreas User login time</title>
-        <description>&lt;p&gt;If you are running Azure Virtual Desktop with FSLogix, the first login to a host takes longer than the following logins. I also wrote about this effect (I call is Cold vs. Warm start) a few weeks ago here: &lt;a href=&quot;https://lnkd.in/eEQHP5gA&quot;&gt;https://lnkd.in/eEQHP5gA&lt;/a&gt; and &lt;a href=&quot;https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM&quot;&gt;https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;In short, If a VM is started in Azure, the first login of a user takes much longer than the login of the following users to this VM. And: It makes no difference if the first user logs in one or 30 minutes after starting the VM. I did a lot of tests by running &lt;em&gt;ProcMon, FileActivityWatch, and RegistryChangesView&lt;/em&gt; in the system context to capture events during the first login 🤓. I can clearly see dependencies to AppX packages on the VM. In my tests, processing of AppX packages for the first user took 120 seconds, and for the next user, only a few seconds. Right now, I cannot reproduce the first AppX processing without a user logging into the host (but I’m working on that). The first user will also see a black screen during the login.&lt;/p&gt;
-&lt;p&gt;Therefore, I did another test: Create a temporary local user on the VM directly after the start and make a login (autogenerated passwords and direct deletion of the users after the login).&lt;/p&gt;
-&lt;p&gt;The result is as expected: After the start of the VM, the warmup user triggers the AppX processing and other “initializations.” The next - regular - user experiences a much faster login while that is technically the second login for the VM.&lt;/p&gt;
-&lt;p&gt;I wrote a script to automate a local logon after each VM/host’s start. That may not be the best way to handle this solution, but it is a workaround until I find a more pragmatic solution without a warm-up user.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-UX-WarmUp-01.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/AVD-UX-WarmUp-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h2 id=&quot;how-does-it-work&quot;&gt;How does it work?&lt;/h2&gt;
-&lt;p&gt;The script is started directly after the start of a VM/host and runs in the context of the computer. The following steps happen:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Temporarily, allow RDS logon without validation computer certificates (only for the system account)&lt;/li&gt;
-&lt;li&gt;Generate a local user (warm-up user) with a random password. The account automatically expires after 10 minutes&lt;/li&gt;
-&lt;li&gt;Add the user to the Remote Desktop User Group&lt;/li&gt;
-&lt;li&gt;Configure the sign-on via RDS to localhost&lt;/li&gt;
-&lt;li&gt;The warm-up user connects via RDS to localhost (the first user logon)&lt;/li&gt;
-&lt;li&gt;Wait 5 minutes&lt;/li&gt;
-&lt;li&gt;Logoff the user&lt;/li&gt;
-&lt;li&gt;Remove the user account&lt;/li&gt;
-&lt;li&gt;Remove the user profile from disk&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;There are some additional error-handling routines in the script.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Pro tip:&lt;/strong&gt; If you ever search for a way to get session information with PowerShell without parsing qwinsta.exe or quser.exe, check the script. It also contains a PowerShell method to log off a specific session.&lt;/p&gt;
-&lt;h2 id=&quot;install-the-warm-up-user-script&quot;&gt;Install the warm-up user script&lt;/h2&gt;
-&lt;p&gt;You can install the script on an existing host or on your Golden Master / Template VM (which you hopefully capture loss-less with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt; or &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;). Copy the script to the VM and run the following command in an administrative PowerShell:&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;.\WarmUp.ps1 -Mode Install&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;This copies the script to C:\windows\WarmUp.ps1 and creates a scheduled task to start the script automatically with the computer.&lt;/p&gt;
-&lt;h2 id=&quot;the-script&quot;&gt;The script&lt;/h2&gt;
-&lt;p&gt;Save it as WarmUp.ps1 or download it from here: &lt;a href=&quot;https://gist.github.com/MarcelMeurer/1044690ed2619c145305e8cc335948a5&quot;&gt;WarmUp.ps1&lt;/a&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;param(
-	[string] $Mode
-)
-
-Add-Type -Language CSharp -TypeDefinition @&apos;
-using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Collections.Generic;
-namespace Rds {
-    public static class Sessions {
-        [DllImport(&amp;quot;wtsapi32.dll&amp;quot;)]
-        static extern IntPtr WTSOpenServer([MarshalAs(UnmanagedType.LPStr)] String pServerName);
-        [DllImport(&amp;quot;wtsapi32.dll&amp;quot;)]
-        static extern void WTSCloseServer(IntPtr hServer);
-        [DllImport(&amp;quot;wtsapi32.dll&amp;quot;)]
-        static extern Int32 WTSEnumerateSessions(IntPtr hServer,
-            [MarshalAs(UnmanagedType.U4)] Int32 Reserved,
-            [MarshalAs(UnmanagedType.U4)] Int32 Version, ref IntPtr ppSessionInfo,
-            [MarshalAs(UnmanagedType.U4)] ref Int32 pCount);
-        [DllImport(&amp;quot;wtsapi32.dll&amp;quot;)]
-        static extern void WTSFreeMemory(IntPtr pMemory);
-        [DllImport(&amp;quot;Wtsapi32.dll&amp;quot;)]
-        static extern bool WTSQuerySessionInformation(System.IntPtr hServer, int sessionId, WTS_INFO_CLASS wtsInfoClass, out System.IntPtr ppBuffer, out uint pBytesReturned);
-        [DllImport(&amp;quot;Wtsapi32.dll&amp;quot;)]
-        static extern bool WTSLogoffSession(System.IntPtr hServer, int sessionId, bool wait);
-        [StructLayout(LayoutKind.Sequential)]
-        private struct WTS_SESSION_INFO {
-            public Int32 SessionID;
-            [MarshalAs(UnmanagedType.LPStr)]
-            public String pWinStationName;
-            public WtsConnect State;
-        }
-        public enum WTS_INFO_CLASS {
-            WTSInitialProgram,
-            WTSApplicationName,
-            WTSWorkingDirectory,
-            WTSOEMId,
-            WTSSessionId,
-            WTSUserName,
-            WTSWinStationName,
-            WTSDomainName,
-            WTSConnectState,
-            WTSClientBuildNumber,
-            WTSClientName,
-            WTSClientDirectory,
-            WTSClientProductId,
-            WTSClientHardwareId,
-            WTSClientAddress,
-            WTSClientDisplay,
-            WTSClientProtocolType,
-            WTSIdleTime,
-            WTSLogonTime,
-            WTSIncomingBytes,
-            WTSOutgoingBytes,
-            WTSIncomingFrames,
-            WTSOutgoingFrames,
-            WTSClientInfo,
-            WTSSessionInfo,
-            WTSSessionInfoEx,
-            WTSConfigInfo,
-            WTSValidationInfo,
-            WTSSessionAddressV4,
-            WTSIsRemoteSession
-        }
-        public enum WtsConnect {
-            Active,
-            Connected,
-            ConnectQuery,
-            Shadow,
-            Disconnected,
-            Idle,
-            Listen,
-            Reset,
-            Down,
-            Init
-        }
-        public class WtsSessionInformation {
-            public string InitialProgram;
-            public string ApplicationName;
-            public string WorkingDirectory;
-            public string OEMId;
-            public int SessionId;
-            public string UserName;
-            public string WinStationName;
-            public string DomainName;
-            public WtsConnect ConnectState;
-            public string ConnectStateString;
-            public int ClientBuildNumber;
-            public string ClientName;
-            public string ClientDirectory;
-        }
-        public static IntPtr OpenServer(String name) {
-            IntPtr server = WTSOpenServer(name);
-            return server;
-        }
-        public static void CloseServer(IntPtr serverHandle) {
-            WTSCloseServer(serverHandle);
-        }
-        public static bool LogoffSession(int id, bool waitForLogoff) {
-            IntPtr serverHandle = IntPtr.Zero;
-            serverHandle = OpenServer(Environment.MachineName);
-            IntPtr sessionInfoPtr = IntPtr.Zero;
-            try {
-                return WTSLogoffSession(serverHandle, id, waitForLogoff);
-            } catch (Exception e) {
-                Console.WriteLine(&amp;quot;Exception querying session information: &amp;quot; + e.ToString());
-            } finally {
-                WTSFreeMemory(sessionInfoPtr);
-                CloseServer(serverHandle);
-            }
-            return false;
-        }
-        public static WtsSessionInformation GetSession(string userName) {
-            var sessions=GetSessions();
-            return sessions.FirstOrDefault(n=&amp;gt;string.Equals(n.UserName, userName, StringComparison.InvariantCultureIgnoreCase));
-            
-        }
-        public static List &amp;lt; WtsSessionInformation &amp;gt; GetSessions() {
-            var wtsList = new List &amp;lt; WtsSessionInformation &amp;gt; ();
-            IntPtr serverHandle = IntPtr.Zero;
-            serverHandle = OpenServer(Environment.MachineName);
-            IntPtr sessionInfoPtr = IntPtr.Zero;
-            try {
-                IntPtr sPtr = IntPtr.Zero;
-                Int32 sessionCount = 0;
-                Int32 retVal = WTSEnumerateSessions(serverHandle, 0, 1, ref sessionInfoPtr, ref sessionCount);
-                Int32 dataSize = Marshal.SizeOf(typeof(WTS_SESSION_INFO));
-                Int64 currentSession = (long) sessionInfoPtr;
-                uint bytes = 0;
-                if (retVal != 0) {
-                    for (int i = 0; i &amp;lt; sessionCount; i++) {
-                        WTS_SESSION_INFO si = (WTS_SESSION_INFO) Marshal.PtrToStructure((System.IntPtr) currentSession, typeof(WTS_SESSION_INFO));
-                        currentSession += dataSize;
-                        var wts = new WtsSessionInformation();
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSUserName, out sPtr, out bytes)) {
-                            wts.UserName = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSDomainName, out sPtr, out bytes)) {
-                            wts.DomainName = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSWinStationName, out sPtr, out bytes)) {
-                            wts.WinStationName = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSSessionId, out sPtr, out bytes)) {
-                            wts.SessionId = Marshal.ReadInt32(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSInitialProgram, out sPtr, out bytes)) {
-                            wts.InitialProgram = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSApplicationName, out sPtr, out bytes)) {
-                            wts.ApplicationName = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSWorkingDirectory, out sPtr, out bytes)) {
-                            wts.WorkingDirectory = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSConnectState, out sPtr, out bytes)) {
-                            wts.ConnectState = (WtsConnect) Marshal.ReadInt32(sPtr);
-                            wts.ConnectStateString = wts.ConnectState.ToString();
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSClientBuildNumber, out sPtr, out bytes)) {
-                            wts.ClientBuildNumber = Marshal.ReadInt32(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSClientName, out sPtr, out bytes)) {
-                            wts.ClientName = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSClientDirectory, out sPtr, out bytes)) {
-                            wts.ClientDirectory = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (!string.IsNullOrEmpty(wts.UserName)) wtsList.Add(wts);
-                    }
-                }
-                return wtsList;
-            } catch (Exception e) {
-                Console.WriteLine(&amp;quot;Exception querying session information: &amp;quot; + e.ToString());
-            } finally {
-                WTSFreeMemory(sessionInfoPtr);
-                CloseServer(serverHandle);
-            }
-            return null;
-        }
-    }
-}
-&apos;@
-
-$LogDir=&amp;quot;$($env:windir)\system32\LogFiles&amp;quot;
-$LogFile=&amp;quot;$($LogDir)\AVD.WarmUp.log&amp;quot;
-function LogWriter($message) {
-	$message = &amp;quot;$(Get-Date ([datetime]::UtcNow) -Format &amp;quot;o&amp;quot;) $message&amp;quot;
-	write-host($message)
-	if ([System.IO.Directory]::Exists($LogDir)) { try { write-output($message) | Out-File $LogFile -Append } catch {} }
-}
-
-if ($mode -like &amp;quot;install&amp;quot;) {
-    LogWriter(&amp;quot;Copy script to windir&amp;quot;)
-    Copy-Item &amp;quot;$($MyInvocation.InvocationName)&amp;quot; -Destination ($env:windir + &amp;quot;\WarmUp.ps1&amp;quot;) 
-
-    LogWriter(&amp;quot;Creating schedule task to run the script at startup&amp;quot;)
-    $action = New-ScheduledTaskAction -Execute &amp;quot;$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe&amp;quot; -Argument &amp;quot;-executionPolicy Unrestricted -File `&amp;quot;$($env:windir)\WarmUp.ps1`&amp;quot;&amp;quot;
-    $trigger = New-ScheduledTaskTrigger	-AtStartup
-    $principal = New-ScheduledTaskPrincipal &apos;NT Authority\SYSTEM&apos; -RunLevel Highest
-    $settingsSet = New-ScheduledTaskSettingsSet
-    $task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
-    Register-ScheduledTask -TaskName &apos;ITPC-AVD-WarmUpUser&apos; -InputObject $task -ErrorAction Ignore
-    Enable-ScheduledTask -TaskName &apos;ITPC-AVD-WarmUpUser&apos;
-} else {
-
-    $localUserName = &amp;quot;warmup-user&amp;quot;
-
-    $characters = &apos;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#&apos; #$%^&amp;amp;*()-_=+[]{}|;:,.&amp;lt;&amp;gt;?&apos;
-    $localUserPWPlain = -join (1..32 | ForEach-Object { Get-Random -InputObject $characters.ToCharArray() }) +&amp;quot;!@1aA&amp;quot;
-
-    $localUserPW =  ConvertTo-SecureString -String $localUserPWPlain -AsPlainText -Force # https://www.sharepointdiary.com/2020/04/powershell-generate-random-password.html
-
-
-    # Store default configuration
-    LogWriter(&amp;quot;Getting local configuration to use saved credentials for the warmup user&amp;quot;)
-    $oldAuthenticationLevelOverride=$null
-    if (Test-Path &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot;) {
-        $oldAuthenticationLevelOverride = Get-ItemProperty -Path &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot; -Name &amp;quot;AuthenticationLevelOverride&amp;quot; -ErrorAction SilentlyContinue
-    } else {
-        New-Item -Path &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot; -Force -ErrorAction SilentlyContinue
-    }
-    if ($oldAuthenticationLevelOverride -eq $null) {$oldAuthenticationLevelOverride = 99} else {$oldAuthenticationLevelOverride = $oldAuthenticationLevelOverride.AuthenticationLevelOverride}
-
-
-    try {
-        LogWriter(&amp;quot;Modifying configuration to login warmup user with stored credentials&amp;quot;)
-        # Set temporary configuration to allow user logins
-        New-ItemProperty -Path &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot; -Name &amp;quot;AuthenticationLevelOverride&amp;quot; -Value 0 -Force
-        New-ItemProperty -Path &amp;quot;HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;DisablePasswordSaving&amp;quot; -Value 1 -Force
-
-        # Prepare temporary local user
-        if ((Get-LocalUser -Name $localUserName -ErrorAction SilentlyContinue) -ne $null) {
-            LogWriter(&amp;quot;Removing existing local warmup user&amp;quot;)
-            Remove-LocalUser -Name $localUserName
-        }
-        LogWriter(&amp;quot;Adding local user&amp;quot;)
-        $localUser = New-LocalUser -Name $localUserName -Password $localUserPW -AccountExpires (Get-Date).AddMinutes(10) -PasswordNeverExpires -UserMayNotChangePassword
-        # Add user to remote desktop group
-        LogWriter(&amp;quot;Adding user to the remote desktop group&amp;quot;)
-        Add-LocalGroupMember -SID &amp;quot;S-1-5-32-555&amp;quot; -Member $localUserName -ErrorAction SilentlyContinue
-
-        # Login user
-        LogWriter(&amp;quot;Adding credentials of the warmup user to the key store&amp;quot;)
-        cmdkey /generic:TERMSRV/localhost /user:&amp;quot;$($env:Computername)\$($localUserName)&amp;quot; /pass:$localUserPWPlain
-        $startTime=Get-Date
-
-
-	$i=0
-	do {
-            LogWriter(&amp;quot;Login in user warmup user&amp;quot;)
-            if ($mstsc) {
-		$mstsc.Kill()
-		Start-Sleep -Seconds 6
-	    }
-            $mstsc = Start-Process -PassThru -FilePath &amp;quot;mstsc.exe&amp;quot; -ArgumentList &amp;quot;/v:localhost&amp;quot;
-    
-            # Wait for the user to login 
-            LogWriter(&amp;quot;Waiting a few seconds&amp;quot;)
-            Start-Sleep -Seconds 20
-            $i++		
-	} while ([Rds.Sessions]::GetSession($localUserName) -eq $null -and $i -le 10)
-
-        # Remove credentials
-        LogWriter(&amp;quot;Removing credentials from the key store&amp;quot;)
-        cmdkey /delete:TERMSRV/localhost
-
-        # Check, if user is connected
-        $session=[Rds.Sessions]::GetSession($localUserName)
-
-        if ($session -eq $null) {
-            LogWriter(&amp;quot;Warning: Warm-up user is not connected. So, the workaround is not working for some reasons&amp;quot;)
-        } else {
-            # Let the user for a while in the session and then logoff
-            LogWriter(&amp;quot;Let the user logged in for a while&amp;quot;)
-            Start-Sleep -Seconds 300
-            LogWriter(&amp;quot;Logoff user&amp;quot;)
-            [Rds.Sessions]::LogoffSession($session.SessionId, $true)
-            # Remove profile of the user
-            try {
-                LogWriter(&amp;quot;Delete profile of the warm-up user&amp;quot;)
-                @(Get-CimInstance -Class Win32_UserProfile | Where-Object { $_.Loaded -eq $false -and ($_.LocalPath.split(&apos;\&apos;)[-1] -like $localUserName -or $_.LocalPath.split(&apos;\&apos;)[-1] -like &amp;quot;$($localUserName).*&amp;quot;)}) | Remove-CimInstance
-
-            } catch {
-                LogWriter(&amp;quot;Error: Cannot delete the profile of the warmup user: $_&amp;quot;)
-            }
-
-        }
-        LogWriter(&amp;quot;Terminate mstsc.exe, if running&amp;quot;)
-        $mstsc.Kill()
-    } catch {
-        LogWriter(&amp;quot;Error: $_&amp;quot;)
-    } finally {
-        # Remove user
-        LogWriter(&amp;quot;Disable and remove user&amp;quot;)
-        Remove-LocalGroupMember -SID &amp;quot;S-1-5-32-555&amp;quot; -Member $localUserName
-        Disable-LocalUser -Name  $localUserName -ErrorAction SilentlyContinue
-        Remove-LocalUser -Name $localUserName -ErrorAction SilentlyContinue
-
-        # Restore default configuration
-        LogWriter(&amp;quot;Restoring local configuration&amp;quot;)
-        if ($oldAuthenticationLevelOverride -eq 99) {
-            Remove-ItemProperty &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot; -Name &amp;quot;AuthenticationLevelOverride&amp;quot; -Force
-        } else {
-            New-ItemProperty -Path &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot; -Name &amp;quot;AuthenticationLevelOverride&amp;quot; -Value $oldAuthenticationLevelOverride -Force
-        }
-    }
-    LogWriter(&amp;quot;Done&amp;quot;)
-}
-&lt;/code&gt;&lt;/pre&gt;</description>
-        <pubDate>Fri, 23 Aug 2024 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)</title>
-        <description>&lt;p&gt;Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates).&lt;/p&gt;
-&lt;p&gt;Also, my solution, &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;, uses the API to install Windows updates. That also includes draining, starting, installing, rebooting, etc. - all that is needed to update an existing host or a golden master. E.g.: Example of the script collection for an update:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WSUS-API-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Unfortunately, a Microsoft patch broke the functionality of the Windows Update API. That is documented here: &lt;a href=&quot;https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;&gt;https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;If you have a broken computer, you will see the following error message: Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)
-&lt;img src=&quot;../assets/images/WSUS-API-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The documentation also explains how to resolve the issue using a KIR (known issue recovery), which requires some handwork or automation. To make this as easy as possible for users of &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;, I added the installation of the KIR as part of the “BuiltIn: OS Install Windows Updates”. Finally, it downloads and installs the KIR package and activates it. A final reboot is needed to bring it to work. If you are using the script as part of the script collection (see image above), it will first patch the host and install updates on the second try of running the “BuiltIn: OS Install Windows Updates”.&lt;/p&gt;
-&lt;p&gt;To get the updated built-in scripts, you can click on the icon in the upper-right corner inside of the scripts page:
-&lt;img src=&quot;../assets/images/WSUS-API-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Finally, you should have the updated script (reload the site first):
-&lt;img src=&quot;../assets/images/WSUS-API-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;After that, the Windows update procedure is working as expected:
-&lt;img src=&quot;../assets/images/WSUS-API-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Do you want to adapt your scripts? Here is my implementation. Feel free to use it:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# Install Windows security updates directly over the internet. VM downloads the packages directly from Microsoft using the Windows Update service. A restart is required after the installation, which can be done with the script collection &amp;quot;OS Install Windows Updates&amp;quot;.
-$updateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
-$updateSearcher = New-Object -ComObject Microsoft.Update.Searcher
-$updateSession = New-Object -ComObject Microsoft.Update.Session
-
-$updatesKb=&amp;quot;&amp;quot;
-
-write-host(&amp;quot;Checking for updates&amp;quot;)
-$result = $updateSearcher.Search(&amp;quot;IsInstalled=0 and Type=&apos;Software&apos; and IsHidden=0&amp;quot;)
-
-if ($result.Updates.Count -EQ 0) {
-	write-host(&amp;quot;No new updates found&amp;quot;)
-}
-else {
-    try {
-        $updateDownloader = $updateSession.CreateUpdateDownloader()
-        $result.Updates|foreach {
-            write-host(&amp;quot;Found: $($_.Title)&amp;quot;)
-            $updatesKb=$updatesKb+$_.KBArticleIDs+&amp;quot; &amp;quot;
-            $updateCollection.Add($_)|Out-Null
-        }
-        write-host(&amp;quot;Downloading updates&amp;quot;)
-        $updateDownloader.Updates = $updateCollection
-        $updateDownloads = $updateDownloader.Download()
-        if (($updateDownloads.HResult -EQ 0) -AND ($updateDownloads.ResultCode -EQ 2)) {
-            write-host(&amp;quot;Downloads success&amp;quot;)
-        }
-        else {
-            write-host(&amp;quot;Downloads failed&amp;quot;)
-            Write-host(&amp;quot;ScriptReturnMessage:{Download failed}:ScriptReturnMessage&amp;quot;)
-            exit
-        }
-        write-host(&amp;quot;Installing updates&amp;quot;)
-        $updateInstaller = New-Object -ComObject Microsoft.Update.Installer
-        $updateInstaller.Updates = $updateCollection
-        $updateDownloads = $updateInstaller.Install()
-
-        write-host(&amp;quot;Applied updates: $updatesKb&amp;quot;)
-    } catch {
-        if (($_ -like &amp;quot;*0x8002802B*&amp;quot;) -and (Get-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot; -Name &amp;quot;1931709068&amp;quot; -ErrorAction Ignore).&amp;quot;1931709068&amp;quot; -ne 0) {
-            # Update API issue: https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc
-            $hotFixKirUrl=&amp;quot;https://download.microsoft.com/download/3944f364-6483-49ab-af0d-3e2bd80dedaf/Windows%2011%2022H2%20KB5039302%20240711_20301%20Known%20Issue%20Rollback.msi&amp;quot;
-            try {
-                write-host (&amp;quot;Try to download KIR file to bring Windows Update API back&amp;quot;)
-                (New-Object System.Net.WebClient).DownloadFile($hotFixKirUrl, &amp;quot;$env:temp\KIRKB5039302.msi&amp;quot;)
-                Start-Process msiexec.exe -Wait -ArgumentList &apos;/I $env:temp\KIRKB5039302.msi /quiet&apos;
-                if (-not (Test-Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot;)) {
-                    New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot; -Force -ErrorAction SilentlyContinue
-                }
-                New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot; -Name &amp;quot;1931709068&amp;quot; -Value 0 -Force -ErrorAction SilentlyContinue
-            } catch {
-                write-host (&amp;quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&amp;quot;)
-                throw $_
-            }
-            # A reboot is required
-            write-host(&amp;quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&amp;quot;)
-        } else {
-            write-host (&amp;quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&amp;quot;)
-            throw $_
-        }
-    }
-}
-
-&lt;/code&gt;&lt;/pre&gt;</description>
-        <pubDate>Thu, 01 Aug 2024 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
 &lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
 &lt;p&gt;Are you interested in the new “Hydra for Azure Virtual Desktop” solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/04/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/24/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
 &lt;ul&gt;
@@ -1097,7 +102,7 @@ else {
 &lt;/ul&gt;
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/04/2024&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/24/2024&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 &lt;details&gt;&lt;summary&gt;I&apos;m continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
 &lt;table&gt;
@@ -1109,6 +114,11 @@ else {
 &lt;/tr&gt;
 &lt;/thead&gt;
 &lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.9.11.0&lt;/td&gt;
+&lt;td&gt;2024-10-24&lt;/td&gt;
+&lt;td&gt;Fix: Some operations did not worked in the US Goverment cloud (now fixed)&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.9.08.0&lt;/td&gt;
 &lt;td&gt;2024-08-23&lt;/td&gt;
@@ -2129,11 +1139,1006 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 07/04/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/24/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Thu, 04 Jul 2024 00:00:00 +0200</pubDate>
+        <pubDate>Thu, 24 Oct 2024 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
+        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Log Type&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
+&lt;td&gt;Details about the session hosts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnections&lt;/td&gt;
+&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDErrors&lt;/td&gt;
+&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, …)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDFeeds&lt;/td&gt;
+&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
+&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDManagement&lt;/td&gt;
+&lt;td&gt;Log about administrative tasks&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDCheckpoints&lt;/td&gt;
+&lt;td&gt;Detailed information related to logins, errors, …&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnectionNetworkData&lt;/td&gt;
+&lt;td&gt;Network information (bandwidth and RTT)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that (use version 1.7.25 or higher):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;After a while, the workbook is visible as a new template in: &lt;strong&gt;Log Analytics -&amp;gt; Workbooks -&amp;gt; Azure Virtual Desktop -&amp;gt; AVD - Deep-Insights&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;” occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
+&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Version&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1&lt;/td&gt;
+&lt;td&gt;01/28/2022&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.2&lt;/td&gt;
+&lt;td&gt;02/17/2022&lt;/td&gt;
+&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); see &lt;a href=&quot;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&quot;&gt;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&lt;/a&gt; &lt;br /&gt;&lt;br /&gt;Name changed to AVD - Deep-Insights&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.3&lt;/td&gt;
+&lt;td&gt;03/16/2022&lt;/td&gt;
+&lt;td&gt;Include Logon timing (GPO, FSLogix, Authentication, etc.)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.4&lt;/td&gt;
+&lt;td&gt;04/14/2022&lt;/td&gt;
+&lt;td&gt;In Session Bandwidths &amp;amp; Latencies: The connection type is shown if RDP Short Path is used (Public, Private). See: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.5&lt;/td&gt;
+&lt;td&gt;05/03/2022&lt;/td&gt;
+&lt;td&gt;New visualization: Logon timing per day and category over the time&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6&lt;/td&gt;
+&lt;td&gt;10/11/2022&lt;/td&gt;
+&lt;td&gt;New visualization: Connections over time, unhealthy session hosts, graphic performance&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7&lt;/td&gt;
+&lt;td&gt;11/03/2022&lt;/td&gt;
+&lt;td&gt;Optimization for charts to show data over a large time frame&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.8&lt;/td&gt;
+&lt;td&gt;11/14/2022&lt;/td&gt;
+&lt;td&gt;A new tab “Resources”, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.9&lt;/td&gt;
+&lt;td&gt;11/18/2022&lt;/td&gt;
+&lt;td&gt;A new tab “Resources”, to show orphan VMs (where the session host object is missing)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.0&lt;/td&gt;
+&lt;td&gt;12/01/2022&lt;/td&gt;
+&lt;td&gt;Changed the description for the estimated available bandwidth&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.1&lt;/td&gt;
+&lt;td&gt;12/09/2022&lt;/td&gt;
+&lt;td&gt;Added orphan disks and orphan nics to the “Resources” tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop, version 1.0.1.84 (comming soon))&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.2&lt;/td&gt;
+&lt;td&gt;02/02/2023&lt;/td&gt;
+&lt;td&gt;Added “Water Markings” to query session information by the feature &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/watermarking&quot;&gt;WaterMarking&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.3&lt;/td&gt;
+&lt;td&gt;02/20/2023&lt;/td&gt;
+&lt;td&gt;Added “Unresponding AVD Agents” in the tab “Resources” to identify running VM with a non responding AVD agent&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.4&lt;/td&gt;
+&lt;td&gt;02/21/2023&lt;/td&gt;
+&lt;td&gt;Added new tab “FSLogix” to show the size, usage and free space of the FSLogix profiles&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.5&lt;/td&gt;
+&lt;td&gt;03/08/2023&lt;/td&gt;
+&lt;td&gt;Fix in the time selector; allow to selecte multiple host pools; show active sessions with user name and started desktop/remote app&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.6&lt;/td&gt;
+&lt;td&gt;03/31/2023&lt;/td&gt;
+&lt;td&gt;Add: Show office container size and usage (ODFC) in the FSLogix tab (additional to the profile container)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.7&lt;/td&gt;
+&lt;td&gt;07/01/2023&lt;/td&gt;
+&lt;td&gt;Fix/Workaround: VHDFreeSpace is stored as text in MByte and not in GByte if the value is less then 1 GByte&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.8&lt;/td&gt;
+&lt;td&gt;10/13/2023&lt;/td&gt;
+&lt;td&gt;Add: Show the last heart beat time in the Orphan session hosts view and warns, if the heart beat is longer then 90 days ago&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.0&lt;/td&gt;
+&lt;td&gt;06/24/2024&lt;/td&gt;
+&lt;td&gt;Fix: Orphan resources are now including temporary orphan hosts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.1&lt;/td&gt;
+&lt;td&gt;10/24/2024&lt;/td&gt;
+&lt;td&gt;Add: Show “TURN” in session bandwidth and latency (if session was connected via TURN)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don’t generate costs&lt;/p&gt;
+</description>
+        <pubDate>Thu, 24 Oct 2024 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Azure Monitor</category>
+        
+        <category>Log Analytics</category>
+        
+      </item>
+    
+      <item>
+        <title>Entra Dynamic Device Groups for Azure Virtual Desktop - Host Pools, Resource Groups and Subscriptions</title>
+        <description>&lt;p&gt;I was searching for an option to group all AVD hosts (Entra and hybrid joined) of a pool in a dynamic device group. Unfortunately, I didn’t find a perfect solution that works without modifying the device objects through the Graph API (or AD for hybrid joined devices (extensionAttributes)). If one of the readers knows a good solution for this, please share it.&lt;/p&gt;
+&lt;p&gt;Therefore, I checked the different properties of a device in Entra to find one I can use to create a dynamic device group. I prefer having a naming schema reflecting the specific host pools. AVD-DESIGN-001 and up counting would be a good match to identify all hosts of my pool “Design”. The rule is simple:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-02.png&quot; alt=&quot;&quot; /&gt;
+&lt;code&gt;(device.displayName -startsWith &amp;quot;AVD-DESIGN-&amp;quot;)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;After a while, the group contains all hosts/VMs matching this schema. The query can also be made more complex by including/excluding specific Windows types (multi-user or single-user OS).&lt;/p&gt;
+&lt;p&gt;I also found another interesting property in the devices for Entra joined VMs (not for hybrid joined):&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The property “physicalIds” contains a list of strings. One string reflects the Azure resource ID of the virtual machine (the session hosts the linked VM):&lt;/p&gt;
+&lt;p&gt;The resource ID in Azure has a default schema that reflects the subscription ID, resource group name, provider, and the name of the resource. Some resources also have subtypes, which is not important for our VMs. The resource ID is always in the device property and is written with the join of the device to Entra.&lt;/p&gt;
+&lt;p&gt;We can now build dynamic device groups based on the resource group or subscription. If you are using different resource groups for your host pools, you can also use this method to group the VMs — independent from the naming concept. Or you can group all the VMs of your AVD subscription and combine them to validate the display names. That makes your dynamic group more resilient and excludes VMs from other subscriptions.&lt;/p&gt;
+&lt;p&gt;Here is an example of grouping all VMs in the resource group “WVD.Design2” in the given subscription:
+&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-04.png&quot; alt=&quot;&quot; /&gt;
+&lt;code&gt;(device.devicePhysicalIds -any (_ -startsWith&amp;quot;[AzureResourceId]:/subscriptions/dcdce2ee-****-****-****-************/resourceGroups/wvd.Design2/providers/Microsoft.Compute/virtualMachines/&amp;quot;))&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;After a while, all VMs/hosts are members of the group.&lt;/p&gt;
+&lt;p&gt;Even if that doesn’t solve my challenge very well, it’s a nice workaround or at least increased my insights.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 08 Oct 2024 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Entra</category>
+        
+      </item>
+    
+      <item>
+        <title>OneDrive Clean-Up for Azure Virtual Desktop</title>
+        <description>&lt;p&gt;Running OneDrive with Azure Virtual Desktop is a common scenario and enables users to work in a modern way with Teams and SharePoint. If FSLogix is used, there is a challenge in combination with OneDrive: Users can download OneDrive files to the host, and the data are stored in the profile. The profile size increases heavily and causes some extra costs on the storage account.&lt;/p&gt;
+&lt;p&gt;Having so many OneDrive files stored in the profile may make no sense in every case - if a user access a file, the file is downloaded automatically (on demand). And it’s mostly fine to “unpin” the file later if the file is no longer needed. The files are downloaded fast, while AVD and OneDrive are in the Microsoft cloud.&lt;/p&gt;
+&lt;h3 id=&quot;background&quot;&gt;Background:&lt;/h3&gt;
+&lt;p&gt;OneDrive files can have three different states:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Cloud:&lt;/strong&gt;
+The file content is in the cloud only. The file system simulates that the file exists. While the content is not on the disk, the files don’t need storage on the device. If a user opens such a file, the content is downloaded, and the file state change to On-Device.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;On-Device:&lt;/strong&gt;
+The file content is also on the local disk, and the files are using local storage.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Always:&lt;/strong&gt;
+The file content is also on the local disk, and the files are using local storage. OneDrive wouldn’t change the state to “Cloud”.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/ODClaenUp-02.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;p&gt;OneDrive can change the state to “Cloud” on normal Windows 10/11 devices using storage sense. Based on the implementation of storage sense, this is not working for Azure Virtual Desktop (Multi-Session) with FSLogix profiles.&lt;/p&gt;
+&lt;p&gt;A solution to avoid profile blotting in combination with FSLogix is changing the state of OneDrive files to “Cloud” (unpin files). If files are unpinned, they are no longer using local storage, and the “Disk Compaction” of FSLogix would reduce the profile automatically over time (or have more space left for user data).&lt;/p&gt;
+&lt;p&gt;I built a small tool to solve this challenge (I didn’t find a native solution). The tool is called OneDrive CleanUp. OneDrive CleanUp can run in two ways:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Started automatically with the login of the user (after the installation, it creates a link in the start-up folder of the start menu). It directly starts in the background and validates and maybe unpin OneDrive files. This process is repeated every 30 minutes and during the logoff of the user.&lt;/li&gt;
+&lt;li&gt;Start the program with the parameter /RunOnce during the logoff using a (group) policy.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I prefer the first method to ensure that OneDrive has time to react to the unpinning of files.&lt;/p&gt;
+&lt;p&gt;Example for method 2:
+&lt;img src=&quot;../assets/images/ODClaenUp-03.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
+&lt;p&gt;In my test, my profile grew to 8 GByte while I pinned some files in OneDrive, and after logoff, the profile went back to 800 MByte while the tool unpinned the OneDrive files.&lt;/p&gt;
+&lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
+&lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\OneDriveCleanUp&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Key&lt;/th&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;th&gt;Default value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Enabled&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;If false, the application will not check the files&lt;/td&gt;
+&lt;td&gt;1=true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RunEachMinutes&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Check OneDrive files each minutes&lt;/td&gt;
+&lt;td&gt;30&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AlwaysUnpinFilesOlderThenDays&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Unpin files older then days (0: disabled )&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AllowMbytesOnDisk&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Allow the configured value in MByte on the local disk&lt;/td&gt;
+&lt;td&gt;5120&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;IgnoreFilesContaining&lt;/td&gt;
+&lt;td&gt;Reg_SZ&lt;/td&gt;
+&lt;td&gt;String with separated values (;). If the path of a file contains one of the values, the file is ignored&lt;/td&gt;
+&lt;td&gt;Empty&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RunAtLogoff&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Run a last check while the user log off (can delay the logoff)&lt;/td&gt;
+&lt;td&gt;0=false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
+&lt;p&gt;Example:
+&lt;img src=&quot;../assets/images/ODClaenUp-01.png&quot; alt=&quot;&quot; /&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
+&lt;p&gt;OneDrive CleanUp regularly checks all OneDrive paths and calculates the size of the disk. If the size is larger than the configured maximum size (AllowMbytesOnDisk), it unpins files to go under the configured size. It starts from the oldest to the newest file based on the LastAccessTime property.&lt;/p&gt;
+&lt;br/&gt;
+&lt;h3 id=&quot;release-notes&quot;&gt;Release notes&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Release&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.4&lt;/td&gt;
+&lt;td&gt;2023-05-04&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.5&lt;/td&gt;
+&lt;td&gt;2023-07-13&lt;/td&gt;
+&lt;td&gt;Fix: Files larger than 2 GByte were counted wrong&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.6&lt;/td&gt;
+&lt;td&gt;2023-10-17&lt;/td&gt;
+&lt;td&gt;Fix: Files larger than 4 GByte were counted wrong&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.7&lt;/td&gt;
+&lt;td&gt;2024-10-03&lt;/td&gt;
+&lt;td&gt;Add: Feature: RunAtLogoff with a default value of 0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+&lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/OneDriveCleanUp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/03/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 03 Oct 2024 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>AVD Need Assistance - NAT shape is Undetermined when probing turn:20.202.248.2:3478?Udp TURN relay health check failed ...</title>
+        <description>&lt;h1 id=&quot;current-issues-avd-agent-reports-an-issue-and-brings-the-hosts-into-strongneed-assistancestrong&quot;&gt;Current issues: AVD agent reports an issue and brings the hosts into &lt;strong&gt;“Need Assistance”&lt;/strong&gt;&lt;/h1&gt;
+&lt;p&gt;In the last September week, I got a lot of emails and team messages. Customers are seeing the following error message on session hosts in the Azure Portal and in Hydra:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;NAT shape is Undetermined when probing [turn:20.202.248.2:3478?Udp] TURN relay health check failed for server [turn:20.202.248.2:3478?Udp] - One or more errors occurred.-&amp;gt;Timed out waiting for Receive to complete - Code: -2147467259 - 2024-09-26T07:39:15.704086Z&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The session hosts are also going into the &lt;strong&gt;“Need Assistance”&lt;/strong&gt; mode - even if users can still log in and continue working. It’s also reported, that the time stamp of the error message stays.&lt;/p&gt;
+&lt;p&gt;The issue is related to the AVD agent testing a UDP connection to the given (Microsoft) IP. This is a normal behaviour and can fail if customers are not allowing this connection through the firewall. If that is not working, connections are made via TCP. So far - so good. Unfortunately, the AVD agent shows this as an error, bringing the host into the &lt;strong&gt;“Need Assistance”&lt;/strong&gt; mode.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Important: Session hosts in this state do not count on the capacity of a pool in Hydra. It also can break autoscaling if you run Hydra version 1.0.8.7 or less. Also hosts in this state are &lt;strong&gt;not&lt;/strong&gt; deallocated automatically - they stay running until the error disappears.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/NA-Hydra.png&quot; alt=&quot;Download&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;what-can-we-do&quot;&gt;What can we do?&lt;/h2&gt;
+&lt;h3 id=&quot;allowing-udp-communication-to-specific-ports-preferred&quot;&gt;Allowing UDP communication to specific ports (preferred)&lt;/h3&gt;
+&lt;p&gt;You can configure the firewall to allow communication to the mentioned ports if that is an option for your environment/company. In short, the following communication from the hosts to the internet must be possible:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Target: 20.202.0.0/16, Port 3478 UDP&lt;/li&gt;
+&lt;li&gt;Target: 20.202.0.0/16, Port 443 TCP&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/rdp-shortpath?tabs=public-networks&quot;&gt;Link to the blog post&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can test the connection with the tool &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/troubleshoot-rdp-shortpath&quot;&gt;avdnettest.exe&lt;/a&gt; from Microsoft:
+&lt;img src=&quot;../assets/images/NA-avdnettest.png&quot; alt=&quot;Download&quot; /&gt;&lt;/p&gt;
+&lt;br/&gt;
+&lt;h3 id=&quot;update-hydra-also-preferred&quot;&gt;Update Hydra (also preferred)&lt;/h3&gt;
+&lt;p&gt;There is a new release of Hydra available from 09/30/2024 (v1.0.8.7) containing a hotfix to handle failed hosts. This will not remove the error message but should show the correct sessions and handle autoscaling also for hosts in the &lt;strong&gt;“Need Assistance”&lt;/strong&gt; mode. Please monitor your environment after update/hotfix: &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra?tab=readme-ov-file#updates-and-releases&quot;&gt;How to update Hydra&lt;/a&gt;
+&lt;br/&gt;&lt;/p&gt;
+&lt;h3 id=&quot;disabling-udp-temporary-workaround&quot;&gt;Disabling UDP temporary (workaround)&lt;/h3&gt;
+&lt;p&gt;If option one is not possible, or the error messages are not disappearing, we can disable the use of UDP &lt;a href=&quot;https://admx.help/?Category=Windows_10_2016&amp;amp;Policy=Microsoft.Policies.TerminalServer::TS_SELECT_TRANSPORT&quot;&gt;via GPO&lt;/a&gt; or reg keys. The following script disables UDP, and it should also remove the error message. You can &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra/blob/main/README.md#scripts-and-script-collections&quot;&gt;create the script in Hydra&lt;/a&gt; and run it on the hosts (test it with one host first):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;SelectTransport&amp;quot; -Value 1 -force # default: 0
+
+# Reset old failure state
+if (Test-Path -Path &amp;quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckReport&amp;quot;) {
+    Remove-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckReport&amp;quot; -Name &amp;quot;AgentHealthCheckReport&amp;quot; -ErrorAction SilentlyContinue
+    Remove-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckReport&amp;quot; -Name &amp;quot;AgentHealthCheckTimestamp&amp;quot; -ErrorAction SilentlyContinue
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you rollout a new host, make sure to reapply this settings. That can be done in Hydra -&amp;gt; Host Pool -&amp;gt; New Session Host Rollout -&amp;gt; Run script or script collection after deployment
+&lt;br/&gt;&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;It’s also a good idea to open a ticket to let Microsoft fix this issue with the service/AVD agent.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 26 Sep 2024 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Need-Assistance-NAT-shape-is-Undetermined-when-probing-TURN-relay-health-check-failed/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Need-Assistance-NAT-shape-is-Undetermined-when-probing-TURN-relay-health-check-failed/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>CountrySwitch - First Logon Experience and language selector and an app starter for remote apps on network paths for AVD</title>
+        <description>&lt;h2 id=&quot;first-logon-experience-and-language-selector-and-an-app-starter-for-remote-apps-on-network-paths&quot;&gt;First Logon Experience and language selector and an app starter for remote apps on network paths&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/16/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;select-the-language-users&quot;&gt;Select the language (users)&lt;/h2&gt;
+&lt;p&gt;In some environments, customers are running Azure on Windows 10/11 with multiple language packs installed. After the first login, users have to choose their language to customize the environment - that is not so easy, while users have to open the language settings and select the language. The first steps are outside the user’s language and are not easy to do for everyone.&lt;/p&gt;
+&lt;p&gt;I built a tool that makes it easier for users to select their language by clicking on the right flag. Currently, the following features are available:&lt;/p&gt;
+&lt;p&gt;Feature regarding the language selection:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The tool shows the installed language packages by a flag of the countries.&lt;/li&gt;
+&lt;li&gt;A welcome message in the present language welcomes the users.&lt;/li&gt;
+&lt;li&gt;The user selects the language settings with a click on the flag.&lt;/li&gt;
+&lt;li&gt;Hovering the mouse over a flag shows the country and language name.&lt;/li&gt;
+&lt;li&gt;The app configures the language settings (and does one logoff to apply the setting).&lt;/li&gt;
+&lt;li&gt;The PowerShell script CountrySwitch-User.ps1 in the program files folder is started to do some optional customizing (language code is in $languageTag)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;CountrySwitch is linked in all users’ start menu:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Startup: With parameter /RunOnce - Starts CountrySwitch at logon. The user will see the language selector only if the user is new and didn’t select a language once (HKCU:\SOFTWARE\ITProCloud\CountrySwitch\Completed is set to 1 )&lt;/li&gt;
+&lt;li&gt;Direct: Without parameters - Users can star CountrySwitch manually to select the language&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Note on Remote Apps&lt;/strong&gt;: Remote apps are ignoring the autostart folder. To have CountrySwitch enabled for remote app, please configure a local Startup script (local policy for users) with the following parameters:
+Name of script: “C:\Program Files\ITProCloud.de\CountrySwitch\CountrySwitch.exe”
+Parameters:	/runonce&lt;/p&gt;
+&lt;h2 id=&quot;app-starter-for-remote-apps&quot;&gt;App Starter for remote apps&lt;/h2&gt;
+&lt;p&gt;CountrySwitch can also start a local or an application on a file share (which normally does not work directly with AVD). Publish CountrySwitch as a remote app with the following parameters:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;&amp;lt;path to executable with parameters&amp;gt;&amp;quot; &amp;quot;&amp;lt;Working directory&amp;gt;&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot; &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If a remote app is started with CountrySwitch, CountrySwitch first starts the PowerShell script CountrySwitch-App.ps1 in the program files folder to do some optional customization. The following parameters are set in the script:&lt;/p&gt;
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$languageTag = &amp;quot;unknown&amp;quot;,
+$appCommandline = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot;,
+$appWorkingDir = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;,
+$appParameter = &amp;quot;/db=vm1&amp;quot;,
+$appExecutable = &amp;quot;finance.exe&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The application starts after the PowerShell script finishes (CountrySwitch will run hidden and terminates after the start of the application (e.g., finance.exe).&lt;/p&gt;
+&lt;h2 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h2&gt;
+&lt;p&gt;CountrySwitch logs into %AppData%\ITProCloud&lt;/p&gt;
+&lt;p&gt;There are the following reg keys to optionally configure CountrySwitch:&lt;/p&gt;
+&lt;p&gt;HKLM:\SOFTWARE\Policies\ITProCloud\CountrySwitch (alls values are dword - 1 is true; 0 is false)&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Key&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;th&gt;Default value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Enabled&lt;/td&gt;
+&lt;td&gt;If false, the application will not show up (except for /remoteapp (App starter mode))&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ExitOnRunOnceCompleted&lt;/td&gt;
+&lt;td&gt;If the app is started with /runonce and the user has already completed the process, the application will not show up&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ExitOnSingleLanguage&lt;/td&gt;
+&lt;td&gt;If only one language is installed, don’t show up&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LogoffUserAfterSelectingNewLanguage logoff user after selecting a new language&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LogoffUserAfterSelectingSameLanguage&lt;/td&gt;
+&lt;td&gt;Logoff user after selecting the same language as the user is still using&lt;/td&gt;
+&lt;td&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RunUserScriptAfterSelectingLanguage&lt;/td&gt;
+&lt;td&gt;Runs the ps script CountrySwitch-User.ps1 -languageTag {xx-YY} after the user selects a language&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;DisableUserScriptForAppStarterMode&lt;/td&gt;
+&lt;td&gt;If true, the app starter mode for a remote app will no longer trigger CountrySwitch-App before starting the application&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+&lt;h2 id=&quot;release-notes&quot;&gt;Release notes&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Release&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1.3&lt;/td&gt;
+&lt;td&gt;2023-05-04&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1.4&lt;/td&gt;
+&lt;td&gt;2023-05-10&lt;/td&gt;
+&lt;td&gt;Update: CountrySwitch-User.ps1 had a typo&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1.7&lt;/td&gt;
+&lt;td&gt;2023-05-11&lt;/td&gt;
+&lt;td&gt;Fix: Avoid showing MSI installation screen for users if package unaccessible&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1.9&lt;/td&gt;
+&lt;td&gt;2024-09-16&lt;/td&gt;
+&lt;td&gt;Fix: Prevents that the logoff message is shown multiple times if the user multiple clicks on a flag&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;br/&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/16/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 16 Sep 2024 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Improve AVD User Experience: Warm-Up to decreas User login time</title>
+        <description>&lt;p&gt;If you are running Azure Virtual Desktop with FSLogix, the first login to a host takes longer than the following logins. I also wrote about this effect (I call is Cold vs. Warm start) a few weeks ago here: &lt;a href=&quot;https://lnkd.in/eEQHP5gA&quot;&gt;https://lnkd.in/eEQHP5gA&lt;/a&gt; and &lt;a href=&quot;https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM&quot;&gt;https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;In short, If a VM is started in Azure, the first login of a user takes much longer than the login of the following users to this VM. And: It makes no difference if the first user logs in one or 30 minutes after starting the VM. I did a lot of tests by running &lt;em&gt;ProcMon, FileActivityWatch, and RegistryChangesView&lt;/em&gt; in the system context to capture events during the first login 🤓. I can clearly see dependencies to AppX packages on the VM. In my tests, processing of AppX packages for the first user took 120 seconds, and for the next user, only a few seconds. Right now, I cannot reproduce the first AppX processing without a user logging into the host (but I’m working on that). The first user will also see a black screen during the login.&lt;/p&gt;
+&lt;p&gt;Therefore, I did another test: Create a temporary local user on the VM directly after the start and make a login (autogenerated passwords and direct deletion of the users after the login).&lt;/p&gt;
+&lt;p&gt;The result is as expected: After the start of the VM, the warmup user triggers the AppX processing and other “initializations.” The next - regular - user experiences a much faster login while that is technically the second login for the VM.&lt;/p&gt;
+&lt;p&gt;I wrote a script to automate a local logon after each VM/host’s start. That may not be the best way to handle this solution, but it is a workaround until I find a more pragmatic solution without a warm-up user.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-UX-WarmUp-01.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/AVD-UX-WarmUp-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;how-does-it-work&quot;&gt;How does it work?&lt;/h2&gt;
+&lt;p&gt;The script is started directly after the start of a VM/host and runs in the context of the computer. The following steps happen:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Temporarily, allow RDS logon without validation computer certificates (only for the system account)&lt;/li&gt;
+&lt;li&gt;Generate a local user (warm-up user) with a random password. The account automatically expires after 10 minutes&lt;/li&gt;
+&lt;li&gt;Add the user to the Remote Desktop User Group&lt;/li&gt;
+&lt;li&gt;Configure the sign-on via RDS to localhost&lt;/li&gt;
+&lt;li&gt;The warm-up user connects via RDS to localhost (the first user logon)&lt;/li&gt;
+&lt;li&gt;Wait 5 minutes&lt;/li&gt;
+&lt;li&gt;Logoff the user&lt;/li&gt;
+&lt;li&gt;Remove the user account&lt;/li&gt;
+&lt;li&gt;Remove the user profile from disk&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There are some additional error-handling routines in the script.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Pro tip:&lt;/strong&gt; If you ever search for a way to get session information with PowerShell without parsing qwinsta.exe or quser.exe, check the script. It also contains a PowerShell method to log off a specific session.&lt;/p&gt;
+&lt;h2 id=&quot;install-the-warm-up-user-script&quot;&gt;Install the warm-up user script&lt;/h2&gt;
+&lt;p&gt;You can install the script on an existing host or on your Golden Master / Template VM (which you hopefully capture loss-less with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt; or &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;). Copy the script to the VM and run the following command in an administrative PowerShell:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;.\WarmUp.ps1 -Mode Install&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;This copies the script to C:\windows\WarmUp.ps1 and creates a scheduled task to start the script automatically with the computer.&lt;/p&gt;
+&lt;h2 id=&quot;the-script&quot;&gt;The script&lt;/h2&gt;
+&lt;p&gt;Save it as WarmUp.ps1 or download it from here: &lt;a href=&quot;https://gist.github.com/MarcelMeurer/1044690ed2619c145305e8cc335948a5&quot;&gt;WarmUp.ps1&lt;/a&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;param(
+	[string] $Mode
+)
+
+Add-Type -Language CSharp -TypeDefinition @&apos;
+using System;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Collections.Generic;
+namespace Rds {
+    public static class Sessions {
+        [DllImport(&amp;quot;wtsapi32.dll&amp;quot;)]
+        static extern IntPtr WTSOpenServer([MarshalAs(UnmanagedType.LPStr)] String pServerName);
+        [DllImport(&amp;quot;wtsapi32.dll&amp;quot;)]
+        static extern void WTSCloseServer(IntPtr hServer);
+        [DllImport(&amp;quot;wtsapi32.dll&amp;quot;)]
+        static extern Int32 WTSEnumerateSessions(IntPtr hServer,
+            [MarshalAs(UnmanagedType.U4)] Int32 Reserved,
+            [MarshalAs(UnmanagedType.U4)] Int32 Version, ref IntPtr ppSessionInfo,
+            [MarshalAs(UnmanagedType.U4)] ref Int32 pCount);
+        [DllImport(&amp;quot;wtsapi32.dll&amp;quot;)]
+        static extern void WTSFreeMemory(IntPtr pMemory);
+        [DllImport(&amp;quot;Wtsapi32.dll&amp;quot;)]
+        static extern bool WTSQuerySessionInformation(System.IntPtr hServer, int sessionId, WTS_INFO_CLASS wtsInfoClass, out System.IntPtr ppBuffer, out uint pBytesReturned);
+        [DllImport(&amp;quot;Wtsapi32.dll&amp;quot;)]
+        static extern bool WTSLogoffSession(System.IntPtr hServer, int sessionId, bool wait);
+        [StructLayout(LayoutKind.Sequential)]
+        private struct WTS_SESSION_INFO {
+            public Int32 SessionID;
+            [MarshalAs(UnmanagedType.LPStr)]
+            public String pWinStationName;
+            public WtsConnect State;
+        }
+        public enum WTS_INFO_CLASS {
+            WTSInitialProgram,
+            WTSApplicationName,
+            WTSWorkingDirectory,
+            WTSOEMId,
+            WTSSessionId,
+            WTSUserName,
+            WTSWinStationName,
+            WTSDomainName,
+            WTSConnectState,
+            WTSClientBuildNumber,
+            WTSClientName,
+            WTSClientDirectory,
+            WTSClientProductId,
+            WTSClientHardwareId,
+            WTSClientAddress,
+            WTSClientDisplay,
+            WTSClientProtocolType,
+            WTSIdleTime,
+            WTSLogonTime,
+            WTSIncomingBytes,
+            WTSOutgoingBytes,
+            WTSIncomingFrames,
+            WTSOutgoingFrames,
+            WTSClientInfo,
+            WTSSessionInfo,
+            WTSSessionInfoEx,
+            WTSConfigInfo,
+            WTSValidationInfo,
+            WTSSessionAddressV4,
+            WTSIsRemoteSession
+        }
+        public enum WtsConnect {
+            Active,
+            Connected,
+            ConnectQuery,
+            Shadow,
+            Disconnected,
+            Idle,
+            Listen,
+            Reset,
+            Down,
+            Init
+        }
+        public class WtsSessionInformation {
+            public string InitialProgram;
+            public string ApplicationName;
+            public string WorkingDirectory;
+            public string OEMId;
+            public int SessionId;
+            public string UserName;
+            public string WinStationName;
+            public string DomainName;
+            public WtsConnect ConnectState;
+            public string ConnectStateString;
+            public int ClientBuildNumber;
+            public string ClientName;
+            public string ClientDirectory;
+        }
+        public static IntPtr OpenServer(String name) {
+            IntPtr server = WTSOpenServer(name);
+            return server;
+        }
+        public static void CloseServer(IntPtr serverHandle) {
+            WTSCloseServer(serverHandle);
+        }
+        public static bool LogoffSession(int id, bool waitForLogoff) {
+            IntPtr serverHandle = IntPtr.Zero;
+            serverHandle = OpenServer(Environment.MachineName);
+            IntPtr sessionInfoPtr = IntPtr.Zero;
+            try {
+                return WTSLogoffSession(serverHandle, id, waitForLogoff);
+            } catch (Exception e) {
+                Console.WriteLine(&amp;quot;Exception querying session information: &amp;quot; + e.ToString());
+            } finally {
+                WTSFreeMemory(sessionInfoPtr);
+                CloseServer(serverHandle);
+            }
+            return false;
+        }
+        public static WtsSessionInformation GetSession(string userName) {
+            var sessions=GetSessions();
+            return sessions.FirstOrDefault(n=&amp;gt;string.Equals(n.UserName, userName, StringComparison.InvariantCultureIgnoreCase));
+            
+        }
+        public static List &amp;lt; WtsSessionInformation &amp;gt; GetSessions() {
+            var wtsList = new List &amp;lt; WtsSessionInformation &amp;gt; ();
+            IntPtr serverHandle = IntPtr.Zero;
+            serverHandle = OpenServer(Environment.MachineName);
+            IntPtr sessionInfoPtr = IntPtr.Zero;
+            try {
+                IntPtr sPtr = IntPtr.Zero;
+                Int32 sessionCount = 0;
+                Int32 retVal = WTSEnumerateSessions(serverHandle, 0, 1, ref sessionInfoPtr, ref sessionCount);
+                Int32 dataSize = Marshal.SizeOf(typeof(WTS_SESSION_INFO));
+                Int64 currentSession = (long) sessionInfoPtr;
+                uint bytes = 0;
+                if (retVal != 0) {
+                    for (int i = 0; i &amp;lt; sessionCount; i++) {
+                        WTS_SESSION_INFO si = (WTS_SESSION_INFO) Marshal.PtrToStructure((System.IntPtr) currentSession, typeof(WTS_SESSION_INFO));
+                        currentSession += dataSize;
+                        var wts = new WtsSessionInformation();
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSUserName, out sPtr, out bytes)) {
+                            wts.UserName = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSDomainName, out sPtr, out bytes)) {
+                            wts.DomainName = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSWinStationName, out sPtr, out bytes)) {
+                            wts.WinStationName = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSSessionId, out sPtr, out bytes)) {
+                            wts.SessionId = Marshal.ReadInt32(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSInitialProgram, out sPtr, out bytes)) {
+                            wts.InitialProgram = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSApplicationName, out sPtr, out bytes)) {
+                            wts.ApplicationName = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSWorkingDirectory, out sPtr, out bytes)) {
+                            wts.WorkingDirectory = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSConnectState, out sPtr, out bytes)) {
+                            wts.ConnectState = (WtsConnect) Marshal.ReadInt32(sPtr);
+                            wts.ConnectStateString = wts.ConnectState.ToString();
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSClientBuildNumber, out sPtr, out bytes)) {
+                            wts.ClientBuildNumber = Marshal.ReadInt32(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSClientName, out sPtr, out bytes)) {
+                            wts.ClientName = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSClientDirectory, out sPtr, out bytes)) {
+                            wts.ClientDirectory = Marshal.PtrToStringAnsi(sPtr);
+                            WTSFreeMemory(sPtr);
+                        }
+                        if (!string.IsNullOrEmpty(wts.UserName)) wtsList.Add(wts);
+                    }
+                }
+                return wtsList;
+            } catch (Exception e) {
+                Console.WriteLine(&amp;quot;Exception querying session information: &amp;quot; + e.ToString());
+            } finally {
+                WTSFreeMemory(sessionInfoPtr);
+                CloseServer(serverHandle);
+            }
+            return null;
+        }
+    }
+}
+&apos;@
+
+$LogDir=&amp;quot;$($env:windir)\system32\LogFiles&amp;quot;
+$LogFile=&amp;quot;$($LogDir)\AVD.WarmUp.log&amp;quot;
+function LogWriter($message) {
+	$message = &amp;quot;$(Get-Date ([datetime]::UtcNow) -Format &amp;quot;o&amp;quot;) $message&amp;quot;
+	write-host($message)
+	if ([System.IO.Directory]::Exists($LogDir)) { try { write-output($message) | Out-File $LogFile -Append } catch {} }
+}
+
+if ($mode -like &amp;quot;install&amp;quot;) {
+    LogWriter(&amp;quot;Copy script to windir&amp;quot;)
+    Copy-Item &amp;quot;$($MyInvocation.InvocationName)&amp;quot; -Destination ($env:windir + &amp;quot;\WarmUp.ps1&amp;quot;) 
+
+    LogWriter(&amp;quot;Creating schedule task to run the script at startup&amp;quot;)
+    $action = New-ScheduledTaskAction -Execute &amp;quot;$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe&amp;quot; -Argument &amp;quot;-executionPolicy Unrestricted -File `&amp;quot;$($env:windir)\WarmUp.ps1`&amp;quot;&amp;quot;
+    $trigger = New-ScheduledTaskTrigger	-AtStartup
+    $principal = New-ScheduledTaskPrincipal &apos;NT Authority\SYSTEM&apos; -RunLevel Highest
+    $settingsSet = New-ScheduledTaskSettingsSet
+    $task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
+    Register-ScheduledTask -TaskName &apos;ITPC-AVD-WarmUpUser&apos; -InputObject $task -ErrorAction Ignore
+    Enable-ScheduledTask -TaskName &apos;ITPC-AVD-WarmUpUser&apos;
+} else {
+
+    $localUserName = &amp;quot;warmup-user&amp;quot;
+
+    $characters = &apos;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#&apos; #$%^&amp;amp;*()-_=+[]{}|;:,.&amp;lt;&amp;gt;?&apos;
+    $localUserPWPlain = -join (1..32 | ForEach-Object { Get-Random -InputObject $characters.ToCharArray() }) +&amp;quot;!@1aA&amp;quot;
+
+    $localUserPW =  ConvertTo-SecureString -String $localUserPWPlain -AsPlainText -Force # https://www.sharepointdiary.com/2020/04/powershell-generate-random-password.html
+
+
+    # Store default configuration
+    LogWriter(&amp;quot;Getting local configuration to use saved credentials for the warmup user&amp;quot;)
+    $oldAuthenticationLevelOverride=$null
+    if (Test-Path &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot;) {
+        $oldAuthenticationLevelOverride = Get-ItemProperty -Path &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot; -Name &amp;quot;AuthenticationLevelOverride&amp;quot; -ErrorAction SilentlyContinue
+    } else {
+        New-Item -Path &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot; -Force -ErrorAction SilentlyContinue
+    }
+    if ($oldAuthenticationLevelOverride -eq $null) {$oldAuthenticationLevelOverride = 99} else {$oldAuthenticationLevelOverride = $oldAuthenticationLevelOverride.AuthenticationLevelOverride}
+
+
+    try {
+        LogWriter(&amp;quot;Modifying configuration to login warmup user with stored credentials&amp;quot;)
+        # Set temporary configuration to allow user logins
+        New-ItemProperty -Path &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot; -Name &amp;quot;AuthenticationLevelOverride&amp;quot; -Value 0 -Force
+        New-ItemProperty -Path &amp;quot;HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;DisablePasswordSaving&amp;quot; -Value 1 -Force
+
+        # Prepare temporary local user
+        if ((Get-LocalUser -Name $localUserName -ErrorAction SilentlyContinue) -ne $null) {
+            LogWriter(&amp;quot;Removing existing local warmup user&amp;quot;)
+            Remove-LocalUser -Name $localUserName
+        }
+        LogWriter(&amp;quot;Adding local user&amp;quot;)
+        $localUser = New-LocalUser -Name $localUserName -Password $localUserPW -AccountExpires (Get-Date).AddMinutes(10) -PasswordNeverExpires -UserMayNotChangePassword
+        # Add user to remote desktop group
+        LogWriter(&amp;quot;Adding user to the remote desktop group&amp;quot;)
+        Add-LocalGroupMember -SID &amp;quot;S-1-5-32-555&amp;quot; -Member $localUserName -ErrorAction SilentlyContinue
+
+        # Login user
+        LogWriter(&amp;quot;Adding credentials of the warmup user to the key store&amp;quot;)
+        cmdkey /generic:TERMSRV/localhost /user:&amp;quot;$($env:Computername)\$($localUserName)&amp;quot; /pass:$localUserPWPlain
+        $startTime=Get-Date
+
+
+	$i=0
+	do {
+            LogWriter(&amp;quot;Login in user warmup user&amp;quot;)
+            if ($mstsc) {
+		$mstsc.Kill()
+		Start-Sleep -Seconds 6
+	    }
+            $mstsc = Start-Process -PassThru -FilePath &amp;quot;mstsc.exe&amp;quot; -ArgumentList &amp;quot;/v:localhost&amp;quot;
+    
+            # Wait for the user to login 
+            LogWriter(&amp;quot;Waiting a few seconds&amp;quot;)
+            Start-Sleep -Seconds 20
+            $i++		
+	} while ([Rds.Sessions]::GetSession($localUserName) -eq $null -and $i -le 10)
+
+        # Remove credentials
+        LogWriter(&amp;quot;Removing credentials from the key store&amp;quot;)
+        cmdkey /delete:TERMSRV/localhost
+
+        # Check, if user is connected
+        $session=[Rds.Sessions]::GetSession($localUserName)
+
+        if ($session -eq $null) {
+            LogWriter(&amp;quot;Warning: Warm-up user is not connected. So, the workaround is not working for some reasons&amp;quot;)
+        } else {
+            # Let the user for a while in the session and then logoff
+            LogWriter(&amp;quot;Let the user logged in for a while&amp;quot;)
+            Start-Sleep -Seconds 300
+            LogWriter(&amp;quot;Logoff user&amp;quot;)
+            [Rds.Sessions]::LogoffSession($session.SessionId, $true)
+            # Remove profile of the user
+            try {
+                LogWriter(&amp;quot;Delete profile of the warm-up user&amp;quot;)
+                @(Get-CimInstance -Class Win32_UserProfile | Where-Object { $_.Loaded -eq $false -and ($_.LocalPath.split(&apos;\&apos;)[-1] -like $localUserName -or $_.LocalPath.split(&apos;\&apos;)[-1] -like &amp;quot;$($localUserName).*&amp;quot;)}) | Remove-CimInstance
+
+            } catch {
+                LogWriter(&amp;quot;Error: Cannot delete the profile of the warmup user: $_&amp;quot;)
+            }
+
+        }
+        LogWriter(&amp;quot;Terminate mstsc.exe, if running&amp;quot;)
+        $mstsc.Kill()
+    } catch {
+        LogWriter(&amp;quot;Error: $_&amp;quot;)
+    } finally {
+        # Remove user
+        LogWriter(&amp;quot;Disable and remove user&amp;quot;)
+        Remove-LocalGroupMember -SID &amp;quot;S-1-5-32-555&amp;quot; -Member $localUserName
+        Disable-LocalUser -Name  $localUserName -ErrorAction SilentlyContinue
+        Remove-LocalUser -Name $localUserName -ErrorAction SilentlyContinue
+
+        # Restore default configuration
+        LogWriter(&amp;quot;Restoring local configuration&amp;quot;)
+        if ($oldAuthenticationLevelOverride -eq 99) {
+            Remove-ItemProperty &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot; -Name &amp;quot;AuthenticationLevelOverride&amp;quot; -Force
+        } else {
+            New-ItemProperty -Path &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot; -Name &amp;quot;AuthenticationLevelOverride&amp;quot; -Value $oldAuthenticationLevelOverride -Force
+        }
+    }
+    LogWriter(&amp;quot;Done&amp;quot;)
+}
+&lt;/code&gt;&lt;/pre&gt;</description>
+        <pubDate>Fri, 23 Aug 2024 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)</title>
+        <description>&lt;p&gt;Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates).&lt;/p&gt;
+&lt;p&gt;Also, my solution, &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;, uses the API to install Windows updates. That also includes draining, starting, installing, rebooting, etc. - all that is needed to update an existing host or a golden master. E.g.: Example of the script collection for an update:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/WSUS-API-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Unfortunately, a Microsoft patch broke the functionality of the Windows Update API. That is documented here: &lt;a href=&quot;https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;&gt;https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;If you have a broken computer, you will see the following error message: Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)
+&lt;img src=&quot;../assets/images/WSUS-API-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The documentation also explains how to resolve the issue using a KIR (known issue recovery), which requires some handwork or automation. To make this as easy as possible for users of &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;, I added the installation of the KIR as part of the “BuiltIn: OS Install Windows Updates”. Finally, it downloads and installs the KIR package and activates it. A final reboot is needed to bring it to work. If you are using the script as part of the script collection (see image above), it will first patch the host and install updates on the second try of running the “BuiltIn: OS Install Windows Updates”.&lt;/p&gt;
+&lt;p&gt;To get the updated built-in scripts, you can click on the icon in the upper-right corner inside of the scripts page:
+&lt;img src=&quot;../assets/images/WSUS-API-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Finally, you should have the updated script (reload the site first):
+&lt;img src=&quot;../assets/images/WSUS-API-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;After that, the Windows update procedure is working as expected:
+&lt;img src=&quot;../assets/images/WSUS-API-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Do you want to adapt your scripts? Here is my implementation. Feel free to use it:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;# Install Windows security updates directly over the internet. VM downloads the packages directly from Microsoft using the Windows Update service. A restart is required after the installation, which can be done with the script collection &amp;quot;OS Install Windows Updates&amp;quot;.
+$updateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
+$updateSearcher = New-Object -ComObject Microsoft.Update.Searcher
+$updateSession = New-Object -ComObject Microsoft.Update.Session
+
+$updatesKb=&amp;quot;&amp;quot;
+
+write-host(&amp;quot;Checking for updates&amp;quot;)
+$result = $updateSearcher.Search(&amp;quot;IsInstalled=0 and Type=&apos;Software&apos; and IsHidden=0&amp;quot;)
+
+if ($result.Updates.Count -EQ 0) {
+	write-host(&amp;quot;No new updates found&amp;quot;)
+}
+else {
+    try {
+        $updateDownloader = $updateSession.CreateUpdateDownloader()
+        $result.Updates|foreach {
+            write-host(&amp;quot;Found: $($_.Title)&amp;quot;)
+            $updatesKb=$updatesKb+$_.KBArticleIDs+&amp;quot; &amp;quot;
+            $updateCollection.Add($_)|Out-Null
+        }
+        write-host(&amp;quot;Downloading updates&amp;quot;)
+        $updateDownloader.Updates = $updateCollection
+        $updateDownloads = $updateDownloader.Download()
+        if (($updateDownloads.HResult -EQ 0) -AND ($updateDownloads.ResultCode -EQ 2)) {
+            write-host(&amp;quot;Downloads success&amp;quot;)
+        }
+        else {
+            write-host(&amp;quot;Downloads failed&amp;quot;)
+            Write-host(&amp;quot;ScriptReturnMessage:{Download failed}:ScriptReturnMessage&amp;quot;)
+            exit
+        }
+        write-host(&amp;quot;Installing updates&amp;quot;)
+        $updateInstaller = New-Object -ComObject Microsoft.Update.Installer
+        $updateInstaller.Updates = $updateCollection
+        $updateDownloads = $updateInstaller.Install()
+
+        write-host(&amp;quot;Applied updates: $updatesKb&amp;quot;)
+    } catch {
+        if (($_ -like &amp;quot;*0x8002802B*&amp;quot;) -and (Get-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot; -Name &amp;quot;1931709068&amp;quot; -ErrorAction Ignore).&amp;quot;1931709068&amp;quot; -ne 0) {
+            # Update API issue: https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc
+            $hotFixKirUrl=&amp;quot;https://download.microsoft.com/download/3944f364-6483-49ab-af0d-3e2bd80dedaf/Windows%2011%2022H2%20KB5039302%20240711_20301%20Known%20Issue%20Rollback.msi&amp;quot;
+            try {
+                write-host (&amp;quot;Try to download KIR file to bring Windows Update API back&amp;quot;)
+                (New-Object System.Net.WebClient).DownloadFile($hotFixKirUrl, &amp;quot;$env:temp\KIRKB5039302.msi&amp;quot;)
+                Start-Process msiexec.exe -Wait -ArgumentList &apos;/I $env:temp\KIRKB5039302.msi /quiet&apos;
+                if (-not (Test-Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot;)) {
+                    New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot; -Force -ErrorAction SilentlyContinue
+                }
+                New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot; -Name &amp;quot;1931709068&amp;quot; -Value 0 -Force -ErrorAction SilentlyContinue
+            } catch {
+                write-host (&amp;quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&amp;quot;)
+                throw $_
+            }
+            # A reboot is required
+            write-host(&amp;quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&amp;quot;)
+        } else {
+            write-host (&amp;quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&amp;quot;)
+            throw $_
+        }
+    }
+}
+
+&lt;/code&gt;&lt;/pre&gt;</description>
+        <pubDate>Thu, 01 Aug 2024 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/</guid>
         
         
         <category>Windows Virtual Desktop</category>
