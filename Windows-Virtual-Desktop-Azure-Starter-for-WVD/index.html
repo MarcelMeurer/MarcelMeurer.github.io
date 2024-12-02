@@ -10,12 +10,12 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Azure Windows Virtual Desktop - Azure Starter for WVD | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Azure Windows Virtual Desktop - Azure Starter for WVD" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="This month I started to build my fourth tool around Microsoft Windows Virtual Desktop. This new one, called “Azure Starter for WVD” is a self-service portal for users using WVD. In this portal, which is a web app with Azure AD authentication, users can start and stop (deallocate) their personal assigned session host - which in this case are VDIs." />
-<meta property="og:description" content="This month I started to build my fourth tool around Microsoft Windows Virtual Desktop. This new one, called “Azure Starter for WVD” is a self-service portal for users using WVD. In this portal, which is a web app with Azure AD authentication, users can start and stop (deallocate) their personal assigned session host - which in this case are VDIs." />
+<meta name="description" content="This month I started to build my fourth tool around Microsoft Windows Virtual Desktop. This new one, called &quot;Azure Starter for WVD&quot; is a self-service portal for users using WVD. In this portal, which is a web app with Azure AD authentication, users can start and stop (deallocate) their personal assigned session host - which in this case are VDIs." />
+<meta property="og:description" content="This month I started to build my fourth tool around Microsoft Windows Virtual Desktop. This new one, called &quot;Azure Starter for WVD&quot; is a self-service portal for users using WVD. In this portal, which is a web app with Azure AD authentication, users can start and stop (deallocate) their personal assigned session host - which in this case are VDIs." />
 <link rel="canonical" href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Azure-Starter-for-WVD/" />
 <meta property="og:url" content="https://blog.itprocloud.de/Windows-Virtual-Desktop-Azure-Starter-for-WVD/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/WVDStarter.png" />
 <meta property="twitter:title" content="Azure Windows Virtual Desktop - Azure Starter for WVD" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2020-02-09T00:00:00+01:00","datePublished":"2020-02-09T00:00:00+01:00","description":"This month I started to build my fourth tool around Microsoft Windows Virtual Desktop. This new one, called “Azure Starter for WVD” is a self-service portal for users using WVD. In this portal, which is a web app with Azure AD authentication, users can start and stop (deallocate) their personal assigned session host - which in this case are VDIs.","headline":"Azure Windows Virtual Desktop - Azure Starter for WVD","image":"https://blog.itprocloud.de/assets/images/WVDStarter.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Azure-Starter-for-WVD/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Azure-Starter-for-WVD/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2020-02-09T00:00:00+01:00","datePublished":"2020-02-09T00:00:00+01:00","description":"This month I started to build my fourth tool around Microsoft Windows Virtual Desktop. This new one, called &quot;Azure Starter for WVD&quot; is a self-service portal for users using WVD. In this portal, which is a web app with Azure AD authentication, users can start and stop (deallocate) their personal assigned session host - which in this case are VDIs.","headline":"Azure Windows Virtual Desktop - Azure Starter for WVD","image":"https://blog.itprocloud.de/assets/images/WVDStarter.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Azure-Starter-for-WVD/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Azure-Starter-for-WVD/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -459,12 +459,18 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>This month I started to build my fourth tool around Microsoft Windows Virtual Desktop. This new one, called “Azure Starter for WVD” is a self-service portal for users using WVD. In this portal, which is a web app with Azure AD authentication, users can start and stop (deallocate) their personal assigned session host - which in this case are VDIs.</p>
-<p>The user doesn’t need access nor permission to the Azure portal or the virtual machines. The authentication of the web app handles the action itself.</p>
-<p><img src="../assets/images/WVDStarter-AssignedUser.png" alt="MySmartScale-01" /></p>
+                <p>This month I started to build my fourth tool around Microsoft Windows Virtual Desktop. This new one, called &quot;Azure Starter for WVD&quot; is a self-service portal for users using WVD. In this portal, which is a web app with Azure AD authentication, users can start and stop (deallocate) their personal assigned session host - which in this case are VDIs.</p>
+
+<p>The user doesn&#39;t need access nor permission to the Azure portal or the virtual machines. The authentication of the web app handles the action itself.</p>
+
+<p><img src="../assets/images/WVDStarter-AssignedUser.png" alt="MySmartScale-01"></p>
+
 <p>The newest implementation adds a new feature: You can configure that running VMs are deallocated if no user is logged in. That handles in combination with a group policy that personally assigned session hosts to go down after a specific time of idling.</p>
+
 <p>A session host can be assigned to a specific user using my admin GUI for WVD: <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">WVDAdmin</a></p>
+
 <p>Go to the documentation and deploy this free solution to Azure:</p>
+
 <p><a href="https://github.com/MarcelMeurer/Azure-Starter-for-WVD">https://github.com/MarcelMeurer/Azure-Starter-for-WVD</a></p>
 
             </div>

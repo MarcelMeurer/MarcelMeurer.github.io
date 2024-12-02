@@ -10,12 +10,12 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>How to image a Golden Master VM based on a plan to a compute gallery definition | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="How to image a Golden Master VM based on a plan to a compute gallery definition" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="The Azure Marketplace offers many preconfigured VMs, which are preconfigured images from a third-party vendor used to deploy a VM. One popular offering is “CIS Hardened Image Level 1 on Microsoft Windows 11 Enterprise—Gen 2.” The Center for Internet Security Inc. has hardened the Windows 11 image and provides it through the marketplace for a small fee. That is called a “Plan” for a VM." />
-<meta property="og:description" content="The Azure Marketplace offers many preconfigured VMs, which are preconfigured images from a third-party vendor used to deploy a VM. One popular offering is “CIS Hardened Image Level 1 on Microsoft Windows 11 Enterprise—Gen 2.” The Center for Internet Security Inc. has hardened the Windows 11 image and provides it through the marketplace for a small fee. That is called a “Plan” for a VM." />
+<meta name="description" content="The Azure Marketplace offers many preconfigured VMs, which are preconfigured images from a third-party vendor used to deploy a VM. One popular offering is &quot;CIS Hardened Image Level 1 on Microsoft Windows 11 Enterprise—Gen 2.&quot; The Center for Internet Security Inc. has hardened the Windows 11 image and provides it through the marketplace for a small fee. That is called a &quot;Plan&quot; for a VM." />
+<meta property="og:description" content="The Azure Marketplace offers many preconfigured VMs, which are preconfigured images from a third-party vendor used to deploy a VM. One popular offering is &quot;CIS Hardened Image Level 1 on Microsoft Windows 11 Enterprise—Gen 2.&quot; The Center for Internet Security Inc. has hardened the Windows 11 image and provides it through the marketplace for a small fee. That is called a &quot;Plan&quot; for a VM." />
 <link rel="canonical" href="https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/" />
 <meta property="og:url" content="https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Gallery-Plan-03.png" />
 <meta property="twitter:title" content="How to image a Golden Master VM based on a plan to a compute gallery definition" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2024-06-20T00:00:00+02:00","datePublished":"2024-06-20T00:00:00+02:00","description":"The Azure Marketplace offers many preconfigured VMs, which are preconfigured images from a third-party vendor used to deploy a VM. One popular offering is “CIS Hardened Image Level 1 on Microsoft Windows 11 Enterprise—Gen 2.” The Center for Internet Security Inc. has hardened the Windows 11 image and provides it through the marketplace for a small fee. That is called a “Plan” for a VM.","headline":"How to image a Golden Master VM based on a plan to a compute gallery definition","image":"https://blog.itprocloud.de/assets/images/Gallery-Plan-03.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2024-06-20T00:00:00+02:00","datePublished":"2024-06-20T00:00:00+02:00","description":"The Azure Marketplace offers many preconfigured VMs, which are preconfigured images from a third-party vendor used to deploy a VM. One popular offering is &quot;CIS Hardened Image Level 1 on Microsoft Windows 11 Enterprise—Gen 2.&quot; The Center for Internet Security Inc. has hardened the Windows 11 image and provides it through the marketplace for a small fee. That is called a &quot;Plan&quot; for a VM.","headline":"How to image a Golden Master VM based on a plan to a compute gallery definition","image":"https://blog.itprocloud.de/assets/images/Gallery-Plan-03.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-How-to-image-a-Golden-Master-VM-based-on-a-plan-to-a-compute-gallery-definition/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -459,33 +459,51 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>The Azure Marketplace offers many preconfigured VMs, which are preconfigured images from a third-party vendor used to deploy a VM. One popular offering is “CIS Hardened Image Level 1 on Microsoft Windows 11 Enterprise—Gen 2.” The Center for Internet Security Inc. has hardened the Windows 11 image and provides it through the marketplace for a small fee. That is called a “Plan” for a VM.</p>
-<p>That image can be used for a Golden Master: Install your application on top, create an image, and deploy multiple session hosts / virtual machines in your Azure Virtual Desktop environment (and yes, that also costs a bit more for each deployed host). Unfortunately, it’s not so easy to capture an image directly into an Azure Compute Gallery definition - which is needed if you want to deploy trusted launch VMs afterward.</p>
+                <p>The Azure Marketplace offers many preconfigured VMs, which are preconfigured images from a third-party vendor used to deploy a VM. One popular offering is &quot;CIS Hardened Image Level 1 on Microsoft Windows 11 Enterprise—Gen 2.&quot; The Center for Internet Security Inc. has hardened the Windows 11 image and provides it through the marketplace for a small fee. That is called a &quot;Plan&quot; for a VM.</p>
+
+<p>That image can be used for a Golden Master: Install your application on top, create an image, and deploy multiple session hosts / virtual machines in your Azure Virtual Desktop environment (and yes, that also costs a bit more for each deployed host). Unfortunately, it&#39;s not so easy to capture an image directly into an Azure Compute Gallery definition - which is needed if you want to deploy trusted launch VMs afterward.</p>
+
 <p>When attempting to capture an image directly into a Compute Gallery Definition using <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a> (to create loss-less images), you may encounter the following error message:</p>
-<p><strong>The resource with id ‘/subscriptions/xxxxxxxxxxx/resourceGroups/WVD_Templates/providers/Microsoft.Compute/virtualMachines/TEMP_T-CIS-Plan-01_2024-06-19_19-19-51’ has a different plan [’{“name”:“cis-windows11-enterprise-l1-gen2”,“publisher”:“center-for-internet-security-inc”,“product”:“cis-windows-enterprise”,“promotionCode”:null}’] than the parent gallery image plan [‘null’]</strong></p>
-<p>The error message gives a hint. The Compute Gallery Definition must be prepared to accept image versions with a plan (the market place image). Therefore, we have to create a matching Compute Gallery Definition. But first, we have to figure out the “Purchase plan name”, “Purchase plan publisher name”, and “Purchase plan product name”. If you already have deployed the VM / your Golden Master. You can grab the information form the JSON-view of the VM:</p>
-<p><img src="../assets/images/Gallery-Plan-01.png" alt="" /></p>
+
+<p><strong>The resource with id &#39;/subscriptions/xxxxxxxxxxx/resourceGroups/WVD_Templates/providers/Microsoft.Compute/virtualMachines/TEMP_T-CIS-Plan-01_2024-06-19_19-19-51&#39; has a different plan [&#39;{&quot;name&quot;:&quot;cis-windows11-enterprise-l1-gen2&quot;,&quot;publisher&quot;:&quot;center-for-internet-security-inc&quot;,&quot;product&quot;:&quot;cis-windows-enterprise&quot;,&quot;promotionCode&quot;:null}&#39;] than the parent gallery image plan [&#39;null&#39;]</strong></p>
+
+<p>The error message gives a hint. The Compute Gallery Definition must be prepared to accept image versions with a plan (the market place image). Therefore, we have to create a matching Compute Gallery Definition. But first, we have to figure out the &quot;Purchase plan name&quot;, &quot;Purchase plan publisher name&quot;, and &quot;Purchase plan product name&quot;. If you already have deployed the VM / your Golden Master. You can grab the information form the JSON-view of the VM:</p>
+
+<p><img src="../assets/images/Gallery-Plan-01.png" alt=""></p>
+
 <p>Later, we will use the following data to configure the Compute Gallery Definition:</p>
+
 <p><strong>Name = Purchase plan name: cis-windows11-enterprise-l1-gen2</strong> </br>
 <strong>Publisher = Purchase plan publisher name: center-for-internet-security-inc</strong> </br>
 <strong>Product = Purchase plan product name: cis-windows-enterprise</strong> </br></p>
-<p>Now, we can start creating the Compute Gallery Definition. If you don’t already have a Compute Gallery, create it first. Click on Add -&gt; VM image definition. Fill out the formula, e.g.:</p>
+
+<p>Now, we can start creating the Compute Gallery Definition. If you don&#39;t already have a Compute Gallery, create it first. Click on Add -&gt; VM image definition. Fill out the formula, e.g.:</p>
+
 <ul>
-<li>VM image definition name: <strong>Custom-CIS-Image_TrustedLaunch</strong></li>
+<li>VM image definition name: <strong>Custom-CIS-Image_TrustedLaunch</strong> </li>
 <li>Security type: <strong>Trusted launch</strong> (not support); that allows you to create trusted launch enabled hosts later</li>
 <li>Publisher: <strong>ITProCloud</strong></li>
 <li>Offer: <strong>CIS-Image-Custom-TrustedLaunch</strong></li>
 <li>SKU: <strong>A</strong></li>
 </ul>
+
 <p>(The combination of Publisher/Offer/SKU must be unique in a Compute Gallery)</p>
-<p><img src="../assets/images/Gallery-Plan-02.png" alt="" /></p>
+
+<p><img src="../assets/images/Gallery-Plan-02.png" alt=""></p>
+
 <p>NEXT -&gt; NEXT -&gt; Publishing options:</p>
-<p>That page is important for the plan configuration to store the CIS image. Fill out the fields for “Purchase plan name”, “Purchase plan publisher name”, and “Purchase plan product name” with the noted values:</p>
-<p><img src="../assets/images/Gallery-Plan-03.png" alt="" /></p>
+
+<p>That page is important for the plan configuration to store the CIS image. Fill out the fields for &quot;Purchase plan name&quot;, &quot;Purchase plan publisher name&quot;, and &quot;Purchase plan product name&quot; with the noted values:</p>
+
+<p><img src="../assets/images/Gallery-Plan-03.png" alt=""></p>
+
 <p>Click Review + Create -&gt; Create</p>
-<p><img src="../assets/images/Gallery-Plan-04.png" alt="" /></p>
+
+<p><img src="../assets/images/Gallery-Plan-04.png" alt=""></p>
+
 <p>Finally, you can create a loss-less image with <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a> directly into the Gallery Definition:</p>
-<p><img src="../assets/images/Gallery-Plan-05.png" alt="" /></p>
+
+<p><img src="../assets/images/Gallery-Plan-05.png" alt=""></p>
 
             </div>
 

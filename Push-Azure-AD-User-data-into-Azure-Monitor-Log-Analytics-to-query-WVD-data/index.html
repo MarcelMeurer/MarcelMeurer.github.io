@@ -10,12 +10,12 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Push Azure AD User properties into Azure Monitor Log Analytics to build Azure Windows Virtual Desktop (WVD) performance data based on these | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Push Azure AD User properties into Azure Monitor Log Analytics to build Azure Windows Virtual Desktop (WVD) performance data based on these" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Azure Windows Virtual Desktop (WVD/AVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance." />
-<meta property="og:description" content="Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Azure Windows Virtual Desktop (WVD/AVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance." />
+<meta name="description" content="Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Azure Windows Virtual Desktop (WVD/AVD), it is crucial to have an eye on the hosts, users, and single applications&#39; usage and performance." />
+<meta property="og:description" content="Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Azure Windows Virtual Desktop (WVD/AVD), it is crucial to have an eye on the hosts, users, and single applications&#39; usage and performance." />
 <link rel="canonical" href="https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/" />
 <meta property="og:url" content="https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/LogicApp-AAD-AzureMonitor-008.png" />
 <meta property="twitter:title" content="Push Azure AD User properties into Azure Monitor Log Analytics to build Azure Windows Virtual Desktop (WVD) performance data based on these" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2020-10-01T00:00:00+02:00","datePublished":"2020-10-01T00:00:00+02:00","description":"Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Azure Windows Virtual Desktop (WVD/AVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance.","headline":"Push Azure AD User properties into Azure Monitor Log Analytics to build Azure Windows Virtual Desktop (WVD) performance data based on these","image":"https://blog.itprocloud.de/assets/images/LogicApp-AAD-AzureMonitor-008.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2020-10-01T00:00:00+02:00","datePublished":"2020-10-01T00:00:00+02:00","description":"Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Azure Windows Virtual Desktop (WVD/AVD), it is crucial to have an eye on the hosts, users, and single applications&#39; usage and performance.","headline":"Push Azure AD User properties into Azure Monitor Log Analytics to build Azure Windows Virtual Desktop (WVD) performance data based on these","image":"https://blog.itprocloud.de/assets/images/LogicApp-AAD-AzureMonitor-008.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Push-Azure-AD-User-data-into-Azure-Monitor-Log-Analytics-to-query-WVD-data/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -459,61 +459,74 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Azure Windows Virtual Desktop (WVD/AVD), it is crucial to have an eye on the hosts, users, and single applications’ usage and performance.</p>
+                <p>Azure Monitor / Log Analytics is my first choice to store log and usage data. Even for Azure Windows Virtual Desktop (WVD/AVD), it is crucial to have an eye on the hosts, users, and single applications&#39; usage and performance.</p>
+
 <p>I do that using Azure Monitor for WVD/AVD (<a href="https://www.sepago.de/en/azure-monitor-en/">https://www.sepago.de/en/azure-monitor-en/</a>) from sepago, which is also included in Nerdio Manager for WVD/AVD (<a href="https://getnerdio.com/nerdio-manager-for-wvd/">https://getnerdio.com/nerdio-manager-for-wvd/</a>).</p>
+
 <p>The solution gives you insight into the performance of the apps and hosts and allows you to build a cost calculation on a per-user base. If you want to query and analyze data by other properties - like the department - you have to include these properties from Azure AD into your log analytics workspace.</p>
-<p>I found an easy solution doing that with an Azure logic app. The logic app access the Azure AD tenant and queries the users and some defined properties and send it to log analytics. A challenge was to handle the challenge that you have to query multiple times to get all users from Azure AD (a single query gives you only a specific amount of users -&gt; Paging). I solved this using an “Until-loop” to get all users. The logic app pushed the users and their properties to the defined log analytics workspace. After this, the users and properties can be used in a KUSTO query. For example: To query the over-all session runtime by the department.</p>
+
+<p>I found an easy solution doing that with an Azure logic app. The logic app access the Azure AD tenant and queries the users and some defined properties and send it to log analytics. A challenge was to handle the challenge that you have to query multiple times to get all users from Azure AD (a single query gives you only a specific amount of users -&gt; Paging). I solved this using an &quot;Until-loop&quot; to get all users. The logic app pushed the users and their properties to the defined log analytics workspace. After this, the users and properties can be used in a KUSTO query. For example: To query the over-all session runtime by the department.</p>
+
 <h2 id="installation-and-configuration">Installation and configuration</h2>
-<p>Deploy the prepared logic app into your subscription using the “Deploy to Azure” button.</p>
-<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FLA-AADUsersToLogAnalytics.json"><img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" /></a></p>
-<p>To query the Azure AD unattended, you need a service principal (a function account) with the right permission. Create the service principal in the Azure Portal:</p>
+
+<p>Deploy the prepared logic app into your subscription using the &quot;Deploy to Azure&quot; button.</p>
+
+<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FLA-AADUsersToLogAnalytics.json"><img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure"></a></p>
+
+<p>To query the Azure AD unattended, you need a service principal (a function account) with the right permission. Create the service principal in the Azure Portal: </p>
+
 <ul>
 <li>Azure Active Directory -&gt; App registrations -&gt; New registration and give it a name (e.g. svc_AzureAdUserReader4AzureMonitor) and press register
-<img src="../assets/images/LogicApp-AAD-AzureMonitor-001.png" alt="" /></li>
+<img src="../assets/images/LogicApp-AAD-AzureMonitor-001.png" alt=""></li>
 <li>Go to Certificates and secrets -&gt; Add new client secret and type in a name (e.g. Key1) and expiration date (make a note into your calendar) and press add
-<img src="../assets/images/LogicApp-AAD-AzureMonitor-002.png" alt="" /></li>
+<img src="../assets/images/LogicApp-AAD-AzureMonitor-002.png" alt=""></li>
 <li>Copy the generated secret for later use</li>
 <li>Go to Api permissions -&gt; Add a permission -&gt; select Microsoft Graph -&gt; Application permissions -&gt; select User.Read.All -&gt; click Add permissions
-<img src="../assets/images/LogicApp-AAD-AzureMonitor-003.png" alt="" /></li>
+<img src="../assets/images/LogicApp-AAD-AzureMonitor-003.png" alt=""></li>
 <li>Click Grant admin consent to allow this setting (you have to be in the right role to do that)
-<img src="../assets/images/LogicApp-AAD-AzureMonitor-004.png" alt="" /></li>
+<img src="../assets/images/LogicApp-AAD-AzureMonitor-004.png" alt=""></li>
 <li>Go to overview and copy the application id and directory id for later use</li>
 </ul>
+
 <p>To upload the data to your Azure Monitor / log analytics workspace, you need the workspace id and key.</p>
+
 <ul>
 <li>Go to your log analytics workspace -&gt; select Advanced settings -&gt; Agents management -&gt; copy the workspace id and primary key for later use
-<img src="../assets/images/LogicApp-AAD-AzureMonitor-005.png" alt="" /></li>
+<img src="../assets/images/LogicApp-AAD-AzureMonitor-005.png" alt=""></li>
 </ul>
+
 <p>Go to your deployed logic app and click edit.</p>
+
 <ul>
-<li>
-<p>Expand “Until 2”</p>
-</li>
-<li>
-<p>Click on http. Enter the data from your service principal into the fields Tenant (Directory id), client id, and secret
-<img src="../assets/images/LogicApp-AAD-AzureMonitor-006.png" alt="" /></p>
-</li>
-<li>
-<p>Click on Connections and add a new one (Add new)</p>
-</li>
-<li>
-<ul>
+<li><p>Expand &quot;Until 2&quot;</p></li>
+<li><p>Click on http. Enter the data from your service principal into the fields Tenant (Directory id), client id, and secret
+<img src="../assets/images/LogicApp-AAD-AzureMonitor-006.png" alt=""></p></li>
+<li><p>Click on Connections and add a new one (Add new)</p></li>
+<li><ul>
 <li>Give a name (e.g. ToLogAnalytics), the primary key and workspace id from log analytics and press create
-<img src="../assets/images/LogicApp-AAD-AzureMonitor-007.png" alt="" /></li>
+<img src="../assets/images/LogicApp-AAD-AzureMonitor-007.png" alt=""></li>
+</ul></li>
 </ul>
-</li>
-</ul>
+
 <p>Save the logic app and press run to test it.</p>
+
 <p>If everything looks good, our logic app will write the user data to log analytics once a day.</p>
-<p><img src="../assets/images/LogicApp-AAD-AzureMonitor-008.png" alt="" /></p>
-<p>You can query the data from log analytics with “ITPC_CTX_ADUsers_CL”. Keep in mind that it takes a while (30 minutes) to build the first upload schema.</p>
-<p><img src="../assets/images/LogicApp-AAD-AzureMonitor-009.png" alt="" /></p>
+
+<p><img src="../assets/images/LogicApp-AAD-AzureMonitor-008.png" alt=""></p>
+
+<p>You can query the data from log analytics with &quot;ITPC_CTX_ADUsers_CL&quot;. Keep in mind that it takes a while (30 minutes) to build the first upload schema.</p>
+
+<p><img src="../assets/images/LogicApp-AAD-AzureMonitor-009.png" alt=""></p>
+
 <p><strong>Hint:</strong></p>
-<p>You can modify the filter and the properties you get back, modifying the query URL. The URL can be modified in “Initialize variable” in the logic app.</p>
-<p><img src="../assets/images/LogicApp-AAD-AzureMonitor-010.png" alt="" /></p>
+
+<p>You can modify the filter and the properties you get back, modifying the query URL. The URL can be modified in &quot;Initialize variable&quot; in the logic app.</p>
+
+<p><img src="../assets/images/LogicApp-AAD-AzureMonitor-010.png" alt=""></p>
+
 <p>The default is:</p>
-<pre><code>https://graph.microsoft.com/v1.0/users?$filter=accountEnabled eq true  and userType eq 'Member'&amp;$select=userPrincipalName,onPremisesSamAccountName,employeeId,officeLocation,department
-</code></pre>
+<div class="highlight"><pre><code class="language-" data-lang="">https://graph.microsoft.com/v1.0/users?$filter=accountEnabled eq true  and userType eq 'Member'&amp;$select=userPrincipalName,onPremisesSamAccountName,employeeId,officeLocation,department
+</code></pre></div>
 <p>A list of valid properties is here: <a href="https://docs.microsoft.com/de-de/graph/api/resources/user?view=graph-rest-1.0">https://docs.microsoft.com/de-de/graph/api/resources/user?view=graph-rest-1.0</a></p>
 
             </div>

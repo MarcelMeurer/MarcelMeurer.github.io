@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Azure Virtual Desktop: Logging session host state to Log Analytics to show state and sessions over time" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,87 +460,106 @@
                 
                 <!-- End Toc -->
                 <p><strong>Update October 2022:</strong> <a href="https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/">Check out the following Workbook to use diagnostic logging to get and visualize the data</a></p>
+
 <p>I had some presentations over the last weeks where I showed how to create images with PowerShell and how to deploy these images as new session hosts - also with PowerShell. Additionally, I showed how to log the state of the Azure Virtual Desktop session hosts each minute to a log analytics workspace. This post covers the why and how.</p>
+
 <p>Today, you can manage Azure Virtual Desktop differently (Portal, PowerShell, <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>, <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for AVD</a>, etc.). Also, monitoring is covered using Azure Monitor and the Diagnostic Logging, and my <a href="https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/">free Workbook</a>. But some parts are missing regarding monitoring: If you want to show available hosts and sessions over time (e.g., for the last month), you have no native solution. Also, the state of a specific host at any time would be interesting to find issues in the past.</p>
-<p>But it’s easy to solve. You can do the following steps with PowerShell to store this data in a Log Analytics workspace:</p>
-<p>Each minute:</p>
-<ul>
-<li>Query all host pools in a resource group</li>
-<li>Read the session hosts objects of each pool</li>
-<li>Extend a property to the session hosts with the current timestamp (do not rely on the generated timestamp to later group the hosts in time)</li>
-<li>Upload the data to Log Analytics</li>
-</ul>
-<p>The most efficient and economical way is to use an Azure Function. The function can be used to trigger the script each minute. To do it more professional, we can build this solution with a few Azure resources:</p>
-<ul>
-<li>Azure Function for the PowerShell script</li>
-<li>Azure Key Vault to store the Log Analytics workspace id and key</li>
-<li>A new or existing Log Analytics workspace</li>
-</ul>
+
+<p>But it&#39;s easy to solve. You can do the following steps with PowerShell to store this data in a Log Analytics workspace:</p>
+
+<p>Each minute:
+- Query all host pools in a resource group
+- Read the session hosts objects of each pool
+- Extend a property to the session hosts with the current timestamp (do not rely on the generated timestamp to later group the hosts in time)
+- Upload the data to Log Analytics</p>
+
+<p>The most efficient and economical way is to use an Azure Function. The function can be used to trigger the script each minute. To do it more professional, we can build this solution with a few Azure resources:
+- Azure Function for the PowerShell script
+- Azure Key Vault to store the Log Analytics workspace id and key
+- A new or existing Log Analytics workspace</p>
+
 <h3 id="create-or-select-a-log-analytics-workspace">Create or select a Log Analytics workspace</h3>
+
 <p>You can create a new Log Analytics workspace to store the data or you can use an existing one. If you have done this, copy the WorkspaceId and WorkspaceKey (primary key) for later use (can be found in Agents Management -&gt; Log Analytics agent instructions).</p>
-<p><img src="../assets/images/MonitorSessionHosts-02.png" alt="" /></p>
+
+<p><img src="../assets/images/MonitorSessionHosts-02.png" alt=""></p>
+
 <h3 id="create-an-azure-key-vault">Create an Azure Key Vault</h3>
-<p>Create a standard Key Vault and add two secrets to the vault:</p>
-<ul>
-<li>WorkspaceId, containing the WorkspaceId of the Log Analytics workspace</li>
-<li>WorkspaceKey, containing the WorkspaceKey of the Log Analytics workspace</li>
-</ul>
-<p><img src="../assets/images/MonitorSessionHosts-03.png" alt="" /></p>
+
+<p>Create a standard Key Vault and add two secrets to the vault:
+- WorkspaceId, containing the WorkspaceId of the Log Analytics workspace
+- WorkspaceKey, containing the WorkspaceKey of the Log Analytics workspace</p>
+
+<p><img src="../assets/images/MonitorSessionHosts-03.png" alt=""></p>
+
 <h3 id="configuring-the-azure-function">Configuring the Azure Function</h3>
-<p>Rollout a new Azure Function with a consumption plan (or an existing App Service Plan). Open the function -&gt; Identity and set the “System assigned” identity to on. This creates immediatily an identity for the Azure Function to give the Function permission to access the Key Vault and the Host Pool/resource group containing the host pools.</p>
-<p>In functions, select create -&gt; Time Trigger and set the time trigger to “*/60 * * * * *” to run the script each minute. Give the function a good name. In “code”, insert the content of <a href="https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0#file-run-ps1">run.ps1</a>. Modify line 28 and insert the name of the resource group of your host pools.</p>
-<p><img src="../assets/images/MonitorSessionHosts-04.png" alt="" /></p>
-<p>In the Function -&gt; App Files, copy the content from <a href="https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0">https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0</a> to the files “requierements.psd1” and “profile.ps1”. That is needed to load the Azure modules of AVD and the authentication with the managed identity.</p>
-<p>Finally, open configuration in the Azure Function, and create new application settings:</p>
-<ul>
-<li>WorkspaceId: @Microsoft.KeyVault(SecretUri=<a href="https://xxxx.vault.azure.net/secrets/WorkspaceId/">https://xxxx.vault.azure.net/secrets/WorkspaceId/</a>)</li>
-<li>WorkspaceKey: @Microsoft.KeyVault(SecretUri=<a href="https://xxxx.vault.azure.net/secrets/WorkspaceKey/">https://xxxx.vault.azure.net/secrets/WorkspaceKey/</a>)
-Use the correct URL to reflect the correct Key Vault</li>
-</ul>
-<p><img src="../assets/images/MonitorSessionHosts-05.png" alt="" /></p>
-<p>Do give the Azure Function permission to read the secrets, open the Key Vault again and go to: Access configuration -&gt; Go to access policies and create new permission with “Secret Get” for the identity of the function (use the name of the function to find the identity).</p>
-<p>Go to the resource group containing your host pools -&gt; Access Control -&gt; Add role assignment: Add the role “Desktop Virtualization Host Pool Reader” for the member “Managed Identity” and the name of the Azure Function.</p>
+
+<p>Rollout a new Azure Function with a consumption plan (or an existing App Service Plan). Open the function -&gt; Identity and set the &quot;System assigned&quot; identity to on. This creates immediatily an identity for the Azure Function to give the Function permission to access the Key Vault and the Host Pool/resource group containing the host pools.</p>
+
+<p>In functions, select create -&gt; Time Trigger and set the time trigger to &quot;*/60 * * * * *&quot; to run the script each minute. Give the function a good name. In &quot;code&quot;, insert the content of <a href="https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0#file-run-ps1">run.ps1</a>. Modify line 28 and insert the name of the resource group of your host pools.</p>
+
+<p><img src="../assets/images/MonitorSessionHosts-04.png" alt=""></p>
+
+<p>In the Function -&gt; App Files, copy the content from <a href="https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0">https://gist.github.com/MarcelMeurer/8347eb527a6fdb4839ee428bf0e6eee0</a> to the files &quot;requierements.psd1&quot; and &quot;profile.ps1&quot;. That is needed to load the Azure modules of AVD and the authentication with the managed identity.</p>
+
+<p>Finally, open configuration in the Azure Function, and create new application settings:
+- WorkspaceId: @Microsoft.KeyVault(SecretUri=<a href="https://xxxx.vault.azure.net/secrets/WorkspaceId/">https://xxxx.vault.azure.net/secrets/WorkspaceId/</a>)<br>
+- WorkspaceKey: @Microsoft.KeyVault(SecretUri=<a href="https://xxxx.vault.azure.net/secrets/WorkspaceKey/">https://xxxx.vault.azure.net/secrets/WorkspaceKey/</a>)
+Use the correct URL to reflect the correct Key Vault</p>
+
+<p><img src="../assets/images/MonitorSessionHosts-05.png" alt=""></p>
+
+<p>Do give the Azure Function permission to read the secrets, open the Key Vault again and go to: Access configuration -&gt; Go to access policies and create new permission with &quot;Secret Get&quot; for the identity of the function (use the name of the function to find the identity).</p>
+
+<p>Go to the resource group containing your host pools -&gt; Access Control -&gt; Add role assignment: Add the role &quot;Desktop Virtualization Host Pool Reader&quot; for the member &quot;Managed Identity&quot; and the name of the Azure Function.</p>
+
 <p>If everything is working fine, the first data are written to the Log Analytics workspace. You can check the output of the function in Monitor:</p>
-<p><img src="../assets/images/MonitorSessionHosts-06.png" alt="" /></p>
+
+<p><img src="../assets/images/MonitorSessionHosts-06.png" alt=""></p>
+
 <p>It takes one time a couple of minutes to build the data schema in Log Analytics. After that, a new table is shown in Logs:</p>
-<p><img src="../assets/images/MonitorSessionHosts-07.png" alt="" /></p>
+
+<p><img src="../assets/images/MonitorSessionHosts-07.png" alt=""></p>
+
 <p>To start showing some data, we can run the following Kusto queries to show the data:</p>
-<p><img src="../assets/images/MonitorSessionHosts-01.png" alt="" />
-<img src="../assets/images/MonitorSessionHosts-09.png" alt="" />
-<img src="../assets/images/MonitorSessionHosts-10.png" alt="" />
-<img src="../assets/images/MonitorSessionHosts-11.png" alt="" /></p>
+
+<p><img src="../assets/images/MonitorSessionHosts-01.png" alt="">
+<img src="../assets/images/MonitorSessionHosts-09.png" alt="">
+<img src="../assets/images/MonitorSessionHosts-10.png" alt="">
+<img src="../assets/images/MonitorSessionHosts-11.png" alt=""></p>
+
 <h3 id="queries">Queries</h3>
-<pre><code>// sessions per host pool over time
+<div class="highlight"><pre><code class="language-" data-lang="">// sessions per host pool over time
 AvdBehind_v2_CL
-| extend HostPool=tostring(split(Id_s,&quot;/&quot;)[8])
+| extend HostPool=tostring(split(Id_s,"/")[8])
 | summarize sum(Session_d) by HostPool, TimeGenerated
 | render timechart
 
 
 // available hosts per pool over time
 AvdBehind_v2_CL
-| extend HostPool=tostring(split(Id_s,&quot;/&quot;)[8])
-| where Status_s=~&quot;Available&quot;
+| extend HostPool=tostring(split(Id_s,"/")[8])
+| where Status_s=~"Available"
 | summarize count() by HostPool, TimeGenerated
 | render timechart 
 
 
 // assigned hosts by state (now)
 AvdBehind_v2_CL
-| extend HostPool=tostring(split(Id_s,&quot;/&quot;)[8])
+| extend HostPool=tostring(split(Id_s,"/")[8])
 | summarize arg_max(TimeGenerated,*) by Id_s    // get the newest data set by resource id of the session hosts
-| where AssignedUser_s !=&quot;&quot;
+| where AssignedUser_s !=""
 | project HostPool, SessionHost=Name_s, AssignedUser_s
 
 
 // # hosts by state (now)
 AvdBehind_v2_CL
-| extend HostPool=tostring(split(Id_s,&quot;/&quot;)[8])
+| extend HostPool=tostring(split(Id_s,"/")[8])
 | summarize arg_max(TimeGenerated,*) by Id_s    // get the newest data set by resource id of the session hosts
 | summarize Count=count() by Status=Status_s,HostPool
 | project HostPool, Status, Count
-</code></pre>
-<p>Let me know if everything is working as expected or if it makes sense to create a “Deploy to Azure Button” to deploy the solution.</p>
+</code></pre></div>
+<p>Let me know if everything is working as expected or if it makes sense to create a &quot;Deploy to Azure Button&quot; to deploy the solution.</p>
 
             </div>
 

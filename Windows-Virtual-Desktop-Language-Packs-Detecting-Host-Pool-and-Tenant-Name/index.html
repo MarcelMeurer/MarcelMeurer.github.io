@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Azure Windows Virtual Desktop and Language Packs - Detecting Host Pool and Tenant Name issue | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Azure Windows Virtual Desktop and Language Packs - Detecting Host Pool and Tenant Name issue" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -461,23 +461,35 @@
                 <!-- End Toc -->
                 <p>Language packs on Windows sometimes cause some issues or strange behaviors to some applications. One problem I can reproduce is the impact of the RDAgent from Microsoft - the agent running on a WVD/AVD session host, which makes the connection to the WVD/AVD backend.
 If no language pack is installed (or not set as the system language), the RDAgent writes some information to the registry naming the Host Pool, Tenant, and more. You can find this data in <strong>HKLM:\SOFTWARE\Microsoft\RDMonitoringAgent</strong></p>
+
 <p>The RDAgent writes this data at least if the session host at the start:</p>
-<p><img src="../assets/images/WVD.LanguagePack.RDMonitoringAgent.01.png" alt="Registry with values" /></p>
+
+<p><img src="../assets/images/WVD.LanguagePack.RDMonitoringAgent.01.png" alt="Registry with values"></p>
+
 <p>If you have a clean Windows Virtual Machine with an <strong>installed</strong> and for the whole system activated <strong>language pack</strong> and if you then install the RDAgent, this information is never written to the registry (the WVD/AVD function itself is working as expected).</p>
-<p><img src="../assets/images/WVD.LanguagePack.RDMonitoringAgent.02.png" alt="Registry with values" /></p>
+
+<p><img src="../assets/images/WVD.LanguagePack.RDMonitoringAgent.02.png" alt="Registry with values"></p>
+
 <p>If you use this Virtual Machine - or session hosts you built based on this VM - you can no longer detect the WVD-tenant, host pool name from the registry. These also affect my tools using this information:</p>
+
 <ul>
 <li><a href="http://loganalytics.sepago.com/">Azure Monitor for WVD</a></li>
-<li><a href="https://github.com/MarcelMeurer/Project-MySmartScale">Azure Autoscale for WVD</a> (aka “Project MySmartScale”, WorkerAgent)</li>
+<li><a href="https://github.com/MarcelMeurer/Project-MySmartScale">Azure Autoscale for WVD</a> (aka &quot;Project MySmartScale&quot;, WorkerAgent)</li>
 </ul>
-<p>They reference the data to an “unknown” or “staging” host pool path (host pool path is “tenant.hostpool” name). This behavior can lead to misinterpretations.</p>
-<p>To work-around this peculiar behavior with language packs, I added a new function to both solutions. If the tenant and host pool name can not be discovered by using the registry keys, the agents read the tag “WVD.Path” to get the names. The value in WVD.Path must be in the format: TenantName\TenantGroupName\HostPoolName:</p>
-<p><img src="../assets/images/WVD.LanguagePack.RDMonitoringAgent.03.png" alt="Tags" /></p>
+
+<p>They reference the data to an &quot;unknown&quot; or &quot;staging&quot; host pool path (host pool path is &quot;tenant.hostpool&quot; name). This behavior can lead to misinterpretations.</p>
+
+<p>To work-around this peculiar behavior with language packs, I added a new function to both solutions. If the tenant and host pool name can not be discovered by using the registry keys, the agents read the tag &quot;WVD.Path&quot; to get the names. The value in WVD.Path must be in the format: TenantName\TenantGroupName\HostPoolName:</p>
+
+<p><img src="../assets/images/WVD.LanguagePack.RDMonitoringAgent.03.png" alt="Tags"></p>
+
 <p>The new agents are ready to download:</p>
+
 <ul>
 <li><a href="http://loganalytics.sepago.com/download.html">Azure Monitor for WVD</a></li>
-<li><a href="https://github.com/MarcelMeurer/Project-MySmartScale/tree/master/bin">Azure Autoscale for WVD</a> (aka “Project MySmartScale”, WorkerAgent)</li>
+<li><a href="https://github.com/MarcelMeurer/Project-MySmartScale/tree/master/bin">Azure Autoscale for WVD</a> (aka &quot;Project MySmartScale&quot;, WorkerAgent)</li>
 </ul>
+
 <p>Additionally,  <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">WVDAdmin</a> (from version 1.3.6) will tag new distributed session hosts automatically.</p>
 
             </div>

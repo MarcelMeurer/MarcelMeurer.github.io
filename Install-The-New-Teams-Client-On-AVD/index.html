@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Install the New Teams Client on Azure Virtual Desktop (preview) - AVD | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Install the New Teams Client on Azure Virtual Desktop (preview) - AVD" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,47 +460,52 @@
                 
                 <!-- End Toc -->
                 <h3 id="microsoft-made-the-new-teams-client-available-for-vdis-preview">Microsoft made the New Teams client available for VDIs (preview)</h3>
+
 <p>The new client is based on a different technology than the classic client and should require fewer resources, which is especially important for Azure Virtual Desktop from a cost perspective.</p>
+
 <p>Microsoft has documented the installation here: <a href="https://learn.microsoft.com/microsoftteams/new-teams-vdi-requirements-deploy">Link</a></p>
+
 <p>I have created a small PowerShell script to automate the complete installation. The script also installs WebView2 and makes the settings for sideloading and AVD. I use the script in <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a> to install the new team client on hosts without sessions or directly on the master.</p>
+
 <p>The script can also be run directly in administrator mode interactively, Intune, API, etc.</p>
-<p>After the installation, the new Teams client is visible in the start menu. In addition, the team’s administrator can configure whether the new team’s client is proposed.</p>
-<p><strong>Important:</strong></p>
-<ul>
-<li>In line 4, set the value for $acceptEula to $true if you agree to Microsoft’s EULA.</li>
-<li>Please make sure that the path “%UserProfile%\AppData\Local\Packages\MSTeams_8wekyb3d8bbwe\LocalCache\Microsoft\MSTeams” is not excluded from the FSlogix profile by the Redirections.xml.</li>
-</ul>
-<pre><code># Set $acceptEula to $true to accepp the eula:
+
+<p>After the installation, the new Teams client is visible in the start menu. In addition, the team&#39;s administrator can configure whether the new team&#39;s client is proposed.</p>
+
+<p><strong>Important:</strong>
+- In line 4, set the value for $acceptEula to $true if you agree to Microsoft&#39;s EULA.
+- Please make sure that the path &quot;%UserProfile%\AppData\Local\Packages\MSTeams_8wekyb3d8bbwe\LocalCache\Microsoft\MSTeams&quot; is not excluded from the FSlogix profile by the Redirections.xml.</p>
+<div class="highlight"><pre><code class="language-" data-lang=""># Set $acceptEula to $true to accepp the eula:
 # Eula for Webview2: https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section
 
 $acceptEula=$false
 
 if ($acceptEula -eq $false) {
-	throw &quot;Accept the EULA first&quot;
+    throw "Accept the EULA first"
 }
 
 # Set IsWVDEnvironment to 1
-New-Item -Path &quot;HKLM:\SOFTWARE\Microsoft&quot; -Name &quot;Teams&quot; -Force -ErrorAction Ignore
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Microsoft\Teams&quot; -Name &quot;IsWVDEnvironment&quot; -Value 1 -force
+New-Item -Path "HKLM:\SOFTWARE\Microsoft" -Name "Teams" -Force -ErrorAction Ignore
+New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Teams" -Name "IsWVDEnvironment" -Value 1 -force
 
 # Allow side-loading for trusted apps
-New-Item -Path &quot;HKLM:\Software\Policies\Microsoft\Windows&quot; -Name &quot;Appx&quot; -Force -ErrorAction Ignore
-New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\Windows\Appx&quot; -Name &quot;AllowAllTrustedApps&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\Windows\Appx&quot; -Name &quot;AllowDevelopmentWithoutDevLicense&quot; -Value 1 -force
+New-Item -Path "HKLM:\Software\Policies\Microsoft\Windows" -Name "Appx" -Force -ErrorAction Ignore
+New-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Appx" -Name "AllowAllTrustedApps" -Value 1 -force
+New-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\Appx" -Name "AllowDevelopmentWithoutDevLicense" -Value 1 -force
 
 # Download and install WebView2
-(New-Object System.Net.WebClient).DownloadFile(&quot;https://go.microsoft.com/fwlink/p/?LinkId=2124703&quot;, &quot;$($env:temp)\WebView2.exe&quot;)
-Start-Process -FilePath &quot;$($env:temp)\WebView2.exe&quot; -Wait -ArgumentList &quot;/silent /install&quot; -ErrorAction SilentlyContinue
+(New-Object System.Net.WebClient).DownloadFile("https://go.microsoft.com/fwlink/p/?LinkId=2124703", "$($env:temp)\WebView2.exe")
+Start-Process -FilePath "$($env:temp)\WebView2.exe" -Wait -ArgumentList "/silent /install" -ErrorAction SilentlyContinue
 
 # Download and install the New Teams
-(New-Object System.Net.WebClient).DownloadFile(&quot;https://go.microsoft.com/fwlink/?linkid=2243204&quot;, &quot;$($env:temp)\TeamsBootstrapper.exe&quot;)
-$rv=Start-Process -FilePath &quot;$($env:temp)\TeamsBootstrapper.exe&quot; -Wait -ArgumentList &quot;-p&quot; -PassThru -ErrorAction SilentlyContinue
+(New-Object System.Net.WebClient).DownloadFile("https://go.microsoft.com/fwlink/?linkid=2243204", "$($env:temp)\TeamsBootstrapper.exe")
+$rv=Start-Process -FilePath "$($env:temp)\TeamsBootstrapper.exe" -Wait -ArgumentList "-p" -PassThru -ErrorAction SilentlyContinue
 $rv.ExitCode
-</code></pre>
+</code></pre></div>
 <p>You can also add the script as a custom script in WVDAdmin or in Hydra:</p>
-<p><img src="../assets/images/AVD-New-Teams-04.png" alt="" />
+
+<p><img src="../assets/images/AVD-New-Teams-04.png" alt="">
 <br/><br/>
-<img src="../assets/images/Avd-New-Teams-05.png" alt="" /></p>
+<img src="../assets/images/Avd-New-Teams-05.png" alt=""></p>
 
             </div>
 

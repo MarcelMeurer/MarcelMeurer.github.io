@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>The secret about disappearing appx / UWP applications in an environment using FSLogix | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="The secret about disappearing appx / UWP applications in an environment using FSLogix" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -387,16 +387,15 @@
         
       </h2>
     
+
 <p>A few weeks ago, a customer told me about a particular behavior in their Azure Virtual Desktop environment. The users are using a dedicated session host, and the profile is managed with FSLogix to save user data on a file server additionally.
 Some of the users install applications from the Windows Store (Appx, Universal Apps). If the user logs off at the end of the day and logs in the next day, the applications are gone, and only a dead item is left in the start menu. The users have to install the app again from the Windows Store. Luckily, the applications settings are in the user profiles, so the applications are still configured after reinstallation.</p>
-<p>What does this cause? If a user installs an application from the Windows Store, the binaries are saved in “<em>C:\Program Files\WindowsApps</em>”.</p>
+
+<p>What does this cause? If a user installs an application from the Windows Store, the binaries are saved in &quot;<em>C:\Program Files\WindowsApps</em>&quot;.</p>
+
 <ul>
-<li>
-<p>If the user logs off in a non-FSLogix environment, the users’ profile stays on the computer and binaries as well.</p>
-</li>
-<li>
-<p>If the user logs off in an FSLogix environment, the users’ profile is removed from the computer. While apparently, no user is using the application, Windows removes the binaries. This exactly happens in the customers’ environment.</p>
-</li>
+<li><p>If the user logs off in a non-FSLogix environment, the users&#39; profile stays on the computer and binaries as well.</p></li>
+<li><p>If the user logs off in an FSLogix environment, the users&#39; profile is removed from the computer. While apparently, no user is using the application, Windows removes the binaries. This exactly happens in the customers&#39; environment.</p></li>
 </ul>
       <h2 id="workaround">
         
@@ -406,67 +405,59 @@ Some of the users install applications from the Windows Store (Appx, Universal A
         
       </h2>
     
+
 <p>But how to deal with it? First: If anybody has a better solution as my workaround, please let me know.</p>
+
 <ul>
-<li>
-<p>Install the application from the Windows Store. E.g., WhatsApp</p>
-</li>
-<li>
-<p>Launch the application</p>
-</li>
-<li>
-<p>Pin the icon to the taskbar</p>
-</li>
-<li>
-<p>Figure out the full package name using PowerShell:</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-AppxPackage</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Where-Object</span><span class="w"> </span><span class="p">{</span><span class="bp">$_</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="o">-like</span><span class="w"> </span><span class="s2">"*WhatsApp*"</span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
-<p>For this case: 5319275A.WhatsAppDesktop_2.2140.5.0_x64__cv1g1gvanyjgm
-If you don’t find the app, check the full list of Get-AppxPackage</p>
-</li>
-<li>
-<p>Add the full package name as a key to: <em>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Applications</em>
-<img src="/assets/images/Secret-Appx-Regedit.png" alt="" /></p>
-</li>
+<li><p>Install the application from the Windows Store. E.g., WhatsApp</p></li>
+<li><p>Launch the application</p></li>
+<li><p>Pin the icon to the taskbar</p></li>
+<li><p>Figure out the full package name using PowerShell:</p></li>
 </ul>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="w">  </span><span class="n">Get-AppxPackage</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Where-Object</span><span class="w"> </span><span class="p">{</span><span class="bp">$_</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="o">-like</span><span class="w"> </span><span class="s2">"*WhatsApp*"</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>For this case: 5319275A.WhatsAppDesktop_2.2140.5.0_x64__cv1g1gvanyjgm
+  If you don&#39;t find the app, check the full list of Get-AppxPackage</p>
+
+<ul>
+<li>Add the full package name as a key to: <em>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Applications</em>
+<img src="/assets/images/Secret-Appx-Regedit.png" alt=""></li>
+</ul>
+
 <p>After that, you can log off and log in without reinstalling the application. Unfortunately, the pinned icon is invisible as long as you click it.</p>
 
 		<!--<h2 id="intro">Intro</h2>
+
 <p>A few weeks ago, a customer told me about a particular behavior in their Azure Virtual Desktop environment. The users are using a dedicated session host, and the profile is managed with FSLogix to save user data on a file server additionally.
 Some of the users install applications from the Windows Store (Appx, Universal Apps). If the user logs off at the end of the day and logs in the next day, the applications are gone, and only a dead item is left in the start menu. The users have to install the app again from the Windows Store. Luckily, the applications settings are in the user profiles, so the applications are still configured after reinstallation.</p>
-<p>What does this cause? If a user installs an application from the Windows Store, the binaries are saved in “<em>C:\Program Files\WindowsApps</em>”.</p>
+
+<p>What does this cause? If a user installs an application from the Windows Store, the binaries are saved in &quot;<em>C:\Program Files\WindowsApps</em>&quot;.</p>
+
 <ul>
-<li>
-<p>If the user logs off in a non-FSLogix environment, the users’ profile stays on the computer and binaries as well.</p>
-</li>
-<li>
-<p>If the user logs off in an FSLogix environment, the users’ profile is removed from the computer. While apparently, no user is using the application, Windows removes the binaries. This exactly happens in the customers’ environment.</p>
-</li>
+<li><p>If the user logs off in a non-FSLogix environment, the users&#39; profile stays on the computer and binaries as well.</p></li>
+<li><p>If the user logs off in an FSLogix environment, the users&#39; profile is removed from the computer. While apparently, no user is using the application, Windows removes the binaries. This exactly happens in the customers&#39; environment.</p></li>
 </ul>
+
 <h2 id="workaround">Workaround</h2>
+
 <p>But how to deal with it? First: If anybody has a better solution as my workaround, please let me know.</p>
+
 <ul>
-<li>
-<p>Install the application from the Windows Store. E.g., WhatsApp</p>
-</li>
-<li>
-<p>Launch the application</p>
-</li>
-<li>
-<p>Pin the icon to the taskbar</p>
-</li>
-<li>
-<p>Figure out the full package name using PowerShell:</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-AppxPackage</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Where-Object</span><span class="w"> </span><span class="p">{</span><span class="bp">$_</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="o">-like</span><span class="w"> </span><span class="s2">"*WhatsApp*"</span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
-<p>For this case: 5319275A.WhatsAppDesktop_2.2140.5.0_x64__cv1g1gvanyjgm
-If you don’t find the app, check the full list of Get-AppxPackage</p>
-</li>
-<li>
-<p>Add the full package name as a key to: <em>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Applications</em>
-<img src="/assets/images/Secret-Appx-Regedit.png" alt="" /></p>
-</li>
+<li><p>Install the application from the Windows Store. E.g., WhatsApp</p></li>
+<li><p>Launch the application</p></li>
+<li><p>Pin the icon to the taskbar</p></li>
+<li><p>Figure out the full package name using PowerShell:</p></li>
 </ul>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="w">  </span><span class="n">Get-AppxPackage</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Where-Object</span><span class="w"> </span><span class="p">{</span><span class="bp">$_</span><span class="o">.</span><span class="nf">Name</span><span class="w"> </span><span class="o">-like</span><span class="w"> </span><span class="s2">"*WhatsApp*"</span><span class="p">}</span><span class="w">
+</span></code></pre></div>
+<p>For this case: 5319275A.WhatsAppDesktop_2.2140.5.0_x64__cv1g1gvanyjgm
+  If you don&#39;t find the app, check the full list of Get-AppxPackage</p>
+
+<ul>
+<li>Add the full package name as a key to: <em>HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Appx\AppxAllUserStore\Applications</em>
+<img src="/assets/images/Secret-Appx-Regedit.png" alt=""></li>
+</ul>
+
 <p>After that, you can log off and log in without reinstalling the application. Unfortunately, the pinned icon is invisible as long as you click it.</p>
 -->
 	

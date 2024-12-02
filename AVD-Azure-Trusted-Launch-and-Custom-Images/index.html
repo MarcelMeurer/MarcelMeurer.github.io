@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Azure Trusted Launch and Custom Images - even for AVD | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Azure Trusted Launch and Custom Images - even for AVD" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -380,20 +380,30 @@
 	
 		<!-- change content to anchor styled output -->
 		<p>Trusted launch for Azure virtual machines is currently in public preview (<a href="https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch">https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch</a>). The trusted launch has some benefits, like:</p>
+
 <ul>
 <li>Securely deploy virtual machines with verified boot loaders, OS kernels, and drivers.</li>
 <li>Securely protect keys, certificates, and secrets in virtual machines.</li>
-<li>Gain insights and confidence in the entire boot chain’s integrity.</li>
+<li>Gain insights and confidence in the entire boot chain&#39;s integrity.</li>
 <li>Ensure workloads are trusted and verifiable.</li>
 </ul>
+
 <p>(Source: Microsoft website)</p>
+
 <p>Technology-based, the trusted launch cannot be activated on existing VMs. Additionally, the VM size must support this feature. More importantly, a trusted launch VM can only be created from vanilla Microsoft Marketplace images. Deployment from a custom image is not working and is not supported.</p>
-<p><strong>Update 20/01/2022:</strong> A native and supported process to rollout VMs and session hosts based on a custom image is expected in Feburary 2022 and will be added to <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> to show on <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydras’</a></p>
-<p><strong>Update 13/05/2022:</strong> You can enable “Secure Boot” for marketplace images and for Custom Images in an <a href="https://azure.microsoft.com/en-gb/updates/trusted-launch-azure-compute-gallery-support/">Azure Compute Gallery</a> (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition). #WVDAdmin and #Hydra are supporting this new feature right now</p>
+
+<p><strong>Update 20/01/2022:</strong> A native and supported process to rollout VMs and session hosts based on a custom image is expected in Feburary 2022 and will be added to <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> to show on <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydras&#39;</a></p>
+
+<p><strong>Update 13/05/2022:</strong> You can enable &quot;Secure Boot&quot; for marketplace images and for Custom Images in an <a href="https://azure.microsoft.com/en-gb/updates/trusted-launch-azure-compute-gallery-support/">Azure Compute Gallery</a> (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition). #WVDAdmin and #Hydra are supporting this new feature right now</p>
+
 <p>Check out the video on Youtube: <a href="https://youtu.be/7_XDslLQlCo">Deploy secure boot-enabled custom images as AVD session hosts</a></p>
-<p><img src="../assets/images/Custom-Images-with-WVDAdmin-and-Hydra-and-Secure-Boot.png" alt="" /></p>
+
+<p><img src="../assets/images/Custom-Images-with-WVDAdmin-and-Hydra-and-Secure-Boot.png" alt=""></p>
+
 <p><strong>If you use the current version of #WVDAdmin or #Hydra you can skip the next part</strong></p>
-<p>That’s not pretty, while in AVD, most deployments are based on images from Golden Masters. That is also the approach I’m using with my solutions (like <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>):</p>
+
+<p>That&#39;s not pretty, while in AVD, most deployments are based on images from Golden Masters. That is also the approach I&#39;m using with my solutions (like <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>):</p>
+
 <ul>
 <li>Rolling out a Windows 10/11 VM</li>
 <li>Domain join the VM</li>
@@ -401,54 +411,71 @@
 <li>Grabbing an image (with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>, the Master survives)</li>
 <li>Rolling out session hosts based on the image</li>
 </ul>
+
 <p>I spent some time finding a workaround for deploying session hosts based on a Golden Master with secure boot enabled. I was successful, and I built this as an experimental feature into <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> (v1.7.20).</p>
+
 <p>How does it work:</p>
+
 <ul>
-<li>
-<p>Preparing the Golden Master</p>
-</li>
-<li>
-<ul>
+<li><p>Preparing the Golden Master</p></li>
+<li><ul>
 <li>Rolling out a Windows 10/11 VM from the marketplace and configuring the secure boot feature</li>
+</ul>
+
+<ul>
 <li>Domain join the VM</li>
 <li>Update the VM and install applications</li>
 <li>Shutdown the VM</li>
-</ul>
-</li>
-<li>
-<p>Creating session hosts from the Master</p>
-</li>
-<li>
-<ul>
+</ul></li>
+<li><p>Creating session hosts from the Master</p></li>
+<li><ul>
 <li>Navigate in <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> to the VM (Azure -&gt; Virtual Machines -&gt; Resource Group -&gt; VM)</li>
-<li>Right-click the VM and select: “Instantly build session hosts (experimental)”</li>
+</ul>
+
+<ul>
+<li>Right-click the VM and select: &quot;Instantly build session hosts (experimental)&quot;</li>
 <li>Configure the settings for the deployment (VM size, host pool, etc.)</li>
 <li>Start the rollout</li>
+</ul></li>
 </ul>
-</li>
-</ul>
+
 <p>After a while, session hosts with secure boot enabled are part of the host pool. While the rollout process is more complex, it will take longer than the classic approach (the new approach is based on a snap-shot technology).</p>
-<p><img src="../assets/images/WVDAdmin/InstantBuild-01.png" alt="" /></p>
-<p><img src="../assets/images/WVDAdmin/InstantBuild-02.png" alt="" /></p>
-<p><img src="../assets/images/WVDAdmin/InstantBuild-03.png" alt="" /></p>
-<p><strong>Note:</strong> This feature is very <em>experimental</em>, and I’m looking forward to a native and supported way to deploy secure boot hosts based on a custom image. Please use it at your own risk.</p>
+
+<p><img src="../assets/images/WVDAdmin/InstantBuild-01.png" alt=""></p>
+
+<p><img src="../assets/images/WVDAdmin/InstantBuild-02.png" alt=""></p>
+
+<p><img src="../assets/images/WVDAdmin/InstantBuild-03.png" alt=""></p>
+
+<p><strong>Note:</strong> This feature is very <em>experimental</em>, and I&#39;m looking forward to a native and supported way to deploy secure boot hosts based on a custom image. Please use it at your own risk. </p>
+
 <p><strong>Note:</strong> If anybody finds an easier way - please let me know</p>
 
 		<!--<p>Trusted launch for Azure virtual machines is currently in public preview (<a href="https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch">https://docs.microsoft.com/en-us/azure/virtual-machines/trusted-launch</a>). The trusted launch has some benefits, like:</p>
+
 <ul>
 <li>Securely deploy virtual machines with verified boot loaders, OS kernels, and drivers.</li>
 <li>Securely protect keys, certificates, and secrets in virtual machines.</li>
-<li>Gain insights and confidence in the entire boot chain’s integrity.</li>
+<li>Gain insights and confidence in the entire boot chain&#39;s integrity.</li>
 <li>Ensure workloads are trusted and verifiable.</li>
 </ul>
+
 <p>(Source: Microsoft website)</p>
+
 <p>Technology-based, the trusted launch cannot be activated on existing VMs. Additionally, the VM size must support this feature. More importantly, a trusted launch VM can only be created from vanilla Microsoft Marketplace images. Deployment from a custom image is not working and is not supported.</p>
-<p><strong>Update 20/01/2022:</strong> A native and supported process to rollout VMs and session hosts based on a custom image is expected in Feburary 2022 and will be added to <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> to show on <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydras’</a></p>
-<p><strong>Update 13/05/2022:</strong> You can enable “Secure Boot” for marketplace images and for Custom Images in an <a href="https://azure.microsoft.com/en-gb/updates/trusted-launch-azure-compute-gallery-support/">Azure Compute Gallery</a> (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition). #WVDAdmin and #Hydra are supporting this new feature right now</p>
+
+<p><strong>Update 20/01/2022:</strong> A native and supported process to rollout VMs and session hosts based on a custom image is expected in Feburary 2022 and will be added to <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> to show on <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydras&#39;</a></p>
+
+<p><strong>Update 13/05/2022:</strong> You can enable &quot;Secure Boot&quot; for marketplace images and for Custom Images in an <a href="https://azure.microsoft.com/en-gb/updates/trusted-launch-azure-compute-gallery-support/">Azure Compute Gallery</a> (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition). #WVDAdmin and #Hydra are supporting this new feature right now</p>
+
 <p>Check out the video on Youtube: <a href="https://youtu.be/7_XDslLQlCo">Deploy secure boot-enabled custom images as AVD session hosts</a></p>
-<p><img src="../assets/images/Custom-Images-with-WVDAdmin-and-Hydra-and-Secure-Boot.png" alt="" /></p>
+
+<p><img src="../assets/images/Custom-Images-with-WVDAdmin-and-Hydra-and-Secure-Boot.png" alt=""></p>
+
 <p><strong>If you use the current version of #WVDAdmin or #Hydra you can skip the next part</strong></p>
-<p>That’s not pretty, while in AVD, most deployments are based on images from Golden Masters. That is also the approach I’m using with my solutions (like <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>):</p>
+
+<p>That&#39;s not pretty, while in AVD, most deployments are based on images from Golden Masters. That is also the approach I&#39;m using with my solutions (like <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>):</p>
+
 <ul>
 <li>Rolling out a Windows 10/11 VM</li>
 <li>Domain join the VM</li>
@@ -456,37 +483,44 @@
 <li>Grabbing an image (with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>, the Master survives)</li>
 <li>Rolling out session hosts based on the image</li>
 </ul>
+
 <p>I spent some time finding a workaround for deploying session hosts based on a Golden Master with secure boot enabled. I was successful, and I built this as an experimental feature into <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> (v1.7.20).</p>
+
 <p>How does it work:</p>
+
 <ul>
-<li>
-<p>Preparing the Golden Master</p>
-</li>
-<li>
-<ul>
+<li><p>Preparing the Golden Master</p></li>
+<li><ul>
 <li>Rolling out a Windows 10/11 VM from the marketplace and configuring the secure boot feature</li>
+</ul>
+
+<ul>
 <li>Domain join the VM</li>
 <li>Update the VM and install applications</li>
 <li>Shutdown the VM</li>
-</ul>
-</li>
-<li>
-<p>Creating session hosts from the Master</p>
-</li>
-<li>
-<ul>
+</ul></li>
+<li><p>Creating session hosts from the Master</p></li>
+<li><ul>
 <li>Navigate in <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> to the VM (Azure -&gt; Virtual Machines -&gt; Resource Group -&gt; VM)</li>
-<li>Right-click the VM and select: “Instantly build session hosts (experimental)”</li>
+</ul>
+
+<ul>
+<li>Right-click the VM and select: &quot;Instantly build session hosts (experimental)&quot;</li>
 <li>Configure the settings for the deployment (VM size, host pool, etc.)</li>
 <li>Start the rollout</li>
+</ul></li>
 </ul>
-</li>
-</ul>
+
 <p>After a while, session hosts with secure boot enabled are part of the host pool. While the rollout process is more complex, it will take longer than the classic approach (the new approach is based on a snap-shot technology).</p>
-<p><img src="../assets/images/WVDAdmin/InstantBuild-01.png" alt="" /></p>
-<p><img src="../assets/images/WVDAdmin/InstantBuild-02.png" alt="" /></p>
-<p><img src="../assets/images/WVDAdmin/InstantBuild-03.png" alt="" /></p>
-<p><strong>Note:</strong> This feature is very <em>experimental</em>, and I’m looking forward to a native and supported way to deploy secure boot hosts based on a custom image. Please use it at your own risk.</p>
+
+<p><img src="../assets/images/WVDAdmin/InstantBuild-01.png" alt=""></p>
+
+<p><img src="../assets/images/WVDAdmin/InstantBuild-02.png" alt=""></p>
+
+<p><img src="../assets/images/WVDAdmin/InstantBuild-03.png" alt=""></p>
+
+<p><strong>Note:</strong> This feature is very <em>experimental</em>, and I&#39;m looking forward to a native and supported way to deploy secure boot hosts based on a custom image. Please use it at your own risk. </p>
+
 <p><strong>Note:</strong> If anybody finds an easier way - please let me know</p>
 -->
 	

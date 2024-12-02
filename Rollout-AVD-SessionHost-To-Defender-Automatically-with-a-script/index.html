@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Onboard AVD pooled session hosts to Defender automatically with a script | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Onboard AVD pooled session hosts to Defender automatically with a script" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,26 +460,32 @@
                 
                 <!-- End Toc -->
                 <p>Onboarding session hosts to Defender is very important for security reasons. Microsoft has documented the way to onboard these devices in different scenarios here: <a href="https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-vdi">https://learn.microsoft.com/en-us/microsoft-365/security/defender-endpoint/configure-endpoints-vdi</a></p>
+
 <p>While I often work with <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a> and also have some AAD native deployment, I decided to prepare an easy script to onboard this device automatically after the rollout. The script is generic, so it can also be used with other automation.</p>
+
 <p>To start, we need the  VDI onboarding script for non-persistent devices from <a href="https://security.microsoft.com/securitysettings/endpoints/onboarding">https://security.microsoft.com/securitysettings/endpoints/onboarding</a> - Make sure to download the right package.</p>
+
 <p>To install Defender without the need to store the package (zip file) to share, we can encode the package to a base64 encoded string. After that, we can grab the string from the text file <em>WindowsDefenderATPOnboardingPackage.zip.txt</em> and put it into quotes in line 30.</p>
-<p>Step-by-step:</p>
-<ul>
-<li>Save the PowerShell script to your local disk</li>
-<li>Change <em>$false</em> into <em>$true</em> in line 22</li>
-<li>Download the onboarding script and store it in the same folder</li>
-<li>Run the PowerShell script</li>
-<li>Open the text file <em>WindowsDefenderATPOnboardingPackage.zip.txt</em> and put it into quotes in line 30</li>
-</ul>
-<p>The script can then be run after the rollout to join the device to Defender. In Hydra, you can add the script as a new script into Scripts and Collections (with your onboarding script encoded in line 25 and $false in line 22).
+
+<p>Step-by-step:
+- Save the PowerShell script to your local disk
+- Change <em>$false</em> into <em>$true</em> in line 22
+- Download the onboarding script and store it in the same folder
+- Run the PowerShell script
+- Open the text file <em>WindowsDefenderATPOnboardingPackage.zip.txt</em> and put it into quotes in line 30</p>
+
+<p>The script can then be run after the rollout to join the device to Defender. In Hydra, you can add the script as a new script into Scripts and Collections (with your onboarding script encoded in line 25 and $false in line 22). 
 <br/>
-<img src="../assets/images/AVD-DefenderOnboarding-02.png" alt="" /></p>
+<img src="../assets/images/AVD-DefenderOnboarding-02.png" alt=""></p>
+
 <p>Add the script to the Deployment Configuration -&gt; Run script or script collection after deployment:
 <br/>
-<img src="../assets/images/AVD-DefenderOnboarding-03.png" alt="" /></p>
+<img src="../assets/images/AVD-DefenderOnboarding-03.png" alt=""></p>
+
 <p>The next device is automatically onboarded to Defender.</p>
+
 <h3 id="the-script">The script:</h3>
-<pre><code># Script to prepare and onboard AVD non-persistent hosts to Microsoft Defender
+<div class="highlight"><pre><code class="language-" data-lang=""># Script to prepare and onboard AVD non-persistent hosts to Microsoft Defender
 
 # test if fuction LogWriter available
 if (!(Test-Path function:LogWriter)) {
@@ -489,7 +495,7 @@ if (!(Test-Path function:LogWriter)) {
 }
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 
-$DefenderFile=&quot;WindowsDefenderATPOnboardingPackage.zip&quot;
+$DefenderFile="WindowsDefenderATPOnboardingPackage.zip"
 $ScriptPath = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
 
 function UnzipFile
@@ -503,30 +509,30 @@ function UnzipFile
 if ($false) {
     # Generate base64 file fron DefenderFile
     # Download VDI onboarding script for non-persistent devices from: https://defender.microsoft.com/securitysettings/endpoints/onboarding
-    LogWriter(&quot;Generate base64 file fron DefenderFile&quot;)
-    $WindowsDefenderATPOnboardingPackage=[System.Convert]::ToBase64String((Get-Content -Path &quot;$ScriptPath\$DefenderFile&quot; -Encoding Byte))
-    $WindowsDefenderATPOnboardingPackage | Out-File &quot;$ScriptPath\$($DefenderFile).txt&quot; -Encoding UTF8
+    LogWriter("Generate base64 file fron DefenderFile")
+    $WindowsDefenderATPOnboardingPackage=[System.Convert]::ToBase64String((Get-Content -Path "$ScriptPath\$DefenderFile" -Encoding Byte))
+    $WindowsDefenderATPOnboardingPackage | Out-File "$ScriptPath\$($DefenderFile).txt" -Encoding UTF8
 } else {
-    LogWriter(&quot;Read base64 file fron DefenderFile&quot;)
-    $WindowsDefenderATPOnboardingPackage =&quot;&lt;put your base64 encoded string here&gt;&quot;
+    LogWriter("Read base64 file fron DefenderFile")
+    $WindowsDefenderATPOnboardingPackage ="&lt;put your base64 encoded string here&gt;"
     # Clean up the temp folder
-    LogWriter(&quot;Cleaning up the temp folder&quot;)
-    Remove-Item -Path &quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&quot; -Force -ErrorAction SilentlyContinue
-    Remove-Item -Path &quot;$env:temp\WindowsDefenderATPOnboardingPackage&quot; -Recurse -Force -ErrorAction SilentlyContinue
-    LogWriter(&quot;Create the Defender files&quot;)
-    Set-Content -Path &quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&quot; -Value ([System.Convert]::FromBase64String($WindowsDefenderATPOnboardingPackage)) -Encoding Byte
-    UnzipFile &quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&quot; &quot;$env:temp\WindowsDefenderATPOnboardingPackage&quot; 
-    
+    LogWriter("Cleaning up the temp folder")
+    Remove-Item -Path "$env:temp\WindowsDefenderATPOnboardingPackage.zip" -Force -ErrorAction SilentlyContinue
+    Remove-Item -Path "$env:temp\WindowsDefenderATPOnboardingPackage" -Recurse -Force -ErrorAction SilentlyContinue
+    LogWriter("Create the Defender files")
+    Set-Content -Path "$env:temp\WindowsDefenderATPOnboardingPackage.zip" -Value ([System.Convert]::FromBase64String($WindowsDefenderATPOnboardingPackage)) -Encoding Byte
+    UnzipFile "$env:temp\WindowsDefenderATPOnboardingPackage.zip" "$env:temp\WindowsDefenderATPOnboardingPackage" 
+
     # start the test.cmd with cmd.exe in the extracted folder
-    LogWriter(&quot;Starting the onboarding&quot;)
-    Start-Process -FilePath &quot;$env:windir\system32\cmd.exe&quot; -ArgumentList &quot;/c WindowsDefenderATPOnboardingScript.cmd&quot; -WorkingDirectory &quot;$env:temp\WindowsDefenderATPOnboardingPackage&quot; -Wait -PassThru
+    LogWriter("Starting the onboarding")
+    Start-Process -FilePath "$env:windir\system32\cmd.exe" -ArgumentList "/c WindowsDefenderATPOnboardingScript.cmd" -WorkingDirectory "$env:temp\WindowsDefenderATPOnboardingPackage" -Wait -PassThru
 
     # Clean up the temp folder
-    LogWriter(&quot;Cleaning up the temp folder&quot;)
-    Remove-Item -Path &quot;$env:temp\WindowsDefenderATPOnboardingPackage.zip&quot; -Force -ErrorAction SilentlyContinue
-    Remove-Item -Path &quot;$env:temp\WindowsDefenderATPOnboardingPackage&quot; -Recurse -Force -ErrorAction SilentlyContinue
+    LogWriter("Cleaning up the temp folder")
+    Remove-Item -Path "$env:temp\WindowsDefenderATPOnboardingPackage.zip" -Force -ErrorAction SilentlyContinue
+    Remove-Item -Path "$env:temp\WindowsDefenderATPOnboardingPackage" -Recurse -Force -ErrorAction SilentlyContinue
 }
-</code></pre>
+</code></pre></div>
             </div>
 
             <!-- Rating -->

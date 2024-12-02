@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Deallocate an Azure VM from itself | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Deallocate an Azure VM from itself" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,44 +460,78 @@
                 
                 <!-- End Toc -->
                 <p>These days I’m dealing with the automation of starting and stopping Azure virtual machines. I do this to avoid unnecessary costs for customers running Citrix or RDS workers on Azure. I translated a piece of my work into a PowerShell script to de-allocate the VM on which it is running.</p>
+
 <h3 id="azure-instance-metadata-service">Azure Instance Metadata Service</h3>
+
 <p>To get information about the running VM I use Azure Instance Metadata Service (<a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/instance-metadata-service">https://docs.microsoft.com/en-us/azure/virtual-machines/windows/instance-metadata-service</a>). This information contains the public IP address, VM size, os type and a lot more. To identify this Azure VM for later deallocation later, I need some specific information: the vmId. You can get meta data using PowerShell:</p>
-<pre><code>`$md``=``Invoke-RestMethod` `-Headers` `@{``&quot;Metadata&quot;``=``&quot;true&quot;``}` `-URI` `http://169.254.169.254/metadata/instance``?``api-version=2017-08-01`
-</code></pre>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-01-.png" alt="de-alloc-0" /></a></p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-01.png" alt="de-alloc-01" /></a></p>
+<div class="highlight"><pre><code class="language-" data-lang="">`$md``=``Invoke-RestMethod` `-Headers` `@{``"Metadata"``=``"true"``}` `-URI` `http://169.254.169.254/metadata/instance``?``api-version=2017-08-01`
+</code></pre></div>
+<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-01-.png" alt="de-alloc-0"></a></p>
+
+<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-01.png" alt="de-alloc-01"></a></p>
+
 <p>$md.compute.vmId contains the unique identifier for the running VM. I will use this id later to match the correct VM for deallocating.</p>
+
 <h3 id="service-principal-account">Service Principal Account</h3>
+
 <p>I want to deallocate the VM automatically without logging-in myself. Therefore I have to use a service principal account. It is pretty easy to create a service principal account:</p>
+
 <p>Go to the Azure portal, open the Azure Active Directory of your subscription(s) and choose „App registration“ – “New application registration”:</p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-02.png" alt="de-alloc-02" /></a></p>
+
+<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-02.png" alt="de-alloc-02"></a></p>
+
 <p>Give your app a name (e.g.: PowerShell-Services) and enter a sign-on URL. User <a href="http://localhost">http://localhost</a> for this URL and click “Create”.</p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-03.png" alt="de-alloc-03" /></a></p>
+
+<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-03.png" alt="de-alloc-03"></a></p>
+
 <p>Select the previously created app, select “Keys” and go on: Enter a name, select an expiration time and save the configuration: Important: copy your key directly after saving it:</p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-04.png" alt="de-alloc-04" /></a></p>
+
+<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-04.png" alt="de-alloc-04"></a></p>
+
 <p>Also, copy the application id for later use:</p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-05.png" alt="de-alloc-05" /></a></p>
+
+<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-05.png" alt="de-alloc-05"></a></p>
+
 <p>And last: copy the tenant id from your Azure Active Directory by selecting it and click on “Properties”:</p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-06.png" alt="de-alloc-06" /></a></p>
+
+<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-06.png" alt="de-alloc-06"></a></p>
+
 <p>You have all the data you need to logon unattended now:</p>
+
 <p><strong>App-id:</strong></p>
+
 <p>21acad78-9006-4f22-9156-xxxxxxxxxxxxx</p>
+
 <p><strong>App-key:</strong></p>
+
 <p>sjsgUk7a5hgaTkZGuOGeLxxxxxxxxxxxxxxxJ0lXs2/o=</p>
+
 <p><strong>Tenant-id:</strong></p>
+
 <p>06522f94-0d15-4fba-aac8-xxxxxxxxxxxxxxx</p>
+
 <h3 id="give-the-right-permissions">Give the right permissions</h3>
+
 <p>In my case, I will use this single app/service principal to shut down and deallocate every VM in my Azure subscription (this can be different in your case and can be a security breach if another user gets the logon data from your PowerShell script). To give the app the right to work with VM I added in on subscription level: Select Subscriptions -&gt; subscription -&gt; Access Control (IAM) -&gt; Add</p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-07.png" alt="de-alloc-07" /></a></p>
+
+<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-07.png" alt="de-alloc-07"></a></p>
+
 <p><strong>Role:</strong> Virtual Machine Contributor*</p>
+
 <p><strong>Assign to:</strong> Azure AD user, group, or application</p>
+
 <p><strong>Select:</strong> You application/service principal</p>
+
 <p><strong>Save</strong></p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-08.png" alt="de-alloc-08" /></a></p>
+
+<p><a href=""><img src="/wp-content/uploads/2018/04/de-alloc-08.png" alt="de-alloc-08"></a></p>
+
 <p>* The app/service principal has the permission to start/stop/modify/… all VM’s in the subscription. If you need more granularity you can create custom roles (<a href="https://www.sepago.de/blog/2017/07/13/preventing-administrative-users-to-change-critical-network-settings-in-an-azure-hub">https://www.sepago.de/blog/2017/07/13/preventing-administrative-users-to-change-critical-network-settings-in-an-azure-hub</a>)</p>
+
 <h3 id="the-script">The script</h3>
+
 <p>To find from your VM the corresponding one in Azure use this PowerShell script with the service principal credentials and deallocate it:</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$AppId</span><span class="o">=</span><span class="s2">"21acad78-9006-4f22-9156-xxxxxxxxxxxxx"</span><span class="w">
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="nv">$AppId</span><span class="o">=</span><span class="s2">"21acad78-9006-4f22-9156-xxxxxxxxxxxxx"</span><span class="w">
 </span><span class="nv">$AppKey</span><span class="o">=</span><span class="s2">"sjsgUk7a5hgaTkZGuOGeLxxxxxxxxxxxxxxxJ0lXs2/o="</span><span class="w">
 </span><span class="nv">$TenantId</span><span class="o">=</span><span class="s2">"06522f94-0d15-4fba-aac8-xxxxxxxxxxxxxxx"</span><span class="w">
 
@@ -525,10 +559,13 @@
         </span><span class="n">Write-Host</span><span class="p">(</span><span class="s2">"VM not found in this subscription"</span><span class="p">)</span><span class="w">
     </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
+</span></code></pre></div>
 <p>Hint:</p>
+
 <p><a href="https://twitter.com/skillriver">@skillriver</a> wrote a blog shutting to Shutdown and Deallocate an Azure VM using <em>Managed Service Identity</em>. This avoids to create an Azure AD application:</p>
+
 <p><a href="https://gotoguy.blog/2018/01/17/shutdown-and-deallocate-an-azure-vm-using-managed-service-identity-and-instance-metadata-service/">https://gotoguy.blog/2018/01/17/shutdown-and-deallocate-an-azure-vm-using-managed-service-identity-and-instance-metadata-service/</a></p>
+
 <p>First published on: <a href="https://www.sepago.de/blog/deallocate-an-azure-vm-from-itself/">https://www.sepago.de/blog/deallocate-an-azure-vm-from-itself/</a></p>
 
             </div>

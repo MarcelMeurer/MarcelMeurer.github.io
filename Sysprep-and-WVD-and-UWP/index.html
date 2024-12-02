@@ -9,13 +9,13 @@
 <title>What's wrong with Windows 10 and UWP and Sysprep? | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>What’s wrong with Windows 10 and UWP and Sysprep? | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
-<meta property="og:title" content="What’s wrong with Windows 10 and UWP and Sysprep?" />
+<title>What&#39;s wrong with Windows 10 and UWP and Sysprep? | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="What&#39;s wrong with Windows 10 and UWP and Sysprep?" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="I’m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session. To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep. One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:" />
-<meta property="og:description" content="I’m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session. To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep. One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:" />
+<meta name="description" content="I&#39;m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session. To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep. One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:" />
+<meta property="og:description" content="I&#39;m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session. To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep. One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:" />
 <link rel="canonical" href="https://blog.itprocloud.de/Sysprep-and-WVD-and-UWP/" />
 <meta property="og:url" content="https://blog.itprocloud.de/Sysprep-and-WVD-and-UWP/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -24,9 +24,9 @@
 <meta property="article:published_time" content="2020-07-28T00:00:00+02:00" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Sysprep-01.png" />
-<meta property="twitter:title" content="What’s wrong with Windows 10 and UWP and Sysprep?" />
+<meta property="twitter:title" content="What&#39;s wrong with Windows 10 and UWP and Sysprep?" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2020-07-28T00:00:00+02:00","datePublished":"2020-07-28T00:00:00+02:00","description":"I’m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session. To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep. One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:","headline":"What’s wrong with Windows 10 and UWP and Sysprep?","image":"https://blog.itprocloud.de/assets/images/Sysprep-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Sysprep-and-WVD-and-UWP/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Sysprep-and-WVD-and-UWP/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2020-07-28T00:00:00+02:00","datePublished":"2020-07-28T00:00:00+02:00","description":"I&#39;m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session. To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep. One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:","headline":"What&#39;s wrong with Windows 10 and UWP and Sysprep?","image":"https://blog.itprocloud.de/assets/images/Sysprep-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Sysprep-and-WVD-and-UWP/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Sysprep-and-WVD-and-UWP/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -459,35 +459,45 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>I’m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session.
+                <p>I&#39;m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session.
 To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep.
 One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:</p>
-<pre><code>sysprep.exe /generalize /oobe /shutdown /mode:vm
-</code></pre>
+<div class="highlight"><pre><code class="language-" data-lang="">sysprep.exe /generalize /oobe /shutdown /mode:vm
+</code></pre></div>
 <p>Sometimes I run into an issue, and Sysprep stops work with an error message:
-<img src="../assets/images/Sysprep-01.png" alt="Sysprep" /></p>
+<img src="../assets/images/Sysprep-01.png" alt="Sysprep"></p>
+
 <p>Digging into the log file show the issue:
-<img src="../assets/images/Sysprep-02.png" alt="Sysprep" /></p>
+<img src="../assets/images/Sysprep-02.png" alt="Sysprep"></p>
+
 <p>Error: Package XXXXXXX was installed for a user, but not provisioned for all users.</p>
+
 <p>The package various. Sometimes I got a part of a language pack or other internal app packages. To run into the problem with certainty, install an app from the Windows Store.</p>
-<p>Let’s find out what happens, for doing that I installed different applications from the Windows Store into the VM and tried to Sysprep the VM. The first package blocking Sysprep was in this test “5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm”</p>
+
+<p>Let&#39;s find out what happens, for doing that I installed different applications from the Windows Store into the VM and tried to Sysprep the VM. The first package blocking Sysprep was in this test &quot;5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm&quot;</p>
+
 <p>To get details of the package run the following PowerShell script with administrative privileges:</p>
-<pre><code>Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm')}
-</code></pre>
-<p>The returned object shows that this package is only installed for the local administrator (installing the apps from the Windows Store). The user querying this data (mm-admin) doesn’t have this package installed.
-<img src="../assets/images/Sysprep-03.png" alt="Sysprep" /></p>
+<div class="highlight"><pre><code class="language-" data-lang="">Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm')}
+</code></pre></div>
+<p>The returned object shows that this package is only installed for the local administrator (installing the apps from the Windows Store). The user querying this data (mm-admin) doesn&#39;t have this package installed.
+<img src="../assets/images/Sysprep-03.png" alt="Sysprep"></p>
+
 <p>Okay. Appx packages from the store are personnel and not shared with all users on a VM (to install appx packages for all users, you have to sideload the packages with DISM.exe). So I tried to remove this app from all users:_</p>
-<pre><code>Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm')} | Remove-AppxPackage -AllUsers
-</code></pre>
-<p>Ok. Sysprep again. The next issue occurs: Sysprep has the same problem with NetFlix - installed only for one user of the VM. Instead of removing the packages by trial and error, I found another way: Teach Sysprep to ignore this behavior. I guess it’s not a problem having an appx package assigned to only one user - even if it and administrative user.</p>
+<div class="highlight"><pre><code class="language-" data-lang="">Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm')} | Remove-AppxPackage -AllUsers
+</code></pre></div>
+<p>Ok. Sysprep again. The next issue occurs: Sysprep has the same problem with NetFlix - installed only for one user of the VM. Instead of removing the packages by trial and error, I found another way: Teach Sysprep to ignore this behavior. I guess it&#39;s not a problem having an appx package assigned to only one user - even if it and administrative user.</p>
+
 <p>I figured out that Sysprep uses an XML file with a set of rules preparing a VM. The rule-set for generalizing an image is stored in <code>&quot;C:\windows\System32\sysprep\ActionFiles\Generalize.xml&quot;</code></p>
+
 <p>To ignore the installed or update AppX package remove the following lines and save Generalize.xml (you have to take ownership of the file and give yourself permission to do that):</p>
-<pre><code>&lt;sysprepOrder order=&quot;0x1A00&quot;&gt;&lt;/sysprepOrder&gt;
-&lt;sysprepValidate methodName=&quot;SysprepGeneralizeValidate&quot; moduleName=&quot;$(runtime.system32)\AppxSysprep.dll&quot;&gt;&lt;/sysprepValidate&gt;
-&lt;sysprepModule methodName=&quot;SysprepGeneralize&quot; moduleName=&quot;$(runtime.system32)\AppxSysprep.dll&quot;&gt;&lt;/sysprepModule&gt;&lt;/imaging&gt;&lt;imaging exclude=&quot;&quot;&gt;&lt;assemblyIdentity name=&quot;Microsoft-Windows-SecureBoot-FirmwareUpdate&quot; version=&quot;10.0.19041.1&quot; publicKeyToken=&quot;31bf3856ad364e35&quot; processorArchitecture=&quot;amd64&quot; versionScope=&quot;NonSxS&quot;&gt;&lt;/assemblyIdentity&gt;
-</code></pre>
-<p><img src="../assets/images/Sysprep-04.png" alt="Sysprep" /></p>
-<p>After that Sysprep runs without an issue. Rolling out a session host based on the new image works, and even the user could logon without a problem (and yes: they don’t have the Store apps from the local admin - as expected).</p>
+<div class="highlight"><pre><code class="language-" data-lang="">&lt;sysprepOrder order="0x1A00"&gt;&lt;/sysprepOrder&gt;
+&lt;sysprepValidate methodName="SysprepGeneralizeValidate" moduleName="$(runtime.system32)\AppxSysprep.dll"&gt;&lt;/sysprepValidate&gt;
+&lt;sysprepModule methodName="SysprepGeneralize" moduleName="$(runtime.system32)\AppxSysprep.dll"&gt;&lt;/sysprepModule&gt;&lt;/imaging&gt;&lt;imaging exclude=""&gt;&lt;assemblyIdentity name="Microsoft-Windows-SecureBoot-FirmwareUpdate" version="10.0.19041.1" publicKeyToken="31bf3856ad364e35" processorArchitecture="amd64" versionScope="NonSxS"&gt;&lt;/assemblyIdentity&gt;
+</code></pre></div>
+<p><img src="../assets/images/Sysprep-04.png" alt="Sysprep"></p>
+
+<p>After that Sysprep runs without an issue. Rolling out a session host based on the new image works, and even the user could logon without a problem (and yes: they don&#39;t have the Store apps from the local admin - as expected).</p>
+
 <p>Maybe there are some smarter ways to handle UWP and Sysprep (if you know one - let me know it, too). But this solves an issue creating or updating an image for WVD/AVD based on a template VM (golden image approach).</p>
 
             </div>

@@ -10,12 +10,12 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A Windows 10 image from the marketplace has a size of 128 Gbyte. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Azure Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a 64 Gbyte OS disk is usually sufficient - even if FSLogix is used to store personal data." />
-<meta property="og:description" content="A Windows 10 image from the marketplace has a size of 128 Gbyte. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Azure Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a 64 Gbyte OS disk is usually sufficient - even if FSLogix is used to store personal data." />
+<meta name="description" content="A Windows 10 image from the marketplace has a size of 128 Gbyte. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a &quot;Golden Master&quot; - typically used to build Azure Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a 64 Gbyte OS disk is usually sufficient - even if FSLogix is used to store personal data." />
+<meta property="og:description" content="A Windows 10 image from the marketplace has a size of 128 Gbyte. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a &quot;Golden Master&quot; - typically used to build Azure Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a 64 Gbyte OS disk is usually sufficient - even if FSLogix is used to store personal data." />
 <link rel="canonical" href="https://blog.itprocloud.de/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/" />
 <meta property="og:url" content="https://blog.itprocloud.de/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/WVDAdmin-Shrink-01.png" />
 <meta property="twitter:title" content="Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2021-05-18T00:00:00+02:00","datePublished":"2021-05-18T00:00:00+02:00","description":"A Windows 10 image from the marketplace has a size of 128 Gbyte. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Azure Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a 64 Gbyte OS disk is usually sufficient - even if FSLogix is used to store personal data.","headline":"Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master","image":"https://blog.itprocloud.de/assets/images/WVDAdmin-Shrink-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2021-05-18T00:00:00+02:00","datePublished":"2021-05-18T00:00:00+02:00","description":"A Windows 10 image from the marketplace has a size of 128 Gbyte. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a &quot;Golden Master&quot; - typically used to build Azure Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a 64 Gbyte OS disk is usually sufficient - even if FSLogix is used to store personal data.","headline":"Shrink and resize an Azure VM disk or session host disk and create smaller images from a Golden Master","image":"https://blog.itprocloud.de/assets/images/WVDAdmin-Shrink-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/WVD-Shrink-the-OS-Disk-in-Azure-to-64-Gbyte/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -459,26 +459,30 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>A Windows 10 image from the marketplace has a size of <strong>128 Gbyte</strong>. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a “Golden Master” - typically used to build Azure Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a <strong>64 Gbyte</strong> OS disk is usually sufficient - even if FSLogix is used to store personal data.</p>
+                <p>A Windows 10 image from the marketplace has a size of <strong>128 Gbyte</strong>. So, all of your VM based on that image are deployed with a 128 Gbyte disk - even a &quot;Golden Master&quot; - typically used to build Azure Windows Virtual Desktop images. A clean Windows installation has a size of less than 40 Gbyte, and a <strong>64 Gbyte</strong> OS disk is usually sufficient - even if FSLogix is used to store personal data.</p>
+
 <ul>
-<li>
-<p>But what are the advantages of smaller disks? First, they are some reason to use smaller disks, like:
-A smaller disk costs less. Usually 50% less and with the same performance for HDD and standard SSD (the premium disk has more IOPS for the larger size)</p>
-</li>
-<li>
-<p>Ephemeral disks for smaller VM sizes: Ephemeral disks are really good for VM without local user data - like session hosts using FSLogix. VMs with ephemeral disks living on the Azure hypervisor without a network-attached disk - the OS disks are created directly in the cache of the hypervisor.</p>
+<li><p>But what are the advantages of smaller disks? First, they are some reason to use smaller disks, like:
+A smaller disk costs less. Usually 50% less and with the same performance for HDD and standard SSD (the premium disk has more IOPS for the larger size)</p></li>
+<li><p>Ephemeral disks for smaller VM sizes: Ephemeral disks are really good for VM without local user data - like session hosts using FSLogix. VMs with ephemeral disks living on the Azure hypervisor without a network-attached disk - the OS disks are created directly in the cache of the hypervisor. </p>
+
 <ul>
-<li>Advantages:
-No costs for the disk and high performance.
+<li>Advantages: 
+No costs for the disk and high performance. 
 Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyte Windows, (e.g.) a D8ds_v4 (8 cores, 32 Gbyte RAM, 200 GiB cache) is needed. That is maybe not attractive for a single user session host. If we go with a 64 Gbyte disk image, a D4ds_v4 can be used (4 cores, 16 Gbyte, 100GiB cache), which costs half.</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<p>My favorite is the ephemeral disk approach for some environments because this offers high performance for a low price and often fits Windows Virtual Desktop.</p>
+
+<p>My favorite is the ephemeral disk approach for some environments because this offers high performance for a low price and often fits Windows Virtual Desktop. </p>
+
 <h2 id="the-challenge">The challenge</h2>
-<p>The challenge is to resize the Golden Master. There are some good posts about doing that, but it’s not easy and needs many different steps. Therefore, I added this as a feature in WVDAdmin from the release of today. So feel free to resize your Golden Master to 64 Gbyte, grab an image and deploy smaller session hosts - may be as ephemeral with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">#WVDAdmin / #AVDAdmin</a></p>
-<p>I recommend making a snapshot first and keep in mind that the process takes a while (between 20 and 60 minutes). But you only have to do it once.</p>
+
+<p>The challenge is to resize the Golden Master. There are some good posts about doing that, but it&#39;s not easy and needs many different steps. Therefore, I added this as a feature in WVDAdmin from the release of today. So feel free to resize your Golden Master to 64 Gbyte, grab an image and deploy smaller session hosts - may be as ephemeral with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">#WVDAdmin / #AVDAdmin</a></p>
+
+<p>I recommend making a snapshot first and keep in mind that the process takes a while (between 20 and 60 minutes). But you only have to do it once. </p>
+
 <p>What happens in the background:</p>
+
 <ul>
 <li>The Windows partition will be resized to 31 Gbyte</li>
 <li>The disk is uploaded to a temporary created storage account (that takes a while)</li>
@@ -487,20 +491,27 @@ Unfortunately, the cache size is limited based on the VM size. To run a 128 Gbyt
 <li>The disk is attached to the VM</li>
 <li>The temporary storage account is deleted</li>
 </ul>
+
 <h2 id="site-node-how-to-use-ephemeral-vms-in-a-very-cool-way">Site node: How to use ephemeral VMs in a very cool way?</h2>
-<p>I’m currently working on the following solution called “Project Hydra” to managed WVD. In addition, I added an “Autoscale” feature that is going hand-in-hand with Microsoft’s “Power-on-Connect”:</p>
+
+<p>I&#39;m currently working on the following solution called &quot;Project Hydra&quot; to managed WVD. In addition, I added an &quot;Autoscale&quot; feature that is going hand-in-hand with Microsoft&#39;s &quot;Power-on-Connect&quot;:</p>
+
 <ul>
 <li>In the morning, a bunch of ephemeral session hosts are automatically created to handle the first user storm</li>
 <li>Some stand-by session hosts (deallocated) with standard SSD are then started with Power-On-Connect if a user tries to log in, and all of the ephemeral hosts are in use</li>
-<li>And for sure: Deallocation of the “normal” hosts and deletion of the ephemeral hosts are part of the autoscaling</li>
+<li>And for sure: Deallocation of the &quot;normal&quot; hosts and deletion of the ephemeral hosts are part of the autoscaling</li>
 </ul>
+
 <h2 id="preqersits-to-shrink-a-disk">Preqersits to shrink a disk:</h2>
+
 <ul>
 <li>Windows operating system installed on a 128 Gbyte disk or greater</li>
 <li>Only drive C: (exact two partitions: recovery partition and C-drive - default)</li>
 </ul>
+
 <p>Check out the newest version of <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">#WVDAdmin / #AVDAdmin</a> and check a short demo video about resizing a disk on <a href="https://youtu.be/Qb9CRHytXv0">YouTube (external Link)</a>.</p>
-<p><img src="../assets/images/WVDAdmin-Shrink-01.png" alt="" /></p>
+
+<p><img src="../assets/images/WVDAdmin-Shrink-01.png" alt=""></p>
 
             </div>
 

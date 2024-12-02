@@ -10,12 +10,12 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Azure Virtual Desktop: Reserved Instances or Scaling | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Azure Virtual Desktop: Reserved Instances or Scaling" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A while ago, I wrote a blog post about saving money by smartly switching the disk types of Azure VMs. But what’s about using reserved instances instead of switching VMs on or off (autoscaling)?" />
-<meta property="og:description" content="A while ago, I wrote a blog post about saving money by smartly switching the disk types of Azure VMs. But what’s about using reserved instances instead of switching VMs on or off (autoscaling)?" />
+<meta name="description" content="A while ago, I wrote a blog post about saving money by smartly switching the disk types of Azure VMs. But what&#39;s about using reserved instances instead of switching VMs on or off (autoscaling)?" />
+<meta property="og:description" content="A while ago, I wrote a blog post about saving money by smartly switching the disk types of Azure VMs. But what&#39;s about using reserved instances instead of switching VMs on or off (autoscaling)?" />
 <link rel="canonical" href="https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling-Copy/" />
 <meta property="og:url" content="https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling-Copy/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/ReservedOrNot-02.png" />
 <meta property="twitter:title" content="Azure Virtual Desktop: Reserved Instances or Scaling" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2021-12-13T00:00:00+01:00","datePublished":"2021-12-13T00:00:00+01:00","description":"A while ago, I wrote a blog post about saving money by smartly switching the disk types of Azure VMs. But what’s about using reserved instances instead of switching VMs on or off (autoscaling)?","headline":"Azure Virtual Desktop: Reserved Instances or Scaling","image":"https://blog.itprocloud.de/assets/images/ReservedOrNot-02.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling-Copy/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling-Copy/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2021-12-13T00:00:00+01:00","datePublished":"2021-12-13T00:00:00+01:00","description":"A while ago, I wrote a blog post about saving money by smartly switching the disk types of Azure VMs. But what&#39;s about using reserved instances instead of switching VMs on or off (autoscaling)?","headline":"Azure Virtual Desktop: Reserved Instances or Scaling","image":"https://blog.itprocloud.de/assets/images/ReservedOrNot-02.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling-Copy/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Reserved-Instance-or-scaling-Copy/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -379,38 +379,60 @@
     <div class="article-post">
 	
 		<!-- change content to anchor styled output -->
-		<p>A while ago, I wrote a blog post about saving money by smartly <a href="https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/">switching the disk types</a> of Azure VMs. But what’s about using reserved instances instead of switching VMs on or off (autoscaling)?</p>
+		<p>A while ago, I wrote a blog post about saving money by smartly <a href="https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/">switching the disk types</a> of Azure VMs. But what&#39;s about using reserved instances instead of switching VMs on or off (autoscaling)?</p>
+
 <p>I used the same <a href="https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/">data</a> as in the previews blog post to figure out the best amount of reserved instances for this specific customer environment.</p>
+
 <p>The charts below show the data of a host pool for seven days. Less load on the weekend and more than 400 user sessions on the weekdays:
-<img src="../assets/images/Hydra/SwitchDisks-01.png" alt="" />
-<img src="../assets/images/Hydra/SwitchDisks-02.png" alt="" /></p>
-<p>The maximum number of running hosts was 89 on Thursday.</p>
+<img src="../assets/images/Hydra/SwitchDisks-01.png" alt="">
+<img src="../assets/images/Hydra/SwitchDisks-02.png" alt=""></p>
+
+<p>The maximum number of running hosts was 89 on Thursday. </p>
+
 <p>The VM types are D4 v4, and the current costs in west europe for one hour are:</p>
+
 <p>Pay-as-you-go: € 0.201315
 Reserved (1y): € 0.121219
-Reserved (3y): € 0.078055</p>
+Reserved (3y): € 0.078055  </p>
+
 <p>I calculated the costs for this week for different numbers of reserved instances: From 0% to 100% in 5% steps. The results are surprising:</p>
-<p><img src="../assets/images/ReservedOrNot-01.png" alt="" /></p>
-<p>The best value is with 5% reserved instances: €      981.77</p>
-<p><img src="../assets/images/ReservedOrNot-02.png" alt="" /></p>
-<p>The best value is with 25% reserved instances: €      886.42</p>
+
+<p><img src="../assets/images/ReservedOrNot-01.png" alt=""></p>
+
+<p>The best value is with 5% reserved instances: €      981.77 </p>
+
+<p><img src="../assets/images/ReservedOrNot-02.png" alt=""></p>
+
+<p>The best value is with 25% reserved instances: €      886.42 </p>
+
 <p>So, in this case, 25% reserved instances (23 hosts) are an excellent way to go. But it can change from customer to customer even if people work in a shift.</p>
 
-		<!--<p>A while ago, I wrote a blog post about saving money by smartly <a href="https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/">switching the disk types</a> of Azure VMs. But what’s about using reserved instances instead of switching VMs on or off (autoscaling)?</p>
+		<!--<p>A while ago, I wrote a blog post about saving money by smartly <a href="https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/">switching the disk types</a> of Azure VMs. But what&#39;s about using reserved instances instead of switching VMs on or off (autoscaling)?</p>
+
 <p>I used the same <a href="https://blog.itprocloud.de/Save-money-while-changing-disk-type-on-demand-with-Hydra-AVD/">data</a> as in the previews blog post to figure out the best amount of reserved instances for this specific customer environment.</p>
+
 <p>The charts below show the data of a host pool for seven days. Less load on the weekend and more than 400 user sessions on the weekdays:
-<img src="../assets/images/Hydra/SwitchDisks-01.png" alt="" />
-<img src="../assets/images/Hydra/SwitchDisks-02.png" alt="" /></p>
-<p>The maximum number of running hosts was 89 on Thursday.</p>
+<img src="../assets/images/Hydra/SwitchDisks-01.png" alt="">
+<img src="../assets/images/Hydra/SwitchDisks-02.png" alt=""></p>
+
+<p>The maximum number of running hosts was 89 on Thursday. </p>
+
 <p>The VM types are D4 v4, and the current costs in west europe for one hour are:</p>
+
 <p>Pay-as-you-go: € 0.201315
 Reserved (1y): € 0.121219
-Reserved (3y): € 0.078055</p>
+Reserved (3y): € 0.078055  </p>
+
 <p>I calculated the costs for this week for different numbers of reserved instances: From 0% to 100% in 5% steps. The results are surprising:</p>
-<p><img src="../assets/images/ReservedOrNot-01.png" alt="" /></p>
-<p>The best value is with 5% reserved instances: €      981.77</p>
-<p><img src="../assets/images/ReservedOrNot-02.png" alt="" /></p>
-<p>The best value is with 25% reserved instances: €      886.42</p>
+
+<p><img src="../assets/images/ReservedOrNot-01.png" alt=""></p>
+
+<p>The best value is with 5% reserved instances: €      981.77 </p>
+
+<p><img src="../assets/images/ReservedOrNot-02.png" alt=""></p>
+
+<p>The best value is with 25% reserved instances: €      886.42 </p>
+
 <p>So, in this case, 25% reserved instances (23 hosts) are an excellent way to go. But it can change from customer to customer even if people work in a shift.</p>
 -->
 	

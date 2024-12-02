@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Publish your solution to the Azure Marketplace | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Publish your solution to the Azure Marketplace" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,47 +460,58 @@
                 
                 <!-- End Toc -->
                 <p>Publishing own solutions to the Azure Marketplace seems to be very easy by using the documentation on <a href="https://docs.microsoft.com/en-us/azure/marketplace/marketplace-publishers-guide">https://docs.microsoft.com/en-us/azure/marketplace/marketplace-publishers-guide</a>. To avoid any pitfalls I wrote down some insights about my first approach. In this blog, I will focus on “Azure Applications”</p>
+
 <h2 id="the-cloud-partner-dashboard">The Cloud Partner Dashboard</h2>
+
 <p>Make sure that you have access to the Cloud Partner Portal at <a href="https://cloudpartner.azure.com">https://cloudpartner.azure.com</a>. In my case, I use my coopered credentials to log in.
 Assign your Dev Center account details via Publisher Profile:</p>
-<p><img src="/wp-content/uploads/2019/03/PA01.png" alt="img" /></p>
+
+<p><img src="/wp-content/uploads/2019/03/PA01.png" alt="img"></p>
+
 <p><strong>Hint:</strong>
 I had some trouble doing this. My Dev Center account was not accepted. The reason was that my Dev Center account and my cooperated account names are/aren’t similar. A Dev Center account is always an MSA (former live id). So, I couldn’t invite this account into the Cloud Partner portal. My workaround:</p>
+
 <ul>
 <li>Create a new MSA, e.g. <a href="mailto:myname.dev@outlook.com">myname.dev@outlook.com</a></li>
 <li>Create a new Dev Center account with the new MSA: <a href="https://developer.microsoft.com">https://developer.microsoft.com</a></li>
 <li>Add the new MSA into the Cloud Partner Portal
-<img src="/wp-content/uploads/2019/03/PA02.png" alt="img" /></li>
+<img src="/wp-content/uploads/2019/03/PA02.png" alt="img"></li>
 <li>Assign your Dev Center account</li>
 </ul>
+
 <h2 id="prepare-your-publishing-package">Prepare your publishing package</h2>
+
 <p>Publishing (-) Azure Applications means that you provide an ARM template and other resources, like:</p>
+
 <ul>
 <li>mainTemplate.json</li>
 <li>createUiDefinition.json (<a href="https://docs.microsoft.com/en-us/azure/managed-applications/create-uidefinition-overview">https://docs.microsoft.com/en-us/azure/managed-applications/create-uidefinition-overview</a>)</li>
-<li>nestedtemplates.….json (for linked templates)</li>
+<li>nestedtemplates.....json (for linked templates)</li>
 <li>and maybe some other folders</li>
 </ul>
+
 <p>All the files must be in a zip archive for (-) further upload. The folder structure is important and createUiDefinition.json and mainTemplate.json are mandatory.
 The ARM templates and the create UI are checked by Microsoft before your offer is available to the public. To avoid some iterations, make sure that you have observed the following things:</p>
+
 <ul>
 <li>ARM Templates
+
 <ul>
 <li>Do not reference external sources like nested templates on GitHub – everything must be in the package</li>
-<li>maintemplate.json must have a “parameters” property</li>
+<li>maintemplate.json must have a &quot;parameters&quot; property</li>
 <li>Parameters without defaultValue s. They must have a corresponding output in createUiDefinition.json</li>
-<li>A parameter named “location” must exist and it must have a defaultValue of resourceGroup().location</li>
-<li>Use the correct API versions#VM Image ref must not contain “-preview”</li>
+<li>A parameter named &quot;location&quot; must exist and it must have a defaultValue of resourceGroup().location</li>
+<li>Use the correct API versions#VM Image ref must not contain &quot;-preview&quot;</li>
 <li>Do not concat Ids like:
-<em>”[Concat(’/subscriptions/’, parameters(‘subscriptionId’), ‘/resourceGroups/’, parameters(‘resourcegroup’), ‘/providers/Microsoft.OperationalInsights/workspaces/’, parameters(‘workspace’))]”</em>
+<em>&quot;[Concat(&#39;/subscriptions/&#39;, parameters(&#39;subscriptionId&#39;), &#39;/resourceGroups/&#39;, parameters(&#39;resourcegroup&#39;), &#39;/providers/Microsoft.OperationalInsights/workspaces/&#39;, parameters(&#39;workspace&#39;))]&quot;</em>
 use resourceId:
-<em>”[resourceId(‘Microsoft.OperationalInsights/workspaces’, parameters(‘workspace’))]</em></li>
-</ul>
-</li>
+<em>&quot;[resourceId(&#39;Microsoft.OperationalInsights/workspaces&#39;, parameters(&#39;workspace&#39;))]</em></li>
+</ul></li>
 <li>createUiDefinition.json
+
 <ul>
 <li>Must have a schema property</li>
-<li>Handler property value should be ‘Microsoft.Compute.MultiVm’</li>
+<li>Handler property value should be &#39;Microsoft.Compute.MultiVm&#39;</li>
 <li>Version property value must match schema version</li>
 <li>Must have parameters and output(-) properties</li>
 <li>Output location must be present in mainTemplate parameters</li>
@@ -508,18 +519,23 @@ use resourceId:
 <li>Parameters should have basics and steps properties</li>
 <li>Location must be in outputs and should match [location()]</li>
 <li>Do not say that a user has to enter a unique name (e.g. for a web app) – generate a unique name with an appendix (use uniqueString()), e.g.:
-<em>”[concat(parameters(‘resourcename’),’-’, uniqueString(resourceGroup().id,subscription().subscriptionId))]”</em></li>
+<em>&quot;[concat(parameters(&#39;resourcename&#39;),&#39;-&#39;, uniqueString(resourceGroup().id,subscription().subscriptionId))]&quot;</em></li>
 <li>Text boxes (for names) must have a regex constraint</li>
 <li>Text boxes (for names) must have a validationMessage</li>
+</ul></li>
 </ul>
-</li>
-</ul>
+
 <h2 id="publish-your-package-for-a-private-test">Publish your package for a private test</h2>
+
 <p>After you have zipped your package, you can create a new “Azure Application” offer in the Cloud Partner portal. Select a new offer, Azure application and fill out the fields.
 Publish it for your personal test (add your subscription id to make it visible).</p>
-<p><img src="/wp-content/uploads/2019/03/PA03.png" alt="img" /></p>
+
+<p><img src="/wp-content/uploads/2019/03/PA03.png" alt="img"></p>
+
 <h2 id="publish-your-package-to-the-public">Publish your package to the public</h2>
+
 <p>After you have tested your package privately, you can apply to make it public to the world. This takes some time while automatism and a (human) reviewer check your templates. If something is invalid, you get a mail with a link to a pull request where you can check what’s wrong.</p>
+
 <p>Fist published on: <a href="https://www.sepago.de/blog/publish-your-solution-to-the-azure-marketplace/">https://www.sepago.de/blog/publish-your-solution-to-the-azure-marketplace/</a></p>
 
             </div>

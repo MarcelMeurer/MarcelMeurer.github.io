@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Securing an app service, a key vault, and a database with private endpoints | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Securing an app service, a key vault, and a database with private endpoints" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -380,18 +380,28 @@
 	
 		<!-- change content to anchor styled output -->
 		<p>A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Kommunikation is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string).</p>
+
 <p>The key vaults and database endpoints are reachable over the public internet. The strong authentication from the app services ensures that the app service gets access.</p>
-<p>In some cases, it’s mandatory to avoid public access to the vault and the database. Luckily, that can be easily done using private endpoints in Azure. Neither the application nor the configuration of the application needs to be adjusted. So, we can increase the security of any Azure app working with a vault and database (Azure SQL as a service).</p>
+
+<p>In some cases, it&#39;s mandatory to avoid public access to the vault and the database. Luckily, that can be easily done using private endpoints in Azure. Neither the application nor the configuration of the application needs to be adjusted. So, we can increase the security of any Azure app working with a vault and database (Azure SQL as a service).</p>
+
 <p>I recorded a short video to show the steps. Watch it to the end and avoid my mistake of putting the full IP-range into one subnet (you need two subnets: one for the vault and database and another for the app service).</p>
+
 <p>Check out the video on Youtube: <a href="https://youtu.be/2bf1yjoEk_A">How to secure the database and key vault of an app service / web app in Azure</a></p>
-<p><img src="../assets/images/SecureWebApp.png" alt="" /></p>
+
+<p><img src="../assets/images/SecureWebApp.png" alt=""></p>
 
 		<!--<p>A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Kommunikation is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string).</p>
+
 <p>The key vaults and database endpoints are reachable over the public internet. The strong authentication from the app services ensures that the app service gets access.</p>
-<p>In some cases, it’s mandatory to avoid public access to the vault and the database. Luckily, that can be easily done using private endpoints in Azure. Neither the application nor the configuration of the application needs to be adjusted. So, we can increase the security of any Azure app working with a vault and database (Azure SQL as a service).</p>
+
+<p>In some cases, it&#39;s mandatory to avoid public access to the vault and the database. Luckily, that can be easily done using private endpoints in Azure. Neither the application nor the configuration of the application needs to be adjusted. So, we can increase the security of any Azure app working with a vault and database (Azure SQL as a service).</p>
+
 <p>I recorded a short video to show the steps. Watch it to the end and avoid my mistake of putting the full IP-range into one subnet (you need two subnets: one for the vault and database and another for the app service).</p>
+
 <p>Check out the video on Youtube: <a href="https://youtu.be/2bf1yjoEk_A">How to secure the database and key vault of an app service / web app in Azure</a></p>
-<p><img src="../assets/images/SecureWebApp.png" alt="" /></p>
+
+<p><img src="../assets/images/SecureWebApp.png" alt=""></p>
 -->
 	
     

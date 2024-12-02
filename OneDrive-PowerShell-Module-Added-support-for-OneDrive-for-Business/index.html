@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>OneDrive PowerShell Module - Added support for OneDrive for Business | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="OneDrive PowerShell Module - Added support for OneDrive for Business" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,133 +460,141 @@
                 
                 <!-- End Toc -->
                 <p>More than two years ago, I created my PowerShell module to access OneDrive. This module can be installed with a one-liner from <a href="https://www.powershellgallery.com/packages/OneDrive">https://www.powershellgallery.com/packages/OneDrive</a></p>
+
 <p>Again, I was asked to support OneDrive for Business and finally, I’m ready: From version 2.0.0 OneDrive for Business is supported.</p>
+
 <p>I provide the complete documentation on GitHub, where I will maintain it: <a href="https://github.com/MarcelMeurer/PowerShellGallery-OneDrive">https://github.com/MarcelMeurer/PowerShellGallery-OneDrive</a></p>
+
 <p>Here is the summary of version 2.0.0:</p>
-<p>-———————————————</p>
+
+<p>----------------------------------------------</p>
+
 <p>The OneDrive PowerShell module is available via PowerShellGallery.com. If you want to support and work with me feel free to make changes cloning this repo, change and send me and a pull request.</p>
+
 <p>This OneDrive version (2.0.0 and higher in PowerShellGallery.com) supports:</p>
+
 <ul>
-<li>OneDrive personal</li>
-<li>OneDrive for Business</li>
+<li> OneDrive personal</li>
+<li> OneDrive for Business</li>
 </ul>
-<h2 id="stronginstallationstrong"><strong>Installation</strong></h2>
+
+<h2 id="installation"><strong>Installation</strong></h2>
+
 <p>Open PowerShell and</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Install-Module</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">OneDrive</span><span class="w"> </span><span class="nt">-Scope</span><span class="w"> </span><span class="nx">CurrentUser</span><span class="w"> </span><span class="nt">-force</span><span class="w">
-</span></code></pre></div></div>
-<p>You can update the module to a newer version with the same command (-force). If you don’t use PowerShellGet currently, go to the Gallery on <a href="https://www.powershellgallery.com/packages/OneDrive">https://www.powershellgallery.com/packages/OneDrive</a> and click “Get Started”.</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Install-Module</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">OneDrive</span><span class="w"> </span><span class="nt">-Scope</span><span class="w"> </span><span class="nx">CurrentUser</span><span class="w"> </span><span class="nt">-force</span><span class="w">
+</span></code></pre></div>
+<p>You can update the module to a newer version with the same command (-force). If you don’t use PowerShellGet currently, go to the Gallery on <a href="https://www.powershellgallery.com/packages/OneDrive">https://www.powershellgallery.com/packages/OneDrive</a> and click &quot;Get Started&quot;.</p>
+
 <p>Check your installation with</p>
+
 <p>Get-Help -Name OneDrive</p>
-<h2 id="strongauthenticationstrong"><strong>Authentication</strong></h2>
+
+<h2 id="authentication"><strong>Authentication</strong></h2>
+
 <p>Before you start using the OneDrive module you have registered your script/application. This differs depending on the OneDrive version to be used.</p>
-<h3 id="strongonedrive-personalstrong"><strong>OneDrive Personal</strong></h3>
-<p>Read this on my blog: <a href="https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/">https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/</a></p>
-<ul>
-<li>Go to: <a href="https://apps.dev.microsoft.com/">https://apps.dev.microsoft.com</a> and login with your Microsoft Account (MSA) and “Add an app” in the category “converged applications”
-<img src="/wp-content/uploads/2017/12/oda01.png" alt="img" /></li>
-<li>Enter a name and press “create”
-<img src="/wp-content/uploads/2017/12/oda02.png" alt="img" /></li>
-<li>Press “Generate New Password” and save the password (app key)
-<img src="/wp-content/uploads/2017/12/oda03.png" alt="img" /></li>
-<li>Also, save the “Application id”</li>
-<li>Press “Add Platforms” and select “Web”
-<img src="/wp-content/uploads/2017/12/oda04.png" alt="img" /></li>
-<li>Check “Allow implicit Flow” and enter a “Redirect URL”. This is not a real URL. Choose a localhost address and note it. In my case, I chose: <a href="http://localhost/login">http://localhost/login</a>
-<img src="/wp-content/uploads/2017/12/oda05.png" alt="img" />
-<img src="/wp-content/uploads/2017/12/oda06.png" alt="img" /></li>
-<li>Press “Save”</li>
-<li>Now you have all the necessary data for your app/script:
-<ul>
-<li>Client Id: 5dd40b03-0ead-451b-b5e3-f704550e8cca</li>
-<li>AppKey: xqacs8K92MuCJKgciRHQ1Cf</li>
-<li>RedirectURI: <a href="http://localhost/login">http://localhost/login</a></li>
-</ul>
-</li>
-<li>To get an authentication token use:</li>
-</ul>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$Auth</span><span class="o">=</span><span class="n">Get-ODAuthentication</span><span class="w"> </span><span class="nt">-ClientID</span><span class="w"> </span><span class="nx">5dd40b03-0ead-451b-b5e3-f704550e8cca</span><span class="w"> </span><span class="nt">-AppKey</span><span class="w"> </span><span class="nx">xqacs8K92MuCJKgciRHQ1Cf</span><span class="w"> </span><span class="nt">-RedirectURI</span><span class="w"> </span><span class="nx">http://localhost/login</span><span class="w">
-</span></code></pre></div></div>
-<p><img src="/wp-content/uploads/2017/12/oda07.png" alt="img" /></p>
-<h3 id="strongonedrive-for-businessstrong"><strong>OneDrive for Business</strong></h3>
+
+<h3 id="onedrive-personal"><strong>OneDrive Personal</strong></h3>
+
+<p>Read this on my blog: <a href="https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/">https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/</a>
+- Go to: <a href="https://apps.dev.microsoft.com/">https://apps.dev.microsoft.com</a> and login with your Microsoft Account (MSA) and &quot;Add an app&quot; in the category &quot;converged applications&quot;
+  <img src="/wp-content/uploads/2017/12/oda01.png" alt="img">
+- Enter a name and press &quot;create&quot;
+  <img src="/wp-content/uploads/2017/12/oda02.png" alt="img">
+- Press &quot;Generate New Password&quot; and save the password (app key)
+  <img src="/wp-content/uploads/2017/12/oda03.png" alt="img">
+- Also, save the &quot;Application id&quot;
+- Press &quot;Add Platforms&quot; and select &quot;Web&quot;
+  <img src="/wp-content/uploads/2017/12/oda04.png" alt="img">
+- Check &quot;Allow implicit Flow&quot; and enter a &quot;Redirect URL&quot;. This is not a real URL. Choose a localhost address and note it. In my case, I chose: <a href="http://localhost/login">http://localhost/login</a>
+  <img src="/wp-content/uploads/2017/12/oda05.png" alt="img">
+  <img src="/wp-content/uploads/2017/12/oda06.png" alt="img">
+- Press &quot;Save&quot;
+- Now you have all the necessary data for your app/script:
+  - Client Id: 5dd40b03-0ead-451b-b5e3-f704550e8cca
+  - AppKey: xqacs8K92MuCJKgciRHQ1Cf
+  - RedirectURI: <a href="http://localhost/login">http://localhost/login</a>
+- To get an authentication token use:</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="nv">$Auth</span><span class="o">=</span><span class="n">Get-ODAuthentication</span><span class="w"> </span><span class="nt">-ClientID</span><span class="w"> </span><span class="nx">5dd40b03-0ead-451b-b5e3-f704550e8cca</span><span class="w"> </span><span class="nt">-AppKey</span><span class="w"> </span><span class="nx">xqacs8K92MuCJKgciRHQ1Cf</span><span class="w"> </span><span class="nt">-RedirectURI</span><span class="w"> </span><span class="nx">http://localhost/login</span><span class="w">
+</span></code></pre></div>
+<p><img src="/wp-content/uploads/2017/12/oda07.png" alt="img"></p>
+
+<h3 id="onedrive-for-business"><strong>OneDrive for Business</strong></h3>
+
 <p>To use OneDrive for business you have to register your script/app to in Azure Active Directory</p>
+
 <ul>
-<li>
-<p>Add an application in Azure Active Directory inside the Azure portal: <a href="https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps">https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps</a></p>
-</li>
-<li>
-<p>Chose “New application registration”</p>
-</li>
-<li>
-<p>Give your application a name and a unique sign-on URL. The sign-on URL has to be a valid URL but doesn’t have to exist. E.g.: <a href="http://sepago.de/1Drive4Business">http://sepago.de/1Drive4Business</a> (make later sure that this URL is in the reply URL list of your application)
-<img src="/wp-content/uploads/2018/01/od4b01.png" alt="img" /></p>
-</li>
-<li>
-<p>Within the “Required permissions” add “Office 365 SharePoint Online (Microsoft.Sharepoint)”
-<img src="/wp-content/uploads/2018/01/od4b02.png" alt="img" /></p>
-</li>
-<li>
-<p>Select “Read and write user files” below “delegated permissions” for the Office 365 API
-<img src="/wp-content/uploads/2018/01/od4b03.png" alt="img" /></p>
-</li>
-<li>
-<p>Generate a secret key for this application and save it for later use. Also, save the application Id
-<img src="/wp-content/uploads/2018/01/od4b04.png" alt="img" />
-<img src="/wp-content/uploads/2018/01/od4b05_0.png" alt="img" /></p>
-</li>
-<li>
-<p>You should now have the following parameter:</p>
+<li>Add an application in Azure Active Directory inside the Azure portal: <a href="https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps">https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps</a></li>
+<li>Chose &quot;New application registration&quot;</li>
+<li><p>Give your application a name and a unique sign-on URL. The sign-on URL has to be a valid URL but doesn&#39;t have to exist. E.g.: <a href="http://sepago.de/1Drive4Business">http://sepago.de/1Drive4Business</a> (make later sure that this URL is in the reply URL list of your application)
+<img src="/wp-content/uploads/2018/01/od4b01.png" alt="img"></p></li>
+<li><p>Within the &quot;Required permissions&quot; add &quot;Office 365 SharePoint Online (Microsoft.Sharepoint)&quot;
+<img src="/wp-content/uploads/2018/01/od4b02.png" alt="img"></p></li>
+<li><p>Select &quot;Read and write user files&quot; below &quot;delegated permissions&quot; for the Office 365 API
+<img src="/wp-content/uploads/2018/01/od4b03.png" alt="img"></p></li>
+<li><p>Generate a secret key for this application and save it for later use. Also, save the application Id
+<img src="/wp-content/uploads/2018/01/od4b04.png" alt="img">
+<img src="/wp-content/uploads/2018/01/od4b05_0.png" alt="img"></p></li>
+<li><p>You should now have the following parameter:</p>
+
 <ul>
 <li>Client Id: 2831fc52-e1b8-4493-9f3a-a3dad74b2081</li>
 <li>AppKey: TqoSXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX=</li>
 <li>RedirectURI: <a href="http://sepago.de/1Drive4Business">http://sepago.de/1Drive4Business</a></li>
+</ul></li>
+<li><p>Additionally you need the resource URL for OneDrive for Business. Normally: https://-my.sharepoint.com/. In our company this is the URL &quot;</p></li>
 </ul>
-</li>
-<li>
-<p>Additionally you need the resource URL for OneDrive for Business. Normally: https://-my.sharepoint.com/. In our company this is the URL “</p>
+
 <p><a href="https://sepagogmbh-my.sharepoint.com/">https://sepagogmbh-my.sharepoint.com/</a></p>
-<p>“ (the last one / is important).</p>
+
+<p>&quot; (the last one / is important).</p>
+
 <ul>
-<li>Resource ID: <a href="https://sepagogmbh-my.sharepoint.com/">https://sepagogmbh-my.sharepoint.com/</a></li>
+<li><p>Resource ID: <a href="https://sepagogmbh-my.sharepoint.com/">https://sepagogmbh-my.sharepoint.com/</a></p>
+
+<ul>
+<li>To get an authentication token use:</li>
+</ul></li>
 </ul>
-</li>
-<li>
-<p>To get an authentication token use:</p>
-</li>
-</ul>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$Auth</span><span class="o">=</span><span class="n">Get-ODAuthentication</span><span class="w"> </span><span class="nt">-ClientId</span><span class="w"> </span><span class="s2">"2831fc52-e1b8-4493-9f3a-a3dad74b2081"</span><span class="w"> </span><span class="nt">-AppKey</span><span class="w"> </span><span class="s2">"TqoSXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX="</span><span class="o">&amp;</span><span class="nx">nbsp</span><span class="p">;</span><span class="w"> </span><span class="nt">-RedirectURI</span><span class="w"> </span><span class="s2">"http://sepago.de/1Drive4Business"</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w">
-</span></code></pre></div></div>
-<h3 id="strongrenew-the-authentication-with-a-refresh-tokenstrong"><strong>Renew the authentication with a refresh token</strong></h3>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="nv">$Auth</span><span class="o">=</span><span class="n">Get-ODAuthentication</span><span class="w"> </span><span class="nt">-ClientId</span><span class="w"> </span><span class="s2">"2831fc52-e1b8-4493-9f3a-a3dad74b2081"</span><span class="w"> </span><span class="nt">-AppKey</span><span class="w"> </span><span class="s2">"TqoSXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX="</span><span class="o">&amp;</span><span class="nx">nbsp</span><span class="p">;</span><span class="w"> </span><span class="nt">-RedirectURI</span><span class="w"> </span><span class="s2">"http://sepago.de/1Drive4Business"</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w">
+</span></code></pre></div>
+<h3 id="renew-the-authentication-with-a-refresh-token"><strong>Renew the authentication with a refresh token</strong></h3>
+
 <p>An access token is 1 hour valid. You can get a new access token with the refresh token provided by the last authentication. This is necessary if you are creating a script that will work for a long time without further user input. Renew your access token automatically in the program code.</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$Auth</span><span class="o">=</span><span class="n">Get-ODAuthentication</span><span class="w"> </span><span class="nt">-ClientId</span><span class="w"> </span><span class="nx">2831fc52-e1b8-4493-9f3a-a3dad74b2081</span><span class="w"> </span><span class="nt">-AppKey</span><span class="w"> </span><span class="s2">"TqoSXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX="</span><span class="w"> </span><span class="nt">-RedirectURI</span><span class="w"> </span><span class="s2">"http://sepago.de/1Drive4Business"</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w"> </span><span class="nt">-RefreshToken</span><span class="w"> </span><span class="nv">$LastAuth</span><span class="o">.</span><span class="nf">refresh_token</span><span class="w">
-</span></code></pre></div></div>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="nv">$Auth</span><span class="o">=</span><span class="n">Get-ODAuthentication</span><span class="w"> </span><span class="nt">-ClientId</span><span class="w"> </span><span class="nx">2831fc52-e1b8-4493-9f3a-a3dad74b2081</span><span class="w"> </span><span class="nt">-AppKey</span><span class="w"> </span><span class="s2">"TqoSXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX="</span><span class="w"> </span><span class="nt">-RedirectURI</span><span class="w"> </span><span class="s2">"http://sepago.de/1Drive4Business"</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w"> </span><span class="nt">-RefreshToken</span><span class="w"> </span><span class="nv">$LastAuth</span><span class="o">.</span><span class="nf">refresh_token</span><span class="w">
+</span></code></pre></div>
 <ul>
 <li>Where $LastAuth is your last authentication result (containing the refresh token)</li>
-<li>For OneDrive personal leave the ResourceId empty (-ResourceId “”)</li>
+<li>For OneDrive personal leave the ResourceId empty (-ResourceId &quot;&quot;)</li>
 </ul>
-<h2 id="strongworking-with-files-and-foldersstrong"><strong>Working with files and folders</strong></h2>
+
+<h2 id="working-with-files-and-folders"><strong>Working with files and folders</strong></h2>
+
 <p>Get an authentication code from above and store it in $Auth</p>
-<h3 id="stronglist-files-and-foldersstrong"><strong>List files and folders</strong></h3>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-ODChildItems</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$Auth</span><span class="o">.</span><span class="nf">access_token</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w"> </span><span class="nt">-path</span><span class="w"> </span><span class="s2">"/"</span><span class="w">
-</span></code></pre></div></div>
-<h3 id="stronglist-files-and-foldersstrong-1"><strong>List files and folders</strong></h3>
-<p>Remove-ODItem -AccessToken $Auth.access_token -ResourceId “<a href="https://sepagogmbh-my.sharepoint.com/">https://sepagogmbh-my.sharepoint.com/</a>” -path “/Upload”</p>
-<h3 id="strongcreating-a-folderstrong"><strong>Creating a folder</strong></h3>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">New-ODFolder</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$Auth</span><span class="o">.</span><span class="nf">access_token</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w"> </span><span class="nt">-path</span><span class="w"> </span><span class="s2">"/"</span><span class="w"> </span><span class="nt">-FolderName</span><span class="w"> </span><span class="s2">"Upload"</span><span class="w">
-</span></code></pre></div></div>
-<h3 id="strongupload-local-files-to-onedrivestrong"><strong>Upload local files to OneDrive</strong></h3>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Add-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$Auth</span><span class="o">.</span><span class="nf">access_token</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w"> </span><span class="nt">-LocalFile</span><span class="w"> </span><span class="s2">"D:\DEV\PowerShell\PowerShellGallery-OneDrive\Test\Uploads\IoT Workshop.pptx"</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Upload"</span><span class="w">
-</span></code></pre></div></div>
-<h3 id="stronglist-onedrive-drivesstrong"><strong>List OneDrive drives</strong></h3>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-ODDrives</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$Auth</span><span class="o">.</span><span class="nf">access_token</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w">
-</span></code></pre></div></div>
-<h3 id="strongdownloading-some-filesstrong"><strong>Downloading some files</strong></h3>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$Auth</span><span class="o">.</span><span class="nf">access_token</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Upload/Doings.txt"</span><span class="w"> </span><span class="nt">-LocalPath</span><span class="w"> </span><span class="s2">"D:\DEV\PowerShell\PowerShellGallery-OneDrive\Test\Downloads"</span><span class="w">
+
+<h3 id="list-files-and-folders"><strong>List files and folders</strong></h3>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Get-ODChildItems</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$Auth</span><span class="o">.</span><span class="nf">access_token</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w"> </span><span class="nt">-path</span><span class="w"> </span><span class="s2">"/"</span><span class="w">
+</span></code></pre></div>
+<h3 id="list-files-and-folders"><strong>List files and folders</strong></h3>
+
+<p>Remove-ODItem -AccessToken $Auth.access_token -ResourceId &quot;<a href="https://sepagogmbh-my.sharepoint.com/">https://sepagogmbh-my.sharepoint.com/</a>&quot; -path &quot;/Upload&quot;</p>
+
+<h3 id="creating-a-folder"><strong>Creating a folder</strong></h3>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">New-ODFolder</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$Auth</span><span class="o">.</span><span class="nf">access_token</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w"> </span><span class="nt">-path</span><span class="w"> </span><span class="s2">"/"</span><span class="w"> </span><span class="nt">-FolderName</span><span class="w"> </span><span class="s2">"Upload"</span><span class="w">
+</span></code></pre></div>
+<h3 id="upload-local-files-to-onedrive"><strong>Upload local files to OneDrive</strong></h3>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Add-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$Auth</span><span class="o">.</span><span class="nf">access_token</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w"> </span><span class="nt">-LocalFile</span><span class="w"> </span><span class="s2">"D:\DEV\PowerShell\PowerShellGallery-OneDrive\Test\Uploads\IoT Workshop.pptx"</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Upload"</span><span class="w">
+</span></code></pre></div>
+<h3 id="list-onedrive-drives"><strong>List OneDrive drives</strong></h3>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Get-ODDrives</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$Auth</span><span class="o">.</span><span class="nf">access_token</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w">
+</span></code></pre></div>
+<h3 id="downloading-some-files"><strong>Downloading some files</strong></h3>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Get-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$Auth</span><span class="o">.</span><span class="nf">access_token</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Upload/Doings.txt"</span><span class="w"> </span><span class="nt">-LocalPath</span><span class="w"> </span><span class="s2">"D:\DEV\PowerShell\PowerShellGallery-OneDrive\Test\Downloads"</span><span class="w">
 
 </span><span class="n">Get-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$Auth</span><span class="o">.</span><span class="nf">access_token</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Upload/Doings.txt"</span><span class="w"> </span><span class="nt">-LocalPath</span><span class="w"> </span><span class="s2">"D:\DEV\PowerShell\PowerShellGallery-OneDrive\Test\Downloads"</span><span class="w"> </span><span class="nt">-LocalFileName</span><span class="w"> </span><span class="s2">"Copy from OneDrive.Doings.txt"</span><span class="w">
-</span></code></pre></div></div>
-<h3 id="strongdelete-a-file-in-onedrivestrong"><strong>Delete a file in OneDrive</strong></h3>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Remove-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$Auth</span><span class="o">.</span><span class="nf">access_token</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Upload/Doings.txt"</span><span class="w">
-</span></code></pre></div></div>
+</span></code></pre></div>
+<h3 id="delete-a-file-in-onedrive"><strong>Delete a file in OneDrive</strong></h3>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Remove-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$Auth</span><span class="o">.</span><span class="nf">access_token</span><span class="w"> </span><span class="nt">-ResourceId</span><span class="w"> </span><span class="s2">"https://sepagogmbh-my.sharepoint.com/"</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Upload/Doings.txt"</span><span class="w">
+</span></code></pre></div>
 <p>First published on: <a href="https://www.sepago.de/blog/onedrive-powershell-module-added-support-for-onedrive-for-business/">https://www.sepago.de/blog/onedrive-powershell-module-added-support-for-onedrive-for-business/</a></p>
 
             </div>

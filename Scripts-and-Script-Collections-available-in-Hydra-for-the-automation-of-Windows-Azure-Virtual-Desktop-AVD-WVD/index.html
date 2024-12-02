@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Hydra: Scripts and Script Collections for the operation and automation of Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD) | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Hydra: Scripts and Script Collections for the operation and automation of Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -387,21 +387,24 @@
         
       </h2>
     
+
 <p>Project Hydra for Azure Virtual Desktop
 Six months ago, I started a new project to provide a solution to manage Azure Virtual Desktop / Windows Virtual Desktop in an automated way. It was thought of as a complement to #WVDAdmin and focused on doing some tasks automatically. For example:</p>
+
 <ul>
 <li>Autoscale
-– Multi-Session hosts
-– Power-on-connect support
-– Schedules
-– Autopilot: Automatically scales up/down/create/remove based on the usage of a host pool
-– Deploy hosts on-demand - including ephemeral VMs based on a custom image</li>
+-- Multi-Session hosts
+-- Power-on-connect support
+-- Schedules
+-- Autopilot: Automatically scales up/down/create/remove based on the usage of a host pool
+-- Deploy hosts on-demand - including ephemeral VMs based on a custom image</li>
 <li>VDI
-– Auto deallocate session hosts</li>
+-- Auto deallocate session hosts</li>
 <li>Granular session timeouts</li>
 <li>Auto Health</li>
 <li>and a lot more</li>
 </ul>
+
 <p>The last days, I added another essential feature to the project Hydra: Scripts and script collections. Both are intended to automize Azure VMs, and Azure Virtual Desktop (AVD) from the management perspective.</p>
       <h2 id="scripts-and-script-collections-updated">
         
@@ -411,6 +414,7 @@ Six months ago, I started a new project to provide a solution to manage Azure Vi
         
       </h2>
     
+
 <p>Scripts and script collections. Both are intended to automize Azure VMs, and Azure Virtual Desktop (AVD) from the management perspective.</p>
       <h3 id="script">
         
@@ -420,8 +424,10 @@ Six months ago, I started a new project to provide a solution to manage Azure Vi
         
       </h3>
     
+
 <p>A Powershell script for a session host. The script runs in the system context with system permissions, variables containing data about the host pool, session hosts, etc. Optionally, a Powershell credential object (PSC) can be used to connect to other services, like files shares (the service account can be configured on the host pool level).</p>
-<p><img src="../assets/images/Hydra/Script-01.png" alt="" /></p>
+
+<p><img src="../assets/images/Hydra/Script-01.png" alt=""></p>
       <h3 id="script-collections">
         
         
@@ -430,8 +436,11 @@ Six months ago, I started a new project to provide a solution to manage Azure Vi
         
       </h3>
     
+
 <p>A script collection is a collection of scripts and tasks in any sequence. E.g.: Drain mode on -&gt; Logoff users -&gt; Start the VM -&gt; Run a script -&gt; Restart -&gt; Drain mode off</p>
-<p><img src="../assets/images/Hydra/ScriptCollection-01.png" alt="" /></p>
+
+<p><img src="../assets/images/Hydra/ScriptCollection-01.png" alt=""></p>
+
 <p>Additionally, parameters can be set for a script, and error handling is built-in. Script collections are very useful to orchestrate several tasks and scripts to session hosts.</p>
       <h3 id="built-in-scripts-and-collections">
         
@@ -441,10 +450,14 @@ Six months ago, I started a new project to provide a solution to manage Azure Vi
         
       </h3>
     
-<p>There are several built-in scripts and collections, and new scripts and collections are provided continuously. Built-in scripts can be updated with the “Update” button in the upper-right corner.</p>
-<p><img src="../assets/images/Hydra/ScriptCollectionSync-01.png" alt="" /></p>
-<p>To add a custom script or script collection, copy the <em>“BuiltIn: 1st Template Script”</em> or <em>“BuiltIn: 1st Template Script Collection”</em>. Then start building the new one. Make sure to save the new script/collection with a click of the disk symbol. There is no warning right now if you close the browser or if you navigate to another site.</p>
-<p><img src="../assets/images/Hydra/ScriptCollectionSaveBar-01.png" alt="" /></p>
+
+<p>There are several built-in scripts and collections, and new scripts and collections are provided continuously. Built-in scripts can be updated with the &quot;Update&quot; button in the upper-right corner.</p>
+
+<p><img src="../assets/images/Hydra/ScriptCollectionSync-01.png" alt=""></p>
+
+<p>To add a custom script or script collection, copy the <em>&quot;BuiltIn: 1st Template Script&quot;</em> or <em>&quot;BuiltIn: 1st Template Script Collection&quot;</em>. Then start building the new one. Make sure to save the new script/collection with a click of the disk symbol. There is no warning right now if you close the browser or if you navigate to another site.</p>
+
+<p><img src="../assets/images/Hydra/ScriptCollectionSaveBar-01.png" alt=""></p>
       <h3 id="triggering-a-script-or-script-collection">
         
         
@@ -453,7 +466,9 @@ Six months ago, I started a new project to provide a solution to manage Azure Vi
         
       </h3>
     
+
 <p>Scripts and script collections can be triggered by <em>Host pool administrators</em> and edited by <em>Full administrators</em>.</p>
+
 <p>Both can be assigned/triggered in different ways:</p>
       <h4 id="for-selected-hosts">
         
@@ -463,7 +478,8 @@ Six months ago, I started a new project to provide a solution to manage Azure Vi
         
       </h4>
     
-<p><img src="../assets/images/Hydra/ScriptCollectionAssign-SessionHosts-01.png" alt="" /></p>
+
+<p><img src="../assets/images/Hydra/ScriptCollectionAssign-SessionHosts-01.png" alt=""></p>
       <h4 id="automatically-after-the-rollout-of-a-new-session-host">
         
         
@@ -472,7 +488,8 @@ Six months ago, I started a new project to provide a solution to manage Azure Vi
         
       </h4>
     
-<p><img src="../assets/images/Hydra/ScriptCollectionAssign-Rollout-01.png" alt="" /></p>
+
+<p><img src="../assets/images/Hydra/ScriptCollectionAssign-Rollout-01.png" alt=""></p>
       <h4 id="by-a-schedule">
         
         
@@ -481,97 +498,128 @@ Six months ago, I started a new project to provide a solution to manage Azure Vi
         
       </h4>
     
+
 <p>Schedules can be used on a host pool level to run a script or collection unattended on session hosts of the pool. Comparable to other schedules, weekday(s) and start time define the plan. The following parameters can be used to fine-tune the schedule:</p>
+
 <ul>
-<li>
-<p>Hosts</p>
-</li>
-<li>
-<ul>
+<li><p>Hosts</p></li>
+<li><ul>
 <li>Run on all hosts</li>
+</ul>
+
+<ul>
 <li>Run only on hosts without user sessions</li>
 <li>Run only on hosts in drain-mode</li>
-</ul>
-</li>
-<li>
-<p>Simultaneously</p>
-</li>
-<li>
-<ul>
+</ul></li>
+<li><p>Simultaneously</p></li>
+<li><ul>
 <li>Starts directly on all hosts</li>
+</ul>
+
+<ul>
 <li>Start on max. 5 session hosts at the same time (if one finished, the script/collection will be started on the next host)</li>
-<li>…</li>
+<li>...</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<p><img src="../assets/images/Hydra/ScriptCollectionAssign-Schedule-01.png" alt="" /></p>
+
+<p><img src="../assets/images/Hydra/ScriptCollectionAssign-Schedule-01.png" alt=""></p>
+
 <p>This example runs Windows Update on all session hosts Sunday, 1:00 am. Including drain mode, start, update, restart, drain mode off.</p>
+
 <p><strong>Install Project Hydra in your subscription: <a href="https://github.com/marcelmeurer/wvd-hydra">https://github.com/marcelmeurer/wvd-hydra</a></strong></p>
 
 		<!--<h2 id="intro">Intro</h2>
+
 <p>Project Hydra for Azure Virtual Desktop
 Six months ago, I started a new project to provide a solution to manage Azure Virtual Desktop / Windows Virtual Desktop in an automated way. It was thought of as a complement to #WVDAdmin and focused on doing some tasks automatically. For example:</p>
+
 <ul>
 <li>Autoscale
-– Multi-Session hosts
-– Power-on-connect support
-– Schedules
-– Autopilot: Automatically scales up/down/create/remove based on the usage of a host pool
-– Deploy hosts on-demand - including ephemeral VMs based on a custom image</li>
+-- Multi-Session hosts
+-- Power-on-connect support
+-- Schedules
+-- Autopilot: Automatically scales up/down/create/remove based on the usage of a host pool
+-- Deploy hosts on-demand - including ephemeral VMs based on a custom image</li>
 <li>VDI
-– Auto deallocate session hosts</li>
+-- Auto deallocate session hosts</li>
 <li>Granular session timeouts</li>
 <li>Auto Health</li>
 <li>and a lot more</li>
 </ul>
+
 <p>The last days, I added another essential feature to the project Hydra: Scripts and script collections. Both are intended to automize Azure VMs, and Azure Virtual Desktop (AVD) from the management perspective.</p>
+
 <h2 id="scripts-and-script-collections-updated">Scripts and Script Collections (Updated)</h2>
+
 <p>Scripts and script collections. Both are intended to automize Azure VMs, and Azure Virtual Desktop (AVD) from the management perspective.</p>
+
 <h3 id="script">Script</h3>
+
 <p>A Powershell script for a session host. The script runs in the system context with system permissions, variables containing data about the host pool, session hosts, etc. Optionally, a Powershell credential object (PSC) can be used to connect to other services, like files shares (the service account can be configured on the host pool level).</p>
-<p><img src="../assets/images/Hydra/Script-01.png" alt="" /></p>
+
+<p><img src="../assets/images/Hydra/Script-01.png" alt=""></p>
+
 <h3 id="script-collections">Script Collections</h3>
+
 <p>A script collection is a collection of scripts and tasks in any sequence. E.g.: Drain mode on -&gt; Logoff users -&gt; Start the VM -&gt; Run a script -&gt; Restart -&gt; Drain mode off</p>
-<p><img src="../assets/images/Hydra/ScriptCollection-01.png" alt="" /></p>
+
+<p><img src="../assets/images/Hydra/ScriptCollection-01.png" alt=""></p>
+
 <p>Additionally, parameters can be set for a script, and error handling is built-in. Script collections are very useful to orchestrate several tasks and scripts to session hosts.</p>
+
 <h3 id="built-in-scripts-and-collections">Built-in scripts and collections</h3>
-<p>There are several built-in scripts and collections, and new scripts and collections are provided continuously. Built-in scripts can be updated with the “Update” button in the upper-right corner.</p>
-<p><img src="../assets/images/Hydra/ScriptCollectionSync-01.png" alt="" /></p>
-<p>To add a custom script or script collection, copy the <em>“BuiltIn: 1st Template Script”</em> or <em>“BuiltIn: 1st Template Script Collection”</em>. Then start building the new one. Make sure to save the new script/collection with a click of the disk symbol. There is no warning right now if you close the browser or if you navigate to another site.</p>
-<p><img src="../assets/images/Hydra/ScriptCollectionSaveBar-01.png" alt="" /></p>
+
+<p>There are several built-in scripts and collections, and new scripts and collections are provided continuously. Built-in scripts can be updated with the &quot;Update&quot; button in the upper-right corner.</p>
+
+<p><img src="../assets/images/Hydra/ScriptCollectionSync-01.png" alt=""></p>
+
+<p>To add a custom script or script collection, copy the <em>&quot;BuiltIn: 1st Template Script&quot;</em> or <em>&quot;BuiltIn: 1st Template Script Collection&quot;</em>. Then start building the new one. Make sure to save the new script/collection with a click of the disk symbol. There is no warning right now if you close the browser or if you navigate to another site.</p>
+
+<p><img src="../assets/images/Hydra/ScriptCollectionSaveBar-01.png" alt=""></p>
+
 <h3 id="triggering-a-script-or-script-collection">Triggering a script or script collection</h3>
+
 <p>Scripts and script collections can be triggered by <em>Host pool administrators</em> and edited by <em>Full administrators</em>.</p>
+
 <p>Both can be assigned/triggered in different ways:</p>
+
 <h4 id="for-selected-hosts">For selected hosts</h4>
-<p><img src="../assets/images/Hydra/ScriptCollectionAssign-SessionHosts-01.png" alt="" /></p>
+
+<p><img src="../assets/images/Hydra/ScriptCollectionAssign-SessionHosts-01.png" alt=""></p>
+
 <h4 id="automatically-after-the-rollout-of-a-new-session-host">Automatically after the rollout of a new session host</h4>
-<p><img src="../assets/images/Hydra/ScriptCollectionAssign-Rollout-01.png" alt="" /></p>
+
+<p><img src="../assets/images/Hydra/ScriptCollectionAssign-Rollout-01.png" alt=""></p>
+
 <h4 id="by-a-schedule">By a schedule</h4>
+
 <p>Schedules can be used on a host pool level to run a script or collection unattended on session hosts of the pool. Comparable to other schedules, weekday(s) and start time define the plan. The following parameters can be used to fine-tune the schedule:</p>
+
 <ul>
-<li>
-<p>Hosts</p>
-</li>
-<li>
-<ul>
+<li><p>Hosts</p></li>
+<li><ul>
 <li>Run on all hosts</li>
+</ul>
+
+<ul>
 <li>Run only on hosts without user sessions</li>
 <li>Run only on hosts in drain-mode</li>
-</ul>
-</li>
-<li>
-<p>Simultaneously</p>
-</li>
-<li>
-<ul>
+</ul></li>
+<li><p>Simultaneously</p></li>
+<li><ul>
 <li>Starts directly on all hosts</li>
+</ul>
+
+<ul>
 <li>Start on max. 5 session hosts at the same time (if one finished, the script/collection will be started on the next host)</li>
-<li>…</li>
+<li>...</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<p><img src="../assets/images/Hydra/ScriptCollectionAssign-Schedule-01.png" alt="" /></p>
+
+<p><img src="../assets/images/Hydra/ScriptCollectionAssign-Schedule-01.png" alt=""></p>
+
 <p>This example runs Windows Update on all session hosts Sunday, 1:00 am. Including drain mode, start, update, restart, drain mode off.</p>
+
 <p><strong>Install Project Hydra in your subscription: <a href="https://github.com/marcelmeurer/wvd-hydra">https://github.com/marcelmeurer/wvd-hydra</a></strong></p>
 -->
 	

@@ -10,12 +10,12 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Automatically add or change Azure Active Directory computer objects on-demand | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Automatically add or change Azure Active Directory computer objects on-demand" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Hybrid joined AVD session hosts are great for working with conditional access, Intune (MEM), access to Azure files, and other AAD integrated services." />
-<meta property="og:description" content="Hybrid joined AVD session hosts are great for working with conditional access, Intune (MEM), access to Azure files, and other AAD integrated services." />
+<meta name="description" content="Hybrid joined AVD session hosts are great for working with conditional access, Intune (MEM), access to Azure files, and other AAD integrated services. [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12" />
+<meta property="og:description" content="Hybrid joined AVD session hosts are great for working with conditional access, Intune (MEM), access to Azure files, and other AAD integrated services. [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12" />
 <link rel="canonical" href="https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/" />
 <meta property="og:url" content="https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/AADConnectOnDemant01.png" />
 <meta property="twitter:title" content="Automatically add or change Azure Active Directory computer objects on-demand" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2022-07-28T00:00:00+02:00","datePublished":"2022-07-28T00:00:00+02:00","description":"Hybrid joined AVD session hosts are great for working with conditional access, Intune (MEM), access to Azure files, and other AAD integrated services.","headline":"Automatically add or change Azure Active Directory computer objects on-demand","image":"https://blog.itprocloud.de/assets/images/AADConnectOnDemant01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2022-07-28T00:00:00+02:00","datePublished":"2022-07-28T00:00:00+02:00","description":"Hybrid joined AVD session hosts are great for working with conditional access, Intune (MEM), access to Azure files, and other AAD integrated services. [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12","headline":"Automatically add or change Azure Active Directory computer objects on-demand","image":"https://blog.itprocloud.de/assets/images/AADConnectOnDemant01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Azure-AD-Connect-Auto-Sync-On-Device-Add-or-Change-Powershell/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -459,119 +459,130 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>Hybrid joined AVD session hosts are great for working with conditional access, Intune (MEM), access to Azure files, and other AAD integrated services.</p>
+                <p>Hybrid joined AVD session hosts are great for working with conditional access, Intune (MEM), access to Azure files, and other AAD integrated services. </p>
+
 <p>But there are some challenges: One challenge is that it takes a while to see new session hosts after the deployment in AAD - which avoids that AAD services (like ca) can be used directly. One reason for the delay is that AD objects are synced every 30 minutes by default using ADConnect. In the worst case, it takes 30 minutes before the computer object is visible in AAD.</p>
+
 <p>My approach to lowering the delay is to pimp ADConnect with a custom PowerShell tool (SyncOnDemand.ps1): The tool checks every 3 seconds for computer objects in AD. The tool triggers ADConnect to start a differential sync if a computer object is new or updated after the last 30 minutes. To avoid the sync being triggered for the same computer object multiple times, already detected computer objects are ignored for the next 30 minutes.</p>
+
 <p>This should bring down the time for a host before the host is also visible in AAD.</p>
-<p>How does it work? Copy the script to the ADConnect server. Modify line 31 ($OuPath = …) to match your OU and domain.</p>
+
+<p>How does it work? Copy the script to the ADConnect server. Modify line 31 ($OuPath = ...) to match your OU and domain.</p>
+
 <p>Run the script in an administrative PowerShell. The script checks every 3 seconds for changed computer objects. Change one of the computer objects in the right OU to test it (e.g., change the description). The script detects the change and triggers a delta sync to AAD.</p>
-<p>If everything works as expected, you can install the script with:</p>
-<pre><code>SyncOnDemand.ps1 -Install
-</code></pre>
+
+<p>If everything works as expected, you can install the script with:
+<code>
+SyncOnDemand.ps1 -Install
+</code></p>
+
 <p>That creates a scheduled task to run the script on the startup of the ADConnect server. The scheduled task is started directly and runs in the background.</p>
-<p><strong>Update</strong>: To speed up the replication between AD sites, you can use (“Use Notify”)[https://social.technet.microsoft.com/wiki/contents/articles/16929.set-active-directory-to-use-notify-replication.aspx]</p>
+
+<p><strong>Update</strong>: To speed up the replication between AD sites, you can use (&quot;Use Notify&quot;)[<a href="https://social.technet.microsoft.com/wiki/contents/articles/16929.set-active-directory-to-use-notify-replication.aspx">https://social.technet.microsoft.com/wiki/contents/articles/16929.set-active-directory-to-use-notify-replication.aspx</a>]</p>
+
 <p><strong>Note:</strong> This is a workaround. Use at your own risk</p>
-<p>Script (must be run as an administrator):</p>
-<pre><code>param(
+
+<p>Script (must be run as an administrator):
+```
+param(
     [Parameter(Mandatory=$false)]
     [Switch]$Install
 )
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12</p>
 
-
-if ($Install) {
+<p>if ($Install) {
     Write-Host &quot;Installing script to $env:windir&quot;
-    Copy-Item &quot;$($MyInvocation.InvocationName)&quot; -Destination (&quot;$($env:windir)\SyncOnDemand.ps1&quot;)
+    Copy-Item &quot;$($MyInvocation.InvocationName)&quot; -Destination (&quot;$($env:windir)\SyncOnDemand.ps1&quot;)</p>
+<div class="highlight"><pre><code class="language-" data-lang="">$action = New-ScheduledTaskAction -Execute "$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe" -Argument "-executionPolicy Unrestricted -File `"$($env:windir)\SyncOnDemand.ps1`""
+$trigger = New-ScheduledTaskTrigger -AtStartup
+$principal = New-ScheduledTaskPrincipal 'NT Authority\SYSTEM'
+$settingsSet = New-ScheduledTaskSettingsSet
+$settingsSet.Enabled=$true
+#$settingsSet.IdleSettings.IdleDuration=0
+$settingsSet.StopIfGoingOnBatteries=$false
+$settingsSet.DisallowStartIfOnBatteries=$false
+$settingsSet.ExecutionTimeLimit="PT0H"
 
-	$action = New-ScheduledTaskAction -Execute &quot;$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe&quot; -Argument &quot;-executionPolicy Unrestricted -File `&quot;$($env:windir)\SyncOnDemand.ps1`&quot;&quot;
-	$trigger = New-ScheduledTaskTrigger	-AtStartup
-	$principal = New-ScheduledTaskPrincipal 'NT Authority\SYSTEM'
-	$settingsSet = New-ScheduledTaskSettingsSet
-    $settingsSet.Enabled=$true
-    #$settingsSet.IdleSettings.IdleDuration=0
-    $settingsSet.StopIfGoingOnBatteries=$false
-    $settingsSet.DisallowStartIfOnBatteries=$false
-    $settingsSet.ExecutionTimeLimit=&quot;PT0H&quot;
-    
-	$task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
-	Register-ScheduledTask -TaskName 'ITPC-ADConnect-OnDemand' -InputObject $task -ErrorAction Ignore | Out-Null
-	Start-ScheduledTask -TaskName 'ITPC-ADConnect-OnDemand'
-    Write-Host &quot;Starting the task&quot;
-    return
-}
+$task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
+Register-ScheduledTask -TaskName 'ITPC-ADConnect-OnDemand' -InputObject $task -ErrorAction Ignore | Out-Null
+Start-ScheduledTask -TaskName 'ITPC-ADConnect-OnDemand'
+Write-Host "Starting the task"
+return
+</code></pre></div>
+<p>}</p>
 
+<h1 id="parameter">Parameter</h1>
 
-# Parameter
-$OuPath = &quot;LDAP://OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test&quot;
+<p>$OuPath = &quot;LDAP://OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test&quot;
 $AcceptChangesForTheLastMinutes=30
-$RunEachSeconds = 3
+$RunEachSeconds = 3</p>
 
-# Initialize
-$cycle = Get-Date
-$table=@{}
+<h1 id="initialize">Initialize</h1>
 
+<p>$cycle = Get-Date
+$table=@{}</p>
 
-try {
+<p>try {
     Get-ADSyncScheduler | Out-Null
 } catch {
     Write-Error &quot;Command Get-ADSyncScheduler not exist. Please check your configuration. This script must run on a computer with AD-Connect installed&quot;
     return
-}
+}</p>
 
-
-do {
+<p>do {
     $lastStart = Get-Date
     $dt=($lastStart.AddMinutes(-$AcceptChangesForTheLastMinutes)).ToUniversalTime().ToString(&quot;yyyyMMddHHmmss.0Z&quot;)
     $newObjects=0
     # cleanup ignore-list
     $table.clone().GetEnumerator() | foreach {
-        if ($_.Value -le $lastStart.AddMinutes(-$AcceptChangesForTheLastMinutes)) {
-                Write-Host &quot;Removing computer from the ignore-list: $($_.Name)&quot;
+        if ($<em>.Value -le $lastStart.AddMinutes(-$AcceptChangesForTheLastMinutes)) {
+                Write-Host &quot;Removing computer from the ignore-list: $($</em>.Name)&quot;
                 $table.Remove($_.Name)
             }
+    }</p>
+<div class="highlight"><pre><code class="language-" data-lang="">$search=[adsisearcher]"(&amp;(ObjectCategory=computer)(|(whenchanged&gt;=$dt)(whencreated&gt;=$dt)))"
+$search.SearchScope = "Subtree"
+$search.PageSize=150000
+$search.SearchRoot = $OuPath
+
+$obj2=$search.FindAll()
+Write-Host "Computer objects found: $($obj2.Count)"
+$obj2 | foreach {
+    $le=$table[$_.Path]
+    if ($le -eq $null) {
+        $table.Add($_.Path,$lastStart)
+        Write-Host "Found an updated computer: $($_.Path)"
+        $newObjects++
+    } else {
+        Write-Host "Skipping computer while object is in the ignore-list for a while: $($_.Path)"
     }
+}
 
-    $search=[adsisearcher]&quot;(&amp;(ObjectCategory=computer)(|(whenchanged&gt;=$dt)(whencreated&gt;=$dt)))&quot;
-    $search.SearchScope = &quot;Subtree&quot;
-    $search.PageSize=150000
-    $search.SearchRoot = $OuPath
-
-    $obj2=$search.FindAll()
-    Write-Host &quot;Computer objects found: $($obj2.Count)&quot;
-    $obj2 | foreach {
-        $le=$table[$_.Path]
-        if ($le -eq $null) {
-            $table.Add($_.Path,$lastStart)
-            Write-Host &quot;Found an updated computer: $($_.Path)&quot;
-            $newObjects++
-        } else {
-            Write-Host &quot;Skipping computer while object is in the ignore-list for a while: $($_.Path)&quot;
-        }
-    }
-
-    Write-Host &quot;Ignore list: $($table.Count)&quot;
-    Write-Host &quot;New objects: $newObjects&quot;
-    if ($newObjects -gt 0) {
-        Write-Host &quot;Starting delta sync&quot;
-        try {
-            do {
-                Sleep -Seconds 1
-            } while ((Get-ADSyncScheduler).SyncCycleInProgress)
-            Start-ADSyncSyncCycle -PolicyType Delta | Out-Null
-        } catch {
-            Write-Error &quot;Delta sync failed&quot;
-            $table=@{}
-        }
+Write-Host "Ignore list: $($table.Count)"
+Write-Host "New objects: $newObjects"
+if ($newObjects -gt 0) {
+    Write-Host "Starting delta sync"
+    try {
         do {
             Sleep -Seconds 1
         } while ((Get-ADSyncScheduler).SyncCycleInProgress)
-        Write-Host &quot;Delta sync done&quot;
+        Start-ADSyncSyncCycle -PolicyType Delta | Out-Null
+    } catch {
+        Write-Error "Delta sync failed"
+        $table=@{}
     }
-    Write-Host &quot;Waiting for the next cycle&quot;
-    Write-Host
-    Sleep -Seconds $RunEachSeconds
-} while ($true)
-</code></pre>
+    do {
+        Sleep -Seconds 1
+    } while ((Get-ADSyncScheduler).SyncCycleInProgress)
+    Write-Host "Delta sync done"
+}
+Write-Host "Waiting for the next cycle"
+Write-Host
+Sleep -Seconds $RunEachSeconds
+</code></pre></div>
+<p>} while ($true)
+```</p>
+
             </div>
 
             <!-- Rating -->

@@ -5,89 +5,293 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 24 Oct 2024 14:59:37 +0200</pubDate>
-    <lastBuildDate>Thu, 24 Oct 2024 14:59:37 +0200</lastBuildDate>
-    <generator>Jekyll v4.3.3</generator>
+    <pubDate>Mon, 02 Dec 2024 10:12:05 +0100</pubDate>
+    <lastBuildDate>Mon, 02 Dec 2024 10:12:05 +0100</lastBuildDate>
+    <generator>Jekyll v3.10.0</generator>
+    
+      <item>
+        <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
+        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Log Type&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
+&lt;td&gt;Details about the session hosts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnections&lt;/td&gt;
+&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDErrors&lt;/td&gt;
+&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, ...)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDFeeds&lt;/td&gt;
+&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
+&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDManagement&lt;/td&gt;
+&lt;td&gt;Log about administrative tasks&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDCheckpoints&lt;/td&gt;
+&lt;td&gt;Detailed information related to logins, errors, ...&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnectionNetworkData&lt;/td&gt;
+&lt;td&gt;Network information (bandwidth and RTT)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that (use version 1.7.25 or higher):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-14.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;After a while, the workbook is visible as a new template in: &lt;strong&gt;Log Analytics -&amp;gt; Workbooks -&amp;gt; Azure Virtual Desktop -&amp;gt; AVD - Deep-Insights&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., &amp;quot;&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;&amp;quot; occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
+
+&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Version&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1&lt;/td&gt;
+&lt;td&gt;01/28/2022&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.2&lt;/td&gt;
+&lt;td&gt;02/17/2022&lt;/td&gt;
+&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); Renaming of the workbook&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.3&lt;/td&gt;
+&lt;td&gt;03/16/2022&lt;/td&gt;
+&lt;td&gt;Include Logon timing (GPO, FSLogix, Authentication, etc.)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.4&lt;/td&gt;
+&lt;td&gt;04/14/2022&lt;/td&gt;
+&lt;td&gt;In Session Bandwidths &amp;amp; Latencies: The connection type is shown if RDP Short Path is used (Public, Private). See: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.5&lt;/td&gt;
+&lt;td&gt;05/03/2022&lt;/td&gt;
+&lt;td&gt;New visualization: Logon timing per day and category over the time&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6&lt;/td&gt;
+&lt;td&gt;10/11/2022&lt;/td&gt;
+&lt;td&gt;New visualization: Connections over time, unhealthy session hosts, graphic performance&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7&lt;/td&gt;
+&lt;td&gt;11/03/2022&lt;/td&gt;
+&lt;td&gt;Optimization for charts to show data over a large time frame&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.8&lt;/td&gt;
+&lt;td&gt;11/14/2022&lt;/td&gt;
+&lt;td&gt;A new tab &amp;quot;Resources&amp;quot;, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.9&lt;/td&gt;
+&lt;td&gt;11/18/2022&lt;/td&gt;
+&lt;td&gt;A new tab &amp;quot;Resources&amp;quot;, to show orphan VMs (where the session host object is missing)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.0&lt;/td&gt;
+&lt;td&gt;12/01/2022&lt;/td&gt;
+&lt;td&gt;Changed the description for the estimated available bandwidth&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.1&lt;/td&gt;
+&lt;td&gt;12/09/2022&lt;/td&gt;
+&lt;td&gt;Added orphan disks and orphan nics to the &amp;quot;Resources&amp;quot; tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop, version 1.0.1.84 (comming soon))&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.2&lt;/td&gt;
+&lt;td&gt;02/02/2023&lt;/td&gt;
+&lt;td&gt;Added &amp;quot;Water Markings&amp;quot; to query session information by the feature &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/watermarking&quot;&gt;WaterMarking&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.3&lt;/td&gt;
+&lt;td&gt;02/20/2023&lt;/td&gt;
+&lt;td&gt;Added &amp;quot;Unresponding AVD Agents&amp;quot; in the tab &amp;quot;Resources&amp;quot; to identify running VM with a non responding AVD agent&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.4&lt;/td&gt;
+&lt;td&gt;02/21/2023&lt;/td&gt;
+&lt;td&gt;Added new tab &amp;quot;FSLogix&amp;quot; to show the size, usage and free space of the FSLogix profiles&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.5&lt;/td&gt;
+&lt;td&gt;03/08/2023&lt;/td&gt;
+&lt;td&gt;Fix in the time selector; allow to selecte multiple host pools; show active sessions with user name and started desktop/remote app&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.6&lt;/td&gt;
+&lt;td&gt;03/31/2023&lt;/td&gt;
+&lt;td&gt;Add: Show office container size and usage (ODFC) in the FSLogix tab (additional to the profile container)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.7&lt;/td&gt;
+&lt;td&gt;07/01/2023&lt;/td&gt;
+&lt;td&gt;Fix/Workaround: VHDFreeSpace is stored as text in MByte and not in GByte if the value is less then 1 GByte&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.8&lt;/td&gt;
+&lt;td&gt;10/13/2023&lt;/td&gt;
+&lt;td&gt;Add: Show the last heart beat time in the Orphan session hosts view and warns, if the heart beat is longer then 90 days ago&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.0&lt;/td&gt;
+&lt;td&gt;06/24/2024&lt;/td&gt;
+&lt;td&gt;Fix: Orphan resources are now including temporary orphan hosts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.1&lt;/td&gt;
+&lt;td&gt;10/24/2024&lt;/td&gt;
+&lt;td&gt;Add: Show &amp;quot;TURN&amp;quot; in session bandwidth and latency (if session was connected via TURN)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.2&lt;/td&gt;
+&lt;td&gt;11/29/2024&lt;/td&gt;
+&lt;td&gt;Add: Show the country and city of the connections (based on the client internet IP)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don&amp;#39;t generate costs.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 02 Dec 2024 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Azure Monitor</category>
+        
+        <category>Log Analytics</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
         <description>&lt;h1 id=&quot;azure-windows-virtual-desktop-administration-with-wvdadmin&quot;&gt;Azure Windows Virtual Desktop administration with WVDAdmin&lt;/h1&gt;
-&lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.&lt;/p&gt;
-&lt;p&gt;Are you interested in the new “Hydra for Azure Virtual Desktop” solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/24/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I&amp;#39;m happy to share it with the community.&lt;/p&gt;
+
+&lt;p&gt;Are you interested in the new &amp;quot;Hydra for Azure Virtual Desktop&amp;quot; solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 10/24/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:&lt;/p&gt;
+
+&lt;p&gt;The current version supports a lot of configuration and administration capabilities, and I&amp;#39;m continuously improving WVDAdmin. Some features:&lt;/p&gt;
+
 &lt;ul&gt;
 &lt;li&gt;Imaging
+
 &lt;ul&gt;
 &lt;li&gt;Create images from golden masters (without destroying the master)&lt;/li&gt;
 &lt;li&gt;Handle sysprep and modern app&lt;/li&gt;
 &lt;li&gt;Clean-up&lt;/li&gt;
 &lt;li&gt;Use of shared image gallery definitions&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;Rollout
+
 &lt;ul&gt;
 &lt;li&gt;Rollout of multiple session hosts&lt;/li&gt;
-&lt;li&gt;Store some base settings encrypted for reuse (domain join name, password, …)&lt;/li&gt;
+&lt;li&gt;Store some base settings encrypted for reuse (domain join name, password, ...)&lt;/li&gt;
 &lt;li&gt;Select VM type for each rollout (is not fixed to the host pool)&lt;/li&gt;
 &lt;li&gt;Use of ephemeral disks&lt;/li&gt;
 &lt;li&gt;Support of a second partition from the master VM (D:)&lt;/li&gt;
 &lt;li&gt;Azure Monitor&lt;/li&gt;
 &lt;li&gt;AAD only, join to MEM/intune&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;AVD Support
+
 &lt;ul&gt;
 &lt;li&gt;Classic AVD&lt;/li&gt;
 &lt;li&gt;ARM AVD (Spring Update)&lt;/li&gt;
 &lt;li&gt;Migration of resources and session hosts&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;Working with AVD resources
+
 &lt;ul&gt;
-&lt;li&gt;Add/create/delete
-&lt;ul&gt;
+&lt;li&gt;Add/create/delete&lt;/li&gt;
 &lt;li&gt;Host Pools&lt;/li&gt;
 &lt;li&gt;Application groups&lt;/li&gt;
 &lt;li&gt;Workspaces&lt;/li&gt;
 &lt;li&gt;Session hosts&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;Working with user sessions
-&lt;ul&gt;
+&lt;li&gt;Working with user sessions&lt;/li&gt;
 &lt;li&gt;Disconnect&lt;/li&gt;
 &lt;li&gt;Logoff&lt;/li&gt;
 &lt;li&gt;Send message&lt;/li&gt;
 &lt;li&gt;Shadow&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;Session hosts
+
 &lt;ul&gt;
 &lt;li&gt;Move between host pools&lt;/li&gt;
 &lt;li&gt;Start/Stop/Restart&lt;/li&gt;
 &lt;li&gt;Delete - with VM, disk, and nic&lt;/li&gt;
 &lt;li&gt;Get error report from AVD agent&lt;/li&gt;
-&lt;li&gt;Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, …)&lt;/li&gt;
+&lt;li&gt;Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, ...)&lt;/li&gt;
 &lt;li&gt;Change drain-mode&lt;/li&gt;
 &lt;li&gt;Change disk type, e.g.: on-start -&amp;gt; to Premium, after deallocation -&amp;gt; to HDD(for cost savings)&lt;/li&gt;
 &lt;li&gt;Remove user assignment&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;Virtual machine
+
 &lt;ul&gt;
 &lt;li&gt;List all VMs with power state in all subscriptions&lt;/li&gt;
 &lt;li&gt;Start/Stop/Restart&lt;/li&gt;
-&lt;li&gt;Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, …)&lt;/li&gt;
+&lt;li&gt;Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, ...)&lt;/li&gt;
 &lt;li&gt;Shrink disk to 64 or 32 GByte (to create small images for ephemeral hosts)&lt;/li&gt;
 &lt;li&gt;Change disk type, e.g.: on-start -&amp;gt; to premium, after deallocation -&amp;gt; to HDD (for cost savings)&lt;/li&gt;
 &lt;li&gt;Create and restore snapshots with a click&lt;/li&gt;
 &lt;li&gt;Add an existing domain-joined VM as a session host&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;li&gt;Others
+
 &lt;ul&gt;
 &lt;li&gt;Multi-Tenant switch&lt;/li&gt;
 &lt;li&gt;Split-Tenant mode&lt;/li&gt;
@@ -96,24 +300,26 @@
 &lt;li&gt;Start and deallocate Scale Set instances&lt;/li&gt;
 &lt;li&gt;Re-image Scale Set instances&lt;/li&gt;
 &lt;li&gt;Remove customer-managed key (CMK)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;...&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;…&lt;/li&gt;
-&lt;/ul&gt;
+
 &lt;h1 id=&quot;installation&quot;&gt;Installation&lt;/h1&gt;
+
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/24/2024&lt;/strong&gt;&lt;/a&gt;
+
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 10/24/2024&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
-&lt;details&gt;&lt;summary&gt;I&apos;m continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;
-&lt;table&gt;
-&lt;thead&gt;
+
+&lt;p&gt;&lt;details&gt;&lt;summary&gt;I&amp;#39;m continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
 &lt;tr&gt;
 &lt;th&gt;Release&lt;/th&gt;
 &lt;th&gt;Date&lt;/th&gt;
 &lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
 &lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
+&lt;/thead&gt;&lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;1.9.11.0&lt;/td&gt;
 &lt;td&gt;2024-10-24&lt;/td&gt;
@@ -127,7 +333,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.9.06.0&lt;/td&gt;
 &lt;td&gt;2024-07-04&lt;/td&gt;
-&lt;td&gt;Change: Change of the API to get a registration token of a pool in response to Microsofts mail: “Update to Microsoft Desktop Virtualization API version 2023-09-05 by August 2, 2024, to avoid potential impact”&lt;/td&gt;
+&lt;td&gt;Change: Change of the API to get a registration token of a pool in response to Microsofts mail: &amp;quot;Update to Microsoft Desktop Virtualization API version 2023-09-05 by August 2, 2024, to avoid potential impact&amp;quot;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.9.05.0&lt;/td&gt;
@@ -252,7 +458,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.7.49.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: Secure boot enabled hosts are now supporting ‘Guest Attestation’ (automatically installed)&lt;/td&gt;
+&lt;td&gt;Add: Secure boot enabled hosts are now supporting &amp;#39;Guest Attestation&amp;#39; (automatically installed)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.7.48.0&lt;/td&gt;
@@ -287,7 +493,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.7.42.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: You can filter on the ‘Virtual Machines’ by the string ‘!orphanhosts’. That shows all VMs created by WVDAdmin or Hydra as a session host but currently not part of any seen host pool (used internally the tags WVD.Path or AVD.Path); Change: Modify WVD.Path/AVD.Path in another way while moving a session host to another host pool&lt;/td&gt;
+&lt;td&gt;Add: You can filter on the &amp;#39;Virtual Machines&amp;#39; by the string &amp;#39;!orphanhosts&amp;#39;. That shows all VMs created by WVDAdmin or Hydra as a session host but currently not part of any seen host pool (used internally the tags WVD.Path or AVD.Path); Change: Modify WVD.Path/AVD.Path in another way while moving a session host to another host pool&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.7.41.0&lt;/td&gt;
@@ -302,7 +508,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.7.39.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: You can enable “Secure Boot” for marketplace images and for Custom Images in an Azure Compute Gallery (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition)&lt;/td&gt;
+&lt;td&gt;Add: You can enable &amp;quot;Secure Boot&amp;quot; for marketplace images and for Custom Images in an Azure Compute Gallery (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.7.38.0&lt;/td&gt;
@@ -492,22 +698,22 @@
 &lt;tr&gt;
 &lt;td&gt;1.6.89.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: Workaround to fix an issue in the Azure API querying VM. In subscriptions with a lot of VMs an error message could given back from the API which will be workaround with this version. Original error message from Azure: Resource provider ‘Microsoft.Compute’ failed to return collection response for type ‘virtualMachines’&lt;/td&gt;
+&lt;td&gt;Add: Workaround to fix an issue in the Azure API querying VM. In subscriptions with a lot of VMs an error message could given back from the API which will be workaround with this version. Original error message from Azure: Resource provider &amp;#39;Microsoft.Compute&amp;#39; failed to return collection response for type &amp;#39;virtualMachines&amp;#39;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.88.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: Option to rollout virtual machines based on an image without joining to WVD/AVD (for servers, new golden masters, …), Update: Newest PowerShell script for generalizing and deployment to 3.0: &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Add: Option to rollout virtual machines based on an image without joining to WVD/AVD (for servers, new golden masters, ...), Update: Newest PowerShell script for generalizing and deployment to 3.0: &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.87.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: Option to switch on “Power on connect” for pooled (and assigned) host pools (preview feature)&lt;/td&gt;
+&lt;td&gt;Add: Option to switch on &amp;quot;Power on connect&amp;quot; for pooled (and assigned) host pools (preview feature)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.86.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: Option to directly roll-out new session hosts with actice Azure Disk Encryption (ADE) - See “secret features” below&lt;/td&gt;
+&lt;td&gt;Add: Option to directly roll-out new session hosts with actice Azure Disk Encryption (ADE) - See &amp;quot;secret features&amp;quot; below&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.83.0&lt;/td&gt;
@@ -532,7 +738,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.6.79.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: VM list in the “Virtual Machines” node are now showing the private IP&lt;/td&gt;
+&lt;td&gt;Add: VM list in the &amp;quot;Virtual Machines&amp;quot; node are now showing the private IP&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.77.0&lt;/td&gt;
@@ -552,7 +758,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.6.73.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: Automatically change the disk type on start/stop: Add a tag “&lt;a href=&quot;../Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD&quot;&gt;WVD.AdvDiskType&lt;/a&gt;” to a VM with the value “StandardSSD_LRS” or “Premium_LRS”. On the stop, the disk is converted to HDD (lowes costs), and on start, the disk is converted to the named type.  Works only with WVDAdmin (not from the Azure Portal or scaling solutions)&lt;/td&gt;
+&lt;td&gt;Add: Automatically change the disk type on start/stop: Add a tag &amp;quot;&lt;a href=&quot;../Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD&quot;&gt;WVD.AdvDiskType&lt;/a&gt;&amp;quot; to a VM with the value &amp;quot;StandardSSD_LRS&amp;quot; or &amp;quot;Premium_LRS&amp;quot;. On the stop, the disk is converted to HDD (lowes costs), and on start, the disk is converted to the named type.  Works only with WVDAdmin (not from the Azure Portal or scaling solutions)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.72.0&lt;/td&gt;
@@ -567,7 +773,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.6.70.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: For preview only: Checkbox to enable upcoming “Start on connect feature”&lt;/td&gt;
+&lt;td&gt;Add: For preview only: Checkbox to enable upcoming &amp;quot;Start on connect feature&amp;quot;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.69.0&lt;/td&gt;
@@ -627,7 +833,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.6.54.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: Function to delete unused disks and nics; Add: More logging for the rollout of session hosts; Add: New VM-types, like L4s_v2, …&lt;/td&gt;
+&lt;td&gt;Add: Function to delete unused disks and nics; Add: More logging for the rollout of session hosts; Add: New VM-types, like L4s_v2, ...&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.53.0&lt;/td&gt;
@@ -677,7 +883,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.6.34.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Fix: The drop-down list “Feature release” was not shown correctly. Feature release is the selector between the different WVD/AVD versions like Fall (WVD classic) and Spring (WVD modern on ARM)&lt;/td&gt;
+&lt;td&gt;Fix: The drop-down list &amp;quot;Feature release&amp;quot; was not shown correctly. Feature release is the selector between the different WVD/AVD versions like Fall (WVD classic) and Spring (WVD modern on ARM)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.32.0&lt;/td&gt;
@@ -712,7 +918,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.6.24.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: Multi selection and action on session hosts for ARM if you select a session host container; Fix: Scale Set instances wasn’t shown in 1.6.23&lt;/td&gt;
+&lt;td&gt;Add: Multi selection and action on session hosts for ARM if you select a session host container; Fix: Scale Set instances wasn&amp;#39;t shown in 1.6.23&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.23.0&lt;/td&gt;
@@ -722,7 +928,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.6.22.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: Support for shared image galleries: Add a shared image gallery from the Azure Portal into a resource group managed by WVDAdmin. In WVDAdmin right-click an existing image and select “copy to shared image gallery”. An image can be rolled-out right clicking the shared image&lt;/td&gt;
+&lt;td&gt;Add: Support for shared image galleries: Add a shared image gallery from the Azure Portal into a resource group managed by WVDAdmin. In WVDAdmin right-click an existing image and select &amp;quot;copy to shared image gallery&amp;quot;. An image can be rolled-out right clicking the shared image&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.21.0&lt;/td&gt;
@@ -732,7 +938,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.6.18.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Fix: API change from Microsoft cause that updating a host pool property fails if the location is written like “Central US” (centralus is no problem); Add: First version able to deploy session hosts from images in a image gallery&lt;/td&gt;
+&lt;td&gt;Fix: API change from Microsoft cause that updating a host pool property fails if the location is written like &amp;quot;Central US&amp;quot; (centralus is no problem); Add: First version able to deploy session hosts from images in a image gallery&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.16.0&lt;/td&gt;
@@ -742,7 +948,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.6.14.0&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: Support US Government Cloud. Activate: Add a new string Reg_SZ “Environment” with value “US” to HKCU\SOFTWARE\ITProCloud\WVDAdmin”&lt;/td&gt;
+&lt;td&gt;Add: Support US Government Cloud. Activate: Add a new string Reg_SZ &amp;quot;Environment&amp;quot; with value &amp;quot;US&amp;quot; to HKCU\SOFTWARE\ITProCloud\WVDAdmin&amp;quot;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.12.0&lt;/td&gt;
@@ -757,7 +963,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.6.9.00&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Fix: Generating toke for Spring host pool fails sometimes (Error: ExpirationTime value must be between one hour and 30 days from now”  - An error occurred while gathering an WVD2 token from backend: Object reference not set to an instance of an object.)&lt;/td&gt;
+&lt;td&gt;Fix: Generating toke for Spring host pool fails sometimes (Error: ExpirationTime value must be between one hour and 30 days from now&amp;quot;  - An error occurred while gathering an WVD2 token from backend: Object reference not set to an instance of an object.)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.5.00&lt;/td&gt;
@@ -772,7 +978,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.6.2.00&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: New naming feature for new session host. Default (is): Name for a session host is the highest matching name +1; new concept (must be enabled): Name for a session host is the next free name. To enable add a reg dword to HKCU\Software\ITProCloud\WVDAdmin Name:NamingMode and value to “1”&lt;/td&gt;
+&lt;td&gt;Add: New naming feature for new session host. Default (is): Name for a session host is the highest matching name +1; new concept (must be enabled): Name for a session host is the next free name. To enable add a reg dword to HKCU\Software\ITProCloud\WVDAdmin Name:NamingMode and value to &amp;quot;1&amp;quot;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.6.1.00&lt;/td&gt;
@@ -782,7 +988,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.6.0.00&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Change: The tag WVD.Path is aligned to Microsoft naming of “tenant” and “host pool” for the spring update. Tenant=resource group name and no longer subscription name&lt;/td&gt;
+&lt;td&gt;Change: The tag WVD.Path is aligned to Microsoft naming of &amp;quot;tenant&amp;quot; and &amp;quot;host pool&amp;quot; for the spring update. Tenant=resource group name and no longer subscription name&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.5.9.00&lt;/td&gt;
@@ -792,12 +998,12 @@
 &lt;tr&gt;
 &lt;td&gt;1.5.7.00&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: You can join existing VM’ to a host pool (VMs must be domain joined and not in a host pool right now)&lt;/td&gt;
+&lt;td&gt;Add: You can join existing VM&amp;#39; to a host pool (VMs must be domain joined and not in a host pool right now)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.5.6.00&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: You can now move session host around host pools not created with WVDAdmin (it downloads the necessary files automatically); you can join existing VM’ to a host pool (VMs must be domain joined)&lt;/td&gt;
+&lt;td&gt;Add: You can now move session host around host pools not created with WVDAdmin (it downloads the necessary files automatically); you can join existing VM&amp;#39; to a host pool (VMs must be domain joined)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.5.5.00&lt;/td&gt;
@@ -872,7 +1078,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.3.1.00&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Fix: WVDAdmin crashed if 1.3.0 is your first version of WVDAdmin (HKEY_CURRENT_USER\Software\ITProCloud doesn’t exist while checking for multi-tenancy mode)&lt;/td&gt;
+&lt;td&gt;Fix: WVDAdmin crashed if 1.3.0 is your first version of WVDAdmin (HKEY_CURRENT_USER\Software\ITProCloud doesn&amp;#39;t exist while checking for multi-tenancy mode)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.3.0.00&lt;/td&gt;
@@ -917,7 +1123,7 @@
 &lt;tr&gt;
 &lt;td&gt;1.0.0.29&lt;/td&gt;
 &lt;td&gt;&lt;/td&gt;
-&lt;td&gt;Add: Supporting “special license mode” to save up to 50% on compute-cost (&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license&lt;/a&gt;)&lt;/td&gt;
+&lt;td&gt;Add: Supporting &amp;quot;special license mode&amp;quot; to save up to 50% on compute-cost (&lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license&lt;/a&gt;)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;1.0.0.26&lt;/td&gt;
@@ -939,88 +1145,148 @@
 &lt;td&gt;&lt;/td&gt;
 &lt;td&gt;First published version - without auto-update of WVDAdmin&lt;/td&gt;
 &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;/details&gt;&lt;br/&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;&lt;/details&gt;&lt;br/&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;configuration&quot;&gt;Configuration&lt;/h2&gt;
+
 &lt;h2 id=&quot;service-principal-functional-account&quot;&gt;Service principal (functional account)&lt;/h2&gt;
+
 &lt;p&gt;To work with the GUI, you need a service principal (function account) with permission to administrate access to the AVD and Azure resources. I decide to use a service principal to avoid confusion if my Azure AD user is only a guest account in the AVD tenant I have to administrate and easily switch between different tenants.&lt;/p&gt;
-&lt;p&gt;To create a service principal, go to your Azure AD -&amp;gt; &lt;a href=&quot;https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps&quot; target=&quot;_blank&quot;&gt;App registration&lt;/a&gt; -&amp;gt; New registration and type a name for your principal like “ svc_WVDAdmin” and press “register”.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-001.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Click on “certificates &amp;amp; secrets”. Click “new client secret”, select a validity period and a description (like “Key01”). Press “add”.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-002.png&quot; alt=&quot;documentation-002&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To create a service principal, go to your Azure AD -&amp;gt; &lt;a href=&quot;https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps&quot; target=&quot;_blank&quot;&gt;App registration&lt;/a&gt; -&amp;gt; New registration and type a name for your principal like &amp;quot; svc_WVDAdmin&amp;quot; and press &amp;quot;register&amp;quot;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-001.png&quot; alt=&quot;documentation-001&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Click on &amp;quot;certificates &amp;amp; secrets&amp;quot;. Click &amp;quot;new client secret&amp;quot;, select a validity period and a description (like &amp;quot;Key01&amp;quot;). Press &amp;quot;add&amp;quot;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-002.png&quot; alt=&quot;documentation-002&quot;&gt;&lt;/p&gt;
+
 &lt;p&gt;Copy the generated key directly - it will never be displayed again. Note the key for later.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-003.png&quot; alt=&quot;documentation-003&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-003.png&quot; alt=&quot;documentation-003&quot;&gt;&lt;/p&gt;
+
 &lt;p&gt;To assign users to app groups, the service principal needs one API permissions to get the users and groups from Azure AD (optional):&lt;/p&gt;
-&lt;p&gt;Add the permission “Microsoft Graph” -&amp;gt; Application Permission -&amp;gt; Directory.Read.All&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Add the permission &amp;quot;Microsoft Graph&amp;quot; -&amp;gt; Application Permission -&amp;gt; Directory.Read.All&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png&quot; alt=&quot;AADBrowser&quot;&gt;&lt;/p&gt;
+
 &lt;p&gt;To consent, the permission and administrator of Azure AD have to grant this:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png&quot; alt=&quot;AADBrowser&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Go to “Overview”. Note the “Application (client) ID” and the “Directory (tenant) ID” as well.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-004.png&quot; alt=&quot;documentation-004&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png&quot; alt=&quot;AADBrowser&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Go to &amp;quot;Overview&amp;quot;. Note the &amp;quot;Application (client) ID&amp;quot; and the &amp;quot;Directory (tenant) ID&amp;quot; as well.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-004.png&quot; alt=&quot;documentation-004&quot;&gt;&lt;/p&gt;
+
 &lt;p&gt;You now have all data for your service principal:&lt;/p&gt;
+
 &lt;ul&gt;
 &lt;li&gt;Tenant id&lt;/li&gt;
 &lt;li&gt;Service principal id (application id)&lt;/li&gt;
 &lt;li&gt;Service principal key&lt;/li&gt;
 &lt;/ul&gt;
+
 &lt;h2 id=&quot;avd-permissions&quot;&gt;AVD permissions&lt;/h2&gt;
+
 &lt;p&gt;This chapter is for AVD ARM / Spring. &lt;a href=&quot;#azure-resource-permissions&quot;&gt;Skip&lt;/a&gt; this chapter if you only work with WVD Classic (Fall).&lt;/p&gt;
+
 &lt;p&gt;The service principal needs permission to add and modify AVD resource objects (host pools, workspaces, app groups). To assign users and groups to app groups, the service principal needs the owner role on the resource groups you want to use for your AVD environment. Add the service principal in the next step and use the &lt;strong&gt;owner&lt;/strong&gt; role.&lt;/p&gt;
+
 &lt;h2 id=&quot;register-resource-provider&quot;&gt;Register Resource Provider&lt;/h2&gt;
+
 &lt;p&gt;If you have never worked with AVD, you have to register the AVD resource provider once. To do that, go to the Azure portal -&amp;gt; subscriptions -&amp;gt; select your subscription -&amp;gt; Resource providers&lt;/p&gt;
-&lt;p&gt;Search for “Microsoft.DesktopVirtualization” and click on “Register”.
-&lt;img src=&quot;../assets/images/WVDAdmin/documentation-015.png&quot; alt=&quot;documentation-015&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Search for &amp;quot;Microsoft.DesktopVirtualization&amp;quot; and click on &amp;quot;Register&amp;quot;.
+&lt;img src=&quot;../assets/images/WVDAdmin/documentation-015.png&quot; alt=&quot;documentation-015&quot;&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;azure-resource-permissions&quot;&gt;Azure resource permissions&lt;/h2&gt;
-&lt;p&gt;The service principal needs permission to subscriptions or resource groups to manage your AVD resources, imaging template VM and rollout session hosts.&lt;/p&gt;
-&lt;p&gt;Open the Azure portal and go to the resource groups you want to use or to the subscriptions. In each resource group/subscription, click “Access control (IAM)” -&amp;gt; select “Add” -&amp;gt; Add role assignment. Select “owner” and search in “Select” for your service principal name. Click on the principal and save the settings.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Owner is needed to assign users to app groups. For other resources, “contributor” is fine.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-006.png&quot; alt=&quot;documentation-006&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The service principal must have permissions to your virtual network (vnet) to assign new VMs to the right subnet. Go to your vnet, click “Access control (IAM)” -&amp;gt; select “Add” -&amp;gt; Add role assignment. Select “contributor” and search in “select” for your service principal name. Click the principal and save the settings. You could skip this step if you assigned the service principal to the subscription or to the resource group containing your vnet.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-007.png&quot; alt=&quot;documentation-007&quot; /&gt;&lt;/p&gt;
-&lt;h2 id=&quot;prepare-your-native-active-directory&quot;&gt;Prepare your “native” Active Directory&lt;/h2&gt;
-&lt;p&gt;Today each session host must be part of a “native” active directory domain (or have to use the domain services). To add new session hosts unattended, we need an administrative user account to add a computer object to the active directory domain. You can use an existing one, or you can create a new service user:&lt;/p&gt;
-&lt;p&gt;Open “Active Directory Users and Computers” and create a user object with a complex password, and set a password to “never expire” (if you fine with this). I added the user &lt;a href=&quot;mailto:srv_WVD-Join@itprocloud.de&quot;&gt;srv_WVD-Join@itprocloud.de&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The service principal needs permission to subscriptions or resource groups to manage your AVD resources, imaging template VM and rollout session hosts. &lt;/p&gt;
+
+&lt;p&gt;Open the Azure portal and go to the resource groups you want to use or to the subscriptions. In each resource group/subscription, click &amp;quot;Access control (IAM)&amp;quot; -&amp;gt; select &amp;quot;Add&amp;quot; -&amp;gt; Add role assignment. Select &amp;quot;owner&amp;quot; and search in &amp;quot;Select&amp;quot; for your service principal name. Click on the principal and save the settings.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Owner is needed to assign users to app groups. For other resources, &amp;quot;contributor&amp;quot; is fine.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-006.png&quot; alt=&quot;documentation-006&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;The service principal must have permissions to your virtual network (vnet) to assign new VMs to the right subnet. Go to your vnet, click &amp;quot;Access control (IAM)&amp;quot; -&amp;gt; select &amp;quot;Add&amp;quot; -&amp;gt; Add role assignment. Select &amp;quot;contributor&amp;quot; and search in &amp;quot;select&amp;quot; for your service principal name. Click the principal and save the settings. You could skip this step if you assigned the service principal to the subscription or to the resource group containing your vnet.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-007.png&quot; alt=&quot;documentation-007&quot;&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;prepare-your-native-active-directory&quot;&gt;Prepare your &amp;quot;native&amp;quot; Active Directory&lt;/h2&gt;
+
+&lt;p&gt;Today each session host must be part of a &amp;quot;native&amp;quot; active directory domain (or have to use the domain services). To add new session hosts unattended, we need an administrative user account to add a computer object to the active directory domain. You can use an existing one, or you can create a new service user:&lt;/p&gt;
+
+&lt;p&gt;Open &amp;quot;Active Directory Users and Computers&amp;quot; and create a user object with a complex password, and set a password to &amp;quot;never expire&amp;quot; (if you fine with this). I added the user &lt;a href=&quot;mailto:srv_WVD-Join@itprocloud.de&quot;&gt;srv_WVD-Join@itprocloud.de&lt;/a&gt;.&lt;/p&gt;
+
 &lt;p&gt;Delegate permission for the user to an OU. I found a really good blog post from &lt;a href=&quot;https://twitter.com/prajwaldesai&quot;&gt;Prajwal Desai&lt;/a&gt;. Check out hist post on (external web site): &lt;a href=&quot;https://www.prajwaldesai.com/allow-domain-user-to-add-computer-to-domain/&quot; target=&quot;_blank&quot;&gt;Method 2 – Delegate rights to user/group using Active Directory Users and Computers&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;In my case I added my function account to: “OU=WVD,OU=Azure,OU=Site,OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test”&lt;/p&gt;
+
+&lt;p&gt;In my case I added my function account to: &amp;quot;OU=WVD,OU=Azure,OU=Site,OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test&amp;quot;&lt;/p&gt;
+
 &lt;h2 id=&quot;optional-create-a-file-share&quot;&gt;Optional: Create a file share&lt;/h2&gt;
-&lt;p&gt;In earlier versions (&amp;lt;1.6.40), you had to provide the deployment script and the AVD agent binaries on a custom file share or blob storage. With WVDAdmin 1.6.40 or newer, this no longer mandatory.
-In some cases, where virtual machines don’t have access to the internet to download the AVD agent binaries, you can use a custom file share.&lt;/p&gt;
-&lt;details&gt;&lt;summary&gt;Read more.&lt;/summary&gt;&lt;br/&gt;
+
+&lt;p&gt;In earlier versions (&lt;1.6.40), you had to provide the deployment script and the AVD agent binaries on a custom file share or blob storage. With WVDAdmin 1.6.40 or newer, this no longer mandatory.
+In some cases, where virtual machines don&apos;t have access to the internet to download the AVD agent binaries, you can use a custom file share.
+&lt;details&gt;&lt;summary&gt;Read more.&lt;/summary&gt;&lt;br/&gt;&lt;/p&gt;
+
 &lt;p&gt;&lt;em&gt;Hint: Alternatively, you can use Azure blob storage to store the script. Make the blob storage read-only and use the URL as rollout script-path. E.g.: &lt;a href=&quot;https://sharedservices01.blob.core.windows.net/wvd&quot;&gt;https://sharedservices01.blob.core.windows.net/wvd&lt;/a&gt;&lt;/em&gt;&lt;/p&gt;
+
 &lt;p&gt;Create a file share for the configuration script (which adds new session hosts to the domain and install the AVD agent). Give everyone at least read permissions. Set the NTFS permissions to everyone and read. This is necessary while during the first startup, the VM extension tries to execute the script. In this process, the file share is accessed anonymously.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-009.png&quot; alt=&quot;documentation-009&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-010.png&quot; alt=&quot;documentation-010&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-009.png&quot; alt=&quot;documentation-009&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-010.png&quot; alt=&quot;documentation-010&quot;&gt;&lt;/p&gt;
+
 &lt;p&gt;Place the following files in this share:&lt;/p&gt;
+
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt; (rename the download to .ps1)&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv&quot;&gt;Microsoft.RDInfra.RDAgent.msi&lt;/a&gt; (rename the file)&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH&quot;&gt;Microsoft.RDInfra.RDAgentBootLoader.msi&lt;/a&gt; (rename the file)&lt;/li&gt;
 &lt;/ul&gt;
+
 &lt;p&gt;Make sure that you rename the files to fit the list above (without version numbers).&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-011.png&quot; alt=&quot;documentation-011&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-011.png&quot; alt=&quot;documentation-011&quot;&gt;&lt;/p&gt;
+
 &lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt; If you are using Windows Server &lt;strong&gt;2019&lt;/strong&gt; as file share, make sure that anonymous file share access is enabled. Create a GPO for the session hosts containing the following configurations:&lt;/p&gt;
+
 &lt;ul&gt;
 &lt;li&gt;Security Options:
+
 &lt;ul&gt;
 &lt;li&gt;Accounts: Guest Account Status: Enabled&lt;/li&gt;
 &lt;li&gt;Network access: Let Everyone permissions apply to anonymous users: Enabled&lt;/li&gt;
-&lt;li&gt;Network access: Do not allow anonymous enumeration of SAM accounts and shares: Disabled&lt;/li&gt;
+&lt;li&gt;Network access: Do not allow anonymous enumeration of SAM accounts and shares: Disabled
+&lt;/details&gt;&lt;br/&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/details&gt;&lt;br/&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
+
 &lt;h1 id=&quot;configure-wvdadmin&quot;&gt;Configure WVDAdmin&lt;/h1&gt;
-&lt;p&gt;Please start WVDAdmin. Before you load AVD and Azure data, copy the Azure tenant id, service principal id, and service principal key into the welcome tab. Press save and load the data by clicking “Reload all”.&lt;/p&gt;
+
+&lt;p&gt;Please start WVDAdmin. Before you load AVD and Azure data, copy the Azure tenant id, service principal id, and service principal key into the welcome tab. Press save and load the data by clicking &amp;quot;Reload all&amp;quot;.&lt;/p&gt;
+
 &lt;p&gt;You are now able to administrate WVD, create images from template VMs and rollout new session hosts.&lt;/p&gt;
+
 &lt;p&gt;The first time you want to roll out new session hosts, you have to enter some information from your Active Directory and file share configuration from above:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-012.png&quot; alt=&quot;documentation-012&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-012.png&quot; alt=&quot;documentation-012&quot;&gt;&lt;/p&gt;
+
 &lt;p&gt;Local Admin and local pw. are the local administrator account credentials which you can enter at this time.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-013.png&quot; alt=&quot;documentation-013&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-013.png&quot; alt=&quot;documentation-013&quot;&gt;&lt;/p&gt;
+
 &lt;h1 id=&quot;build-an-image&quot;&gt;Build an image&lt;/h1&gt;
+
 &lt;p&gt;You can rollout VMs and VM Scale Set with images created by WVDAdmin. These images contain the logic to join the AD domain and WVD.&lt;/p&gt;
+
 &lt;p&gt;You can simple create an image from a template VM. The template VM must part of your AD like a standard client. You have not to sysprep or to normalize this template VM. Use the same template VM for Windows and application updates.&lt;/p&gt;
+
 &lt;p&gt;Following these steps to build your template:&lt;/p&gt;
+
 &lt;ul&gt;
 &lt;li&gt;Install a VM in the Azure portal. Select the right OS (like Windows 10 Enterprise for Virtual Desktops)&lt;/li&gt;
 &lt;li&gt;Make all Windows updates&lt;/li&gt;
@@ -1029,88 +1295,123 @@ In some cases, where virtual machines don’t have access to the internet to dow
 &lt;li&gt;Make your customizing (like installing language packages)&lt;/li&gt;
 &lt;li&gt;Shutdown the template VM&lt;/li&gt;
 &lt;/ul&gt;
+
 &lt;p&gt;To create the image, open WVDAdmin and&lt;/p&gt;
+
 &lt;ul&gt;
 &lt;li&gt;Navigate to the Azure template VM (Azure -&amp;gt; Virtual Machines -&amp;gt; RG -&amp;gt; VM)&lt;/li&gt;
-&lt;li&gt;Right-click -&amp;gt; “Create a template image”&lt;/li&gt;
+&lt;li&gt;Right-click -&amp;gt; &amp;quot;Create a template image&amp;quot;&lt;/li&gt;
 &lt;li&gt;Select the resource group to store the image&lt;/li&gt;
-&lt;li&gt;Press “Capture”&lt;/li&gt;
+&lt;li&gt;Press &amp;quot;Capture&amp;quot;&lt;/li&gt;
 &lt;/ul&gt;
+
 &lt;p&gt;You can and should reuse the template VM for new updates and applications. After these changes, shut down the template VM and create a new image.&lt;/p&gt;
-&lt;h1 id=&quot;tipps-amp-tricks&quot;&gt;Tipps &amp;amp; Tricks&lt;/h1&gt;
+
+&lt;h1 id=&quot;tipps-tricks&quot;&gt;Tipps &amp;amp; Tricks&lt;/h1&gt;
+
 &lt;h2 id=&quot;vm-scale-sets&quot;&gt;VM Scale Sets&lt;/h2&gt;
-&lt;p&gt;First node: VM Scale Sets cannot autoscale AVD session hosts. Auto-scaling only works for stateless services like a web server. But if you need hundreds of session hosts, then VM Scale Set allows you to work with these numbers efficiently.&lt;/p&gt;
+
+&lt;p&gt;First node: VM Scale Sets cannot autoscale AVD session hosts. Auto-scaling only works for stateless services like a web server. But if you need hundreds of session hosts, then VM Scale Set allows you to work with these numbers efficiently.
 &lt;details&gt;&lt;summary&gt;Read more&lt;/summary&gt;&lt;br/&gt;
-From version 1.2.5, WVDAdmin support VM Scale Sets. A Scale Set can have several instances, which are the VMs / session hosts. There are some essential things you have to know if you use VM Scale Set with WVDAdmin and AVD itself:
+From version 1.2.5, WVDAdmin support VM Scale Sets. A Scale Set can have several instances, which are the VMs / session hosts. There are some essential things you have to know if you use VM Scale Set with WVDAdmin and AVD itself:&lt;/p&gt;
+
 &lt;ul&gt;
-&lt;li&gt;Build a Scale Set with WVDAdmin. Select an image, right-click and select “Create session host from image”. Check “Rollout as VM Scale Set”&lt;/li&gt;
+&lt;li&gt;Build a Scale Set with WVDAdmin. Select an image, right-click and select &amp;quot;Create session host from image&amp;quot;. Check &amp;quot;Rollout as VM Scale Set&amp;quot;&lt;/li&gt;
 &lt;li&gt;You can use regular disks and ephemeral disks. If you use ephemeral disks, you cannot deallocate the instances of your Scale Set. You have to delete the instances&lt;/li&gt;
 &lt;li&gt;Today, you can not use ultra disks&lt;/li&gt;
 &lt;li&gt;You can add and remove instances with WVDAdmin or in the Azure Portal. New instances will join the domain and WVD&lt;/li&gt;
-&lt;li&gt;A new instance can only join AVD if the session host with the new name doesn’t exist. If you delete instances, the session host entry will also be removed&lt;/li&gt;
-&lt;li&gt;You can re-image single instances or all instances of a Scale Set. After that, the instances are “clean” as at the first rollout&lt;/li&gt;
-&lt;li&gt;Adding instances or re-imaging assumes that the Scale Set configuration (which is a custom script extension) has a valid AVD token to join new instances to WVD. While AVD provides only one token per host pool and that the token can be expiring, you can update the token with a right-click on the Scale Set and select “Update WVD token”. The max. lifetime of a token is 59 days&lt;/li&gt;
+&lt;li&gt;A new instance can only join AVD if the session host with the new name doesn&amp;#39;t exist. If you delete instances, the session host entry will also be removed&lt;/li&gt;
+&lt;li&gt;You can re-image single instances or all instances of a Scale Set. After that, the instances are &amp;quot;clean&amp;quot; as at the first rollout&lt;/li&gt;
+&lt;li&gt;Adding instances or re-imaging assumes that the Scale Set configuration (which is a custom script extension) has a valid AVD token to join new instances to WVD. While AVD provides only one token per host pool and that the token can be expiring, you can update the token with a right-click on the Scale Set and select &amp;quot;Update WVD token&amp;quot;. The max. lifetime of a token is 59 days&lt;/li&gt;
 &lt;li&gt;Unfortunately, WVDAdmin cannot change the source image for a VM Scale Set. So if you want to update the image for a host pool, take these steps:
+
 &lt;ul&gt;
 &lt;li&gt;Rollout a new Scale Set based on the new image&lt;/li&gt;
 &lt;li&gt;Disable new logons for the old session host from the previous Scale Set&lt;/li&gt;
 &lt;li&gt;Test the host pool based on the new Scale Set&lt;/li&gt;
 &lt;li&gt;If no user logged on to the ancient Scale Set, remove all instances from the Scale Set (this deletes the session hosts in AVD as well)&lt;/li&gt;
-&lt;li&gt;Remove the Scale Set&lt;/li&gt;
+&lt;li&gt;Remove the Scale Set
+&lt;/details&gt;&lt;br/&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/details&gt;&lt;br/&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;ephemeral--disks&quot;&gt;Ephemeral  disks&lt;/h2&gt;
-&lt;p&gt;Ephemeral disks are awesome. They give you a high performance free of charge. Especially in a AVD multiuser environment where no data a stored permanently on the session hosts, this kind of disk can give you some value add.&lt;/p&gt;
+
+&lt;h2 id=&quot;ephemeral-disks&quot;&gt;Ephemeral  disks&lt;/h2&gt;
+
+&lt;p&gt;Ephemeral disks are awesome. They give you a high performance free of charge. Especially in a AVD multiuser environment where no data a stored permanently on the session hosts, this kind of disk can give you some value add.
 &lt;details&gt;&lt;summary&gt;Read more&lt;/summary&gt;&lt;br/&gt;
-Ephemeral disks are running on the Azure hypervisor and not stored. This has some advantages:
+Ephemeral disks are running on the Azure hypervisor and not stored. This has some advantages:&lt;/p&gt;
+
 &lt;ul&gt;
 &lt;li&gt;There are no storage costs (!)&lt;/li&gt;
 &lt;li&gt;A very high data throughput because the disks exist on the hypervisor&lt;/li&gt;
-&lt;li&gt;See &lt;a href=&quot;https://twitter.com/michawets&quot;&gt;@MichaWets&lt;/a&gt;   blog post for more information:  &lt;a href=&quot;https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/&quot;&gt;https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;See &lt;a href=&quot;https://twitter.com/michawets&quot;&gt;@MichaWets&lt;/a&gt;   blog post for more information:  &lt;a href=&quot;https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/&quot;&gt;https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/&lt;/a&gt; &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Please note:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;You can not deallocate a VM with this disk type - you have to delete the VM (and roll out a new one instead of starting a “normal” VM)&lt;/li&gt;
-&lt;li&gt;Not each VM size is available, and there are limitations of the disk size (image size for rollout) based on the VM size: Max ephemeral disk size for  Standard_D4s_v3  is 64 GByte while a  Standard_D8s_v3 can have up to 128 GByte. See &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;If the Azure hypervisor fails, your session host will fail as well and can not be re-deployed automatically&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-014.png&quot; alt=&quot;documentation-001&quot; /&gt;&lt;/p&gt;
-&lt;/details&gt;&lt;br/&gt;
+
+&lt;p&gt;Please note:
+- You can not deallocate a VM with this disk type - you have to delete the VM (and roll out a new one instead of starting a &amp;quot;normal&amp;quot; VM)
+- Not each VM size is available, and there are limitations of the disk size (image size for rollout) based on the VM size: Max ephemeral disk size for  Standard_D4s_v3  is 64 GByte while a  Standard_D8s_v3 can have up to 128 GByte. See &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general&lt;/a&gt; 
+- If the Azure hypervisor fails, your session host will fail as well and can not be re-deployed automatically&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WVDAdmin/documentation-014.png&quot; alt=&quot;documentation-001&quot;&gt;
+&lt;/details&gt;&lt;br/&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;secret-features&quot;&gt;Secret Features&lt;/h2&gt;
-&lt;p&gt;WVDAdmin has some features not directly visible but configurable via registry keys. All settings in the registry are in the current user part under HKEY_CURRENT_USER\SOFTWARE\ITProCloud\WVDAdmin. Keep in mind to restart WVDAdmin after changing the registry settings.&lt;/p&gt;
-&lt;details&gt;&lt;summary&gt;Read more&lt;/summary&gt;&lt;br/&gt;
+
+&lt;p&gt;WVDAdmin has some features not directly visible but configurable via registry keys. All settings in the registry are in the current user part under HKEY_CURRENT_USER\SOFTWARE\ITProCloud\WVDAdmin. Keep in mind to restart WVDAdmin after changing the registry settings.
+&lt;details&gt;&lt;summary&gt;Read more&lt;/summary&gt;&lt;br/&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;dark-mode&quot;&gt;Dark-mode&lt;/h3&gt;
+
 &lt;p&gt;From version 1.7.33 WVDAdmin can be run in dark-mode. Set the following reg value and restart WVDAdmin: HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin\DarkMode to 1 (DarkMode is REG_DWORD32)&lt;/p&gt;
+
 &lt;h3 id=&quot;multi-tenant-mode&quot;&gt;Multi-Tenant-Mode&lt;/h3&gt;
+
 &lt;p&gt;From version 1.3.0 WVDAdmin will support a multi-AAD-tenancy mode allowing to switch the Azure AD tenant very easily.
 &lt;a href=&quot;../Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners&quot;&gt;Follow this link&lt;/a&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;having-multiple-service-principals-for-a-single-tenant&quot;&gt;Having multiple Service Principals for a single Tenant&lt;/h3&gt;
-&lt;p&gt;In the Multi-Tenant-Mode, you can add one service principal per tenant. Sometimes you need more service principals for the same tenant. You can add more service principals for a tenant if you append #1 directly behind the tenant id (or #2, …).&lt;/p&gt;
+
+&lt;p&gt;In the Multi-Tenant-Mode, you can add one service principal per tenant. Sometimes you need more service principals for the same tenant. You can add more service principals for a tenant if you append #1 directly behind the tenant id (or #2, ...).&lt;/p&gt;
+
 &lt;h3 id=&quot;naming-of-the-session-hosts&quot;&gt;Naming of the Session Hosts&lt;/h3&gt;
-&lt;p&gt;If you deploy session hosts to a host pool, WVDAdmin counts up the names from the highest available VM. E.g., if you have a session host with the name “WVD-PROD-012” and you rollout new hosts (WVD-PROD-###), the first new hostname is “WVD-PROD-013” - even if you have gaps in the existing numeration. You can force WVDAdmin to fill this gaps (non-existing hosts in the naming schema) if you set the following registry key:
+
+&lt;p&gt;If you deploy session hosts to a host pool, WVDAdmin counts up the names from the highest available VM. E.g., if you have a session host with the name &amp;quot;WVD-PROD-012&amp;quot; and you rollout new hosts (WVD-PROD-###), the first new hostname is &amp;quot;WVD-PROD-013&amp;quot; - even if you have gaps in the existing numeration. You can force WVDAdmin to fill this gaps (non-existing hosts in the naming schema) if you set the following registry key:
 Reg-DWord: &lt;strong&gt;NamingMode&lt;/strong&gt; = &lt;strong&gt;1&lt;/strong&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;split-tenant&quot;&gt;Split-Tenant&lt;/h3&gt;
+
 &lt;p&gt;Usually, the AVD tenant and the resources (sessions hosts) are in the same AAD tenant. If you have two Azure AD tenant, you can use WVDAdmin with a second service principal for the session hosts (resource tenant).
 &lt;a href=&quot;../Windows-Virtual-Desktop-Admin-for-2-tenant-mode&quot;&gt;Follow this link&lt;/a&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;us-government-cloud&quot;&gt;US-Government Cloud&lt;/h3&gt;
+
 &lt;p&gt;WVDAdmin can be used to deploy AVD in the Azure Government Cloud. You can enable WVDAdmin to work in the US Government Cloud via registry:
 Reg-SZ: &lt;strong&gt;Environment&lt;/strong&gt; = &lt;strong&gt;US&lt;/strong&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;run-custom-actions-simultaneously&quot;&gt;Run custom actions simultaneously&lt;/h3&gt;
+
 &lt;p&gt;From version 1.6.15, WVDAdmin supports custom scripts to run administrative tasks simultaneously on different session hosts. And that is easy to use and to extend.
 &lt;a href=&quot;../Windows-Virtual-Desktop-Admin-CustomScripts&quot;&gt;Follow this link&lt;/a&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;add-a-session-host-automatically-to-an-asg&quot;&gt;Add a session host automatically to an ASG&lt;/h3&gt;
+
 &lt;p&gt;You can add a session host automatically to application security groups (ASG) within the rollout process. To achieve this, add one or more tags to the host pool containing your new session hosts. Name &lt;strong&gt;WVD.Default.ASG.X&lt;/strong&gt; and add the azure resource id of an existing asg. X can be numbers to assign more ASGs. You can copy the id from an ASG from your browser. It looks like this: /subscriptions/&amp;lt;subscription-id&amp;gt;/resourcegroups/&amp;lt;resourcegroup-name&amp;gt;/providers/Microsoft.Network/applicationSecurityGroups/&amp;lt;asg-name&amp;gt;
-&lt;img src=&quot;../assets/images/WVDAdmin/asg-001.png&quot; alt=&quot;Tag for ASG&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;../assets/images/WVDAdmin/asg-001.png&quot; alt=&quot;Tag for ASG&quot;&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;add-a-session-host-automatically-to-a-loadbalancer-backend-pool&quot;&gt;Add a session host automatically to a Loadbalancer Backend Pool&lt;/h3&gt;
+
 &lt;p&gt;You can add a session host automatically to a loadbalancer backend pool within the rollout process. To achieve this, add one or more tags to the host pool containing your new session hosts. Name &lt;strong&gt;WVD.Default.LBPool.X&lt;/strong&gt; and add the azure resource id of an existing loadbalancer backend pool. X can be numbers to assign more ASGs. You can copy the id from a pool from your browser. It looks like this: /subscriptions/&amp;lt;subscription-id&amp;gt;/resourcegroups/&amp;lt;resourcegroup-name&amp;gt;/providers/Microsoft.Network/loadBalancers/&amp;lt;loadbalancer-name&amp;gt;/backendAddressPools/&amp;lt;pool-name&amp;gt;
 Keep in mind to use availability sets for each rollout to use this feature.&lt;/p&gt;
+
 &lt;h3 id=&quot;rollout-session-hosts-with-azure-disk-encryption-ade&quot;&gt;Rollout session hosts with Azure Disk Encryption (ADE)&lt;/h3&gt;
-&lt;p&gt;Set two tags to the host pool to use it: “WVD.Default.KeyVault.Id” with the resource id of the KeyVault, “WVD.Default.KeyVault.KeyUri” with the URI (including the version) of the prepared key to wrap the secret.&lt;/p&gt;
-&lt;/details&gt;&lt;br/&gt;
+
+&lt;p&gt;Set two tags to the host pool to use it: &amp;quot;WVD.Default.KeyVault.Id&amp;quot; with the resource id of the KeyVault, &amp;quot;WVD.Default.KeyVault.KeyUri&amp;quot; with the URI (including the version) of the prepared key to wrap the secret.
+&lt;/details&gt;&lt;br/&gt;&lt;/p&gt;
+
 &lt;h1 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h1&gt;
+
 &lt;h2 id=&quot;create-an-image&quot;&gt;Create an Image&lt;/h2&gt;
+
 &lt;ul&gt;
 &lt;li&gt;The image is not created. An error message occurs:&lt;/li&gt;
 &lt;li&gt;Check if your template VM part of the AD&lt;/li&gt;
@@ -1119,27 +1420,30 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;li&gt;Azure portal: Go to the temp VM (next to the template VM) and check the extension installation state. There should be an error message like script not found, access denied, etc.&lt;/li&gt;
 &lt;li&gt;Have you renamed the RD agent and bootloader?&lt;/li&gt;
 &lt;li&gt;Is the script saved correctly: ITPC-WVD-Image-Processing.ps1, not ITPC-WVD-Image-Processing.ps1.txt&lt;/li&gt;
-&lt;li&gt;Don’t forget to delete the temp VM and temp disk to avoid costs&lt;/li&gt;
+&lt;li&gt;Don&amp;#39;t forget to delete the temp VM and temp disk to avoid costs&lt;/li&gt;
 &lt;li&gt;Make sure that your template VM uses managed disk&lt;/li&gt;
 &lt;li&gt;The script generates additional log files in %WinDir%\System32\LogFiles&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Windows 7&lt;/em&gt;: Make sure to install PowerShell 5.1 and all Windows updates (including the optional updates without the language packages) to the template VM and restart the VM to take effect: &lt;a href=&quot;https://www.microsoft.com/en-us/download/details.aspx?id=54616&quot;&gt;https://www.microsoft.com/en-us/download/details.aspx?id=54616&lt;/a&gt; Makes sure that you use the newest script file from 09/2020: &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;NEW: An endless loop of “Waiting for the temporary vm (power off)” : Update to the newest PowerShell script for generalizing: &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Windows 7&lt;/em&gt;: Make sure to install PowerShell 5.1 and all Windows updates (including the optional updates without the language packages) to the template VM and restart the VM to take effect: &lt;a href=&quot;https://www.microsoft.com/en-us/download/details.aspx?id=54616&quot;&gt;https://www.microsoft.com/en-us/download/details.aspx?id=54616&lt;/a&gt; Makes sure that you use the newest script file from 09/2020: &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;NEW: An endless loop of &amp;quot;Waiting for the temporary vm (power off)&amp;quot; : Update to the newest PowerShell script for generalizing: &lt;a href=&quot;https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt&quot;&gt;ITPC-WVD-Image-Processing.ps1&lt;/a&gt;&lt;br&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
 &lt;h2 id=&quot;others&quot;&gt;Others&lt;/h2&gt;
+
 &lt;ul&gt;
 &lt;li&gt;You have created a host pool, an app group, and assigned a user to the app group, but the user cannot see the apps/desktop.
+
 &lt;ul&gt;
-&lt;li&gt;For AVD ARM: Don’t forget to create a workspace and link the app group in the workspace. The workspace is mandatory to show the users’ resources.&lt;/li&gt;
+&lt;li&gt;For AVD ARM: Don&amp;#39;t forget to create a workspace and link the app group in the workspace. The workspace is mandatory to show the users&amp;#39; resources.&lt;/li&gt;
 &lt;li&gt;For the HTML5 web site: Check the correct web address:
+
 &lt;ul&gt;
 &lt;li&gt;ARM/Spring: &lt;a href=&quot;https://aka.ms/wvdarmweb&quot;&gt;https://aka.ms/wvdarmweb&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Classic/Fall: &lt;a href=&quot;http://aka.ms/wvdweb&quot;&gt;http://aka.ms/wvdweb&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/24/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 10/24/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 24 Oct 2024 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
@@ -1153,209 +1457,33 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
       </item>
     
       <item>
-        <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
-        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Log Type&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
-&lt;td&gt;Details about the session hosts&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDConnections&lt;/td&gt;
-&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDErrors&lt;/td&gt;
-&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, …)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDFeeds&lt;/td&gt;
-&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
-&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDManagement&lt;/td&gt;
-&lt;td&gt;Log about administrative tasks&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDCheckpoints&lt;/td&gt;
-&lt;td&gt;Detailed information related to logins, errors, …&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDConnectionNetworkData&lt;/td&gt;
-&lt;td&gt;Network information (bandwidth and RTT)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that (use version 1.7.25 or higher):&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-14.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;After a while, the workbook is visible as a new template in: &lt;strong&gt;Log Analytics -&amp;gt; Workbooks -&amp;gt; Azure Virtual Desktop -&amp;gt; AVD - Deep-Insights&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;” occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
-&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Version&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1&lt;/td&gt;
-&lt;td&gt;01/28/2022&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.2&lt;/td&gt;
-&lt;td&gt;02/17/2022&lt;/td&gt;
-&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); see &lt;a href=&quot;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&quot;&gt;https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397&lt;/a&gt; &lt;br /&gt;&lt;br /&gt;Name changed to AVD - Deep-Insights&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.3&lt;/td&gt;
-&lt;td&gt;03/16/2022&lt;/td&gt;
-&lt;td&gt;Include Logon timing (GPO, FSLogix, Authentication, etc.)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.4&lt;/td&gt;
-&lt;td&gt;04/14/2022&lt;/td&gt;
-&lt;td&gt;In Session Bandwidths &amp;amp; Latencies: The connection type is shown if RDP Short Path is used (Public, Private). See: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.5&lt;/td&gt;
-&lt;td&gt;05/03/2022&lt;/td&gt;
-&lt;td&gt;New visualization: Logon timing per day and category over the time&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.6&lt;/td&gt;
-&lt;td&gt;10/11/2022&lt;/td&gt;
-&lt;td&gt;New visualization: Connections over time, unhealthy session hosts, graphic performance&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.7&lt;/td&gt;
-&lt;td&gt;11/03/2022&lt;/td&gt;
-&lt;td&gt;Optimization for charts to show data over a large time frame&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.8&lt;/td&gt;
-&lt;td&gt;11/14/2022&lt;/td&gt;
-&lt;td&gt;A new tab “Resources”, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.9&lt;/td&gt;
-&lt;td&gt;11/18/2022&lt;/td&gt;
-&lt;td&gt;A new tab “Resources”, to show orphan VMs (where the session host object is missing)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.0&lt;/td&gt;
-&lt;td&gt;12/01/2022&lt;/td&gt;
-&lt;td&gt;Changed the description for the estimated available bandwidth&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.1&lt;/td&gt;
-&lt;td&gt;12/09/2022&lt;/td&gt;
-&lt;td&gt;Added orphan disks and orphan nics to the “Resources” tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop, version 1.0.1.84 (comming soon))&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.2&lt;/td&gt;
-&lt;td&gt;02/02/2023&lt;/td&gt;
-&lt;td&gt;Added “Water Markings” to query session information by the feature &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/watermarking&quot;&gt;WaterMarking&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.3&lt;/td&gt;
-&lt;td&gt;02/20/2023&lt;/td&gt;
-&lt;td&gt;Added “Unresponding AVD Agents” in the tab “Resources” to identify running VM with a non responding AVD agent&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.4&lt;/td&gt;
-&lt;td&gt;02/21/2023&lt;/td&gt;
-&lt;td&gt;Added new tab “FSLogix” to show the size, usage and free space of the FSLogix profiles&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.5&lt;/td&gt;
-&lt;td&gt;03/08/2023&lt;/td&gt;
-&lt;td&gt;Fix in the time selector; allow to selecte multiple host pools; show active sessions with user name and started desktop/remote app&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.6&lt;/td&gt;
-&lt;td&gt;03/31/2023&lt;/td&gt;
-&lt;td&gt;Add: Show office container size and usage (ODFC) in the FSLogix tab (additional to the profile container)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.7&lt;/td&gt;
-&lt;td&gt;07/01/2023&lt;/td&gt;
-&lt;td&gt;Fix/Workaround: VHDFreeSpace is stored as text in MByte and not in GByte if the value is less then 1 GByte&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.8&lt;/td&gt;
-&lt;td&gt;10/13/2023&lt;/td&gt;
-&lt;td&gt;Add: Show the last heart beat time in the Orphan session hosts view and warns, if the heart beat is longer then 90 days ago&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3.0&lt;/td&gt;
-&lt;td&gt;06/24/2024&lt;/td&gt;
-&lt;td&gt;Fix: Orphan resources are now including temporary orphan hosts&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3.1&lt;/td&gt;
-&lt;td&gt;10/24/2024&lt;/td&gt;
-&lt;td&gt;Add: Show “TURN” in session bandwidth and latency (if session was connected via TURN)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don’t generate costs&lt;/p&gt;
-</description>
-        <pubDate>Thu, 24 Oct 2024 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Azure Monitor</category>
-        
-        <category>Log Analytics</category>
-        
-      </item>
-    
-      <item>
         <title>Entra Dynamic Device Groups for Azure Virtual Desktop - Host Pools, Resource Groups and Subscriptions</title>
-        <description>&lt;p&gt;I was searching for an option to group all AVD hosts (Entra and hybrid joined) of a pool in a dynamic device group. Unfortunately, I didn’t find a perfect solution that works without modifying the device objects through the Graph API (or AD for hybrid joined devices (extensionAttributes)). If one of the readers knows a good solution for this, please share it.&lt;/p&gt;
-&lt;p&gt;Therefore, I checked the different properties of a device in Entra to find one I can use to create a dynamic device group. I prefer having a naming schema reflecting the specific host pools. AVD-DESIGN-001 and up counting would be a good match to identify all hosts of my pool “Design”. The rule is simple:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-02.png&quot; alt=&quot;&quot; /&gt;
+        <description>&lt;p&gt;I was searching for an option to group all AVD hosts (Entra and hybrid joined) of a pool in a dynamic device group. Unfortunately, I didn&amp;#39;t find a perfect solution that works without modifying the device objects through the Graph API (or AD for hybrid joined devices (extensionAttributes)). If one of the readers knows a good solution for this, please share it.&lt;/p&gt;
+
+&lt;p&gt;Therefore, I checked the different properties of a device in Entra to find one I can use to create a dynamic device group. I prefer having a naming schema reflecting the specific host pools. AVD-DESIGN-001 and up counting would be a good match to identify all hosts of my pool &amp;quot;Design&amp;quot;. The rule is simple:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-02.png&quot; alt=&quot;&quot;&gt;
 &lt;code&gt;(device.displayName -startsWith &amp;quot;AVD-DESIGN-&amp;quot;)&lt;/code&gt;&lt;/p&gt;
+
 &lt;p&gt;After a while, the group contains all hosts/VMs matching this schema. The query can also be made more complex by including/excluding specific Windows types (multi-user or single-user OS).&lt;/p&gt;
+
 &lt;p&gt;I also found another interesting property in the devices for Entra joined VMs (not for hybrid joined):&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The property “physicalIds” contains a list of strings. One string reflects the Azure resource ID of the virtual machine (the session hosts the linked VM):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-03.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;The property &amp;quot;physicalIds&amp;quot; contains a list of strings. One string reflects the Azure resource ID of the virtual machine (the session hosts the linked VM):&lt;/p&gt;
+
 &lt;p&gt;The resource ID in Azure has a default schema that reflects the subscription ID, resource group name, provider, and the name of the resource. Some resources also have subtypes, which is not important for our VMs. The resource ID is always in the device property and is written with the join of the device to Entra.&lt;/p&gt;
+
 &lt;p&gt;We can now build dynamic device groups based on the resource group or subscription. If you are using different resource groups for your host pools, you can also use this method to group the VMs — independent from the naming concept. Or you can group all the VMs of your AVD subscription and combine them to validate the display names. That makes your dynamic group more resilient and excludes VMs from other subscriptions.&lt;/p&gt;
-&lt;p&gt;Here is an example of grouping all VMs in the resource group “WVD.Design2” in the given subscription:
-&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-04.png&quot; alt=&quot;&quot; /&gt;
+
+&lt;p&gt;Here is an example of grouping all VMs in the resource group &amp;quot;WVD.Design2&amp;quot; in the given subscription:
+&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-04.png&quot; alt=&quot;&quot;&gt;
 &lt;code&gt;(device.devicePhysicalIds -any (_ -startsWith&amp;quot;[AzureResourceId]:/subscriptions/dcdce2ee-****-****-****-************/resourceGroups/wvd.Design2/providers/Microsoft.Compute/virtualMachines/&amp;quot;))&lt;/code&gt;&lt;/p&gt;
+
 &lt;p&gt;After a while, all VMs/hosts are members of the group.&lt;/p&gt;
-&lt;p&gt;Even if that doesn’t solve my challenge very well, it’s a nice workaround or at least increased my insights.&lt;/p&gt;
+
+&lt;p&gt;Even if that doesn&amp;#39;t solve my challenge very well, it&amp;#39;s a nice workaround or at least increased my insights.&lt;/p&gt;
 </description>
         <pubDate>Tue, 08 Oct 2024 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/</link>
@@ -1372,45 +1500,53 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
     
       <item>
         <title>OneDrive Clean-Up for Azure Virtual Desktop</title>
-        <description>&lt;p&gt;Running OneDrive with Azure Virtual Desktop is a common scenario and enables users to work in a modern way with Teams and SharePoint. If FSLogix is used, there is a challenge in combination with OneDrive: Users can download OneDrive files to the host, and the data are stored in the profile. The profile size increases heavily and causes some extra costs on the storage account.&lt;/p&gt;
-&lt;p&gt;Having so many OneDrive files stored in the profile may make no sense in every case - if a user access a file, the file is downloaded automatically (on demand). And it’s mostly fine to “unpin” the file later if the file is no longer needed. The files are downloaded fast, while AVD and OneDrive are in the Microsoft cloud.&lt;/p&gt;
+        <description>&lt;p&gt;Running OneDrive with Azure Virtual Desktop is a common scenario and enables users to work in a modern way with Teams and SharePoint. If FSLogix is used, there is a challenge in combination with OneDrive: Users can download OneDrive files to the host, and the data are stored in the profile. The profile size increases heavily and causes some extra costs on the storage account. &lt;/p&gt;
+
+&lt;p&gt;Having so many OneDrive files stored in the profile may make no sense in every case - if a user access a file, the file is downloaded automatically (on demand). And it&amp;#39;s mostly fine to &amp;quot;unpin&amp;quot; the file later if the file is no longer needed. The files are downloaded fast, while AVD and OneDrive are in the Microsoft cloud. &lt;/p&gt;
+
 &lt;h3 id=&quot;background&quot;&gt;Background:&lt;/h3&gt;
-&lt;p&gt;OneDrive files can have three different states:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Cloud:&lt;/strong&gt;
-The file content is in the cloud only. The file system simulates that the file exists. While the content is not on the disk, the files don’t need storage on the device. If a user opens such a file, the content is downloaded, and the file state change to On-Device.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;On-Device:&lt;/strong&gt;
-The file content is also on the local disk, and the files are using local storage.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Always:&lt;/strong&gt;
-The file content is also on the local disk, and the files are using local storage. OneDrive wouldn’t change the state to “Cloud”.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/ODClaenUp-02.png&quot; alt=&quot;&quot; /&gt;
+
+&lt;p&gt;OneDrive files can have three different states:
+- &lt;strong&gt;Cloud:&lt;/strong&gt;
+  The file content is in the cloud only. The file system simulates that the file exists. While the content is not on the disk, the files don&amp;#39;t need storage on the device. If a user opens such a file, the content is downloaded, and the file state change to On-Device.&lt;br&gt;
+- &lt;strong&gt;On-Device:&lt;/strong&gt;
+  The file content is also on the local disk, and the files are using local storage.
+- &lt;strong&gt;Always:&lt;/strong&gt;
+  The file content is also on the local disk, and the files are using local storage. OneDrive wouldn&amp;#39;t change the state to &amp;quot;Cloud&amp;quot;. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/ODClaenUp-02.png&quot; alt=&quot;&quot;&gt;
 &lt;br/&gt;&lt;/p&gt;
-&lt;p&gt;OneDrive can change the state to “Cloud” on normal Windows 10/11 devices using storage sense. Based on the implementation of storage sense, this is not working for Azure Virtual Desktop (Multi-Session) with FSLogix profiles.&lt;/p&gt;
-&lt;p&gt;A solution to avoid profile blotting in combination with FSLogix is changing the state of OneDrive files to “Cloud” (unpin files). If files are unpinned, they are no longer using local storage, and the “Disk Compaction” of FSLogix would reduce the profile automatically over time (or have more space left for user data).&lt;/p&gt;
-&lt;p&gt;I built a small tool to solve this challenge (I didn’t find a native solution). The tool is called OneDrive CleanUp. OneDrive CleanUp can run in two ways:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Started automatically with the login of the user (after the installation, it creates a link in the start-up folder of the start menu). It directly starts in the background and validates and maybe unpin OneDrive files. This process is repeated every 30 minutes and during the logoff of the user.&lt;/li&gt;
-&lt;li&gt;Start the program with the parameter /RunOnce during the logoff using a (group) policy.&lt;/li&gt;
-&lt;/ul&gt;
+
+&lt;p&gt;OneDrive can change the state to &amp;quot;Cloud&amp;quot; on normal Windows 10/11 devices using storage sense. Based on the implementation of storage sense, this is not working for Azure Virtual Desktop (Multi-Session) with FSLogix profiles.&lt;/p&gt;
+
+&lt;p&gt;A solution to avoid profile blotting in combination with FSLogix is changing the state of OneDrive files to &amp;quot;Cloud&amp;quot; (unpin files). If files are unpinned, they are no longer using local storage, and the &amp;quot;Disk Compaction&amp;quot; of FSLogix would reduce the profile automatically over time (or have more space left for user data).&lt;/p&gt;
+
+&lt;p&gt;I built a small tool to solve this challenge (I didn&amp;#39;t find a native solution). The tool is called OneDrive CleanUp. OneDrive CleanUp can run in two ways:
+- Started automatically with the login of the user (after the installation, it creates a link in the start-up folder of the start menu). It directly starts in the background and validates and maybe unpin OneDrive files. This process is repeated every 30 minutes and during the logoff of the user.
+- Start the program with the parameter /RunOnce during the logoff using a (group) policy.&lt;/p&gt;
+
 &lt;p&gt;I prefer the first method to ensure that OneDrive has time to react to the unpinning of files.&lt;/p&gt;
+
 &lt;p&gt;Example for method 2:
-&lt;img src=&quot;../assets/images/ODClaenUp-03.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/ODClaenUp-03.png&quot; alt=&quot;&quot;&gt;
 &lt;br/&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
+
 &lt;p&gt;In my test, my profile grew to 8 GByte while I pinned some files in OneDrive, and after logoff, the profile went back to 800 MByte while the tool unpinned the OneDrive files.&lt;/p&gt;
+
 &lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
+
 &lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\OneDriveCleanUp&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
+
+&lt;table&gt;&lt;thead&gt;
 &lt;tr&gt;
 &lt;th&gt;Key&lt;/th&gt;
 &lt;th&gt;Type&lt;/th&gt;
 &lt;th&gt;Value&lt;/th&gt;
 &lt;th&gt;Default value&lt;/th&gt;
 &lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
+&lt;/thead&gt;&lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;Enabled&lt;/td&gt;
 &lt;td&gt;Reg_DWORD&lt;/td&gt;
@@ -1447,26 +1583,30 @@ The file content is also on the local disk, and the files are using local storag
 &lt;td&gt;Run a last check while the user log off (can delay the logoff)&lt;/td&gt;
 &lt;td&gt;0=false&lt;/td&gt;
 &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
-OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
-&lt;p&gt;Example:
-&lt;img src=&quot;../assets/images/ODClaenUp-01.png&quot; alt=&quot;&quot; /&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;&lt;br/&gt;
+OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. &lt;/p&gt;
+
+&lt;p&gt;Example: 
+&lt;img src=&quot;../assets/images/ODClaenUp-01.png&quot; alt=&quot;&quot;&gt;
 &lt;br/&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
+
 &lt;p&gt;OneDrive CleanUp regularly checks all OneDrive paths and calculates the size of the disk. If the size is larger than the configured maximum size (AllowMbytesOnDisk), it unpins files to go under the configured size. It starts from the oldest to the newest file based on the LastAccessTime property.&lt;/p&gt;
-&lt;br/&gt;
+
+&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;release-notes&quot;&gt;Release notes&lt;/h3&gt;
-&lt;table&gt;
-&lt;thead&gt;
+
+&lt;table&gt;&lt;thead&gt;
 &lt;tr&gt;
 &lt;th&gt;Release&lt;/th&gt;
 &lt;th&gt;Date&lt;/th&gt;
 &lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
 &lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
+&lt;/thead&gt;&lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;1.0.4&lt;/td&gt;
 &lt;td&gt;2023-05-04&lt;/td&gt;
@@ -1487,11 +1627,14 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log.
 &lt;td&gt;2024-10-03&lt;/td&gt;
 &lt;td&gt;Add: Feature: RunAtLogoff with a default value of 0&lt;/td&gt;
 &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/OneDriveCleanUp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 10/03/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;../assets/files/OneDriveCleanUp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 10/03/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
 &lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
 </description>
         <pubDate>Thu, 03 Oct 2024 00:00:00 +0200</pubDate>
@@ -1507,43 +1650,58 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log.
     
       <item>
         <title>AVD Need Assistance - NAT shape is Undetermined when probing turn:20.202.248.2:3478?Udp TURN relay health check failed ...</title>
-        <description>&lt;h1 id=&quot;current-issues-avd-agent-reports-an-issue-and-brings-the-hosts-into-strongneed-assistancestrong&quot;&gt;Current issues: AVD agent reports an issue and brings the hosts into &lt;strong&gt;“Need Assistance”&lt;/strong&gt;&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;current-issues-avd-agent-reports-an-issue-and-brings-the-hosts-into-need-assistance&quot;&gt;Current issues: AVD agent reports an issue and brings the hosts into &lt;strong&gt;&amp;quot;Need Assistance&amp;quot;&lt;/strong&gt;&lt;/h1&gt;
+
 &lt;p&gt;In the last September week, I got a lot of emails and team messages. Customers are seeing the following error message on session hosts in the Azure Portal and in Hydra:&lt;/p&gt;
+
 &lt;blockquote&gt;
 &lt;p&gt;NAT shape is Undetermined when probing [turn:20.202.248.2:3478?Udp] TURN relay health check failed for server [turn:20.202.248.2:3478?Udp] - One or more errors occurred.-&amp;gt;Timed out waiting for Receive to complete - Code: -2147467259 - 2024-09-26T07:39:15.704086Z&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;The session hosts are also going into the &lt;strong&gt;“Need Assistance”&lt;/strong&gt; mode - even if users can still log in and continue working. It’s also reported, that the time stamp of the error message stays.&lt;/p&gt;
-&lt;p&gt;The issue is related to the AVD agent testing a UDP connection to the given (Microsoft) IP. This is a normal behaviour and can fail if customers are not allowing this connection through the firewall. If that is not working, connections are made via TCP. So far - so good. Unfortunately, the AVD agent shows this as an error, bringing the host into the &lt;strong&gt;“Need Assistance”&lt;/strong&gt; mode.&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Important: Session hosts in this state do not count on the capacity of a pool in Hydra. It also can break autoscaling if you run Hydra version 1.0.8.7 or less. Also hosts in this state are &lt;strong&gt;not&lt;/strong&gt; deallocated automatically - they stay running until the error disappears.&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/NA-Hydra.png&quot; alt=&quot;Download&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The session hosts are also going into the &lt;strong&gt;&amp;quot;Need Assistance&amp;quot;&lt;/strong&gt; mode - even if users can still log in and continue working. It&amp;#39;s also reported, that the time stamp of the error message stays.&lt;/p&gt;
+
+&lt;p&gt;The issue is related to the AVD agent testing a UDP connection to the given (Microsoft) IP. This is a normal behaviour and can fail if customers are not allowing this connection through the firewall. If that is not working, connections are made via TCP. So far - so good. Unfortunately, the AVD agent shows this as an error, bringing the host into the &lt;strong&gt;&amp;quot;Need Assistance&amp;quot;&lt;/strong&gt; mode.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Important: Session hosts in this state do not count on the capacity of a pool in Hydra. It also can break autoscaling if you run Hydra version 1.0.8.7 or less. Also hosts in this state are **not&lt;/strong&gt; deallocated automatically - they stay running until the error disappears.**&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/NA-Hydra.png&quot; alt=&quot;Download&quot;&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;what-can-we-do&quot;&gt;What can we do?&lt;/h2&gt;
+
 &lt;h3 id=&quot;allowing-udp-communication-to-specific-ports-preferred&quot;&gt;Allowing UDP communication to specific ports (preferred)&lt;/h3&gt;
-&lt;p&gt;You can configure the firewall to allow communication to the mentioned ports if that is an option for your environment/company. In short, the following communication from the hosts to the internet must be possible:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Target: 20.202.0.0/16, Port 3478 UDP&lt;/li&gt;
-&lt;li&gt;Target: 20.202.0.0/16, Port 443 TCP&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/rdp-shortpath?tabs=public-networks&quot;&gt;Link to the blog post&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
+
+&lt;p&gt;You can configure the firewall to allow communication to the mentioned ports if that is an option for your environment/company. In short, the following communication from the hosts to the internet must be possible:
+- Target: 20.202.0.0/16, Port 3478 UDP
+- Target: 20.202.0.0/16, Port 443 TCP
+- &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/rdp-shortpath?tabs=public-networks&quot;&gt;Link to the blog post&lt;/a&gt;&lt;/p&gt;
+
 &lt;p&gt;You can test the connection with the tool &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/troubleshoot-rdp-shortpath&quot;&gt;avdnettest.exe&lt;/a&gt; from Microsoft:
-&lt;img src=&quot;../assets/images/NA-avdnettest.png&quot; alt=&quot;Download&quot; /&gt;&lt;/p&gt;
-&lt;br/&gt;
+&lt;img src=&quot;../assets/images/NA-avdnettest.png&quot; alt=&quot;Download&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;update-hydra-also-preferred&quot;&gt;Update Hydra (also preferred)&lt;/h3&gt;
-&lt;p&gt;There is a new release of Hydra available from 09/30/2024 (v1.0.8.7) containing a hotfix to handle failed hosts. This will not remove the error message but should show the correct sessions and handle autoscaling also for hosts in the &lt;strong&gt;“Need Assistance”&lt;/strong&gt; mode. Please monitor your environment after update/hotfix: &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra?tab=readme-ov-file#updates-and-releases&quot;&gt;How to update Hydra&lt;/a&gt;
+
+&lt;p&gt;There is a new release of Hydra available from 09/30/2024 (v1.0.8.7) containing a hotfix to handle failed hosts. This will not remove the error message but should show the correct sessions and handle autoscaling also for hosts in the &lt;strong&gt;&amp;quot;Need Assistance&amp;quot;&lt;/strong&gt; mode. Please monitor your environment after update/hotfix: &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra?tab=readme-ov-file#updates-and-releases&quot;&gt;How to update Hydra&lt;/a&gt;
 &lt;br/&gt;&lt;/p&gt;
+
 &lt;h3 id=&quot;disabling-udp-temporary-workaround&quot;&gt;Disabling UDP temporary (workaround)&lt;/h3&gt;
-&lt;p&gt;If option one is not possible, or the error messages are not disappearing, we can disable the use of UDP &lt;a href=&quot;https://admx.help/?Category=Windows_10_2016&amp;amp;Policy=Microsoft.Policies.TerminalServer::TS_SELECT_TRANSPORT&quot;&gt;via GPO&lt;/a&gt; or reg keys. The following script disables UDP, and it should also remove the error message. You can &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra/blob/main/README.md#scripts-and-script-collections&quot;&gt;create the script in Hydra&lt;/a&gt; and run it on the hosts (test it with one host first):&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;SelectTransport&amp;quot; -Value 1 -force # default: 0
+
+&lt;p&gt;If option one is not possible, or the error messages are not disappearing, we can disable the use of UDP &lt;a href=&quot;https://admx.help/?Category=Windows_10_2016&amp;Policy=Microsoft.Policies.TerminalServer::TS_SELECT_TRANSPORT&quot;&gt;via GPO&lt;/a&gt; or reg keys. The following script disables UDP, and it should also remove the error message. You can &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra/blob/main/README.md#scripts-and-script-collections&quot;&gt;create the script in Hydra&lt;/a&gt; and run it on the hosts (test it with one host first):&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;SelectTransport&quot; -Value 1 -force # default: 0
 
 # Reset old failure state
-if (Test-Path -Path &amp;quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckReport&amp;quot;) {
-    Remove-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckReport&amp;quot; -Name &amp;quot;AgentHealthCheckReport&amp;quot; -ErrorAction SilentlyContinue
-    Remove-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckReport&amp;quot; -Name &amp;quot;AgentHealthCheckTimestamp&amp;quot; -ErrorAction SilentlyContinue
+if (Test-Path -Path &quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckReport&quot;) {
+    Remove-ItemProperty -Path &quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckReport&quot; -Name &quot;AgentHealthCheckReport&quot; -ErrorAction SilentlyContinue
+    Remove-ItemProperty -Path &quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckReport&quot; -Name &quot;AgentHealthCheckTimestamp&quot; -ErrorAction SilentlyContinue
 }
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If you rollout a new host, make sure to reapply this settings. That can be done in Hydra -&amp;gt; Host Pool -&amp;gt; New Session Host Rollout -&amp;gt; Run script or script collection after deployment
 &lt;br/&gt;&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;It’s also a good idea to open a ticket to let Microsoft fix this issue with the service/AVD agent.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;It&amp;#39;s also a good idea to open a ticket to let Microsoft fix this issue with the service/AVD agent.&lt;/p&gt;
 </description>
         <pubDate>Thu, 26 Sep 2024 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/AVD-Need-Assistance-NAT-shape-is-Undetermined-when-probing-TURN-relay-health-check-failed/</link>
@@ -1559,55 +1717,65 @@ if (Test-Path -Path &amp;quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckR
       <item>
         <title>CountrySwitch - First Logon Experience and language selector and an app starter for remote apps on network paths for AVD</title>
         <description>&lt;h2 id=&quot;first-logon-experience-and-language-selector-and-an-app-starter-for-remote-apps-on-network-paths&quot;&gt;First Logon Experience and language selector and an app starter for remote apps on network paths&lt;/h2&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/16/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 09/16/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;select-the-language-users&quot;&gt;Select the language (users)&lt;/h2&gt;
-&lt;p&gt;In some environments, customers are running Azure on Windows 10/11 with multiple language packs installed. After the first login, users have to choose their language to customize the environment - that is not so easy, while users have to open the language settings and select the language. The first steps are outside the user’s language and are not easy to do for everyone.&lt;/p&gt;
+
+&lt;p&gt;In some environments, customers are running Azure on Windows 10/11 with multiple language packs installed. After the first login, users have to choose their language to customize the environment - that is not so easy, while users have to open the language settings and select the language. The first steps are outside the user&amp;#39;s language and are not easy to do for everyone.&lt;/p&gt;
+
 &lt;p&gt;I built a tool that makes it easier for users to select their language by clicking on the right flag. Currently, the following features are available:&lt;/p&gt;
-&lt;p&gt;Feature regarding the language selection:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;The tool shows the installed language packages by a flag of the countries.&lt;/li&gt;
-&lt;li&gt;A welcome message in the present language welcomes the users.&lt;/li&gt;
-&lt;li&gt;The user selects the language settings with a click on the flag.&lt;/li&gt;
-&lt;li&gt;Hovering the mouse over a flag shows the country and language name.&lt;/li&gt;
-&lt;li&gt;The app configures the language settings (and does one logoff to apply the setting).&lt;/li&gt;
-&lt;li&gt;The PowerShell script CountrySwitch-User.ps1 in the program files folder is started to do some optional customizing (language code is in $languageTag)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;CountrySwitch is linked in all users’ start menu:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Startup: With parameter /RunOnce - Starts CountrySwitch at logon. The user will see the language selector only if the user is new and didn’t select a language once (HKCU:\SOFTWARE\ITProCloud\CountrySwitch\Completed is set to 1 )&lt;/li&gt;
-&lt;li&gt;Direct: Without parameters - Users can star CountrySwitch manually to select the language&lt;/li&gt;
-&lt;/ul&gt;
+
+&lt;p&gt;Feature regarding the language selection:
+- The tool shows the installed language packages by a flag of the countries.
+- A welcome message in the present language welcomes the users.
+- The user selects the language settings with a click on the flag.
+- Hovering the mouse over a flag shows the country and language name.
+- The app configures the language settings (and does one logoff to apply the setting).
+- The PowerShell script CountrySwitch-User.ps1 in the program files folder is started to do some optional customizing (language code is in $languageTag)&lt;/p&gt;
+
+&lt;p&gt;CountrySwitch is linked in all users&amp;#39; start menu:
+- Startup: With parameter \/RunOnce - Starts CountrySwitch at logon. The user will see the language selector only if the user is new and didn&amp;#39;t select a language once (HKCU:\SOFTWARE\ITProCloud\CountrySwitch\Completed is set to 1 )
+- Direct: Without parameters - Users can star CountrySwitch manually to select the language&lt;/p&gt;
+
 &lt;p&gt;&lt;strong&gt;Note on Remote Apps&lt;/strong&gt;: Remote apps are ignoring the autostart folder. To have CountrySwitch enabled for remote app, please configure a local Startup script (local policy for users) with the following parameters:
-Name of script: “C:\Program Files\ITProCloud.de\CountrySwitch\CountrySwitch.exe”
-Parameters:	/runonce&lt;/p&gt;
+Name of script: &amp;quot;C:\Program Files\ITProCloud.de\CountrySwitch\CountrySwitch.exe&amp;quot;
+Parameters: \/runonce&lt;/p&gt;
+
 &lt;h2 id=&quot;app-starter-for-remote-apps&quot;&gt;App Starter for remote apps&lt;/h2&gt;
-&lt;p&gt;CountrySwitch can also start a local or an application on a file share (which normally does not work directly with AVD). Publish CountrySwitch as a remote app with the following parameters:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;&amp;lt;path to executable with parameters&amp;gt;&amp;quot; &amp;quot;&amp;lt;Working directory&amp;gt;&amp;quot;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot; &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
+
+&lt;p&gt;CountrySwitch can also start a local or an application on a file share (which normally does not work directly with AVD). Publish CountrySwitch as a remote app with the following parameters:
+- &lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;&amp;lt;path to executable with parameters&amp;gt;&amp;quot; &amp;quot;&amp;lt;Working directory&amp;gt;&amp;quot;&lt;/code&gt;
+- &lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot; &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
 &lt;p&gt;If a remote app is started with CountrySwitch, CountrySwitch first starts the PowerShell script CountrySwitch-App.ps1 in the program files folder to do some optional customization. The following parameters are set in the script:&lt;/p&gt;
-&lt;p&gt;Example:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$languageTag = &amp;quot;unknown&amp;quot;,
+
+&lt;p&gt;Example:
+&lt;code&gt;
+$languageTag = &amp;quot;unknown&amp;quot;,
 $appCommandline = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot;,
 $appWorkingDir = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;,
 $appParameter = &amp;quot;/db=vm1&amp;quot;,
 $appExecutable = &amp;quot;finance.exe&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;/code&gt;&lt;/p&gt;
+
 &lt;p&gt;The application starts after the PowerShell script finishes (CountrySwitch will run hidden and terminates after the start of the application (e.g., finance.exe).&lt;/p&gt;
+
 &lt;h2 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h2&gt;
+
 &lt;p&gt;CountrySwitch logs into %AppData%\ITProCloud&lt;/p&gt;
-&lt;p&gt;There are the following reg keys to optionally configure CountrySwitch:&lt;/p&gt;
+
+&lt;p&gt;There are the following reg keys to optionally configure CountrySwitch (set the keys and value to modify the default settings):&lt;/p&gt;
+
 &lt;p&gt;HKLM:\SOFTWARE\Policies\ITProCloud\CountrySwitch (alls values are dword - 1 is true; 0 is false)&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
+
+&lt;table&gt;&lt;thead&gt;
 &lt;tr&gt;
 &lt;th&gt;Key&lt;/th&gt;
 &lt;th&gt;Value&lt;/th&gt;
 &lt;th&gt;Default value&lt;/th&gt;
 &lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
+&lt;/thead&gt;&lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;Enabled&lt;/td&gt;
 &lt;td&gt;If false, the application will not show up (except for /remoteapp (App starter mode))&lt;/td&gt;
@@ -1620,13 +1788,13 @@ $appExecutable = &amp;quot;finance.exe&amp;quot;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;ExitOnSingleLanguage&lt;/td&gt;
-&lt;td&gt;If only one language is installed, don’t show up&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;If only one language is installed, don&amp;#39;t show up&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;LogoffUserAfterSelectingNewLanguage logoff user after selecting a new language&lt;/td&gt;
+&lt;td&gt;LogoffUserAfterSelectingNewLanguage&lt;/td&gt;
+&lt;td&gt;Logoff user after selecting a new language&lt;/td&gt;
 &lt;td&gt;true&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;LogoffUserAfterSelectingSameLanguage&lt;/td&gt;
@@ -1643,19 +1811,19 @@ $appExecutable = &amp;quot;finance.exe&amp;quot;
 &lt;td&gt;If true, the app starter mode for a remote app will no longer trigger CountrySwitch-App before starting the application&lt;/td&gt;
 &lt;td&gt;true&lt;/td&gt;
 &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;release-notes&quot;&gt;Release notes&lt;/h2&gt;
-&lt;table&gt;
-&lt;thead&gt;
+
+&lt;table&gt;&lt;thead&gt;
 &lt;tr&gt;
 &lt;th&gt;Release&lt;/th&gt;
 &lt;th&gt;Date&lt;/th&gt;
 &lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
 &lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
+&lt;/thead&gt;&lt;tbody&gt;
 &lt;tr&gt;
 &lt;td&gt;1.1.3&lt;/td&gt;
 &lt;td&gt;2023-05-04&lt;/td&gt;
@@ -1676,10 +1844,10 @@ $appExecutable = &amp;quot;finance.exe&amp;quot;
 &lt;td&gt;2024-09-16&lt;/td&gt;
 &lt;td&gt;Fix: Prevents that the logoff message is shown multiple times if the user multiple clicks on a flag&lt;/td&gt;
 &lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;br/&gt;
-&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot; /&gt; &lt;strong&gt;Download the latest release from 09/16/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 09/16/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
 &lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
 </description>
         <pubDate>Mon, 16 Sep 2024 00:00:00 +0200</pubDate>
@@ -1696,35 +1864,48 @@ $appExecutable = &amp;quot;finance.exe&amp;quot;
       <item>
         <title>Improve AVD User Experience: Warm-Up to decreas User login time</title>
         <description>&lt;p&gt;If you are running Azure Virtual Desktop with FSLogix, the first login to a host takes longer than the following logins. I also wrote about this effect (I call is Cold vs. Warm start) a few weeks ago here: &lt;a href=&quot;https://lnkd.in/eEQHP5gA&quot;&gt;https://lnkd.in/eEQHP5gA&lt;/a&gt; and &lt;a href=&quot;https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM&quot;&gt;https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;In short, If a VM is started in Azure, the first login of a user takes much longer than the login of the following users to this VM. And: It makes no difference if the first user logs in one or 30 minutes after starting the VM. I did a lot of tests by running &lt;em&gt;ProcMon, FileActivityWatch, and RegistryChangesView&lt;/em&gt; in the system context to capture events during the first login 🤓. I can clearly see dependencies to AppX packages on the VM. In my tests, processing of AppX packages for the first user took 120 seconds, and for the next user, only a few seconds. Right now, I cannot reproduce the first AppX processing without a user logging into the host (but I’m working on that). The first user will also see a black screen during the login.&lt;/p&gt;
+
+&lt;p&gt;In short, If a VM is started in Azure, the first login of a user takes much longer than the login of the following users to this VM. And: It makes no difference if the first user logs in one or 30 minutes after starting the VM. I did a lot of tests by running &lt;em&gt;ProcMon, FileActivityWatch, and RegistryChangesView&lt;/em&gt; in the system context to capture events during the first login 🤓. I can clearly see dependencies to AppX packages on the VM. In my tests, processing of AppX packages for the first user took 120 seconds, and for the next user, only a few seconds. Right now, I cannot reproduce the first AppX processing without a user logging into the host (but I&amp;#39;m working on that). The first user will also see a black screen during the login.&lt;/p&gt;
+
 &lt;p&gt;Therefore, I did another test: Create a temporary local user on the VM directly after the start and make a login (autogenerated passwords and direct deletion of the users after the login).&lt;/p&gt;
-&lt;p&gt;The result is as expected: After the start of the VM, the warmup user triggers the AppX processing and other “initializations.” The next - regular - user experiences a much faster login while that is technically the second login for the VM.&lt;/p&gt;
-&lt;p&gt;I wrote a script to automate a local logon after each VM/host’s start. That may not be the best way to handle this solution, but it is a workaround until I find a more pragmatic solution without a warm-up user.&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-UX-WarmUp-01.png&quot; alt=&quot;&quot; /&gt;
-&lt;img src=&quot;../assets/images/AVD-UX-WarmUp-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The result is as expected: After the start of the VM, the warmup user triggers the AppX processing and other &amp;quot;initializations.&amp;quot; The next - regular - user experiences a much faster login while that is technically the second login for the VM.&lt;/p&gt;
+
+&lt;p&gt;I wrote a script to automate a local logon after each VM/host&amp;#39;s start. That may not be the best way to handle this solution, but it is a workaround until I find a more pragmatic solution without a warm-up user.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-UX-WarmUp-01.png&quot; alt=&quot;&quot;&gt;
+&lt;img src=&quot;../assets/images/AVD-UX-WarmUp-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
 &lt;h2 id=&quot;how-does-it-work&quot;&gt;How does it work?&lt;/h2&gt;
-&lt;p&gt;The script is started directly after the start of a VM/host and runs in the context of the computer. The following steps happen:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Temporarily, allow RDS logon without validation computer certificates (only for the system account)&lt;/li&gt;
-&lt;li&gt;Generate a local user (warm-up user) with a random password. The account automatically expires after 10 minutes&lt;/li&gt;
-&lt;li&gt;Add the user to the Remote Desktop User Group&lt;/li&gt;
-&lt;li&gt;Configure the sign-on via RDS to localhost&lt;/li&gt;
-&lt;li&gt;The warm-up user connects via RDS to localhost (the first user logon)&lt;/li&gt;
-&lt;li&gt;Wait 5 minutes&lt;/li&gt;
-&lt;li&gt;Logoff the user&lt;/li&gt;
-&lt;li&gt;Remove the user account&lt;/li&gt;
-&lt;li&gt;Remove the user profile from disk&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;There are some additional error-handling routines in the script.&lt;/p&gt;
+
+&lt;p&gt;The script is started directly after the start of a VM/host and runs in the context of the computer. The following steps happen:
+- Temporarily, allow RDS logon without validation computer certificates (only for the system account)
+- Generate a local user (warm-up user) with a random password. The account automatically expires after 10 minutes
+- Add the user to the Remote Desktop User Group
+- Configure the sign-on via RDS to localhost
+- The warm-up user connects via RDS to localhost (the first user logon)
+- Wait 5 minutes
+- Logoff the user
+- Remove the user account
+- Remove the user profile from disk&lt;/p&gt;
+
+&lt;p&gt;There are some additional error-handling routines in the script. &lt;/p&gt;
+
 &lt;p&gt;&lt;strong&gt;Pro tip:&lt;/strong&gt; If you ever search for a way to get session information with PowerShell without parsing qwinsta.exe or quser.exe, check the script. It also contains a PowerShell method to log off a specific session.&lt;/p&gt;
+
 &lt;h2 id=&quot;install-the-warm-up-user-script&quot;&gt;Install the warm-up user script&lt;/h2&gt;
+
 &lt;p&gt;You can install the script on an existing host or on your Golden Master / Template VM (which you hopefully capture loss-less with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt; or &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;). Copy the script to the VM and run the following command in an administrative PowerShell:&lt;/p&gt;
+
 &lt;p&gt;&lt;strong&gt;.\WarmUp.ps1 -Mode Install&lt;/strong&gt;&lt;/p&gt;
+
 &lt;p&gt;This copies the script to C:\windows\WarmUp.ps1 and creates a scheduled task to start the script automatically with the computer.&lt;/p&gt;
+
 &lt;h2 id=&quot;the-script&quot;&gt;The script&lt;/h2&gt;
+
 &lt;p&gt;Save it as WarmUp.ps1 or download it from here: &lt;a href=&quot;https://gist.github.com/MarcelMeurer/1044690ed2619c145305e8cc335948a5&quot;&gt;WarmUp.ps1&lt;/a&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;param(
-	[string] $Mode
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;param(
+    [string] $Mode
 )
 
 Add-Type -Language CSharp -TypeDefinition @&apos;
@@ -1734,20 +1915,20 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 namespace Rds {
     public static class Sessions {
-        [DllImport(&amp;quot;wtsapi32.dll&amp;quot;)]
+        [DllImport(&quot;wtsapi32.dll&quot;)]
         static extern IntPtr WTSOpenServer([MarshalAs(UnmanagedType.LPStr)] String pServerName);
-        [DllImport(&amp;quot;wtsapi32.dll&amp;quot;)]
+        [DllImport(&quot;wtsapi32.dll&quot;)]
         static extern void WTSCloseServer(IntPtr hServer);
-        [DllImport(&amp;quot;wtsapi32.dll&amp;quot;)]
+        [DllImport(&quot;wtsapi32.dll&quot;)]
         static extern Int32 WTSEnumerateSessions(IntPtr hServer,
             [MarshalAs(UnmanagedType.U4)] Int32 Reserved,
             [MarshalAs(UnmanagedType.U4)] Int32 Version, ref IntPtr ppSessionInfo,
             [MarshalAs(UnmanagedType.U4)] ref Int32 pCount);
-        [DllImport(&amp;quot;wtsapi32.dll&amp;quot;)]
+        [DllImport(&quot;wtsapi32.dll&quot;)]
         static extern void WTSFreeMemory(IntPtr pMemory);
-        [DllImport(&amp;quot;Wtsapi32.dll&amp;quot;)]
+        [DllImport(&quot;Wtsapi32.dll&quot;)]
         static extern bool WTSQuerySessionInformation(System.IntPtr hServer, int sessionId, WTS_INFO_CLASS wtsInfoClass, out System.IntPtr ppBuffer, out uint pBytesReturned);
-        [DllImport(&amp;quot;Wtsapi32.dll&amp;quot;)]
+        [DllImport(&quot;Wtsapi32.dll&quot;)]
         static extern bool WTSLogoffSession(System.IntPtr hServer, int sessionId, bool wait);
         [StructLayout(LayoutKind.Sequential)]
         private struct WTS_SESSION_INFO {
@@ -1829,7 +2010,7 @@ namespace Rds {
             try {
                 return WTSLogoffSession(serverHandle, id, waitForLogoff);
             } catch (Exception e) {
-                Console.WriteLine(&amp;quot;Exception querying session information: &amp;quot; + e.ToString());
+                Console.WriteLine(&quot;Exception querying session information: &quot; + e.ToString());
             } finally {
                 WTSFreeMemory(sessionInfoPtr);
                 CloseServer(serverHandle);
@@ -1839,7 +2020,7 @@ namespace Rds {
         public static WtsSessionInformation GetSession(string userName) {
             var sessions=GetSessions();
             return sessions.FirstOrDefault(n=&amp;gt;string.Equals(n.UserName, userName, StringComparison.InvariantCultureIgnoreCase));
-            
+
         }
         public static List &amp;lt; WtsSessionInformation &amp;gt; GetSessions() {
             var wtsList = new List &amp;lt; WtsSessionInformation &amp;gt; ();
@@ -1908,7 +2089,7 @@ namespace Rds {
                 }
                 return wtsList;
             } catch (Exception e) {
-                Console.WriteLine(&amp;quot;Exception querying session information: &amp;quot; + e.ToString());
+                Console.WriteLine(&quot;Exception querying session information: &quot; + e.ToString());
             } finally {
                 WTSFreeMemory(sessionInfoPtr);
                 CloseServer(serverHandle);
@@ -1919,21 +2100,21 @@ namespace Rds {
 }
 &apos;@
 
-$LogDir=&amp;quot;$($env:windir)\system32\LogFiles&amp;quot;
-$LogFile=&amp;quot;$($LogDir)\AVD.WarmUp.log&amp;quot;
+$LogDir=&quot;$($env:windir)\system32\LogFiles&quot;
+$LogFile=&quot;$($LogDir)\AVD.WarmUp.log&quot;
 function LogWriter($message) {
-	$message = &amp;quot;$(Get-Date ([datetime]::UtcNow) -Format &amp;quot;o&amp;quot;) $message&amp;quot;
-	write-host($message)
-	if ([System.IO.Directory]::Exists($LogDir)) { try { write-output($message) | Out-File $LogFile -Append } catch {} }
+    $message = &quot;$(Get-Date ([datetime]::UtcNow) -Format &quot;o&quot;) $message&quot;
+    write-host($message)
+    if ([System.IO.Directory]::Exists($LogDir)) { try { write-output($message) | Out-File $LogFile -Append } catch {} }
 }
 
-if ($mode -like &amp;quot;install&amp;quot;) {
-    LogWriter(&amp;quot;Copy script to windir&amp;quot;)
-    Copy-Item &amp;quot;$($MyInvocation.InvocationName)&amp;quot; -Destination ($env:windir + &amp;quot;\WarmUp.ps1&amp;quot;) 
+if ($mode -like &quot;install&quot;) {
+    LogWriter(&quot;Copy script to windir&quot;)
+    Copy-Item &quot;$($MyInvocation.InvocationName)&quot; -Destination ($env:windir + &quot;\WarmUp.ps1&quot;) 
 
-    LogWriter(&amp;quot;Creating schedule task to run the script at startup&amp;quot;)
-    $action = New-ScheduledTaskAction -Execute &amp;quot;$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe&amp;quot; -Argument &amp;quot;-executionPolicy Unrestricted -File `&amp;quot;$($env:windir)\WarmUp.ps1`&amp;quot;&amp;quot;
-    $trigger = New-ScheduledTaskTrigger	-AtStartup
+    LogWriter(&quot;Creating schedule task to run the script at startup&quot;)
+    $action = New-ScheduledTaskAction -Execute &quot;$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe&quot; -Argument &quot;-executionPolicy Unrestricted -File `&quot;$($env:windir)\WarmUp.ps1`&quot;&quot;
+    $trigger = New-ScheduledTaskTrigger -AtStartup
     $principal = New-ScheduledTaskPrincipal &apos;NT Authority\SYSTEM&apos; -RunLevel Highest
     $settingsSet = New-ScheduledTaskSettingsSet
     $task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
@@ -1941,110 +2122,110 @@ if ($mode -like &amp;quot;install&amp;quot;) {
     Enable-ScheduledTask -TaskName &apos;ITPC-AVD-WarmUpUser&apos;
 } else {
 
-    $localUserName = &amp;quot;warmup-user&amp;quot;
+    $localUserName = &quot;warmup-user&quot;
 
     $characters = &apos;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#&apos; #$%^&amp;amp;*()-_=+[]{}|;:,.&amp;lt;&amp;gt;?&apos;
-    $localUserPWPlain = -join (1..32 | ForEach-Object { Get-Random -InputObject $characters.ToCharArray() }) +&amp;quot;!@1aA&amp;quot;
+    $localUserPWPlain = -join (1..32 | ForEach-Object { Get-Random -InputObject $characters.ToCharArray() }) +&quot;!@1aA&quot;
 
     $localUserPW =  ConvertTo-SecureString -String $localUserPWPlain -AsPlainText -Force # https://www.sharepointdiary.com/2020/04/powershell-generate-random-password.html
 
 
     # Store default configuration
-    LogWriter(&amp;quot;Getting local configuration to use saved credentials for the warmup user&amp;quot;)
+    LogWriter(&quot;Getting local configuration to use saved credentials for the warmup user&quot;)
     $oldAuthenticationLevelOverride=$null
-    if (Test-Path &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot;) {
-        $oldAuthenticationLevelOverride = Get-ItemProperty -Path &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot; -Name &amp;quot;AuthenticationLevelOverride&amp;quot; -ErrorAction SilentlyContinue
+    if (Test-Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot;) {
+        $oldAuthenticationLevelOverride = Get-ItemProperty -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -ErrorAction SilentlyContinue
     } else {
-        New-Item -Path &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot; -Force -ErrorAction SilentlyContinue
+        New-Item -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Force -ErrorAction SilentlyContinue
     }
     if ($oldAuthenticationLevelOverride -eq $null) {$oldAuthenticationLevelOverride = 99} else {$oldAuthenticationLevelOverride = $oldAuthenticationLevelOverride.AuthenticationLevelOverride}
 
 
     try {
-        LogWriter(&amp;quot;Modifying configuration to login warmup user with stored credentials&amp;quot;)
+        LogWriter(&quot;Modifying configuration to login warmup user with stored credentials&quot;)
         # Set temporary configuration to allow user logins
-        New-ItemProperty -Path &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot; -Name &amp;quot;AuthenticationLevelOverride&amp;quot; -Value 0 -Force
-        New-ItemProperty -Path &amp;quot;HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services&amp;quot; -Name &amp;quot;DisablePasswordSaving&amp;quot; -Value 1 -Force
+        New-ItemProperty -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -Value 0 -Force
+        New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;DisablePasswordSaving&quot; -Value 1 -Force
 
         # Prepare temporary local user
         if ((Get-LocalUser -Name $localUserName -ErrorAction SilentlyContinue) -ne $null) {
-            LogWriter(&amp;quot;Removing existing local warmup user&amp;quot;)
+            LogWriter(&quot;Removing existing local warmup user&quot;)
             Remove-LocalUser -Name $localUserName
         }
-        LogWriter(&amp;quot;Adding local user&amp;quot;)
+        LogWriter(&quot;Adding local user&quot;)
         $localUser = New-LocalUser -Name $localUserName -Password $localUserPW -AccountExpires (Get-Date).AddMinutes(10) -PasswordNeverExpires -UserMayNotChangePassword
         # Add user to remote desktop group
-        LogWriter(&amp;quot;Adding user to the remote desktop group&amp;quot;)
-        Add-LocalGroupMember -SID &amp;quot;S-1-5-32-555&amp;quot; -Member $localUserName -ErrorAction SilentlyContinue
+        LogWriter(&quot;Adding user to the remote desktop group&quot;)
+        Add-LocalGroupMember -SID &quot;S-1-5-32-555&quot; -Member $localUserName -ErrorAction SilentlyContinue
 
         # Login user
-        LogWriter(&amp;quot;Adding credentials of the warmup user to the key store&amp;quot;)
-        cmdkey /generic:TERMSRV/localhost /user:&amp;quot;$($env:Computername)\$($localUserName)&amp;quot; /pass:$localUserPWPlain
+        LogWriter(&quot;Adding credentials of the warmup user to the key store&quot;)
+        cmdkey /generic:TERMSRV/localhost /user:&quot;$($env:Computername)\$($localUserName)&quot; /pass:$localUserPWPlain
         $startTime=Get-Date
 
 
-	$i=0
-	do {
-            LogWriter(&amp;quot;Login in user warmup user&amp;quot;)
+    $i=0
+    do {
+            LogWriter(&quot;Login in user warmup user&quot;)
             if ($mstsc) {
-		$mstsc.Kill()
-		Start-Sleep -Seconds 6
-	    }
-            $mstsc = Start-Process -PassThru -FilePath &amp;quot;mstsc.exe&amp;quot; -ArgumentList &amp;quot;/v:localhost&amp;quot;
-    
+        $mstsc.Kill()
+        Start-Sleep -Seconds 6
+        }
+            $mstsc = Start-Process -PassThru -FilePath &quot;mstsc.exe&quot; -ArgumentList &quot;/v:localhost&quot;
+
             # Wait for the user to login 
-            LogWriter(&amp;quot;Waiting a few seconds&amp;quot;)
+            LogWriter(&quot;Waiting a few seconds&quot;)
             Start-Sleep -Seconds 20
-            $i++		
-	} while ([Rds.Sessions]::GetSession($localUserName) -eq $null -and $i -le 10)
+            $i++        
+    } while ([Rds.Sessions]::GetSession($localUserName) -eq $null -and $i -le 10)
 
         # Remove credentials
-        LogWriter(&amp;quot;Removing credentials from the key store&amp;quot;)
+        LogWriter(&quot;Removing credentials from the key store&quot;)
         cmdkey /delete:TERMSRV/localhost
 
         # Check, if user is connected
         $session=[Rds.Sessions]::GetSession($localUserName)
 
         if ($session -eq $null) {
-            LogWriter(&amp;quot;Warning: Warm-up user is not connected. So, the workaround is not working for some reasons&amp;quot;)
+            LogWriter(&quot;Warning: Warm-up user is not connected. So, the workaround is not working for some reasons&quot;)
         } else {
             # Let the user for a while in the session and then logoff
-            LogWriter(&amp;quot;Let the user logged in for a while&amp;quot;)
+            LogWriter(&quot;Let the user logged in for a while&quot;)
             Start-Sleep -Seconds 300
-            LogWriter(&amp;quot;Logoff user&amp;quot;)
+            LogWriter(&quot;Logoff user&quot;)
             [Rds.Sessions]::LogoffSession($session.SessionId, $true)
             # Remove profile of the user
             try {
-                LogWriter(&amp;quot;Delete profile of the warm-up user&amp;quot;)
-                @(Get-CimInstance -Class Win32_UserProfile | Where-Object { $_.Loaded -eq $false -and ($_.LocalPath.split(&apos;\&apos;)[-1] -like $localUserName -or $_.LocalPath.split(&apos;\&apos;)[-1] -like &amp;quot;$($localUserName).*&amp;quot;)}) | Remove-CimInstance
+                LogWriter(&quot;Delete profile of the warm-up user&quot;)
+                @(Get-CimInstance -Class Win32_UserProfile | Where-Object { $_.Loaded -eq $false -and ($_.LocalPath.split(&apos;\&apos;)[-1] -like $localUserName -or $_.LocalPath.split(&apos;\&apos;)[-1] -like &quot;$($localUserName).*&quot;)}) | Remove-CimInstance
 
             } catch {
-                LogWriter(&amp;quot;Error: Cannot delete the profile of the warmup user: $_&amp;quot;)
+                LogWriter(&quot;Error: Cannot delete the profile of the warmup user: $_&quot;)
             }
 
         }
-        LogWriter(&amp;quot;Terminate mstsc.exe, if running&amp;quot;)
+        LogWriter(&quot;Terminate mstsc.exe, if running&quot;)
         $mstsc.Kill()
     } catch {
-        LogWriter(&amp;quot;Error: $_&amp;quot;)
+        LogWriter(&quot;Error: $_&quot;)
     } finally {
         # Remove user
-        LogWriter(&amp;quot;Disable and remove user&amp;quot;)
-        Remove-LocalGroupMember -SID &amp;quot;S-1-5-32-555&amp;quot; -Member $localUserName
+        LogWriter(&quot;Disable and remove user&quot;)
+        Remove-LocalGroupMember -SID &quot;S-1-5-32-555&quot; -Member $localUserName
         Disable-LocalUser -Name  $localUserName -ErrorAction SilentlyContinue
         Remove-LocalUser -Name $localUserName -ErrorAction SilentlyContinue
 
         # Restore default configuration
-        LogWriter(&amp;quot;Restoring local configuration&amp;quot;)
+        LogWriter(&quot;Restoring local configuration&quot;)
         if ($oldAuthenticationLevelOverride -eq 99) {
-            Remove-ItemProperty &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot; -Name &amp;quot;AuthenticationLevelOverride&amp;quot; -Force
+            Remove-ItemProperty &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -Force
         } else {
-            New-ItemProperty -Path &amp;quot;HKCU:\Software\Microsoft\Terminal Server Client&amp;quot; -Name &amp;quot;AuthenticationLevelOverride&amp;quot; -Value $oldAuthenticationLevelOverride -Force
+            New-ItemProperty -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -Value $oldAuthenticationLevelOverride -Force
         }
     }
-    LogWriter(&amp;quot;Done&amp;quot;)
+    LogWriter(&quot;Done&quot;)
 }
-&lt;/code&gt;&lt;/pre&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
         <pubDate>Fri, 23 Aug 2024 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</guid>
@@ -2058,84 +2239,93 @@ if ($mode -like &amp;quot;install&amp;quot;) {
     
       <item>
         <title>Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)</title>
-        <description>&lt;p&gt;Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates).&lt;/p&gt;
+        <description>&lt;p&gt;Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don&amp;#39;t want to imagine what happens if Windows shuts down during Windows Updates).&lt;/p&gt;
+
 &lt;p&gt;Also, my solution, &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;, uses the API to install Windows updates. That also includes draining, starting, installing, rebooting, etc. - all that is needed to update an existing host or a golden master. E.g.: Example of the script collection for an update:&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/WSUS-API-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/WSUS-API-05.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
 &lt;p&gt;Unfortunately, a Microsoft patch broke the functionality of the Windows Update API. That is documented here: &lt;a href=&quot;https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;&gt;https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&lt;/a&gt;&lt;/p&gt;
+
 &lt;p&gt;If you have a broken computer, you will see the following error message: Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)
-&lt;img src=&quot;../assets/images/WSUS-API-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The documentation also explains how to resolve the issue using a KIR (known issue recovery), which requires some handwork or automation. To make this as easy as possible for users of &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;, I added the installation of the KIR as part of the “BuiltIn: OS Install Windows Updates”. Finally, it downloads and installs the KIR package and activates it. A final reboot is needed to bring it to work. If you are using the script as part of the script collection (see image above), it will first patch the host and install updates on the second try of running the “BuiltIn: OS Install Windows Updates”.&lt;/p&gt;
+&lt;img src=&quot;../assets/images/WSUS-API-01.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;The documentation also explains how to resolve the issue using a KIR (known issue recovery), which requires some handwork or automation. To make this as easy as possible for users of &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;, I added the installation of the KIR as part of the &amp;quot;BuiltIn: OS Install Windows Updates&amp;quot;. Finally, it downloads and installs the KIR package and activates it. A final reboot is needed to bring it to work. If you are using the script as part of the script collection (see image above), it will first patch the host and install updates on the second try of running the &amp;quot;BuiltIn: OS Install Windows Updates&amp;quot;.&lt;/p&gt;
+
 &lt;p&gt;To get the updated built-in scripts, you can click on the icon in the upper-right corner inside of the scripts page:
-&lt;img src=&quot;../assets/images/WSUS-API-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;../assets/images/WSUS-API-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
 &lt;p&gt;Finally, you should have the updated script (reload the site first):
-&lt;img src=&quot;../assets/images/WSUS-API-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;../assets/images/WSUS-API-03.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
 &lt;p&gt;After that, the Windows update procedure is working as expected:
-&lt;img src=&quot;../assets/images/WSUS-API-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;../assets/images/WSUS-API-04.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
 &lt;p&gt;Do you want to adapt your scripts? Here is my implementation. Feel free to use it:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;# Install Windows security updates directly over the internet. VM downloads the packages directly from Microsoft using the Windows Update service. A restart is required after the installation, which can be done with the script collection &amp;quot;OS Install Windows Updates&amp;quot;.
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;# Install Windows security updates directly over the internet. VM downloads the packages directly from Microsoft using the Windows Update service. A restart is required after the installation, which can be done with the script collection &quot;OS Install Windows Updates&quot;.
 $updateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
 $updateSearcher = New-Object -ComObject Microsoft.Update.Searcher
 $updateSession = New-Object -ComObject Microsoft.Update.Session
 
-$updatesKb=&amp;quot;&amp;quot;
+$updatesKb=&quot;&quot;
 
-write-host(&amp;quot;Checking for updates&amp;quot;)
-$result = $updateSearcher.Search(&amp;quot;IsInstalled=0 and Type=&apos;Software&apos; and IsHidden=0&amp;quot;)
+write-host(&quot;Checking for updates&quot;)
+$result = $updateSearcher.Search(&quot;IsInstalled=0 and Type=&apos;Software&apos; and IsHidden=0&quot;)
 
 if ($result.Updates.Count -EQ 0) {
-	write-host(&amp;quot;No new updates found&amp;quot;)
+    write-host(&quot;No new updates found&quot;)
 }
 else {
     try {
         $updateDownloader = $updateSession.CreateUpdateDownloader()
         $result.Updates|foreach {
-            write-host(&amp;quot;Found: $($_.Title)&amp;quot;)
-            $updatesKb=$updatesKb+$_.KBArticleIDs+&amp;quot; &amp;quot;
+            write-host(&quot;Found: $($_.Title)&quot;)
+            $updatesKb=$updatesKb+$_.KBArticleIDs+&quot; &quot;
             $updateCollection.Add($_)|Out-Null
         }
-        write-host(&amp;quot;Downloading updates&amp;quot;)
+        write-host(&quot;Downloading updates&quot;)
         $updateDownloader.Updates = $updateCollection
         $updateDownloads = $updateDownloader.Download()
         if (($updateDownloads.HResult -EQ 0) -AND ($updateDownloads.ResultCode -EQ 2)) {
-            write-host(&amp;quot;Downloads success&amp;quot;)
+            write-host(&quot;Downloads success&quot;)
         }
         else {
-            write-host(&amp;quot;Downloads failed&amp;quot;)
-            Write-host(&amp;quot;ScriptReturnMessage:{Download failed}:ScriptReturnMessage&amp;quot;)
+            write-host(&quot;Downloads failed&quot;)
+            Write-host(&quot;ScriptReturnMessage:{Download failed}:ScriptReturnMessage&quot;)
             exit
         }
-        write-host(&amp;quot;Installing updates&amp;quot;)
+        write-host(&quot;Installing updates&quot;)
         $updateInstaller = New-Object -ComObject Microsoft.Update.Installer
         $updateInstaller.Updates = $updateCollection
         $updateDownloads = $updateInstaller.Install()
 
-        write-host(&amp;quot;Applied updates: $updatesKb&amp;quot;)
+        write-host(&quot;Applied updates: $updatesKb&quot;)
     } catch {
-        if (($_ -like &amp;quot;*0x8002802B*&amp;quot;) -and (Get-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot; -Name &amp;quot;1931709068&amp;quot; -ErrorAction Ignore).&amp;quot;1931709068&amp;quot; -ne 0) {
+        if (($_ -like &quot;*0x8002802B*&quot;) -and (Get-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -ErrorAction Ignore).&quot;1931709068&quot; -ne 0) {
             # Update API issue: https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc
-            $hotFixKirUrl=&amp;quot;https://download.microsoft.com/download/3944f364-6483-49ab-af0d-3e2bd80dedaf/Windows%2011%2022H2%20KB5039302%20240711_20301%20Known%20Issue%20Rollback.msi&amp;quot;
+            $hotFixKirUrl=&quot;https://download.microsoft.com/download/3944f364-6483-49ab-af0d-3e2bd80dedaf/Windows%2011%2022H2%20KB5039302%20240711_20301%20Known%20Issue%20Rollback.msi&quot;
             try {
-                write-host (&amp;quot;Try to download KIR file to bring Windows Update API back&amp;quot;)
-                (New-Object System.Net.WebClient).DownloadFile($hotFixKirUrl, &amp;quot;$env:temp\KIRKB5039302.msi&amp;quot;)
+                write-host (&quot;Try to download KIR file to bring Windows Update API back&quot;)
+                (New-Object System.Net.WebClient).DownloadFile($hotFixKirUrl, &quot;$env:temp\KIRKB5039302.msi&quot;)
                 Start-Process msiexec.exe -Wait -ArgumentList &apos;/I $env:temp\KIRKB5039302.msi /quiet&apos;
-                if (-not (Test-Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot;)) {
-                    New-Item -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot; -Force -ErrorAction SilentlyContinue
+                if (-not (Test-Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot;)) {
+                    New-Item -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Force -ErrorAction SilentlyContinue
                 }
-                New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&amp;quot; -Name &amp;quot;1931709068&amp;quot; -Value 0 -Force -ErrorAction SilentlyContinue
+                New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -Value 0 -Force -ErrorAction SilentlyContinue
             } catch {
-                write-host (&amp;quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&amp;quot;)
+                write-host (&quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&quot;)
                 throw $_
             }
             # A reboot is required
-            write-host(&amp;quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&amp;quot;)
+            write-host(&quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;)
         } else {
-            write-host (&amp;quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&amp;quot;)
+            write-host (&quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&quot;)
             throw $_
         }
     }
 }
 
-&lt;/code&gt;&lt;/pre&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
         <pubDate>Thu, 01 Aug 2024 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/</guid>
@@ -2149,78 +2339,114 @@ else {
     
       <item>
         <title>Common issues in Azure Virtual Desktop (VMs-Session Hosts relations)</title>
-        <description>&lt;h1 id=&quot;vm--session-host-relation&quot;&gt;VM- Session Host relation&lt;/h1&gt;
+        <description>&lt;h1 id=&quot;vm-session-host-relation&quot;&gt;VM- Session Host relation&lt;/h1&gt;
+
 &lt;p&gt;In Azure Virtual Desktop, session hosts in host pools are providing remote applications or desktops to users. A session host is an object in a host pool. The session host is NOT the virtual machine (you can see in Azure in the Azure Virtual Machine view) but has a reference in a property to the virtual machine:
-&lt;img src=&quot;../assets/images/Orphan-01.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;p&gt;The session host (object) is relevant for Azure Virtual Desktop. And is reporting the “state” to the AVD backend. The important states for a session host are:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Available (the session host is ready to accept connections)&lt;/li&gt;
-&lt;li&gt;Unavailable (the session host is not ready and mostly off/deallocated)&lt;/li&gt;
-&lt;li&gt;Shutdown (the session host is off/deallocated)&lt;/li&gt;
-&lt;li&gt;Other, which are not relevant in this case&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The AVD agents installed on the virtual machine report the state of the session host. So, the virtual machine is responsible for the state of the session host object in a pool.&lt;/p&gt;
+&lt;img src=&quot;../assets/images/Orphan-01.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;The session host (object) is relevant for Azure Virtual Desktop. And is reporting the &amp;quot;state&amp;quot; to the AVD backend. The important states for a session host are:
+- Available (the session host is ready to accept connections)
+- Unavailable (the session host is not ready and mostly off/deallocated)
+- Shutdown (the session host is off/deallocated)
+- Other, which are not relevant in this case&lt;/p&gt;
+
+&lt;p&gt;The AVD agents installed on the virtual machine report the state of the session host. So, the virtual machine is responsible for the state of the session host object in a pool. &lt;/p&gt;
+
 &lt;h1 id=&quot;common-issues-in-this-relationship&quot;&gt;Common issues in this relationship&lt;/h1&gt;
+
 &lt;p&gt;While the session host object and a virtual machine are independent resources and can have different problems, some behaviors must be monitored and mitigated if happening.&lt;/p&gt;
+
 &lt;h2 id=&quot;orphan-virtual-machines&quot;&gt;Orphan Virtual Machines&lt;/h2&gt;
-&lt;p&gt;If a session host is deleted without the Virtual Machine, it will no longer appear in the AVD section in the Azure Portal and not in the session host list in &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;. That is expected. But while the virtual machine was not deleted, you are charged for additional costs – even if you are not using the virtual machine as a session host. The costs are higher if the virtual machine is still running and “invisible” from the AVD view.&lt;/p&gt;
+
+&lt;p&gt;If a session host is deleted without the Virtual Machine, it will no longer appear in the AVD section in the Azure Portal and not in the session host list in &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;. That is expected. But while the virtual machine was not deleted, you are charged for additional costs – even if you are not using the virtual machine as a session host. The costs are higher if the virtual machine is still running and &amp;quot;invisible&amp;quot; from the AVD view.&lt;/p&gt;
+
 &lt;h2 id=&quot;unresponsive-avd-agents&quot;&gt;Unresponsive AVD Agents&lt;/h2&gt;
-&lt;p&gt;As mentioned before, the AVD Agent (there are two involved services on each virtual machine) reports the state of a session host to the AVD backend. If the service cannot report the session host state to the AVD backend, the session hosts will stay in an “Unavailable” or “Shutdown” state.
+
+&lt;p&gt;As mentioned before, the AVD Agent (there are two involved services on each virtual machine) reports the state of a session host to the AVD backend. If the service cannot report the session host state to the AVD backend, the session hosts will stay in an &amp;quot;Unavailable&amp;quot; or &amp;quot;Shutdown&amp;quot; state.
 From the AVD perspective, it looks like the session host is not running even if the virtual machine runs. That means that customers are charged for the virtual machine but don’t get a value from the AVD perspective (users cannot log in; hosts look like they were deallocated).
-Possible causes of this issue:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;A known issue is that the internal session host token expires after 90 days. So, if a session host is not running in 90 days to refresh the token, the host can no longer report the state to the AVD backend. &lt;a href=&quot;https://learn.microsoft.com/azure/virtual-desktop/faq#how-often-should-i-turn-my-vms-on-to-prevent-registration-issues-&quot;&gt;https://learn.microsoft.com/azure/virtual-desktop/faq#how-often-should-i-turn-my-vms-on-to-prevent-registration-issues-&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;The OS crashed inside of the VM. If the OS crashes inside of Windows and is not restarted automatically and starts well, the AVD agent is not started and cannot send the “state” to the AVD backend.&lt;/li&gt;
-&lt;li&gt;The network is not working / cannot reach the AVD backend (Firewall): In this case, it’s technically not possible for the AVD Agent to report the state to the backend.&lt;/li&gt;
-&lt;li&gt;The AVD agent failed to start. If the AVD Agent fails to start, it cannot update the state to the AVD backend. The reason for that must be found in the log files and the event log of the OS on the VM.&lt;/li&gt;
-&lt;li&gt;If the network card or AVD services are disabled (which can be used to recreate this issue), the AVD agent cannot send the state to the AVD backend.&lt;/li&gt;
-&lt;li&gt;…&lt;/li&gt;
-&lt;/ul&gt;
+Possible causes of this issue:
+- A known issue is that the internal session host token expires after 90 days. So, if a session host is not running in 90 days to refresh the token, the host can no longer report the state to the AVD backend. &lt;a href=&quot;https://learn.microsoft.com/azure/virtual-desktop/faq#how-often-should-i-turn-my-vms-on-to-prevent-registration-issues-&quot;&gt;https://learn.microsoft.com/azure/virtual-desktop/faq#how-often-should-i-turn-my-vms-on-to-prevent-registration-issues-&lt;/a&gt;
+- The OS crashed inside of the VM. If the OS crashes inside of Windows and is not restarted automatically and starts well, the AVD agent is not started and cannot send the &amp;quot;state&amp;quot; to the AVD backend.
+- The network is not working / cannot reach the AVD backend (Firewall): In this case, it’s technically not possible for the AVD Agent to report the state to the backend.
+- The AVD agent failed to start. If the AVD Agent fails to start, it cannot update the state to the AVD backend. The reason for that must be found in the log files and the event log of the OS on the VM.
+- If the network card or AVD services are disabled (which can be used to recreate this issue), the AVD agent cannot send the state to the AVD backend.
+- …&lt;/p&gt;
+
 &lt;h2 id=&quot;other-orphan-resources&quot;&gt;Other orphan resources&lt;/h2&gt;
+
 &lt;h3 id=&quot;orphan-disks&quot;&gt;Orphan disks&lt;/h3&gt;
+
 &lt;p&gt;Disks that are not assigned to a virtual machine. It still causes costs if forgotten to delete them.&lt;/p&gt;
+
 &lt;h3 id=&quot;orphan-network-interfaces&quot;&gt;Orphan network interfaces&lt;/h3&gt;
+
 &lt;p&gt;A network interface is not connected to a virtual machine or used as a private endpoint. They don’t cause costs, but they reserve one of the available IPs per card. If no IP is available for the next host/virtual machine, this can cause rollout issues.&lt;/p&gt;
+
 &lt;h3 id=&quot;orphan-session-hosts&quot;&gt;Orphan session hosts&lt;/h3&gt;
+
 &lt;p&gt;The session hosts exist, but not the linked virtual machines. That doesn’t cause costs, but it can prevent autoscaling from working well.&lt;/p&gt;
+
 &lt;h1 id=&quot;actions-to-prevent-and-monitor-these-kinds-of-issues&quot;&gt;Actions to prevent and monitor these kinds of issues&lt;/h1&gt;
+
 &lt;h2 id=&quot;using-the-avd-deep-insights-workbook&quot;&gt;Using the AVD Deep Insights workbook&lt;/h2&gt;
-&lt;p&gt;The workbook &lt;a href=&quot;https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/&quot;&gt;https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/&lt;/a&gt; is using the resource graph to show possible issues regarding both kinds of issues. In the section “Resources” are different types of possible issues are shown
+
+&lt;p&gt;The workbook &lt;a href=&quot;https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/&quot;&gt;https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/&lt;/a&gt; is using the resource graph to show possible issues regarding both kinds of issues. In the section &amp;quot;Resources&amp;quot; are different types of possible issues are shown
 Important: Some of the listed issues are expected during rollout, maintenance (Windows Update), imaging, etc.&lt;/p&gt;
-&lt;h3 id=&quot;orphan-virtual-machines-1&quot;&gt;Orphan virtual machines&lt;/h3&gt;
-&lt;p&gt;It shows virtual machines intended to be session hosts without a session host object. Only virtual machines with a tag with the name “AVD.Type” or “WVD.Type” and the value “SessionHost” are listed. &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; set the tag automatically with each deployment. Unfortunately, hosts deployed by the Azure Portal are not listed, but the tag can be set after or during a deployment from the portal.
-&lt;img src=&quot;../assets/images/Orphan-02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;unresponsive-avd-agents-1&quot;&gt;Unresponsive AVD agents&lt;/h3&gt;
-&lt;p&gt;It shows the session hosts where the linked virtual machine is running, but the session host is in the state “unavailable” or “shutdown.” That is expected during a start/stop/rollout/delete of a session host but not during the normal runtime.
-&lt;img src=&quot;../assets/images/Orphan-03.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-&lt;h3 id=&quot;other-orphan-resources-1&quot;&gt;Other orphan resources&lt;/h3&gt;
-&lt;p&gt;The workbook also shows the following orphan resources:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Orphan disks: Disks that are not assigned to a virtual machine. It still causes costs if forgotten to delete them.&lt;/li&gt;
-&lt;li&gt;Orphan network interfaces: Don’t cause costs but will reserve one of the available IPs per card. This can cause rollout issues if no IP is available for the next host/virtual machine.&lt;/li&gt;
-&lt;li&gt;Orphan session hosts: The session hosts exist but not the linked virtual machines. That doesn’t cause costs, but it can prevent autoscaling from working well.&lt;/li&gt;
-&lt;/ul&gt;
+
+&lt;h3 id=&quot;orphan-virtual-machines&quot;&gt;Orphan virtual machines&lt;/h3&gt;
+
+&lt;p&gt;It shows virtual machines intended to be session hosts without a session host object. Only virtual machines with a tag with the name &amp;quot;AVD.Type&amp;quot; or &amp;quot;WVD.Type&amp;quot; and the value &amp;quot;SessionHost&amp;quot; are listed. &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; and &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; set the tag automatically with each deployment. Unfortunately, hosts deployed by the Azure Portal are not listed, but the tag can be set after or during a deployment from the portal.
+&lt;img src=&quot;../assets/images/Orphan-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;unresponsive-avd-agents&quot;&gt;Unresponsive AVD agents&lt;/h3&gt;
+
+&lt;p&gt;It shows the session hosts where the linked virtual machine is running, but the session host is in the state &amp;quot;unavailable&amp;quot; or &amp;quot;shutdown.&amp;quot; That is expected during a start/stop/rollout/delete of a session host but not during the normal runtime.
+&lt;img src=&quot;../assets/images/Orphan-03.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;other-orphan-resources&quot;&gt;Other orphan resources&lt;/h3&gt;
+
+&lt;p&gt;The workbook also shows the following orphan resources:
+- Orphan disks: Disks that are not assigned to a virtual machine. It still causes costs if forgotten to delete them.
+- Orphan network interfaces: Don’t cause costs but will reserve one of the available IPs per card. This can cause rollout issues if no IP is available for the next host/virtual machine.
+- Orphan session hosts: The session hosts exist but not the linked virtual machines. That doesn’t cause costs, but it can prevent autoscaling from working well.&lt;/p&gt;
+
 &lt;h2 id=&quot;deployment-improvements-with-hydra-for-azure-virtual-desktop-and-wvdadmin&quot;&gt;Deployment improvements with Hydra for Azure Virtual Desktop and WVDAdmin&lt;/h2&gt;
+
 &lt;p&gt;Both tools can be used to easily deploy new session hosts. The newest versions install some scheduled tasks on the newly deployed session hosts / virtual machines to monitor the start-up of the AVD services. E.g., if a start of one service fails (AVD agent bootloader) in the first minutes after a start, the task will start the service again. That can help if the service is not running in an issue again.&lt;/p&gt;
+
 &lt;h2 id=&quot;using-hydra-for-azure-virtual-desktop&quot;&gt;Using Hydra for Azure Virtual Desktop&lt;/h2&gt;
+
 &lt;h3 id=&quot;failed-start-of-session-hosts-unresponsive-avd-agent&quot;&gt;Failed start of session hosts (unresponsive AVD agent)&lt;/h3&gt;
-&lt;p&gt;The start process of a session host is monitored If it is started with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; (in the Hydra portal or by autoscaling). If a session host is not changing the state to “available” or “updating” in 10 minutes, the host will be marked as “critically failed”. This is visible on the dashboard and in the session host list:&lt;/p&gt;
+
+&lt;p&gt;The start process of a session host is monitored If it is started with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; (in the Hydra portal or by autoscaling). If a session host is not changing the state to &amp;quot;available&amp;quot; or &amp;quot;updating&amp;quot; in 10 minutes, the host will be marked as &amp;quot;critically failed&amp;quot;. This is visible on the dashboard and in the session host list:&lt;/p&gt;
+
 &lt;p&gt;Notification on the dashboard:&lt;br/&gt;
-&lt;img src=&quot;../assets/images/Orphan-04.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;../assets/images/Orphan-04.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
 &lt;p&gt;Notification in the session host list:&lt;br/&gt;
-&lt;img src=&quot;../assets/images/Orphan-05.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;../assets/images/Orphan-05.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
 &lt;p&gt;Note: If a host is started outside of Hydra—in the Azure Portal or with the Start VM on connect feature—Hydra cannot mark it.
-Tip: While Hydra’s logging data are stored in Log Analytics, it is possible to create an alert to be notified by mail or to open a ticket via REST.&lt;/p&gt;
+Tip: While Hydra&amp;#39;s logging data are stored in Log Analytics, it is possible to create an alert to be notified by mail or to open a ticket via REST.&lt;/p&gt;
+
 &lt;h3 id=&quot;notification-of-orphan-vms-and-unresponsive-avd-agents&quot;&gt;Notification of orphan VMs and unresponsive AVD agents&lt;/h3&gt;
+
 &lt;p&gt;From version 1.0.7.4, Hydra will show a notification if orphan hosts or unresponsive AVD agents are detected:
-&lt;img src=&quot;../assets/images/Orphan-06.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;../assets/images/Orphan-06.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
 &lt;p&gt;The detection runs every 20 minutes, and resources seen three times in a row with the same possible issue are shown. So, the first notification is shown after one hour (to be changed). That should prevent the falsest alerts while such a state is possible during deployments, starts, stops, deletes, imaging, or if the service account does not have permission to see all needed resources.&lt;/p&gt;
+
 &lt;h3 id=&quot;further-orphan-resources&quot;&gt;Further orphan resources&lt;/h3&gt;
+
 &lt;p&gt;Orphan disks and network interfaces will be listed (like virtual machines) in the near future in Azure Resources -&amp;gt; Orphan Resources in Hydra soon.&lt;/p&gt;
+
 &lt;h3 id=&quot;next-stepsf&quot;&gt;Next stepsf&lt;/h3&gt;
+
 &lt;p&gt;In an upcoming version, the hosts and VMs will be directly visible in the Hydra portal, including the possibility of taking some actions (like deleting resources, reinstalling the AVD agent, etc.).&lt;/p&gt;
+
 &lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
-&lt;p&gt;Like any other IT solution, Azure Virtual Desktop may have issues. Therefore, it is important to monitor and take action to avoid additional costs without gaining value from the AVD perspective.
+
+&lt;p&gt;Like any other IT solution, Azure Virtual Desktop may have issues. Therefore, it is important to monitor and take action to avoid additional costs without gaining value from the AVD perspective. 
 I personally use the tools I built to deploy hosts more reliably and to get notified about possible issues. And: &lt;strong&gt;It always makes sense to monitor the cost and cost prediction of subscriptions in Azure.&lt;/strong&gt;&lt;/p&gt;
 </description>
         <pubDate>Wed, 03 Jul 2024 00:00:00 +0200</pubDate>
@@ -2237,49 +2463,52 @@ I personally use the tools I built to deploy hosts more reliably and to get noti
       <item>
         <title>How to image a Confidential Golden Master VM and deploy confidential Session Hosts for Azure Virtual Desktop</title>
         <description>&lt;p&gt;Azure confidential VMs offer strong security and confidentiality for customers by isolating data. That can also make sene for Azure Virtual Desktop. One of my favorite deployment methods is the Golden Master apporach with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;. Hydra allows image creation without losing the Golden Master. So, a Golden Master can be updated and imaged unlimitedly. Tip: Imaging, including patching, can be automated and scheduled with Hydra.&lt;/p&gt;
-&lt;p&gt;Note: Hydra version 1.0.7.3 or newer is needed for confidential support. To update Hydra: Click on the avatar (roboter icon) in the upper right corner and select: “Update Engine”. After a while, reload the Hydra Portal website.&lt;/p&gt;
+
+&lt;p&gt;Note: Hydra version 1.0.7.3 or newer is needed for confidential support. To update Hydra: Click on the avatar (roboter icon) in the upper right corner and select: &amp;quot;Update Engine&amp;quot;. After a while, reload the Hydra Portal website. &lt;/p&gt;
+
 &lt;p&gt;First, we create a Golden Master:&lt;/p&gt;
+
 &lt;ul&gt;
 &lt;li&gt;Create a Golden Master. Ensure that you create the Golden Master as a Confidential VM. Select a confidential VM size and security type &lt;strong&gt;Confidential virtual machines&lt;/strong&gt;
-&lt;img src=&quot;../assets/images/Confidential-Imaging-01.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/Confidential-Imaging-01.png&quot; alt=&quot;&quot;&gt;
 To encrypt also the OS disk, select &lt;strong&gt;Confidential OS disk encryption&lt;/strong&gt;:
-&lt;img src=&quot;../assets/images/Confidential-Imaging-02.png&quot; alt=&quot;&quot; /&gt;
+&lt;img src=&quot;../assets/images/Confidential-Imaging-02.png&quot; alt=&quot;&quot;&gt;
 Configure the other settings.&lt;/li&gt;
 &lt;li&gt;Install all applications and updates&lt;/li&gt;
 &lt;li&gt;Do some configurations&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Confidential images can only be stored in specific Azure compute gallery definitions. Create a new gallery definition for confidential VM:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Use an existing compute gallery or create a new compute gallery&lt;/li&gt;
-&lt;li&gt;Click on Add -&amp;gt; VM image definition
-&lt;img src=&quot;../assets/images/Confidential-Imaging-03.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-&lt;li&gt;The security type must be &lt;strong&gt;Confidential&lt;/strong&gt;
-&lt;img src=&quot;../assets/images/Confidential-Imaging-04.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-&lt;li&gt;Enter a name and fill out the fields Publisher, Offer, and SKU (the combination of publisher, offer, and SKU must be unique in the gallery)&lt;/li&gt;
-&lt;li&gt;Click on review and create to create the gallery definition
-&lt;img src=&quot;../assets/images/Confidential-Imaging-05.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;To create an image, go to your Hydra installation and open Image Builder -&amp;gt; Create an image&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Select your confidential Golden Master from the virtual machine list&lt;/li&gt;
-&lt;li&gt;Select the resource group of the Golden Master VM&lt;/li&gt;
-&lt;li&gt;Select the compute gallery definition in the Azure Compute Gallery section&lt;/li&gt;
-&lt;li&gt;Configure the locations where the image should be available&lt;/li&gt;
-&lt;li&gt;Click on Create Image&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/Confidential-Imaging-06.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Confidential images can only be stored in specific Azure compute gallery definitions. Create a new gallery definition for confidential VM:
+- Use an existing compute gallery or create a new compute gallery
+- Click on Add -&amp;gt; VM image definition
+  &lt;img src=&quot;../assets/images/Confidential-Imaging-03.png&quot; alt=&quot;&quot;&gt;
+- The security type must be &lt;strong&gt;Confidential&lt;/strong&gt;
+  &lt;img src=&quot;../assets/images/Confidential-Imaging-04.png&quot; alt=&quot;&quot;&gt;
+- Enter a name and fill out the fields Publisher, Offer, and SKU (the combination of publisher, offer, and SKU must be unique in the gallery)
+- Click on review and create to create the gallery definition
+  &lt;img src=&quot;../assets/images/Confidential-Imaging-05.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;To create an image, go to your Hydra installation and open Image Builder -&amp;gt; Create an image
+- Select your confidential Golden Master from the virtual machine list
+- Select the resource group of the Golden Master VM
+- Select the compute gallery definition in the Azure Compute Gallery section
+- Configure the locations where the image should be available
+- Click on Create Image&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Confidential-Imaging-06.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
 &lt;p&gt;Important: The golden master &lt;strong&gt;must&lt;/strong&gt; also be a confidential VM. The encryption configuration of the OS disk is also stored and will be used by rolling out session hosts based on that image.
 Hint: If the OS disk is encrypted, the imaging process will take longer. A clone is created during the imaging (and later deleted), and the disk is decrypted. This will take a while.&lt;/p&gt;
-&lt;p&gt;After an image is created, we can configure the rollout configuration of our confidential host pool.&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;In Hydra: Dashboard -&amp;gt; Your host pool -&amp;gt; Configuration -&amp;gt; New Session Host Rollout&lt;/li&gt;
-&lt;li&gt;Configure all settings&lt;/li&gt;
-&lt;li&gt;Select a  confidential virtual machine size (type confidential in the field to show the sizes):
-&lt;img src=&quot;../assets/images/Confidential-Imaging-07.png&quot; alt=&quot;&quot; /&gt;&lt;/li&gt;
-&lt;li&gt;Save&lt;/li&gt;
-&lt;li&gt;From the session host list of the pool, click on the plus icon to deploy confidential hosts&lt;/li&gt;
-&lt;li&gt;Done&lt;/li&gt;
-&lt;/ul&gt;
+
+&lt;p&gt;After an image is created, we can configure the rollout configuration of our confidential host pool.
+- In Hydra: Dashboard -&amp;gt; Your host pool -&amp;gt; Configuration -&amp;gt; New Session Host Rollout
+- Configure all settings
+- Select a  confidential virtual machine size (type confidential in the field to show the sizes):
+  &lt;img src=&quot;../assets/images/Confidential-Imaging-07.png&quot; alt=&quot;&quot;&gt;
+- Save
+- From the session host list of the pool, click on the plus icon to deploy confidential hosts
+- Done&lt;/p&gt;
+
 &lt;p&gt;Hint: There is another option for non-trusted-launch VMs: This kind of VM-images can be stored to a &lt;strong&gt;Confidential Supported&lt;/strong&gt; gallery definition with Hydra. Finally, you can create new hosts based on that Confidential suported Gallery Definition Versions.&lt;/p&gt;
 </description>
         <pubDate>Sun, 23 Jun 2024 00:00:00 +0200</pubDate>

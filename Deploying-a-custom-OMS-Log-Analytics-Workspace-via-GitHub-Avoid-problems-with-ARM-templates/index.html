@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Deploying a custom OMS Log Analytics Workspace via GitHub – Avoid problems with ARM templates | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Deploying a custom OMS Log Analytics Workspace via GitHub – Avoid problems with ARM templates" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,20 +460,35 @@
                 
                 <!-- End Toc -->
                 <p>Azure is “my” cloud with a lot of platform services allowing users, programmers, and DevOps building powerful and scalable solutions. One of my favorite ones is Azure OMS Log Analytics – a big data platform with a great query language and professional dashboards.</p>
+
 <p>In the past, I build a custom agent to collect data from Microsoft RDS and Citrix environment to provide a deep insight into the user experiences and resource usage <a href="http://loganalytics.sepago.com/">http://loganalytics.sepago.com/</a>. Additionally, I have built four dashboards and a lot of views to visualize the data:</p>
-<p><a href=""><img src="/wp-content/uploads/2018/05/omsdeployment01_0.png" alt="omsdeployment" /></a></p>
-<p><a href=""><img src="/wp-content/uploads/2018/05/omsdeployment02.png" alt="omsdeployment" /></a></p>
+
+<p><a href=""><img src="/wp-content/uploads/2018/05/omsdeployment01_0.png" alt="omsdeployment"></a></p>
+
+<p><a href=""><img src="/wp-content/uploads/2018/05/omsdeployment02.png" alt="omsdeployment"></a></p>
+
 <p>To make it easier to deploy an OMS Log Analytics workspace including my tiles and views I decided to offer a “Deploy to Azure” solution via GitHub. Finally, an ARM template for an Azure deployment.</p>
+
 <p><strong>One ARM template including all resources (doesn’t work well)</strong></p>
+
 <p>First, I built an ARM template including the workspace definition and four definitions of the tiles (including their views). But I got some weird effects: Sometimes I got only 2 tiles with a deployment, sometimes 3 and rarely the four I expected.</p>
+
 <p>What happens – or what I thought what happened? The tile definition in the ARM files is independent of each other’s, so the ARM engine tried to deploy them parallel. And here is a problem: This didn’t (and don’t) work with the current API. The API didn’t wait for the full deployment and finished after the first tile is deployed.</p>
+
 <p><strong>One ARM template for the deployment and one for each tile (works well)</strong></p>
+
 <p>It took days to find a reliable solution. The solution I use now works differently: I have one ARM template for each tile and one ARM template for the workspace itself. The ARM template for the workspace references all the four tile ARM templates using the resource type “Microsoft.Resources/deployments”. This deployment type allows a special trick to avoid the parallel processing of all linked templates: <strong>A serial mode!</strong></p>
+
 <p>The serial mode controls the ARM processing and avoids parallel processing. With this trick, the deployment works reliably.</p>
+
 <p>See the ARM templates at GitHub: <a href="https://github.com/MarcelMeurer/LogAnalytics-for-Citrix-and-RDS/">https://github.com/MarcelMeurer/LogAnalytics-for-Citrix-and-RDS/</a></p>
-<p><a href=""><img src="/wp-content/uploads/2018/05/omsdeployment03.png" alt="omsdeployment" /></a></p>
+
+<p><a href=""><img src="/wp-content/uploads/2018/05/omsdeployment03.png" alt="omsdeployment"></a></p>
+
 <p>To help the community to find this workaround some keywords:</p>
+
 <p>“Azure OMS Log Analytics Deployment with ARM some tiles are missing”</p>
+
 <p>First published on: <a href="https://www.sepago.de/blog/deploying-a-custom-oms-log-analytics-workspace-via-github-avoid-problems-with-arm-templates/">https://www.sepago.de/blog/deploying-a-custom-oms-log-analytics-workspace-via-github-avoid-problems-with-arm-templates/</a></p>
 
             </div>

@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Automatic MSIX App Attach script for Windows Virtual Desktop | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Automatic MSIX App Attach script for Windows Virtual Desktop" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -387,8 +387,10 @@
         
       </h1>
     
+
 <p>Microsoft provides a preview of MSIX app attach for Windows Virtual desktop. MSIX app attach gives you the possibility to only have a few amounts of images and connect your application to them - without installing. That sounds a little bit like App-V, and from a user perspective, this is slightly comparable:</p>
-<p>You cannot see the application in the file system from outside the app. If you open the app and if you browse to the application folder, you can see this folder. The attaching and links in the start menu “feels” like the use of modern apps from the marketplace. And indeed: The application links in the start menu didn’t refer to the exe-files in the program folder.</p>
+
+<p>You cannot see the application in the file system from outside the app. If you open the app and if you browse to the application folder, you can see this folder. The attaching and links in the start menu &quot;feels&quot; like the use of modern apps from the marketplace. And indeed: The application links in the start menu didn&#39;t refer to the exe-files in the program folder.</p>
       <h2 id="configuration-of-the-msix-packages-and-assignments">
         
         
@@ -397,10 +399,13 @@
         
       </h2>
     
+
 <p>If you are in the Windows Insider program, you can test MSIX app attach in a WVD environment. To do this go to the web site <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach">https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach</a> which explains the process of preparing your Windows insider image and how to stage and register MSIX apps for session hosts und users. If you convert legacy apps to MSIX I recommend the YouTube video of <a href="https://twitter.com/MSAzureAcademy">@MSAzureAcademy</a>: <a href="https://www.youtube.com/watch?v=6kkPLFgPaN8">https://www.youtube.com/watch?v=6kkPLFgPaN8</a></p>
+
 <p>Microsoft gives you example scripts to stage, un-stage, register, and un-register MSIX apps. For each app, you have to build these four scripts. While the scrips only differ in a few points, I decided to create one script which does the necessary things for all apps I want to provide.</p>
+
 <p>The result is one folder containing a single PowerShell script and a configuration file for my MSIX apps. The structure of the configuration is JSON:</p>
-<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w"> 
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w"> 
   </span><span class="nl">"apps"</span><span class="p">:[</span><span class="w"> 
    </span><span class="p">{</span><span class="w"> 
 </span><span class="err">​</span><span class="w">     </span><span class="nl">"vhdSrc"</span><span class="p">:</span><span class="s2">"</span><span class="se">\\\\</span><span class="s2">ads01</span><span class="se">\\</span><span class="s2">Configuration</span><span class="se">\\</span><span class="s2">WVD</span><span class="se">\\</span><span class="s2">MSIX</span><span class="se">\\</span><span class="s2">NotepadPP.vhd"</span><span class="p">,</span><span class="w">
@@ -434,16 +439,15 @@
    </span><span class="p">}</span><span class="w">
   </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
+</span></code></pre></div>
 <p>For each application, you have to define the following properties:</p>
-<table>
-<thead>
+
+<table><thead>
 <tr>
 <th>Property</th>
 <th>Note</th>
 </tr>
-</thead>
-<tbody>
+</thead><tbody>
 <tr>
 <td>vhdSrc</td>
 <td>Path to the expanded MSIX app (as vhd)</td>
@@ -468,8 +472,7 @@
 <td>userGroups</td>
 <td>List of AD groups: Members get the application linked in their start menu</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
       <h2 id="providing-the-script-to-users-and-session-hosts">
         
         
@@ -478,26 +481,46 @@
         
       </h2>
     
-<p>Provide the script AppAttach with the configuration in a folder of a shared network drive. This folder must be readable for all users.</p>
-<p><img src="../assets/images/MSIX-AppAttach-Script/Image-01.png" alt="Image-01" /></p>
+
+<p>Provide the script AppAttach with the configuration in a folder of a shared network drive. This folder must be readable for all users. </p>
+
+<p><img src="../assets/images/MSIX-AppAttach-Script/Image-01.png" alt="Image-01"></p>
+
 <p>Refer this file by a group policy:</p>
+
 <p><strong>Computer Configuration - Policies - Windows Settings - Scripts - Startup</strong></p>
+
 <p>Name:        %windir%\System32\WindowsPowerShell\v1.0\powershell.exe</p>
+
 <p>Parameter:    -ExecutionPolicy Unrestricted -File \\ads01\Configuration\WVD\MSIX\AppAttach.ps1 -ConfigFile \\ads01\Configuration\WVD\MSIX\AppAttach.json -Mode VmStart</p>
+
 <p><strong>Computer Configuration - Policies - Windows Settings - Scripts - Shutdown</strong></p>
+
 <p>Name:        %windir%\System32\WindowsPowerShell\v1.0\powershell.exe</p>
+
 <p>Parameter:    -ExecutionPolicy Unrestricted -File \\ads01\Configuration\WVD\MSIX\AppAttach.ps1 -ConfigFile \\ads01\Configuration\WVD\MSIX\AppAttach.json -Mode VmShutdown</p>
+
 <p><strong>User Configuration - Policies - Windows Settings - Scripts - Logon</strong></p>
+
 <p>Name:        %windir%\System32\WindowsPowerShell\v1.0\powershell.exe</p>
+
 <p>Parameter:    -ExecutionPolicy Unrestricted -File \\ads01\Configuration\WVD\MSIX\AppAttach.ps1 -ConfigFile \\ads01\Configuration\WVD\MSIX\AppAttach.json -Mode UserLogon</p>
+
 <p><strong>User Configuration - Policies - Windows Settings - Scripts - Logoff</strong></p>
+
 <p>Name:        %windir%\System32\WindowsPowerShell\v1.0\powershell.exe</p>
+
 <p>Parameter:    -ExecutionPolicy Unrestricted -File \\ads01\Configuration\WVD\MSIX\AppAttach.ps1 -ConfigFile \\ads01\Configuration\WVD\MSIX\AppAttach.json -Mode UserLogoff</p>
+
 <p><em>Where \\ads01\Configuration\WVD\MSIX\ is the path to the script and \\ads01\Configuration\WVD\MSIX\AppAttach.json the JSON-configuration file.</em></p>
+
 <p>Make sure that the GPO is linked to the computer and enable loopback processing:</p>
+
 <p><strong>Computer Configuration - Policies - Administrative Templates - System/Group Policy</strong></p>
+
 <p>Configure user Group Policy loopback processing mode: Enable - Mode: merge.</p>
-<p><img src="../assets/images/MSIX-AppAttach-Script/Image-02.png" alt="Image-02" /></p>
+
+<p><img src="../assets/images/MSIX-AppAttach-Script/Image-02.png" alt="Image-02"></p>
       <h2 id="preparing-the-golden-master-for-the-session-hosts">
         
         
@@ -506,51 +529,53 @@
         
       </h2>
     
+
 <p>To work with MSIX and have the script do the work you have to prepare your golden image:</p>
+
 <ul>
-<li>
-<p>Make sure that you have installed the right version from the insider build</p>
-</li>
-<li>
-<p>Double-check that you have <strong>NOT</strong> prepared your image with the command line commands described in <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach#prepare-the-vhd-image-for-azure">https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach#prepare-the-vhd-image-for-azure</a> (Disable Store auto-update and so on). It’s only for the VM concerning the converting process.</p>
-</li>
-<li>
-<p>Copy the PSTools <a href="https://docs.microsoft.com/en-us/sysinternals/downloads/psexec">https://docs.microsoft.com/en-us/sysinternals/downloads/psexec</a> to %Windir%\System32 (you need psexec later)</p>
-</li>
-<li>
-<p>Give the service GPSVC the right privileges to mount images:</p>
-</li>
-<li>
+<li><p>Make sure that you have installed the right version from the insider build</p></li>
+<li><p>Double-check that you have <strong>NOT</strong> prepared your image with the command line commands described in <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach#prepare-the-vhd-image-for-azure">https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach#prepare-the-vhd-image-for-azure</a> (Disable Store auto-update and so on). It&#39;s only for the VM concerning the converting process.</p></li>
+<li><p>Copy the PSTools <a href="https://docs.microsoft.com/en-us/sysinternals/downloads/psexec">https://docs.microsoft.com/en-us/sysinternals/downloads/psexec</a> to %Windir%\System32 (you need psexec later)</p></li>
+<li><p>Give the service GPSVC the right privileges to mount images:</p></li>
+<li><ul>
+<li>Create a cmd-file with this content:</li>
+</ul>
+<div class="highlight"><pre><code class="language-cmd" data-lang="cmd">sc privs gpsvc SeManageVolumePrivilege/SeTcbPrivilege/SeTakeOwnershipPrivilege/SeIncreaseQuotaPrivilege/SeAssignPrimaryTokenPrivilege/SeSecurityPrivilege/SeChangeNotifyPrivilege/SeCreatePermanentPrivilege/SeShutdownPrivilege/SeLoadDriverPrivilege/SeRestorePrivilege/SeBackupPrivilege/SeCreatePagefilePrivilege
+</code></pre></div>
 <ul>
-<li>
-<p>Create a cmd-file with this content:</p>
-<pre><code class="language-cmd">>sc privs gpsvc SeManageVolumePrivilege/SeTcbPrivilege/SeTakeOwnershipPrivilege/SeIncreaseQuotaPrivilege/SeAssignPrimaryTokenPrivilege/SeSecurityPrivilege/SeChangeNotifyPrivilege/SeCreatePermanentPrivilege/SeShutdownPrivilege/SeLoadDriverPrivilege/SeRestorePrivilege/SeBackupPrivilege/SeCreatePagefilePrivilege
-</code></pre></li>
-<li>
-<p>Open an administrative cmd and execute:</p>
-<p>psexec /s cmd</p>
-</li>
-<li>
-<p>In this service cmd execute the cmd-file to give GPSVC the right  permissions</p>
-<p>(This adds the SeManageVolumePrivilege which allows mounting of images)</p>
-</li>
+<li>Open an administrative cmd and execute:</li>
 </ul>
-</li>
+
+<p>psexec /s cmd
+- In this service cmd execute the cmd-file to give GPSVC the right  permissions</p>
+
+<p>(This adds the SeManageVolumePrivilege which allows mounting of images)</p></li>
 </ul>
-<p><img src="../assets/images/MSIX-AppAttach-Script/Image-03.png" alt="Image-03" /></p>
+
+<p><img src="../assets/images/MSIX-AppAttach-Script/Image-03.png" alt="Image-03"></p>
+
 <p>If you have this done, you can rollout several session hosts (or start with one for testing). If you now log on with different users, each user will see its assigned applications.</p>
-<p><img src="../assets/images/MSIX-AppAttach-Script/Image-04.png" alt="Image-04" /></p>
+
+<p><img src="../assets/images/MSIX-AppAttach-Script/Image-04.png" alt="Image-04"></p>
+
 <p>Note: If a user logoff the application will be de-registered except if the user an administrator (this will be skipped to avoid unmounting the app package).</p>
+
 <p><strong><a href="../assets/files/AutoUpdate/Scripts/AppAttach.ps1.txt">Download</a> the script and rename it to AppAttach.ps1</strong></p>
 
 		<!--<h1 id="automatic-msix-app-attach-script-for-wvd">Automatic MSIX App Attach script for WVD</h1>
+
 <p>Microsoft provides a preview of MSIX app attach for Windows Virtual desktop. MSIX app attach gives you the possibility to only have a few amounts of images and connect your application to them - without installing. That sounds a little bit like App-V, and from a user perspective, this is slightly comparable:</p>
-<p>You cannot see the application in the file system from outside the app. If you open the app and if you browse to the application folder, you can see this folder. The attaching and links in the start menu “feels” like the use of modern apps from the marketplace. And indeed: The application links in the start menu didn’t refer to the exe-files in the program folder.</p>
+
+<p>You cannot see the application in the file system from outside the app. If you open the app and if you browse to the application folder, you can see this folder. The attaching and links in the start menu &quot;feels&quot; like the use of modern apps from the marketplace. And indeed: The application links in the start menu didn&#39;t refer to the exe-files in the program folder.</p>
+
 <h2 id="configuration-of-the-msix-packages-and-assignments">Configuration of the MSIX packages and assignments</h2>
+
 <p>If you are in the Windows Insider program, you can test MSIX app attach in a WVD environment. To do this go to the web site <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach">https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach</a> which explains the process of preparing your Windows insider image and how to stage and register MSIX apps for session hosts und users. If you convert legacy apps to MSIX I recommend the YouTube video of <a href="https://twitter.com/MSAzureAcademy">@MSAzureAcademy</a>: <a href="https://www.youtube.com/watch?v=6kkPLFgPaN8">https://www.youtube.com/watch?v=6kkPLFgPaN8</a></p>
+
 <p>Microsoft gives you example scripts to stage, un-stage, register, and un-register MSIX apps. For each app, you have to build these four scripts. While the scrips only differ in a few points, I decided to create one script which does the necessary things for all apps I want to provide.</p>
+
 <p>The result is one folder containing a single PowerShell script and a configuration file for my MSIX apps. The structure of the configuration is JSON:</p>
-<div class="language-json highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{</span><span class="w"> 
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span><span class="w"> 
   </span><span class="nl">"apps"</span><span class="p">:[</span><span class="w"> 
    </span><span class="p">{</span><span class="w"> 
 </span><span class="err">​</span><span class="w">     </span><span class="nl">"vhdSrc"</span><span class="p">:</span><span class="s2">"</span><span class="se">\\\\</span><span class="s2">ads01</span><span class="se">\\</span><span class="s2">Configuration</span><span class="se">\\</span><span class="s2">WVD</span><span class="se">\\</span><span class="s2">MSIX</span><span class="se">\\</span><span class="s2">NotepadPP.vhd"</span><span class="p">,</span><span class="w">
@@ -584,16 +609,15 @@
    </span><span class="p">}</span><span class="w">
   </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
+</span></code></pre></div>
 <p>For each application, you have to define the following properties:</p>
-<table>
-<thead>
+
+<table><thead>
 <tr>
 <th>Property</th>
 <th>Note</th>
 </tr>
-</thead>
-<tbody>
+</thead><tbody>
 <tr>
 <td>vhdSrc</td>
 <td>Path to the expanded MSIX app (as vhd)</td>
@@ -618,65 +642,82 @@
 <td>userGroups</td>
 <td>List of AD groups: Members get the application linked in their start menu</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
+
 <h2 id="providing-the-script-to-users-and-session-hosts">Providing the script to users and session hosts</h2>
-<p>Provide the script AppAttach with the configuration in a folder of a shared network drive. This folder must be readable for all users.</p>
-<p><img src="../assets/images/MSIX-AppAttach-Script/Image-01.png" alt="Image-01" /></p>
+
+<p>Provide the script AppAttach with the configuration in a folder of a shared network drive. This folder must be readable for all users. </p>
+
+<p><img src="../assets/images/MSIX-AppAttach-Script/Image-01.png" alt="Image-01"></p>
+
 <p>Refer this file by a group policy:</p>
+
 <p><strong>Computer Configuration - Policies - Windows Settings - Scripts - Startup</strong></p>
+
 <p>Name:        %windir%\System32\WindowsPowerShell\v1.0\powershell.exe</p>
+
 <p>Parameter:    -ExecutionPolicy Unrestricted -File \\ads01\Configuration\WVD\MSIX\AppAttach.ps1 -ConfigFile \\ads01\Configuration\WVD\MSIX\AppAttach.json -Mode VmStart</p>
+
 <p><strong>Computer Configuration - Policies - Windows Settings - Scripts - Shutdown</strong></p>
+
 <p>Name:        %windir%\System32\WindowsPowerShell\v1.0\powershell.exe</p>
+
 <p>Parameter:    -ExecutionPolicy Unrestricted -File \\ads01\Configuration\WVD\MSIX\AppAttach.ps1 -ConfigFile \\ads01\Configuration\WVD\MSIX\AppAttach.json -Mode VmShutdown</p>
+
 <p><strong>User Configuration - Policies - Windows Settings - Scripts - Logon</strong></p>
+
 <p>Name:        %windir%\System32\WindowsPowerShell\v1.0\powershell.exe</p>
+
 <p>Parameter:    -ExecutionPolicy Unrestricted -File \\ads01\Configuration\WVD\MSIX\AppAttach.ps1 -ConfigFile \\ads01\Configuration\WVD\MSIX\AppAttach.json -Mode UserLogon</p>
+
 <p><strong>User Configuration - Policies - Windows Settings - Scripts - Logoff</strong></p>
+
 <p>Name:        %windir%\System32\WindowsPowerShell\v1.0\powershell.exe</p>
+
 <p>Parameter:    -ExecutionPolicy Unrestricted -File \\ads01\Configuration\WVD\MSIX\AppAttach.ps1 -ConfigFile \\ads01\Configuration\WVD\MSIX\AppAttach.json -Mode UserLogoff</p>
+
 <p><em>Where \\ads01\Configuration\WVD\MSIX\ is the path to the script and \\ads01\Configuration\WVD\MSIX\AppAttach.json the JSON-configuration file.</em></p>
+
 <p>Make sure that the GPO is linked to the computer and enable loopback processing:</p>
+
 <p><strong>Computer Configuration - Policies - Administrative Templates - System/Group Policy</strong></p>
+
 <p>Configure user Group Policy loopback processing mode: Enable - Mode: merge.</p>
-<p><img src="../assets/images/MSIX-AppAttach-Script/Image-02.png" alt="Image-02" /></p>
+
+<p><img src="../assets/images/MSIX-AppAttach-Script/Image-02.png" alt="Image-02"></p>
+
 <h2 id="preparing-the-golden-master-for-the-session-hosts">Preparing the golden master for the session hosts</h2>
+
 <p>To work with MSIX and have the script do the work you have to prepare your golden image:</p>
+
 <ul>
-<li>
-<p>Make sure that you have installed the right version from the insider build</p>
-</li>
-<li>
-<p>Double-check that you have <strong>NOT</strong> prepared your image with the command line commands described in <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach#prepare-the-vhd-image-for-azure">https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach#prepare-the-vhd-image-for-azure</a> (Disable Store auto-update and so on). It’s only for the VM concerning the converting process.</p>
-</li>
-<li>
-<p>Copy the PSTools <a href="https://docs.microsoft.com/en-us/sysinternals/downloads/psexec">https://docs.microsoft.com/en-us/sysinternals/downloads/psexec</a> to %Windir%\System32 (you need psexec later)</p>
-</li>
-<li>
-<p>Give the service GPSVC the right privileges to mount images:</p>
-</li>
-<li>
+<li><p>Make sure that you have installed the right version from the insider build</p></li>
+<li><p>Double-check that you have <strong>NOT</strong> prepared your image with the command line commands described in <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach#prepare-the-vhd-image-for-azure">https://docs.microsoft.com/en-us/azure/virtual-desktop/app-attach#prepare-the-vhd-image-for-azure</a> (Disable Store auto-update and so on). It&#39;s only for the VM concerning the converting process.</p></li>
+<li><p>Copy the PSTools <a href="https://docs.microsoft.com/en-us/sysinternals/downloads/psexec">https://docs.microsoft.com/en-us/sysinternals/downloads/psexec</a> to %Windir%\System32 (you need psexec later)</p></li>
+<li><p>Give the service GPSVC the right privileges to mount images:</p></li>
+<li><ul>
+<li>Create a cmd-file with this content:</li>
+</ul>
+<div class="highlight"><pre><code class="language-cmd" data-lang="cmd">sc privs gpsvc SeManageVolumePrivilege/SeTcbPrivilege/SeTakeOwnershipPrivilege/SeIncreaseQuotaPrivilege/SeAssignPrimaryTokenPrivilege/SeSecurityPrivilege/SeChangeNotifyPrivilege/SeCreatePermanentPrivilege/SeShutdownPrivilege/SeLoadDriverPrivilege/SeRestorePrivilege/SeBackupPrivilege/SeCreatePagefilePrivilege
+</code></pre></div>
 <ul>
-<li>
-<p>Create a cmd-file with this content:</p>
-<pre><code class="language-cmd">>sc privs gpsvc SeManageVolumePrivilege/SeTcbPrivilege/SeTakeOwnershipPrivilege/SeIncreaseQuotaPrivilege/SeAssignPrimaryTokenPrivilege/SeSecurityPrivilege/SeChangeNotifyPrivilege/SeCreatePermanentPrivilege/SeShutdownPrivilege/SeLoadDriverPrivilege/SeRestorePrivilege/SeBackupPrivilege/SeCreatePagefilePrivilege
-</code></pre></li>
-<li>
-<p>Open an administrative cmd and execute:</p>
-<p>psexec /s cmd</p>
-</li>
-<li>
-<p>In this service cmd execute the cmd-file to give GPSVC the right  permissions</p>
-<p>(This adds the SeManageVolumePrivilege which allows mounting of images)</p>
-</li>
+<li>Open an administrative cmd and execute:</li>
 </ul>
-</li>
+
+<p>psexec /s cmd
+- In this service cmd execute the cmd-file to give GPSVC the right  permissions</p>
+
+<p>(This adds the SeManageVolumePrivilege which allows mounting of images)</p></li>
 </ul>
-<p><img src="../assets/images/MSIX-AppAttach-Script/Image-03.png" alt="Image-03" /></p>
+
+<p><img src="../assets/images/MSIX-AppAttach-Script/Image-03.png" alt="Image-03"></p>
+
 <p>If you have this done, you can rollout several session hosts (or start with one for testing). If you now log on with different users, each user will see its assigned applications.</p>
-<p><img src="../assets/images/MSIX-AppAttach-Script/Image-04.png" alt="Image-04" /></p>
+
+<p><img src="../assets/images/MSIX-AppAttach-Script/Image-04.png" alt="Image-04"></p>
+
 <p>Note: If a user logoff the application will be de-registered except if the user an administrator (this will be skipped to avoid unmounting the app package).</p>
+
 <p><strong><a href="../assets/files/AutoUpdate/Scripts/AppAttach.ps1.txt">Download</a> the script and rename it to AppAttach.ps1</strong></p>
 -->
 	

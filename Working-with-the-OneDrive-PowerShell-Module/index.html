@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Working with the OneDrive PowerShell Module | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Working with the OneDrive PowerShell Module" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,36 +460,44 @@
                 
                 <!-- End Toc -->
                 <p>Recently I got some questions on how to work with my PowerShell module for OneDrive. Therefore, I put together some examples.</p>
+
 <p>Remember: The OneDrive module is for OneDrive personal and doesn’t work with OneDrive business / Sharepoint.</p>
+
 <p><strong>First:</strong> Register an app (authentication) for OneDrive: <a href="https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/">https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/</a></p>
+
 <h3 id="authenticate-to-onedrive">Authenticate to OneDrive</h3>
-<pre><code>
-$Authentication=Get-ODAuthentication -ClientID &quot;xxxxxxxxxxxxxxxxxxxxxxx&quot; -AppKey &quot;yyyyyyyyyyyyyyyy&quot; -RedirectURI &quot;http://localhost/login&quot;
+<div class="highlight"><pre><code class="language-" data-lang="">
+$Authentication=Get-ODAuthentication -ClientID "xxxxxxxxxxxxxxxxxxxxxxx" -AppKey "yyyyyyyyyyyyyyyy" -RedirectURI "http://localhost/login"
 $at=$Authentication.access_token
 
-</code></pre>
-<p><img src="/wp-content/uploads/2018/09/OD-00001.png" alt="img" /></p>
+</code></pre></div>
+<p><img src="/wp-content/uploads/2018/09/OD-00001.png" alt="img"></p>
+
 <h3 id="show-files-and-folders">Show files and folders</h3>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-ODChildItems</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-path</span><span class="w"> </span><span class="s2">"/"</span><span class="w">
-</span></code></pre></div></div>
-<p><img src="/wp-content/uploads/2018/09/OD-00002-1-1024x611.png" alt="img" /></p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Get-ODChildItems</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-path</span><span class="w"> </span><span class="s2">"/"</span><span class="w">
+</span></code></pre></div>
+<p><img src="/wp-content/uploads/2018/09/OD-00002-1-1024x611.png" alt="img"></p>
+
 <p>Create a new folder in OneDrive</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">New-ODFolder</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-FolderName</span><span class="w"> </span><span class="s2">"Images"</span><span class="w">
-</span></code></pre></div></div>
-<p><img src="/wp-content/uploads/2018/09/OD-00003-1024x611.png" alt="img" /></p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">New-ODFolder</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-FolderName</span><span class="w"> </span><span class="s2">"Images"</span><span class="w">
+</span></code></pre></div>
+<p><img src="/wp-content/uploads/2018/09/OD-00003-1024x611.png" alt="img"></p>
+
 <p>Copy files from local to OneDrive</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Add-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-LocalFile</span><span class="w"> </span><span class="s2">".\LA-02.jpg"</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Images"</span><span class="w"> 
-</span></code></pre></div></div>
-<p><img src="/wp-content/uploads/2018/09/OD-00004-1024x611.png" alt="img" />
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Add-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-LocalFile</span><span class="w"> </span><span class="s2">".\LA-02.jpg"</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Images"</span><span class="w"> 
+</span></code></pre></div>
+<p><img src="/wp-content/uploads/2018/09/OD-00004-1024x611.png" alt="img">
 Copy file from OneDrive to local disk</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Images/LA-02.jpg"</span><span class="w"> </span><span class="nt">-LocalPath</span><span class="w"> </span><span class="s2">"D:\Local\downloads"</span><span class="w">
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Get-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Images/LA-02.jpg"</span><span class="w"> </span><span class="nt">-LocalPath</span><span class="w"> </span><span class="s2">"D:\Local\downloads"</span><span class="w">
 </span><span class="n">Get-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Images/LA-02.jpg"</span><span class="w"> </span><span class="nt">-LocalPath</span><span class="w"> </span><span class="s2">"D:\Local\downloads"</span><span class="w"> </span><span class="nt">-LocalFileName</span><span class="w"> </span><span class="s2">"Copy from OneDrive.jpg"</span><span class="w">
-</span></code></pre></div></div>
-<p><img src="/wp-content/uploads/2018/09/OD-00005-1024x611.png" alt="img" /></p>
+</span></code></pre></div>
+<p><img src="/wp-content/uploads/2018/09/OD-00005-1024x611.png" alt="img"></p>
+
 <p>Delete file in OneDrive</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Remove-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Images/LA-02.jpg"</span><span class="w">
-</span></code></pre></div></div>
-<p><img src="/wp-content/uploads/2018/09/OD-00006-1024x611.png" alt="img" /></p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Remove-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Images/LA-02.jpg"</span><span class="w">
+</span></code></pre></div>
+<p><img src="/wp-content/uploads/2018/09/OD-00006-1024x611.png" alt="img"></p>
+
 <p>First published on: <a href="https://www.sepago.de/blog/working-with-the-onedrive-powershell-module/">https://www.sepago.de/blog/working-with-the-onedrive-powershell-module/</a></p>
 
             </div>

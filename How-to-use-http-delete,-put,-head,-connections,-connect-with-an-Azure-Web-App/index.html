@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>How to use http delete, put, head, connections, connect with an Azure Web App | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="How to use http delete, put, head, connections, connect with an Azure Web App" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,17 +460,22 @@
                 
                 <!-- End Toc -->
                 <p>I often use Azure Web Apps to deploy tools and programs running serverless. A few weeks ago, I deployed an MVC web site with a controller to handle file uploads to an Azure Storage Account. For the client-side, I used jquery-FileUpload, which also allows triggering a controller to delete a file. If a user tries to delete a file, jquery-FileUpload triggers the controller with the http-request method “<strong>DELETE</strong>”.</p>
+
 <p>In my local environment, this worked as expected but nothing happened in my Azure Web App deployment.</p>
+
 <p>If found out that an Azure Web App supports only http-get and post by default. My first attempt was to add the methods DELETE via web.config:</p>
-<pre><code>&lt;add name=&quot;ExtensionlessUrlHandler-Integrated-4.0&quot; path=&quot;*.&quot; verb=&quot; DELETE&quot; type=&quot;System.Web.Handlers.TransferRequestHandler&quot; preCondition=&quot;integratedMode,runtimeVersionv4.0&quot; /&gt;
-</code></pre>
+<div class="highlight"><pre><code class="language-" data-lang="">&lt;add name="ExtensionlessUrlHandler-Integrated-4.0" path="*." verb=" DELETE" type="System.Web.Handlers.TransferRequestHandler" preCondition="integratedMode,runtimeVersionv4.0" /&gt;
+</code></pre></div>
 <p>But this didn’t work. The full web site was no longer accessible:</p>
+
 <p><strong>The page cannot be displayed because an internal server error has occurred.</strong></p>
+
 <p>The right way to add a method/verb is to remove all first and then re-add them:</p>
-<pre><code>&lt;remove name=&quot;ExtensionlessUrlHandler-Integrated-4.0&quot; /&gt;
-&lt;add name=&quot;ExtensionlessUrlHandler-Integrated-4.0&quot; path=&quot;*.&quot; verb=&quot;GET,POST,PUT,DELETE&quot; type=&quot;System.Web.Handlers.TransferRequestHandler&quot; preCondition=&quot;integratedMode,runtimeVersionv4.0&quot; /&gt;
-</code></pre>
-<p><a href=""><img src="/wp-content/uploads/2018/04/how_to_use_http_delete_put_head_connections_connect_with_an_azure_web_app.web_.config_0.png" alt="how_to_use_http_delete_put_head_connections_connect_with_an_azure_web_app.web_.config_0" /></a></p>
+<div class="highlight"><pre><code class="language-" data-lang="">&lt;remove name="ExtensionlessUrlHandler-Integrated-4.0" /&gt;
+&lt;add name="ExtensionlessUrlHandler-Integrated-4.0" path="*." verb="GET,POST,PUT,DELETE" type="System.Web.Handlers.TransferRequestHandler" preCondition="integratedMode,runtimeVersionv4.0" /&gt;
+</code></pre></div>
+<p><a href=""><img src="/wp-content/uploads/2018/04/how_to_use_http_delete_put_head_connections_connect_with_an_azure_web_app.web_.config_0.png" alt="how_to_use_http_delete_put_head_connections_connect_with_an_azure_web_app.web_.config_0"></a></p>
+
 <p>First published on: <a href="https://www.sepago.de/blog/how-to-use-http-delete-put-head-connections-connect-with-an-azure-web-app/">https://www.sepago.de/blog/how-to-use-http-delete-put-head-connections-connect-with-an-azure-web-app/</a></p>
 
             </div>

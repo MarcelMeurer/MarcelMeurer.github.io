@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Enumerating Azure AD administrative accounts with PowerShell | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Enumerating Azure AD administrative accounts with PowerShell" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,17 +460,21 @@
                 
                 <!-- End Toc -->
                 <p>Users can have different administrative roles in Azure Ad. Azure Portal can show these roles and members. Sometimes it can be favorable to get roles and members in a PowerShell object list.</p>
+
 <p>To login into your Azure AD tenant use:</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Connect-AzureAD</span><span class="w"> </span><span class="nt">-TenantId</span><span class="w"> </span><span class="nx">xxx</span><span class="w">
-</span></code></pre></div></div>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Connect-AzureAD</span><span class="w"> </span><span class="nt">-TenantId</span><span class="w"> </span><span class="nx">xxx</span><span class="w">
+</span></code></pre></div>
 <p>Where xxx is your tenant id. The -TenantId is optional. But if your account member of different Azure ADs you can select the right one.</p>
+
 <p>After login in with your credential you can show the different roles with:</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Get-AzureADDirectoryRole</span><span class="w">
-</span></code></pre></div></div>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Get-AzureADDirectoryRole</span><span class="w">
+</span></code></pre></div>
 <p>Output:</p>
-<p><img src="/wp-content/uploads/2018/07/EnumAdAdminRoles01-300x153.png" alt="img" /></p>
+
+<p><img src="/wp-content/uploads/2018/07/EnumAdAdminRoles01-300x153.png" alt="img"></p>
+
 <p>Using PSCustomObject helps to build a list/array of custom objects to save all roles and users. The full code:</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="w">
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="w">
 </span><span class="nv">$roleUsers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">@()</span><span class="w"> 
 </span><span class="nv">$roles</span><span class="o">=</span><span class="n">Get-AzureADDirectoryRole</span><span class="w">
 
@@ -489,10 +493,13 @@
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span><span class="nv">$roleUsers</span><span class="w">
-</span></code></pre></div></div>
+</span></code></pre></div>
 <p>Output:</p>
-<p><img src="/wp-content/uploads/2018/07/EnumAdAdminRoles02-300x138.png" alt="img" /></p>
+
+<p><img src="/wp-content/uploads/2018/07/EnumAdAdminRoles02-300x138.png" alt="img"></p>
+
 <p>Feel free to extend the custom object with other values form Azure AD user object.</p>
+
 <p>First published on: <a href="https://www.sepago.de/blog/enumerating-azure-ad-administrative-accounts-with-powershell-2/">https://www.sepago.de/blog/enumerating-azure-ad-administrative-accounts-with-powershell-2/</a></p>
 
             </div>

@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Azure Windows Virtual Desktop Fileupload with the HTML5 client | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Azure Windows Virtual Desktop Fileupload with the HTML5 client" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,10 +460,12 @@
                 
                 <!-- End Toc -->
                 <p>Microsoft is extending the HTML5 web client. Today (May 2021), there is a new function to allow uploading files directly into the session. The user can select the feature while starting a connection. Inside the HTML5 client, the user can upload a file with the icon in the upper right corner. The file is saved into the virtual drive: <em>\\tsclient\Remote Desktop Virtual Drive\Uploads</em> (the drive only exist in the current session)</p>
-<p><img src="../assets/images/FileUpload01.png" alt="" /></p>
-<p>An administrator can avoid storing files into the virtual drive setting the group policy (per user or per machine) to “Enabled”:</p>
-<pre><code>Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session\Device and Resource\Do not allow drive redirection
-</code></pre>
+
+<p><img src="../assets/images/FileUpload01.png" alt=""></p>
+
+<p>An administrator can avoid storing files into the virtual drive setting the group policy (per user or per machine) to &quot;Enabled&quot;: </p>
+<div class="highlight"><pre><code class="language-" data-lang="">Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session\Device and Resource\Do not allow drive redirection
+</code></pre></div>
             </div>
 
             <!-- Rating -->

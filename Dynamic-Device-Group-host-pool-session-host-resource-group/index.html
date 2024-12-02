@@ -10,12 +10,12 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Entra Dynamic Device Groups for Azure Virtual Desktop - Host Pools, Resource Groups and Subscriptions | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Entra Dynamic Device Groups for Azure Virtual Desktop - Host Pools, Resource Groups and Subscriptions" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="I was searching for an option to group all AVD hosts (Entra and hybrid joined) of a pool in a dynamic device group. Unfortunately, I didn’t find a perfect solution that works without modifying the device objects through the Graph API (or AD for hybrid joined devices (extensionAttributes)). If one of the readers knows a good solution for this, please share it." />
-<meta property="og:description" content="I was searching for an option to group all AVD hosts (Entra and hybrid joined) of a pool in a dynamic device group. Unfortunately, I didn’t find a perfect solution that works without modifying the device objects through the Graph API (or AD for hybrid joined devices (extensionAttributes)). If one of the readers knows a good solution for this, please share it." />
+<meta name="description" content="I was searching for an option to group all AVD hosts (Entra and hybrid joined) of a pool in a dynamic device group. Unfortunately, I didn&#39;t find a perfect solution that works without modifying the device objects through the Graph API (or AD for hybrid joined devices (extensionAttributes)). If one of the readers knows a good solution for this, please share it." />
+<meta property="og:description" content="I was searching for an option to group all AVD hosts (Entra and hybrid joined) of a pool in a dynamic device group. Unfortunately, I didn&#39;t find a perfect solution that works without modifying the device objects through the Graph API (or AD for hybrid joined devices (extensionAttributes)). If one of the readers knows a good solution for this, please share it." />
 <link rel="canonical" href="https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/" />
 <meta property="og:url" content="https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Entra-Dynamic-Device-Group-01.png" />
 <meta property="twitter:title" content="Entra Dynamic Device Groups for Azure Virtual Desktop - Host Pools, Resource Groups and Subscriptions" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2024-10-08T00:00:00+02:00","datePublished":"2024-10-08T00:00:00+02:00","description":"I was searching for an option to group all AVD hosts (Entra and hybrid joined) of a pool in a dynamic device group. Unfortunately, I didn’t find a perfect solution that works without modifying the device objects through the Graph API (or AD for hybrid joined devices (extensionAttributes)). If one of the readers knows a good solution for this, please share it.","headline":"Entra Dynamic Device Groups for Azure Virtual Desktop - Host Pools, Resource Groups and Subscriptions","image":"https://blog.itprocloud.de/assets/images/Entra-Dynamic-Device-Group-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2024-10-08T00:00:00+02:00","datePublished":"2024-10-08T00:00:00+02:00","description":"I was searching for an option to group all AVD hosts (Entra and hybrid joined) of a pool in a dynamic device group. Unfortunately, I didn&#39;t find a perfect solution that works without modifying the device objects through the Graph API (or AD for hybrid joined devices (extensionAttributes)). If one of the readers knows a good solution for this, please share it.","headline":"Entra Dynamic Device Groups for Azure Virtual Desktop - Host Pools, Resource Groups and Subscriptions","image":"https://blog.itprocloud.de/assets/images/Entra-Dynamic-Device-Group-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -459,21 +459,32 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>I was searching for an option to group all AVD hosts (Entra and hybrid joined) of a pool in a dynamic device group. Unfortunately, I didn’t find a perfect solution that works without modifying the device objects through the Graph API (or AD for hybrid joined devices (extensionAttributes)). If one of the readers knows a good solution for this, please share it.</p>
-<p>Therefore, I checked the different properties of a device in Entra to find one I can use to create a dynamic device group. I prefer having a naming schema reflecting the specific host pools. AVD-DESIGN-001 and up counting would be a good match to identify all hosts of my pool “Design”. The rule is simple:</p>
-<p><img src="../assets/images/Entra-Dynamic-Device-Group-02.png" alt="" />
+                <p>I was searching for an option to group all AVD hosts (Entra and hybrid joined) of a pool in a dynamic device group. Unfortunately, I didn&#39;t find a perfect solution that works without modifying the device objects through the Graph API (or AD for hybrid joined devices (extensionAttributes)). If one of the readers knows a good solution for this, please share it.</p>
+
+<p>Therefore, I checked the different properties of a device in Entra to find one I can use to create a dynamic device group. I prefer having a naming schema reflecting the specific host pools. AVD-DESIGN-001 and up counting would be a good match to identify all hosts of my pool &quot;Design&quot;. The rule is simple:</p>
+
+<p><img src="../assets/images/Entra-Dynamic-Device-Group-02.png" alt="">
 <code>(device.displayName -startsWith &quot;AVD-DESIGN-&quot;)</code></p>
+
 <p>After a while, the group contains all hosts/VMs matching this schema. The query can also be made more complex by including/excluding specific Windows types (multi-user or single-user OS).</p>
+
 <p>I also found another interesting property in the devices for Entra joined VMs (not for hybrid joined):</p>
-<p><img src="../assets/images/Entra-Dynamic-Device-Group-03.png" alt="" /></p>
-<p>The property “physicalIds” contains a list of strings. One string reflects the Azure resource ID of the virtual machine (the session hosts the linked VM):</p>
+
+<p><img src="../assets/images/Entra-Dynamic-Device-Group-03.png" alt=""></p>
+
+<p>The property &quot;physicalIds&quot; contains a list of strings. One string reflects the Azure resource ID of the virtual machine (the session hosts the linked VM):</p>
+
 <p>The resource ID in Azure has a default schema that reflects the subscription ID, resource group name, provider, and the name of the resource. Some resources also have subtypes, which is not important for our VMs. The resource ID is always in the device property and is written with the join of the device to Entra.</p>
+
 <p>We can now build dynamic device groups based on the resource group or subscription. If you are using different resource groups for your host pools, you can also use this method to group the VMs — independent from the naming concept. Or you can group all the VMs of your AVD subscription and combine them to validate the display names. That makes your dynamic group more resilient and excludes VMs from other subscriptions.</p>
-<p>Here is an example of grouping all VMs in the resource group “WVD.Design2” in the given subscription:
-<img src="../assets/images/Entra-Dynamic-Device-Group-04.png" alt="" />
+
+<p>Here is an example of grouping all VMs in the resource group &quot;WVD.Design2&quot; in the given subscription:
+<img src="../assets/images/Entra-Dynamic-Device-Group-04.png" alt="">
 <code>(device.devicePhysicalIds -any (_ -startsWith&quot;[AzureResourceId]:/subscriptions/dcdce2ee-****-****-****-************/resourceGroups/wvd.Design2/providers/Microsoft.Compute/virtualMachines/&quot;))</code></p>
+
 <p>After a while, all VMs/hosts are members of the group.</p>
-<p>Even if that doesn’t solve my challenge very well, it’s a nice workaround or at least increased my insights.</p>
+
+<p>Even if that doesn&#39;t solve my challenge very well, it&#39;s a nice workaround or at least increased my insights.</p>
 
             </div>
 
@@ -524,7 +535,7 @@
             <a class="prev d-block col-md-6" href="/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/"> &laquo; OneDrive Clean-Up for Azure Virtual Desktop</a>
             
             
-            <a class="next d-block col-md-6 text-lg-right" href="/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/">Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook &raquo; </a>
+            <a class="next d-block col-md-6 text-lg-right" href="/Windows-Virtual-Desktop-Admin/">WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD) &raquo; </a>
             
             <div class="clearfix"></div>
             </div>

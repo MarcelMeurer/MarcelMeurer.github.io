@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Common issues in Azure Virtual Desktop (VMs-Session Hosts relations) | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Common issues in Azure Virtual Desktop (VMs-Session Hosts relations)" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -459,78 +459,114 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <h1 id="vm--session-host-relation">VM- Session Host relation</h1>
+                <h1 id="vm-session-host-relation">VM- Session Host relation</h1>
+
 <p>In Azure Virtual Desktop, session hosts in host pools are providing remote applications or desktops to users. A session host is an object in a host pool. The session host is NOT the virtual machine (you can see in Azure in the Azure Virtual Machine view) but has a reference in a property to the virtual machine:
-<img src="../assets/images/Orphan-01.png" alt="" /></p>
-<p>The session host (object) is relevant for Azure Virtual Desktop. And is reporting the “state” to the AVD backend. The important states for a session host are:</p>
-<ul>
-<li>Available (the session host is ready to accept connections)</li>
-<li>Unavailable (the session host is not ready and mostly off/deallocated)</li>
-<li>Shutdown (the session host is off/deallocated)</li>
-<li>Other, which are not relevant in this case</li>
-</ul>
-<p>The AVD agents installed on the virtual machine report the state of the session host. So, the virtual machine is responsible for the state of the session host object in a pool.</p>
+<img src="../assets/images/Orphan-01.png" alt=""></p>
+
+<p>The session host (object) is relevant for Azure Virtual Desktop. And is reporting the &quot;state&quot; to the AVD backend. The important states for a session host are:
+- Available (the session host is ready to accept connections)
+- Unavailable (the session host is not ready and mostly off/deallocated)
+- Shutdown (the session host is off/deallocated)
+- Other, which are not relevant in this case</p>
+
+<p>The AVD agents installed on the virtual machine report the state of the session host. So, the virtual machine is responsible for the state of the session host object in a pool. </p>
+
 <h1 id="common-issues-in-this-relationship">Common issues in this relationship</h1>
+
 <p>While the session host object and a virtual machine are independent resources and can have different problems, some behaviors must be monitored and mitigated if happening.</p>
+
 <h2 id="orphan-virtual-machines">Orphan Virtual Machines</h2>
-<p>If a session host is deleted without the Virtual Machine, it will no longer appear in the AVD section in the Azure Portal and not in the session host list in <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>. That is expected. But while the virtual machine was not deleted, you are charged for additional costs – even if you are not using the virtual machine as a session host. The costs are higher if the virtual machine is still running and “invisible” from the AVD view.</p>
+
+<p>If a session host is deleted without the Virtual Machine, it will no longer appear in the AVD section in the Azure Portal and not in the session host list in <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>. That is expected. But while the virtual machine was not deleted, you are charged for additional costs – even if you are not using the virtual machine as a session host. The costs are higher if the virtual machine is still running and &quot;invisible&quot; from the AVD view.</p>
+
 <h2 id="unresponsive-avd-agents">Unresponsive AVD Agents</h2>
-<p>As mentioned before, the AVD Agent (there are two involved services on each virtual machine) reports the state of a session host to the AVD backend. If the service cannot report the session host state to the AVD backend, the session hosts will stay in an “Unavailable” or “Shutdown” state.
+
+<p>As mentioned before, the AVD Agent (there are two involved services on each virtual machine) reports the state of a session host to the AVD backend. If the service cannot report the session host state to the AVD backend, the session hosts will stay in an &quot;Unavailable&quot; or &quot;Shutdown&quot; state.
 From the AVD perspective, it looks like the session host is not running even if the virtual machine runs. That means that customers are charged for the virtual machine but don’t get a value from the AVD perspective (users cannot log in; hosts look like they were deallocated).
-Possible causes of this issue:</p>
-<ul>
-<li>A known issue is that the internal session host token expires after 90 days. So, if a session host is not running in 90 days to refresh the token, the host can no longer report the state to the AVD backend. <a href="https://learn.microsoft.com/azure/virtual-desktop/faq#how-often-should-i-turn-my-vms-on-to-prevent-registration-issues-">https://learn.microsoft.com/azure/virtual-desktop/faq#how-often-should-i-turn-my-vms-on-to-prevent-registration-issues-</a></li>
-<li>The OS crashed inside of the VM. If the OS crashes inside of Windows and is not restarted automatically and starts well, the AVD agent is not started and cannot send the “state” to the AVD backend.</li>
-<li>The network is not working / cannot reach the AVD backend (Firewall): In this case, it’s technically not possible for the AVD Agent to report the state to the backend.</li>
-<li>The AVD agent failed to start. If the AVD Agent fails to start, it cannot update the state to the AVD backend. The reason for that must be found in the log files and the event log of the OS on the VM.</li>
-<li>If the network card or AVD services are disabled (which can be used to recreate this issue), the AVD agent cannot send the state to the AVD backend.</li>
-<li>…</li>
-</ul>
+Possible causes of this issue:
+- A known issue is that the internal session host token expires after 90 days. So, if a session host is not running in 90 days to refresh the token, the host can no longer report the state to the AVD backend. <a href="https://learn.microsoft.com/azure/virtual-desktop/faq#how-often-should-i-turn-my-vms-on-to-prevent-registration-issues-">https://learn.microsoft.com/azure/virtual-desktop/faq#how-often-should-i-turn-my-vms-on-to-prevent-registration-issues-</a>
+- The OS crashed inside of the VM. If the OS crashes inside of Windows and is not restarted automatically and starts well, the AVD agent is not started and cannot send the &quot;state&quot; to the AVD backend.
+- The network is not working / cannot reach the AVD backend (Firewall): In this case, it’s technically not possible for the AVD Agent to report the state to the backend.
+- The AVD agent failed to start. If the AVD Agent fails to start, it cannot update the state to the AVD backend. The reason for that must be found in the log files and the event log of the OS on the VM.
+- If the network card or AVD services are disabled (which can be used to recreate this issue), the AVD agent cannot send the state to the AVD backend.
+- …</p>
+
 <h2 id="other-orphan-resources">Other orphan resources</h2>
+
 <h3 id="orphan-disks">Orphan disks</h3>
+
 <p>Disks that are not assigned to a virtual machine. It still causes costs if forgotten to delete them.</p>
+
 <h3 id="orphan-network-interfaces">Orphan network interfaces</h3>
+
 <p>A network interface is not connected to a virtual machine or used as a private endpoint. They don’t cause costs, but they reserve one of the available IPs per card. If no IP is available for the next host/virtual machine, this can cause rollout issues.</p>
+
 <h3 id="orphan-session-hosts">Orphan session hosts</h3>
+
 <p>The session hosts exist, but not the linked virtual machines. That doesn’t cause costs, but it can prevent autoscaling from working well.</p>
+
 <h1 id="actions-to-prevent-and-monitor-these-kinds-of-issues">Actions to prevent and monitor these kinds of issues</h1>
+
 <h2 id="using-the-avd-deep-insights-workbook">Using the AVD Deep Insights workbook</h2>
-<p>The workbook <a href="https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</a> is using the resource graph to show possible issues regarding both kinds of issues. In the section “Resources” are different types of possible issues are shown
+
+<p>The workbook <a href="https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</a> is using the resource graph to show possible issues regarding both kinds of issues. In the section &quot;Resources&quot; are different types of possible issues are shown
 Important: Some of the listed issues are expected during rollout, maintenance (Windows Update), imaging, etc.</p>
-<h3 id="orphan-virtual-machines-1">Orphan virtual machines</h3>
-<p>It shows virtual machines intended to be session hosts without a session host object. Only virtual machines with a tag with the name “AVD.Type” or “WVD.Type” and the value “SessionHost” are listed. <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a> set the tag automatically with each deployment. Unfortunately, hosts deployed by the Azure Portal are not listed, but the tag can be set after or during a deployment from the portal.
-<img src="../assets/images/Orphan-02.png" alt="" /></p>
-<h3 id="unresponsive-avd-agents-1">Unresponsive AVD agents</h3>
-<p>It shows the session hosts where the linked virtual machine is running, but the session host is in the state “unavailable” or “shutdown.” That is expected during a start/stop/rollout/delete of a session host but not during the normal runtime.
-<img src="../assets/images/Orphan-03.png" alt="" /></p>
-<h3 id="other-orphan-resources-1">Other orphan resources</h3>
-<p>The workbook also shows the following orphan resources:</p>
-<ul>
-<li>Orphan disks: Disks that are not assigned to a virtual machine. It still causes costs if forgotten to delete them.</li>
-<li>Orphan network interfaces: Don’t cause costs but will reserve one of the available IPs per card. This can cause rollout issues if no IP is available for the next host/virtual machine.</li>
-<li>Orphan session hosts: The session hosts exist but not the linked virtual machines. That doesn’t cause costs, but it can prevent autoscaling from working well.</li>
-</ul>
+
+<h3 id="orphan-virtual-machines">Orphan virtual machines</h3>
+
+<p>It shows virtual machines intended to be session hosts without a session host object. Only virtual machines with a tag with the name &quot;AVD.Type&quot; or &quot;WVD.Type&quot; and the value &quot;SessionHost&quot; are listed. <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> and <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a> set the tag automatically with each deployment. Unfortunately, hosts deployed by the Azure Portal are not listed, but the tag can be set after or during a deployment from the portal.
+<img src="../assets/images/Orphan-02.png" alt=""></p>
+
+<h3 id="unresponsive-avd-agents">Unresponsive AVD agents</h3>
+
+<p>It shows the session hosts where the linked virtual machine is running, but the session host is in the state &quot;unavailable&quot; or &quot;shutdown.&quot; That is expected during a start/stop/rollout/delete of a session host but not during the normal runtime.
+<img src="../assets/images/Orphan-03.png" alt=""></p>
+
+<h3 id="other-orphan-resources">Other orphan resources</h3>
+
+<p>The workbook also shows the following orphan resources:
+- Orphan disks: Disks that are not assigned to a virtual machine. It still causes costs if forgotten to delete them.
+- Orphan network interfaces: Don’t cause costs but will reserve one of the available IPs per card. This can cause rollout issues if no IP is available for the next host/virtual machine.
+- Orphan session hosts: The session hosts exist but not the linked virtual machines. That doesn’t cause costs, but it can prevent autoscaling from working well.</p>
+
 <h2 id="deployment-improvements-with-hydra-for-azure-virtual-desktop-and-wvdadmin">Deployment improvements with Hydra for Azure Virtual Desktop and WVDAdmin</h2>
+
 <p>Both tools can be used to easily deploy new session hosts. The newest versions install some scheduled tasks on the newly deployed session hosts / virtual machines to monitor the start-up of the AVD services. E.g., if a start of one service fails (AVD agent bootloader) in the first minutes after a start, the task will start the service again. That can help if the service is not running in an issue again.</p>
+
 <h2 id="using-hydra-for-azure-virtual-desktop">Using Hydra for Azure Virtual Desktop</h2>
+
 <h3 id="failed-start-of-session-hosts-unresponsive-avd-agent">Failed start of session hosts (unresponsive AVD agent)</h3>
-<p>The start process of a session host is monitored If it is started with <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a> (in the Hydra portal or by autoscaling). If a session host is not changing the state to “available” or “updating” in 10 minutes, the host will be marked as “critically failed”. This is visible on the dashboard and in the session host list:</p>
+
+<p>The start process of a session host is monitored If it is started with <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a> (in the Hydra portal or by autoscaling). If a session host is not changing the state to &quot;available&quot; or &quot;updating&quot; in 10 minutes, the host will be marked as &quot;critically failed&quot;. This is visible on the dashboard and in the session host list:</p>
+
 <p>Notification on the dashboard:<br/>
-<img src="../assets/images/Orphan-04.png" alt="" /></p>
+<img src="../assets/images/Orphan-04.png" alt=""></p>
+
 <p>Notification in the session host list:<br/>
-<img src="../assets/images/Orphan-05.png" alt="" /></p>
+<img src="../assets/images/Orphan-05.png" alt=""></p>
+
 <p>Note: If a host is started outside of Hydra—in the Azure Portal or with the Start VM on connect feature—Hydra cannot mark it.
-Tip: While Hydra’s logging data are stored in Log Analytics, it is possible to create an alert to be notified by mail or to open a ticket via REST.</p>
+Tip: While Hydra&#39;s logging data are stored in Log Analytics, it is possible to create an alert to be notified by mail or to open a ticket via REST.</p>
+
 <h3 id="notification-of-orphan-vms-and-unresponsive-avd-agents">Notification of orphan VMs and unresponsive AVD agents</h3>
+
 <p>From version 1.0.7.4, Hydra will show a notification if orphan hosts or unresponsive AVD agents are detected:
-<img src="../assets/images/Orphan-06.png" alt="" /></p>
+<img src="../assets/images/Orphan-06.png" alt=""></p>
+
 <p>The detection runs every 20 minutes, and resources seen three times in a row with the same possible issue are shown. So, the first notification is shown after one hour (to be changed). That should prevent the falsest alerts while such a state is possible during deployments, starts, stops, deletes, imaging, or if the service account does not have permission to see all needed resources.</p>
+
 <h3 id="further-orphan-resources">Further orphan resources</h3>
+
 <p>Orphan disks and network interfaces will be listed (like virtual machines) in the near future in Azure Resources -&gt; Orphan Resources in Hydra soon.</p>
+
 <h3 id="next-stepsf">Next stepsf</h3>
+
 <p>In an upcoming version, the hosts and VMs will be directly visible in the Hydra portal, including the possibility of taking some actions (like deleting resources, reinstalling the AVD agent, etc.).</p>
+
 <h1 id="conclusion">Conclusion</h1>
-<p>Like any other IT solution, Azure Virtual Desktop may have issues. Therefore, it is important to monitor and take action to avoid additional costs without gaining value from the AVD perspective.
+
+<p>Like any other IT solution, Azure Virtual Desktop may have issues. Therefore, it is important to monitor and take action to avoid additional costs without gaining value from the AVD perspective. 
 I personally use the tools I built to deploy hosts more reliably and to get notified about possible issues. And: <strong>It always makes sense to monitor the cost and cost prediction of subscriptions in Azure.</strong></p>
 
             </div>

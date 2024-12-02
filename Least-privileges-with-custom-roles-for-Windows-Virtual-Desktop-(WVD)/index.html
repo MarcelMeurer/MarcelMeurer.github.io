@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Least privileges with custom roles for Azure Windows Virtual Desktop (WVD) | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Least privileges with custom roles for Azure Windows Virtual Desktop (WVD)" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,32 +460,58 @@
                 
                 <!-- End Toc -->
                 <p>Administration, deployment, user support of Azure Windows Virtual Desktop (WVD) needs permission in Azure. But these permissions are depending on the task a group of users/administrators have to do. For example, if the help desk has to log off and send messages to users, they need fewer permissions than the administrator building session hosts.</p>
-<p>In the first step, the permission for the different groups can be given using the build-in roles in Azure and assigning them to the groups and specific resources. But this doesn’t allow us to assign granular permissions to fulfill the least privileges approach. To do that, we have to go with custom roles. Custom roles allow combining specific permission for different resource types to a new role. Luckily, Azure Windows Virtual Desktop has many additional permissions per resource type (host pool, app group, workspace, etc.).</p>
+
+<p>In the first step, the permission for the different groups can be given using the build-in roles in Azure and assigning them to the groups and specific resources. But this doesn&#39;t allow us to assign granular permissions to fulfill the least privileges approach. To do that, we have to go with custom roles. Custom roles allow combining specific permission for different resource types to a new role. Luckily, Azure Windows Virtual Desktop has many additional permissions per resource type (host pool, app group, workspace, etc.).</p>
+
 <p>I combined the permission from WVD/AVD and from other resource types (like Microsoft Compute) to build eight roles I often use in projects to assign the least permission as needed for the different administrator. These roles can be used to assign them to users, groups, and even service principals (important for <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>). In my opinion, the best way is to assign these roles on a resource group level and not to a subscription level.</p>
-<p>Before I describe the different new roles, I have to mention one “Specialty”: Assigning users to an app group in Azure Windows Virtual Desktop needs that you have “Owner Permission” (or more precisely: <em>Microsoft.Authorization/roleAssignments/write</em>) to the app group. While Azure doesn’t have the ability to assign owner permission in a role to a specific resource type, I didn’t add this permission to the roles. So, you can easily use the new roles on a resource group level, and you can be sure that the user only has the least permission, but you have to assign appropriate admins as an owner to (only) the app groups. Owner permission on resource groups causes that the user can do and rollout anything in these groups.</p>
+
+<p>Before I describe the different new roles, I have to mention one &quot;Specialty&quot;: Assigning users to an app group in Azure Windows Virtual Desktop needs that you have &quot;Owner Permission&quot; (or more precisely: <em>Microsoft.Authorization/roleAssignments/write</em>) to the app group. While Azure doesn&#39;t have the ability to assign owner permission in a role to a specific resource type, I didn&#39;t add this permission to the roles. So, you can easily use the new roles on a resource group level, and you can be sure that the user only has the least permission, but you have to assign appropriate admins as an owner to (only) the app groups. Owner permission on resource groups causes that the user can do and rollout anything in these groups.</p>
+
 <p>Note: In a real-world scenario where the least privileges approach for a specific group of admins is not necessary, owner permissions are given to the resource groups containing the WVD/AVD resources (especially the app groups).</p>
-<h2 id="my-common-wvdavd-roles">My common WVD/AVD roles:</h2>
-<h3 id="wvd---user-session-reader">WVD - User Session Reader</h3>
+
+<h2 id="my-common-wvd-avd-roles">My common WVD/AVD roles:</h2>
+
+<h3 id="wvd-user-session-reader">WVD - User Session Reader</h3>
+
 <p>Allows to read the user session and host pool properties of Windows Virtual Desktop.</p>
-<h3 id="wvd---vm-start--stop--and-restarter">WVD - VM Start-, Stop- and Restarter</h3>
+
+<h3 id="wvd-vm-start-stop-and-restarter">WVD - VM Start-, Stop- and Restarter</h3>
+
 <p>Allows to start, stop and restart virtual machines and VM Scale Set instances</p>
-<h3 id="wvd---user-session-contributor">WVD - User Session Contributor</h3>
+
+<h3 id="wvd-user-session-contributor">WVD - User Session Contributor</h3>
+
 <p>Allows to work with the user session and read host pool properties of Azure Windows Virtual Desktop host pools, including to send messages to users and logoff/disconnect user sessions</p>
-<h3 id="wvd---infrastructure-reader">WVD - Infrastructure Reader</h3>
+
+<h3 id="wvd-infrastructure-reader">WVD - Infrastructure Reader</h3>
+
 <p>Allows to read all properties of a WVD infrastructure: Host pools, session hosts, workspaces, app groups, and user sessions.</p>
-<h3 id="wvd---infrastructure-contributor">WVD - Infrastructure Contributor</h3>
-<p>Allows to read and write all properties of a WVD infrastructure but doesn’t allow to delete resources: Host pools, session hosts, workspaces, app groups, and user sessions.</p>
-<h3 id="wvd---infrastructure-administrator">WVD - Infrastructure Administrator</h3>
+
+<h3 id="wvd-infrastructure-contributor">WVD - Infrastructure Contributor</h3>
+
+<p>Allows to read and write all properties of a WVD infrastructure but doesn&#39;t allow to delete resources: Host pools, session hosts, workspaces, app groups, and user sessions.</p>
+
+<h3 id="wvd-infrastructure-administrator">WVD - Infrastructure Administrator</h3>
+
 <p>Allows to read and write all properties of a WVD infrastructure and allows to delete resources: Host pools, session hosts, workspaces, app groups, and user sessions.</p>
-<h3 id="wvd---infrastructure-administrator-amp-vm-manager">WVD - Infrastructure Administrator &amp; VM Manager</h3>
+
+<h3 id="wvd-infrastructure-administrator-vm-manager">WVD - Infrastructure Administrator &amp; VM Manager</h3>
+
 <p>Allows to read and write all properties of a WVD infrastructure and allows to delete resources: Host pools, session hosts, workspaces, app groups, and user sessions. Additionally, the power state of all hosts and VMs can be changed.</p>
-<h3 id="wvd---template-and-session-host-administrator">WVD - Template and Session Host Administrator</h3>
+
+<h3 id="wvd-template-and-session-host-administrator">WVD - Template and Session Host Administrator</h3>
+
 <p>Allows to create/modify/delete Virtual Machines, images, rollout new session hosts into host pools, and attach them to a vnet.</p>
-<h3 id="wvd---full-administrator">WVD - Full Administrator</h3>
-<p>Allows to create/modify/delete Virtual Machines, images, rollout new session hosts into host pools, attach them to a vnet, and all permissions from the role ‘WVD - Infrastructure Administrator &amp; VM Manager’.</p>
-<p>I’m happy about feedback and give me a ping if you want to have the ‘<em>Microsoft.Authorization/roleAssignments/write</em>’ inside the contributor roles (but that doesn’t prevent users from getting higher permissions on the resource group).</p>
-<p>Feel free to roll out these WVD roles into your own subscription (ignore the location, the roles are available in the subscription independent from the location - or take a look into the deployment <a href="https://blog.itprocloud.de/assets/files/AzureDeployments/WVD-Custom-Roles-01.json">script</a>):</p>
-<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWVD-Custom-Roles-01.json"><img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" /></a></p>
+
+<h3 id="wvd-full-administrator">WVD - Full Administrator</h3>
+
+<p>Allows to create/modify/delete Virtual Machines, images, rollout new session hosts into host pools, attach them to a vnet, and all permissions from the role &#39;WVD - Infrastructure Administrator &amp; VM Manager&#39;.</p>
+
+<p>I&#39;m happy about feedback and give me a ping if you want to have the &#39;<em>Microsoft.Authorization/roleAssignments/write</em>&#39; inside the contributor roles (but that doesn&#39;t prevent users from getting higher permissions on the resource group).</p>
+
+<p>Feel free to roll out these WVD roles into your own subscription (ignore the location, the roles are available in the subscription independent from the location - or take a look into the deployment <a href="https://blog.itprocloud.de/assets/files/AzureDeployments/WVD-Custom-Roles-01.json">script</a>): </p>
+
+<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWVD-Custom-Roles-01.json"><img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure"></a></p>
 
             </div>
 

@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Shrink FSLogix profiles automatically with Hydra | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Shrink FSLogix profiles automatically with Hydra" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -387,13 +387,18 @@
         
       </h2>
     
-<p>FSLogix profile disks increase their size over time - even if a user deletes data and the data amount goes down. Like <a href="https://twitter.com/jimmoyle">Jim Moyle</a> wrote: “Dynamically Expanding disks do not natively shrink when the volume of data within them reduces, they stay at the ‘High water mark’ of historical data volume within them.”</p>
+
+<p>FSLogix profile disks increase their size over time - even if a user deletes data and the data amount goes down. Like <a href="https://twitter.com/jimmoyle">Jim Moyle</a> wrote: &quot;Dynamically Expanding disks do not natively shrink when the volume of data within them reduces, they stay at the &#39;High water mark&#39; of historical data volume within them.&quot; </p>
+
 <p>While you are paying for usage or allocated storage, having the profile disk small is a good way to go.</p>
-<p>Jim provides a <a href="https://github.com/FSLogix/Invoke-FslShrinkDisk">script</a> to shrink the FSLogix profiles. Excellent work from Jim.</p>
+
+<p>Jim provides a <a href="https://github.com/FSLogix/Invoke-FslShrinkDisk">script</a> to shrink the FSLogix profiles. Excellent work from Jim. </p>
+
 <p>I added a script in Hydra to download and run the script from Jim to shrink FSLogix disk. This script can be used in a script schedule on a host pool to shrink the disk maybe one time a week.</p>
+
 <p>Update Hydra to the newest version
-Having the host target “A single host in the pool” Hydra version 1.0.1.16 is needed. You can update Hydra in the Azure portal -&gt; Your Hydra web app -&gt; Deployment Center -&gt; Sync
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-01.png" alt="" /></p>
+Having the host target &quot;A single host in the pool&quot; Hydra version 1.0.1.16 is needed. You can update Hydra in the Azure portal -&gt; Your Hydra web app -&gt; Deployment Center -&gt; Sync
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-01.png" alt=""></p>
       <h2 id="download-the-newest-build-in-scripts">
         
         
@@ -402,8 +407,9 @@ Having the host target “A single host in the pool” Hydra version 1.0.1.16 is
         
       </h2>
     
+
 <p>Open the Hydra portal -&gt; Scripts -&gt; Click the button in the upper right corner:
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-02.png" alt="" /></p>
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-02.png" alt=""></p>
       <h2 id="service-account">
         
         
@@ -412,8 +418,9 @@ Having the host target “A single host in the pool” Hydra version 1.0.1.16 is
         
       </h2>
     
+
 <p>Like the feature deleting FSLogix profile, the shrink method needs a service account configured on the host pool level. The account must have read/write permission to the FSLogix file share:
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-03.png" alt="" /></p>
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-03.png" alt=""></p>
       <h2 id="test-shrinking">
         
         
@@ -422,8 +429,9 @@ Having the host target “A single host in the pool” Hydra version 1.0.1.16 is
         
       </h2>
     
+
 <p>Make a first test for shrinking the profile disk from the session host view. Select one session host -&gt; Run script or collection -&gt; BuiltIn: Shrink FSLogix Disk
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-04.png" alt="" /></p>
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-04.png" alt=""></p>
       <h2 id="create-a-script-schedule-to-shrink-the-disks-automatically">
         
         
@@ -432,30 +440,46 @@ Having the host target “A single host in the pool” Hydra version 1.0.1.16 is
         
       </h2>
     
-<p>If everything works fine, a script schedule can be configured to run the optimization maybe every week. <strong>It’s important to run the script only on a single host.</strong>
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-05.png" alt="" /></p>
+
+<p>If everything works fine, a script schedule can be configured to run the optimization maybe every week. <strong>It&#39;s important to run the script only on a single host.</strong>
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-05.png" alt=""></p>
+
 <p><strong>Get Hydra: <a href="https://azuremarketplace.microsoft.com/marketplace/apps/itprocloudgmbh1628775137215.hydra-deploy-d1">Azure Marketplace</a></strong></p>
 
 		<!--<h2 id="intro">Intro</h2>
-<p>FSLogix profile disks increase their size over time - even if a user deletes data and the data amount goes down. Like <a href="https://twitter.com/jimmoyle">Jim Moyle</a> wrote: “Dynamically Expanding disks do not natively shrink when the volume of data within them reduces, they stay at the ‘High water mark’ of historical data volume within them.”</p>
+
+<p>FSLogix profile disks increase their size over time - even if a user deletes data and the data amount goes down. Like <a href="https://twitter.com/jimmoyle">Jim Moyle</a> wrote: &quot;Dynamically Expanding disks do not natively shrink when the volume of data within them reduces, they stay at the &#39;High water mark&#39; of historical data volume within them.&quot; </p>
+
 <p>While you are paying for usage or allocated storage, having the profile disk small is a good way to go.</p>
-<p>Jim provides a <a href="https://github.com/FSLogix/Invoke-FslShrinkDisk">script</a> to shrink the FSLogix profiles. Excellent work from Jim.</p>
+
+<p>Jim provides a <a href="https://github.com/FSLogix/Invoke-FslShrinkDisk">script</a> to shrink the FSLogix profiles. Excellent work from Jim. </p>
+
 <p>I added a script in Hydra to download and run the script from Jim to shrink FSLogix disk. This script can be used in a script schedule on a host pool to shrink the disk maybe one time a week.</p>
+
 <p>Update Hydra to the newest version
-Having the host target “A single host in the pool” Hydra version 1.0.1.16 is needed. You can update Hydra in the Azure portal -&gt; Your Hydra web app -&gt; Deployment Center -&gt; Sync
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-01.png" alt="" /></p>
+Having the host target &quot;A single host in the pool&quot; Hydra version 1.0.1.16 is needed. You can update Hydra in the Azure portal -&gt; Your Hydra web app -&gt; Deployment Center -&gt; Sync
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-01.png" alt=""></p>
+
 <h2 id="download-the-newest-build-in-scripts">Download the newest build-in scripts</h2>
+
 <p>Open the Hydra portal -&gt; Scripts -&gt; Click the button in the upper right corner:
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-02.png" alt="" /></p>
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-02.png" alt=""></p>
+
 <h2 id="service-account">Service Account</h2>
+
 <p>Like the feature deleting FSLogix profile, the shrink method needs a service account configured on the host pool level. The account must have read/write permission to the FSLogix file share:
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-03.png" alt="" /></p>
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-03.png" alt=""></p>
+
 <h2 id="test-shrinking">Test shrinking</h2>
+
 <p>Make a first test for shrinking the profile disk from the session host view. Select one session host -&gt; Run script or collection -&gt; BuiltIn: Shrink FSLogix Disk
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-04.png" alt="" /></p>
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-04.png" alt=""></p>
+
 <h2 id="create-a-script-schedule-to-shrink-the-disks-automatically">Create a script schedule to shrink the disks automatically.</h2>
-<p>If everything works fine, a script schedule can be configured to run the optimization maybe every week. <strong>It’s important to run the script only on a single host.</strong>
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-05.png" alt="" /></p>
+
+<p>If everything works fine, a script schedule can be configured to run the optimization maybe every week. <strong>It&#39;s important to run the script only on a single host.</strong>
+<img src="../assets/images/Hydra/FSLogixShrink-Disk-05.png" alt=""></p>
+
 <p><strong>Get Hydra: <a href="https://azuremarketplace.microsoft.com/marketplace/apps/itprocloudgmbh1628775137215.hydra-deploy-d1">Azure Marketplace</a></strong></p>
 -->
 	

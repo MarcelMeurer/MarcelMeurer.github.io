@@ -9,9 +9,9 @@
 <title>Announcing the community version of "Project MySmartScale" | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>Announcing the community version of “Project MySmartScale” | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
-<meta property="og:title" content="Announcing the community version of “Project MySmartScale”" />
+<title>Announcing the community version of &quot;Project MySmartScale&quot; | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Announcing the community version of &quot;Project MySmartScale&quot;" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Windows Virtual Desktop is released and gateways around the world are available - even in Europe which cause in a low latency - perfect." />
@@ -24,9 +24,9 @@
 <meta property="article:published_time" content="2019-10-09T00:00:00+02:00" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/MySmartScale-01.png" />
-<meta property="twitter:title" content="Announcing the community version of “Project MySmartScale”" />
+<meta property="twitter:title" content="Announcing the community version of &quot;Project MySmartScale&quot;" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2019-10-09T00:00:00+02:00","datePublished":"2019-10-09T00:00:00+02:00","description":"Windows Virtual Desktop is released and gateways around the world are available - even in Europe which cause in a low latency - perfect.","headline":"Announcing the community version of “Project MySmartScale”","image":"https://blog.itprocloud.de/assets/images/MySmartScale-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Anouncing-Project-MySmartScale/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Anouncing-Project-MySmartScale/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2019-10-09T00:00:00+02:00","datePublished":"2019-10-09T00:00:00+02:00","description":"Windows Virtual Desktop is released and gateways around the world are available - even in Europe which cause in a low latency - perfect.","headline":"Announcing the community version of &quot;Project MySmartScale&quot;","image":"https://blog.itprocloud.de/assets/images/MySmartScale-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Anouncing-Project-MySmartScale/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Anouncing-Project-MySmartScale/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -380,7 +380,9 @@
 	
 		<!-- change content to anchor styled output -->
 		<p>Windows Virtual Desktop is released and gateways around the world are available - even in Europe which cause in a low latency - perfect.</p>
-<p>Windows Virtual Desktop supplement the current solutions on the virtualization market like Citrix Application Virtualization and VMware Horizon. It’s focused on running as-a-service in the Azure cloud and it’s very cost-efficient compared to the other vendors. Of course: The tools and the administrative capabilities for WVD/AVD differ from the others - till now.</p>
+
+<p>Windows Virtual Desktop supplement the current solutions on the virtualization market like Citrix Application Virtualization and VMware Horizon. It&#39;s focused on running as-a-service in the Azure cloud and it&#39;s very cost-efficient compared to the other vendors. Of course: The tools and the administrative capabilities for WVD/AVD differ from the others - till now.</p>
+
 <p>But there is still a niche that is not yet filled - until today. The VMs are running permanently even if no users using the environment which leads to avoidable costs. But there is a solution:</p>
       <h2 id="announcement-of-the-community-version-of-project-mysmartscale">
         
@@ -390,41 +392,62 @@
         
       </h2>
     
-<p>“Project MySmartScale” starts and smartly deallocates session hosts for WVD. It learns about the user’s behavior and can actively logoff unused sessions at the right time to save compute power – and money. The solution is 100% based on Azure platform services and fits into the whole “as-a-service” story. But starting and stopping session hosts is not as easy as it sounds: To have the right amount of session hosts ready before users try to login in the morning you must predict the user behavior. And this is what “Project MySmartScale” does:</p>
+
+<p>&quot;Project MySmartScale&quot; starts and smartly deallocates session hosts for WVD. It learns about the user’s behavior and can actively logoff unused sessions at the right time to save compute power – and money. The solution is 100% based on Azure platform services and fits into the whole &quot;as-a-service&quot; story. But starting and stopping session hosts is not as easy as it sounds: To have the right amount of session hosts ready before users try to login in the morning you must predict the user behavior. And this is what &quot;Project MySmartScale&quot; does:</p>
+
 <ul>
 <li>Predict the logon count over time based on historical data</li>
 <li>Predict the logon count over time based on the acceleration of logons</li>
 <li>Start the sessions hosts a few minutes before they are needed</li>
 <li>Stop/deallocates unused session hosts if they are not needed</li>
-<li>…</li>
+<li>... </li>
 </ul>
-<p><img src="../assets/images/MySmartScale-01.png" alt="MySmartScale-01" /></p>
+
+<p><img src="../assets/images/MySmartScale-01.png" alt="MySmartScale-01"></p>
+
 <p>Today I make this solution available via GitHub. You can easily deploy the solution into your Azure subscription and start to scale your VWD environment based on the usage. This can save up to 60-70% of the costs compared to a 24/7 pay-as-you-go model.</p>
+
 <p>Side-Note: It also scales a Citrix XenApp / Virtual Apps and Desktop environment in Azure without using Citrix Cloud (for IaaS).</p>
+
 <p>The free community version supports up to 5 VMs.</p>
+
 <p>Feel free to use it:</p>
+
 <p><a href="https://github.com/MarcelMeurer/Project-MySmartScale">https://github.com/MarcelMeurer/Project-MySmartScale</a></p>
+
 <p>Note:
 The legal owner of this solution is sepago Gmbh, Dillenburger Str. 83, 51105 Cologne, Germany - <a href="https://www.sepago.com">https://www.sepago.com</a></p>
 
 		<!--<p>Windows Virtual Desktop is released and gateways around the world are available - even in Europe which cause in a low latency - perfect.</p>
-<p>Windows Virtual Desktop supplement the current solutions on the virtualization market like Citrix Application Virtualization and VMware Horizon. It’s focused on running as-a-service in the Azure cloud and it’s very cost-efficient compared to the other vendors. Of course: The tools and the administrative capabilities for WVD/AVD differ from the others - till now.</p>
+
+<p>Windows Virtual Desktop supplement the current solutions on the virtualization market like Citrix Application Virtualization and VMware Horizon. It&#39;s focused on running as-a-service in the Azure cloud and it&#39;s very cost-efficient compared to the other vendors. Of course: The tools and the administrative capabilities for WVD/AVD differ from the others - till now.</p>
+
 <p>But there is still a niche that is not yet filled - until today. The VMs are running permanently even if no users using the environment which leads to avoidable costs. But there is a solution:</p>
+
 <h2 id="announcement-of-the-community-version-of-project-mysmartscale">Announcement of the community version of Project MySmartScale</h2>
-<p>“Project MySmartScale” starts and smartly deallocates session hosts for WVD. It learns about the user’s behavior and can actively logoff unused sessions at the right time to save compute power – and money. The solution is 100% based on Azure platform services and fits into the whole “as-a-service” story. But starting and stopping session hosts is not as easy as it sounds: To have the right amount of session hosts ready before users try to login in the morning you must predict the user behavior. And this is what “Project MySmartScale” does:</p>
+
+<p>&quot;Project MySmartScale&quot; starts and smartly deallocates session hosts for WVD. It learns about the user’s behavior and can actively logoff unused sessions at the right time to save compute power – and money. The solution is 100% based on Azure platform services and fits into the whole &quot;as-a-service&quot; story. But starting and stopping session hosts is not as easy as it sounds: To have the right amount of session hosts ready before users try to login in the morning you must predict the user behavior. And this is what &quot;Project MySmartScale&quot; does:</p>
+
 <ul>
 <li>Predict the logon count over time based on historical data</li>
 <li>Predict the logon count over time based on the acceleration of logons</li>
 <li>Start the sessions hosts a few minutes before they are needed</li>
 <li>Stop/deallocates unused session hosts if they are not needed</li>
-<li>…</li>
+<li>... </li>
 </ul>
-<p><img src="../assets/images/MySmartScale-01.png" alt="MySmartScale-01" /></p>
+
+<p><img src="../assets/images/MySmartScale-01.png" alt="MySmartScale-01"></p>
+
 <p>Today I make this solution available via GitHub. You can easily deploy the solution into your Azure subscription and start to scale your VWD environment based on the usage. This can save up to 60-70% of the costs compared to a 24/7 pay-as-you-go model.</p>
+
 <p>Side-Note: It also scales a Citrix XenApp / Virtual Apps and Desktop environment in Azure without using Citrix Cloud (for IaaS).</p>
+
 <p>The free community version supports up to 5 VMs.</p>
+
 <p>Feel free to use it:</p>
+
 <p><a href="https://github.com/MarcelMeurer/Project-MySmartScale">https://github.com/MarcelMeurer/Project-MySmartScale</a></p>
+
 <p>Note:
 The legal owner of this solution is sepago Gmbh, Dillenburger Str. 83, 51105 Cologne, Germany - <a href="https://www.sepago.com">https://www.sepago.com</a></p>
 -->

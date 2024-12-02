@@ -10,12 +10,12 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Session hosts are not available in Azure Virtual Desktop, but VMs are running. | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Session hosts are not available in Azure Virtual Desktop, but VMs are running." />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="During June/July, I got several emails that session hosts were not available in AVD, but the VMs were in a running state. Rebooting the host sometimes helps, and the host was shown as available. We figured out that the issue was caused by a not running RDAgentBootLoader service on affected hosts. Starting the service (or the host) resolved the issue. Right now, I don’t know the root cause of why the RDAgentBootLoader was not started or failed." />
-<meta property="og:description" content="During June/July, I got several emails that session hosts were not available in AVD, but the VMs were in a running state. Rebooting the host sometimes helps, and the host was shown as available. We figured out that the issue was caused by a not running RDAgentBootLoader service on affected hosts. Starting the service (or the host) resolved the issue. Right now, I don’t know the root cause of why the RDAgentBootLoader was not started or failed." />
+<meta name="description" content="During June/July, I got several emails that session hosts were not available in AVD, but the VMs were in a running state. Rebooting the host sometimes helps, and the host was shown as available. We figured out that the issue was caused by a not running RDAgentBootLoader service on affected hosts. Starting the service (or the host) resolved the issue. Right now, I don&#39;t know the root cause of why the RDAgentBootLoader was not started or failed." />
+<meta property="og:description" content="During June/July, I got several emails that session hosts were not available in AVD, but the VMs were in a running state. Rebooting the host sometimes helps, and the host was shown as available. We figured out that the issue was caused by a not running RDAgentBootLoader service on affected hosts. Starting the service (or the host) resolved the issue. Right now, I don&#39;t know the root cause of why the RDAgentBootLoader was not started or failed." />
 <link rel="canonical" href="https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/" />
 <meta property="og:url" content="https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Unavailable.png" />
 <meta property="twitter:title" content="Session hosts are not available in Azure Virtual Desktop, but VMs are running." />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2023-06-28T00:00:00+02:00","datePublished":"2023-06-28T00:00:00+02:00","description":"During June/July, I got several emails that session hosts were not available in AVD, but the VMs were in a running state. Rebooting the host sometimes helps, and the host was shown as available. We figured out that the issue was caused by a not running RDAgentBootLoader service on affected hosts. Starting the service (or the host) resolved the issue. Right now, I don’t know the root cause of why the RDAgentBootLoader was not started or failed.","headline":"Session hosts are not available in Azure Virtual Desktop, but VMs are running.","image":"https://blog.itprocloud.de/assets/images/Unavailable.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2023-06-28T00:00:00+02:00","datePublished":"2023-06-28T00:00:00+02:00","description":"During June/July, I got several emails that session hosts were not available in AVD, but the VMs were in a running state. Rebooting the host sometimes helps, and the host was shown as available. We figured out that the issue was caused by a not running RDAgentBootLoader service on affected hosts. Starting the service (or the host) resolved the issue. Right now, I don&#39;t know the root cause of why the RDAgentBootLoader was not started or failed.","headline":"Session hosts are not available in Azure Virtual Desktop, but VMs are running.","image":"https://blog.itprocloud.de/assets/images/Unavailable.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Session-Hosts-are-unavailable-or-shutdown-even-if-the-VMs-are-running/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -459,26 +459,29 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>During June/July, I got several emails that session hosts were not available in AVD, but the VMs were in a running state. Rebooting the host sometimes helps, and the host was shown as available. We figured out that the issue was caused by a not running RDAgentBootLoader service on affected hosts. Starting the service (or the host) resolved the issue. Right now, I don’t know the root cause of why the RDAgentBootLoader was not started or failed.</p>
-<p>To workaround this behavior by implementing a scheduled task, start with the host and monitors the service for the first 30 minutes. The service will be started if it’s not running.</p>
+                <p>During June/July, I got several emails that session hosts were not available in AVD, but the VMs were in a running state. Rebooting the host sometimes helps, and the host was shown as available. We figured out that the issue was caused by a not running RDAgentBootLoader service on affected hosts. Starting the service (or the host) resolved the issue. Right now, I don&#39;t know the root cause of why the RDAgentBootLoader was not started or failed.</p>
+
+<p>To workaround this behavior by implementing a scheduled task, start with the host and monitors the service for the first 30 minutes. The service will be started if it&#39;s not running.</p>
+
 <p>The scheduled task will automatically be created for new deployments with <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for Azure Virtual Desktop</a> or <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>) from version 06/27/2023.</p>
+
 <p>If you want to build your own scheduled task, you can use this script:</p>
-<pre><code>	$interval=30
-	$run=$true
-	$counter=0
-	$serviceName=&quot;RDAgentBootLoader&quot;
-	do {
-		Start-Sleep -Seconds $interval
-		$service=Get-Service -Name $serviceName -ErrorAction SilentlyContinue
-		if ($service -ne $null -and $service.Status -ne [System.ServiceProcess.ServiceControllerStatus](4)) {
-			Write-Host &quot;Starting service: $serviceName&quot;
-			Start-Service -Name $serviceName -ErrorAction SilentlyContinue
-		}
-		$counter++
-		if ($counter -gt 10) {$interval=90}
-		if ($counter -gt 20) {$run=$false}
-	} while ($run)
-</code></pre>
+<div class="highlight"><pre><code class="language-" data-lang="">    $interval=30
+    $run=$true
+    $counter=0
+    $serviceName="RDAgentBootLoader"
+    do {
+        Start-Sleep -Seconds $interval
+        $service=Get-Service -Name $serviceName -ErrorAction SilentlyContinue
+        if ($service -ne $null -and $service.Status -ne [System.ServiceProcess.ServiceControllerStatus](4)) {
+            Write-Host "Starting service: $serviceName"
+            Start-Service -Name $serviceName -ErrorAction SilentlyContinue
+        }
+        $counter++
+        if ($counter -gt 10) {$interval=90}
+        if ($counter -gt 20) {$run=$false}
+    } while ($run)
+</code></pre></div>
 <p>PS: Maybe it makes sense to monitor the service during the runtime of the VM in the future.</p>
 
             </div>

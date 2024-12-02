@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Changing the disk type automatically while starting or deallocating a session host / VM for WVD | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Changing the disk type automatically while starting or deallocating a session host / VM for WVD" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,20 +460,29 @@
                 
                 <!-- End Toc -->
                 <p>The costs of running virtual machines in Azure summarize the costs of their components like VM type (compute), storage, network, and some other parts. While the spendings for the compute stops after deallocating VMs, Microsoft continues charging for the storage (the virtual disks). These make sense while the disks continue using the underlying storage.</p>
+
 <p>There are three main types of storage for managed disks with different prices: E.g 128 GByte costs between $5.89 to $19.71 per disk per month.</p>
-<p><img src="../assets/images/VMTag-WVD.AdvDiskType-02.png" alt="" /></p>
-<p>If you have many VMs, the disks’ costs become more important while you have to pay for the disk while the VM is running or not.</p>
-<p>If you run Windows Virtual Desktops, your session hosts don’t run 24/7 (the same happens for test and demo environments). So, you start and stop the virtual machines to your needs. This lowers the compute costs, but the costs for the disks continue. But if a virtual machine is deallocated, the storage performance is unimportant. Why don’t we change the disk type to the cheapest after deallocating and bringing it back to a higher performance before starting the VM? That is absolutely possible and can be done through the Azure Portal - or using WVDAdmin.</p>
-<p>With the current version of WVDAdmin you can tag a VM / session host to change the disk type on start and after the deallocation. Simply add a tag to the VMs with the name “<em>WVD.AdvDiskType</em>” and one of the following values:</p>
-<ul>
-<li><em>StandardSSD_LRS</em></li>
-<li><em>Premium_LRS</em></li>
-</ul>
+
+<p><img src="../assets/images/VMTag-WVD.AdvDiskType-02.png" alt=""></p>
+
+<p>If you have many VMs, the disks&#39; costs become more important while you have to pay for the disk while the VM is running or not.</p>
+
+<p>If you run Windows Virtual Desktops, your session hosts don&#39;t run 24/7 (the same happens for test and demo environments). So, you start and stop the virtual machines to your needs. This lowers the compute costs, but the costs for the disks continue. But if a virtual machine is deallocated, the storage performance is unimportant. Why don&#39;t we change the disk type to the cheapest after deallocating and bringing it back to a higher performance before starting the VM? That is absolutely possible and can be done through the Azure Portal - or using WVDAdmin.</p>
+
+<p>With the current version of WVDAdmin you can tag a VM / session host to change the disk type on start and after the deallocation. Simply add a tag to the VMs with the name &quot;<em>WVD.AdvDiskType</em>&quot; and one of the following values:
+- <em>StandardSSD_LRS</em>
+- <em>Premium_LRS</em></p>
+
 <p>After this, refresh WVDAdmin, and the disk type changes on start to the named type and goes to standard HDD (the cheapest) after the deallocation.</p>
-<p><img src="../assets/images/VMTag-WVD.AdvDiskType-01.png" alt="" /></p>
-<p>PS: You can add the tags automatically using the “Custom Tags” tab in WVDAdmin:</p>
-<p><img src="../assets/images/VMTag-WVD.AdvDiskType-04.png" alt="" /></p>
-<p><img src="../assets/images/VMTag-WVD.AdvDiskType-03.png" alt="" /></p>
+
+<p><img src="../assets/images/VMTag-WVD.AdvDiskType-01.png" alt=""></p>
+
+<p>PS: You can add the tags automatically using the &quot;Custom Tags&quot; tab in WVDAdmin:</p>
+
+<p><img src="../assets/images/VMTag-WVD.AdvDiskType-04.png" alt=""></p>
+
+<p><img src="../assets/images/VMTag-WVD.AdvDiskType-03.png" alt=""></p>
+
 <p><strong>Important:</strong> Keep in mind that change the disk type on the fly only works in WVDAdmin. If you start/stop a VM in the Azure Portal (or with an autoscaling engine), the disk type will not change.</p>
 
             </div>

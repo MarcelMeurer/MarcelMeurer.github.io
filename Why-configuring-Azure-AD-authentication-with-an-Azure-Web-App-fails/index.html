@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Why configuring Azure AD authentication with an Azure Web App fails | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Why configuring Azure AD authentication with an Azure Web App fails" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,15 +460,25 @@
                 
                 <!-- End Toc -->
                 <p>I spent hours today adding Azure AD authentication to an Azure MVC web application with Visual Studio. I always got the same error while adding the preconfigured AD application:</p>
+
 <p>“Error: Unable to query for Azure AD applications: An error occurred while processing this request.”</p>
-<p><img src="/wp-content/uploads/2019/02/01-1024x703.png" alt="img" /></p>
+
+<p><img src="/wp-content/uploads/2019/02/01-1024x703.png" alt="img"></p>
+
 <p>My account has the right permission in Azure AD – I thought. After a while I found out: Visual Studio was connected to my Azure AD with three different accounts:</p>
-<p><img src="/wp-content/uploads/2019/02/02-1024x764.png" alt="img" /></p>
+
+<p><img src="/wp-content/uploads/2019/02/02-1024x764.png" alt="img"></p>
+
 <p>Normally, that’s what I want, even if I have to publish some apps in other tenants/subscriptions. But in this special case two accounts are part of the Azure tenant where my Azure applications should be deployed:</p>
-<p><img src="/wp-content/uploads/2019/02/03-1024x364.png" alt="img" /></p>
+
+<p><img src="/wp-content/uploads/2019/02/03-1024x364.png" alt="img"></p>
+
 <p>Visual Studio uses the first account (marked in red), which does not have the appropriate permissions.</p>
+
 <p>My “fast” resolution: I gave this account the right Azure AD role (Application Administrator) for 5 minutes and tried again with success:</p>
-<p><img src="/wp-content/uploads/2019/02/04-1024x703.png" alt="img" /></p>
+
+<p><img src="/wp-content/uploads/2019/02/04-1024x703.png" alt="img"></p>
+
 <p>First published on: <a href="https://www.sepago.de/blog/why-configuring-azure-ad-authentication-with-an-azure-web-app-fails/">https://www.sepago.de/blog/why-configuring-azure-ad-authentication-with-an-azure-web-app-fails/</a></p>
 
             </div>

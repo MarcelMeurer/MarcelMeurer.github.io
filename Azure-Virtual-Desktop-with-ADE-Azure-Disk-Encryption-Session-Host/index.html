@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Azure Virtual Desktop Session Hosts with Azure Disk Encryption | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Azure Virtual Desktop Session Hosts with Azure Disk Encryption" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,26 +460,35 @@
                 
                 <!-- End Toc -->
                 <p><a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> for Azure Virtual Desktop and <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> are supporting ADE for AVD Session Hosts.</p>
+
 <p>Azure Disk Encryption (ADE) encrypts the OS and data disks of Azure virtual machines (VMs) inside your VMs by using BitLocker. ADE cannot be combined with a disk encryption set.</p>
+
 <p>To roll out session hosts with ADE in <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a>, some resources must be prepared to work: Azure Key Vault with an encryption key, and Azure Key Vault to store the secrets of the disks (can be the same vault)</p>
+
 <ul>
 <li>First, create a Key Vault in the Azure Portal</li>
 <li>Give the service principal (from the tenant configuration) contributor permission to the vault (access and control)</li>
 <li>In Access Policies, give the service principal the following permissions:
-– Key permissions: Get, Encrypt, Wrap Key
-– Secret permissions: Set</li>
+-- Key permissions: Get, Encrypt, Wrap Key
+-- Secret permissions: Set</li>
 <li>Check the boxes: Azure Virtual Machines for deployment and Azure Disk Encryption for volume encryption</li>
 <li>Give yourself permissions: Key and secret management</li>
 <li>Go to Keys and click on Generate. Type a name and select RSA and 2048</li>
 <li>Click on the generate key and on the current version. Copy the Key identifier (must include the version). E.g., https://<my-vaul>.vault.azure.net/keys/ADE-Encryption/bf270e977a574813a87bb637d57a6675</li>
 </ul>
-<p>In <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a>, configure “New Session Host Rollout”:
-In “Advanced settings” select the Key Vault  in ADE Key Vault
+
+<p>In <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a>, configure &quot;New Session Host Rollout&quot;:
+In &quot;Advanced settings&quot; select the Key Vault  in ADE Key Vault
 Copy the Key Identifier to ADE Encryption Key Url</p>
-<p><img src="../assets/images/ADE-01.png" alt="" /></p>
+
+<p><img src="../assets/images/ADE-01.png" alt=""></p>
+
 <p>Do a deployment to verify that the disk is ADE encrypted:</p>
-<p><img src="../assets/images/ADE-02.png" alt="" /></p>
+
+<p><img src="../assets/images/ADE-02.png" alt=""></p>
+
 <p>To rollout hosts with ADE with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>, add tags to the host pool:</p>
+
 <p>WVD.Default.KeyVault.Id: resource id of the KeyVault (/subscriptions/<GUID>/resourceGroups/<RG Name>/providers/Microsoft.KeyVault/vaults/<KV Name>)
 WVD.Default.KeyVault.KeyUri: key for the vaul (https://<my-vaul>.vault.azure.net/keys/ADE-Encryption/bf270e977a574813a87bb637d57a6675)</p>
 

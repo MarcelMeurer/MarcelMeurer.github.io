@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>AVD issue: SessionHost unhealthy SxsStack listener is not ready - Code -2147467259 | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="AVD issue: SessionHost unhealthy SxsStack listener is not ready - Code -2147467259" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -380,21 +380,29 @@
 	
 		<!-- change content to anchor styled output -->
 		<p>A few days ago, I got an email from a customer concerning that a lot of Azure Virtual Desktop (AVD) session hosts showing an error message from the internal health check:</p>
+
 <p><strong>SessionHost unhealthy SxSStack listener is not ready - Code -2147467259</strong></p>
-<p>Unfortunately, there was no failed event log from the WVDAgent in the application log. But the RemoteDesktopServices log shows some issues with the SxSStack as expected. Reinstalling the AVD agents doesn’t resolve the issue. But we found an easier way to bring the hosts back to life: Uninstalling the SxS Stack package and rebooting the host.</p>
+
+<p>Unfortunately, there was no failed event log from the WVDAgent in the application log. But the RemoteDesktopServices log shows some issues with the SxSStack as expected. Reinstalling the AVD agents doesn&#39;t resolve the issue. But we found an easier way to bring the hosts back to life: Uninstalling the SxS Stack package and rebooting the host.</p>
+
 <p>We used PowerShell to create a single-line script and Hydra to execute it on all affected session host:</p>
-<pre><code>Uninstall-Package -Name &quot;Remote Desktop Services SxS Network Stack&quot; -AllVersions -Force
-</code></pre>
-<p><img src="../assets/images/Hydra/SxsIssue-02.png" alt="" /></p>
+<div class="highlight"><pre><code class="language-" data-lang="">Uninstall-Package -Name "Remote Desktop Services SxS Network Stack" -AllVersions -Force
+</code></pre></div>
+<p><img src="../assets/images/Hydra/SxsIssue-02.png" alt=""></p>
+
 <p>The short script can be deployed with #WVDAdmin, #Hydra, or any other solution having access to the hosts.</p>
 
 		<!--<p>A few days ago, I got an email from a customer concerning that a lot of Azure Virtual Desktop (AVD) session hosts showing an error message from the internal health check:</p>
+
 <p><strong>SessionHost unhealthy SxSStack listener is not ready - Code -2147467259</strong></p>
-<p>Unfortunately, there was no failed event log from the WVDAgent in the application log. But the RemoteDesktopServices log shows some issues with the SxSStack as expected. Reinstalling the AVD agents doesn’t resolve the issue. But we found an easier way to bring the hosts back to life: Uninstalling the SxS Stack package and rebooting the host.</p>
+
+<p>Unfortunately, there was no failed event log from the WVDAgent in the application log. But the RemoteDesktopServices log shows some issues with the SxSStack as expected. Reinstalling the AVD agents doesn&#39;t resolve the issue. But we found an easier way to bring the hosts back to life: Uninstalling the SxS Stack package and rebooting the host.</p>
+
 <p>We used PowerShell to create a single-line script and Hydra to execute it on all affected session host:</p>
-<pre><code>Uninstall-Package -Name &quot;Remote Desktop Services SxS Network Stack&quot; -AllVersions -Force
-</code></pre>
-<p><img src="../assets/images/Hydra/SxsIssue-02.png" alt="" /></p>
+<div class="highlight"><pre><code class="language-" data-lang="">Uninstall-Package -Name "Remote Desktop Services SxS Network Stack" -AllVersions -Force
+</code></pre></div>
+<p><img src="../assets/images/Hydra/SxsIssue-02.png" alt=""></p>
+
 <p>The short script can be deployed with #WVDAdmin, #Hydra, or any other solution having access to the hosts.</p>
 -->
 	

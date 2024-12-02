@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Get alerted if Azure Virtual Desktop fails - AVD Monitoring and alerting with Loganalytics / Azure Monitor | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Get alerted if Azure Virtual Desktop fails - AVD Monitoring and alerting with Loganalytics / Azure Monitor" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -379,18 +379,23 @@
     <div class="article-post">
 	
 		<!-- change content to anchor styled output -->
-		<p>Monitoring Azure Virtual Desktop is important to get insights into the performance and resource usage and alert if something generally goes wrong. Especially, getting alerted if something goes wrong is essential - independent from the cause. If I get an alert, I can directly start to find the root cause and resolve or workaround it.</p>
+		<p>Monitoring Azure Virtual Desktop is important to get insights into the performance and resource usage and alert if something generally goes wrong. Especially, getting alerted if something goes wrong is essential - independent from the cause. If I get an alert, I can directly start to find the root cause and resolve or workaround it. </p>
+
 <p>For that reason, I implement a general alerting in my projects. And that is very easy: I measure specific error messages from the AVD platform service and send an alert if the number of errors exceeds a particular limit (e.g., &gt;5 error messages per 10 minutes).</p>
-<p>Important to know is that not all error messages in the platform service are “errors”. For example, Microsoft records the disconnection of a session as an error (<em>ConnectionFailedClientDisconnect</em>) - what happens very often in the evening. Other examples are <em>AuthenticationLogonFailed</em>, <em>PasswordExpired</em>, and much more. We have to exclude the non-issue error messages and count the others for an alert.</p>
+
+<p>Important to know is that not all error messages in the platform service are &quot;errors&quot;. For example, Microsoft records the disconnection of a session as an error (<em>ConnectionFailedClientDisconnect</em>) - what happens very often in the evening. Other examples are <em>AuthenticationLogonFailed</em>, <em>PasswordExpired</em>, and much more. We have to exclude the non-issue error messages and count the others for an alert.</p>
+
 <p>If we have done this, we are alerted in many cases - independent of the root cause. These could be:</p>
+
 <ul>
 <li>Autoscaling or Power-On-Connect is not working for reasons (<em>ConnectionFailedNoHealthyRdshAvailable</em>)</li>
 <li>Automatic deployment of session hosts is not working (<em>ConnectionFailedNoHealthyRdshAvailable</em>)</li>
 <li>Domain Controller not reachable or computer object was overwritten (<em>ConnectionFailedAdTrustedRelationshipFailure</em>)</li>
 <li>Session Host is not available - maybe a broken resource id (<em>SessionHostResourceNotAvailable</em>)</li>
 <li>Orphan sessions (<em>ConnectionFailedUserHasValidSessionButRdshIsUnhealthy</em>)</li>
-<li>…</li>
+<li>...</li>
 </ul>
+
 <p>This alerting helped me a lot in the past to get notified when a problem occurs (especially in the morning if many people try to log on ;-).</p>
       <h3 id="build-the-alert">
         
@@ -400,27 +405,33 @@
         
       </h3>
     
-<p>First, configure all host pools’ diagnostic settings to store their logs into a log analytics workspace:
-<img src="../assets/images/Avd-Error-Monitoring-01.png" alt="" /></p>
+
+<p>First, configure all host pools&#39; diagnostic settings to store their logs into a log analytics workspace:
+<img src="../assets/images/Avd-Error-Monitoring-01.png" alt=""></p>
+
 <p>Alternatively, you can use <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> to do that:</p>
-<p><img src="../assets/images/Avd-Error-Monitoring-02.png" alt="" /></p>
+
+<p><img src="../assets/images/Avd-Error-Monitoring-02.png" alt=""></p>
+
 <p>Open the log analytics workspace -&gt; Alerts and create an action group. Action groups are used to define what should happen in an alert. In our case, we configure to get alerted by mail.
-<img src="../assets/images/Avd-Error-Monitoring-03.png" alt="" /></p>
+<img src="../assets/images/Avd-Error-Monitoring-03.png" alt=""></p>
+
 <p>Give the action group a name:
-<img src="../assets/images/Avd-Error-Monitoring-04.png" alt="" /></p>
+<img src="../assets/images/Avd-Error-Monitoring-04.png" alt=""></p>
+
 <p>Configure the notification type, including the recipients of the mail:
-<img src="../assets/images/Avd-Error-Monitoring-05.png" alt="" /></p>
-<p>Configure the alert. Select “Log Query” to enter a custom search query to filter for the errors causing issues. Use the following parameters:
+<img src="../assets/images/Avd-Error-Monitoring-05.png" alt=""></p>
+
+<p>Configure the alert. Select &quot;Log Query&quot; to enter a custom search query to filter for the errors causing issues. Use the following parameters:
 Query:</p>
-<pre><code class="language-kusto">>WVDErrors | where not(CodeSymbolic in~(&quot;ActivityTimeout&quot;,&quot;ConnectionFailedClientDisconnect&quot;,&quot;SavedCredentialsNotAllowed&quot;,&quot;ConnectionBrokenMissedHeartbeatThresholdExceeded&quot;,&quot;AuthenticationLogonFailed&quot;,&quot;FreshCredsRequired&quot;,&quot;CM_ERR_MISSED_HEARTBEAT_THRESHOLD_EXCEEDED&quot;,&quot;NL_DISCONNECT_ERROR&quot;,&quot;PasswordExpired&quot;,&quot;AccountLockedOut&quot;,&quot;AccountExpired&quot;,&quot;InvalidCredentials&quot;,&quot;AutoReconnectNoCookie&quot;,&quot;LogonFailed&quot;))
-</code></pre><table>
-<thead>
+<div class="highlight"><pre><code class="language-kusto" data-lang="kusto">WVDErrors | where not(CodeSymbolic in~("ActivityTimeout","ConnectionFailedClientDisconnect","SavedCredentialsNotAllowed","ConnectionBrokenMissedHeartbeatThresholdExceeded","AuthenticationLogonFailed","FreshCredsRequired","CM_ERR_MISSED_HEARTBEAT_THRESHOLD_EXCEEDED","NL_DISCONNECT_ERROR","PasswordExpired","AccountLockedOut","AccountExpired","InvalidCredentials","AutoReconnectNoCookie","LogonFailed"))
+</code></pre></div>
+<table><thead>
 <tr>
 <th>Field</th>
 <th>Value</th>
 </tr>
-</thead>
-<tbody>
+</thead><tbody>
 <tr>
 <td>Measure</td>
 <td>Table rows</td>
@@ -445,62 +456,82 @@ Query:</p>
 <td>Frequency of evaluation</td>
 <td>10 minutes</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
+
 <p>This configuration sends an alert if the number of filtered errors is higher than five over the last 10 minutes. Correct this for your environment (threshold and maybe exclude other non-issue errors):
-<img src="../assets/images/Avd-Error-Monitoring-06.png" alt="" />
-<img src="../assets/images/Avd-Error-Monitoring-07.png" alt="" />
-<img src="../assets/images/Avd-Error-Monitoring-08.png" alt="" /></p>
+<img src="../assets/images/Avd-Error-Monitoring-06.png" alt="">
+<img src="../assets/images/Avd-Error-Monitoring-07.png" alt="">
+<img src="../assets/images/Avd-Error-Monitoring-08.png" alt=""></p>
+
 <p>Add the action group:
-<img src="../assets/images/Avd-Error-Monitoring-09.png" alt="" /></p>
+<img src="../assets/images/Avd-Error-Monitoring-09.png" alt=""></p>
+
 <p>Give the alert rule a severity and a name:
-<img src="../assets/images/Avd-Error-Monitoring-10.png" alt="" /></p>
-<p>Done.</p>
-<p><img src="../assets/images/Avd-Error-Monitoring-11.png" alt="" /></p>
+<img src="../assets/images/Avd-Error-Monitoring-10.png" alt=""></p>
+
+<p>Done. </p>
+
+<p><img src="../assets/images/Avd-Error-Monitoring-11.png" alt=""></p>
+
 <p>If an alert is triggered, you will get a mail like this:</p>
-<p><img src="../assets/images/Avd-Error-Monitoring-12.png" alt="" /></p>
-<p>I plan to have this alerting soon available in <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> to show on <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydras’</a> dashboard if host pools are having trouble.</p>
+
+<p><img src="../assets/images/Avd-Error-Monitoring-12.png" alt=""></p>
+
+<p>I plan to have this alerting soon available in <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> to show on <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydras&#39;</a> dashboard if host pools are having trouble.</p>
+
 <p><strong>Tip:</strong> You can count all the errors in your environment with a KUSTO query. This is very useful to figure out other non-issue error messages:</p>
-<pre><code>WVDErrors
+<div class="highlight"><pre><code class="language-" data-lang="">WVDErrors
 | summarize count() by CodeSymbolic, Message
 | order by count_ desc
-</code></pre>
+</code></pre></div>
 
-		<!--<p>Monitoring Azure Virtual Desktop is important to get insights into the performance and resource usage and alert if something generally goes wrong. Especially, getting alerted if something goes wrong is essential - independent from the cause. If I get an alert, I can directly start to find the root cause and resolve or workaround it.</p>
+		<!--<p>Monitoring Azure Virtual Desktop is important to get insights into the performance and resource usage and alert if something generally goes wrong. Especially, getting alerted if something goes wrong is essential - independent from the cause. If I get an alert, I can directly start to find the root cause and resolve or workaround it. </p>
+
 <p>For that reason, I implement a general alerting in my projects. And that is very easy: I measure specific error messages from the AVD platform service and send an alert if the number of errors exceeds a particular limit (e.g., &gt;5 error messages per 10 minutes).</p>
-<p>Important to know is that not all error messages in the platform service are “errors”. For example, Microsoft records the disconnection of a session as an error (<em>ConnectionFailedClientDisconnect</em>) - what happens very often in the evening. Other examples are <em>AuthenticationLogonFailed</em>, <em>PasswordExpired</em>, and much more. We have to exclude the non-issue error messages and count the others for an alert.</p>
+
+<p>Important to know is that not all error messages in the platform service are &quot;errors&quot;. For example, Microsoft records the disconnection of a session as an error (<em>ConnectionFailedClientDisconnect</em>) - what happens very often in the evening. Other examples are <em>AuthenticationLogonFailed</em>, <em>PasswordExpired</em>, and much more. We have to exclude the non-issue error messages and count the others for an alert.</p>
+
 <p>If we have done this, we are alerted in many cases - independent of the root cause. These could be:</p>
+
 <ul>
 <li>Autoscaling or Power-On-Connect is not working for reasons (<em>ConnectionFailedNoHealthyRdshAvailable</em>)</li>
 <li>Automatic deployment of session hosts is not working (<em>ConnectionFailedNoHealthyRdshAvailable</em>)</li>
 <li>Domain Controller not reachable or computer object was overwritten (<em>ConnectionFailedAdTrustedRelationshipFailure</em>)</li>
 <li>Session Host is not available - maybe a broken resource id (<em>SessionHostResourceNotAvailable</em>)</li>
 <li>Orphan sessions (<em>ConnectionFailedUserHasValidSessionButRdshIsUnhealthy</em>)</li>
-<li>…</li>
+<li>...</li>
 </ul>
+
 <p>This alerting helped me a lot in the past to get notified when a problem occurs (especially in the morning if many people try to log on ;-).</p>
+
 <h3 id="build-the-alert">Build the alert</h3>
-<p>First, configure all host pools’ diagnostic settings to store their logs into a log analytics workspace:
-<img src="../assets/images/Avd-Error-Monitoring-01.png" alt="" /></p>
+
+<p>First, configure all host pools&#39; diagnostic settings to store their logs into a log analytics workspace:
+<img src="../assets/images/Avd-Error-Monitoring-01.png" alt=""></p>
+
 <p>Alternatively, you can use <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> to do that:</p>
-<p><img src="../assets/images/Avd-Error-Monitoring-02.png" alt="" /></p>
+
+<p><img src="../assets/images/Avd-Error-Monitoring-02.png" alt=""></p>
+
 <p>Open the log analytics workspace -&gt; Alerts and create an action group. Action groups are used to define what should happen in an alert. In our case, we configure to get alerted by mail.
-<img src="../assets/images/Avd-Error-Monitoring-03.png" alt="" /></p>
+<img src="../assets/images/Avd-Error-Monitoring-03.png" alt=""></p>
+
 <p>Give the action group a name:
-<img src="../assets/images/Avd-Error-Monitoring-04.png" alt="" /></p>
+<img src="../assets/images/Avd-Error-Monitoring-04.png" alt=""></p>
+
 <p>Configure the notification type, including the recipients of the mail:
-<img src="../assets/images/Avd-Error-Monitoring-05.png" alt="" /></p>
-<p>Configure the alert. Select “Log Query” to enter a custom search query to filter for the errors causing issues. Use the following parameters:
+<img src="../assets/images/Avd-Error-Monitoring-05.png" alt=""></p>
+
+<p>Configure the alert. Select &quot;Log Query&quot; to enter a custom search query to filter for the errors causing issues. Use the following parameters:
 Query:</p>
-<pre><code class="language-kusto">>WVDErrors | where not(CodeSymbolic in~(&quot;ActivityTimeout&quot;,&quot;ConnectionFailedClientDisconnect&quot;,&quot;SavedCredentialsNotAllowed&quot;,&quot;ConnectionBrokenMissedHeartbeatThresholdExceeded&quot;,&quot;AuthenticationLogonFailed&quot;,&quot;FreshCredsRequired&quot;,&quot;CM_ERR_MISSED_HEARTBEAT_THRESHOLD_EXCEEDED&quot;,&quot;NL_DISCONNECT_ERROR&quot;,&quot;PasswordExpired&quot;,&quot;AccountLockedOut&quot;,&quot;AccountExpired&quot;,&quot;InvalidCredentials&quot;,&quot;AutoReconnectNoCookie&quot;,&quot;LogonFailed&quot;))
-</code></pre><table>
-<thead>
+<div class="highlight"><pre><code class="language-kusto" data-lang="kusto">WVDErrors | where not(CodeSymbolic in~("ActivityTimeout","ConnectionFailedClientDisconnect","SavedCredentialsNotAllowed","ConnectionBrokenMissedHeartbeatThresholdExceeded","AuthenticationLogonFailed","FreshCredsRequired","CM_ERR_MISSED_HEARTBEAT_THRESHOLD_EXCEEDED","NL_DISCONNECT_ERROR","PasswordExpired","AccountLockedOut","AccountExpired","InvalidCredentials","AutoReconnectNoCookie","LogonFailed"))
+</code></pre></div>
+<table><thead>
 <tr>
 <th>Field</th>
 <th>Value</th>
 </tr>
-</thead>
-<tbody>
+</thead><tbody>
 <tr>
 <td>Measure</td>
 <td>Table rows</td>
@@ -525,26 +556,34 @@ Query:</p>
 <td>Frequency of evaluation</td>
 <td>10 minutes</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
+
 <p>This configuration sends an alert if the number of filtered errors is higher than five over the last 10 minutes. Correct this for your environment (threshold and maybe exclude other non-issue errors):
-<img src="../assets/images/Avd-Error-Monitoring-06.png" alt="" />
-<img src="../assets/images/Avd-Error-Monitoring-07.png" alt="" />
-<img src="../assets/images/Avd-Error-Monitoring-08.png" alt="" /></p>
+<img src="../assets/images/Avd-Error-Monitoring-06.png" alt="">
+<img src="../assets/images/Avd-Error-Monitoring-07.png" alt="">
+<img src="../assets/images/Avd-Error-Monitoring-08.png" alt=""></p>
+
 <p>Add the action group:
-<img src="../assets/images/Avd-Error-Monitoring-09.png" alt="" /></p>
+<img src="../assets/images/Avd-Error-Monitoring-09.png" alt=""></p>
+
 <p>Give the alert rule a severity and a name:
-<img src="../assets/images/Avd-Error-Monitoring-10.png" alt="" /></p>
-<p>Done.</p>
-<p><img src="../assets/images/Avd-Error-Monitoring-11.png" alt="" /></p>
+<img src="../assets/images/Avd-Error-Monitoring-10.png" alt=""></p>
+
+<p>Done. </p>
+
+<p><img src="../assets/images/Avd-Error-Monitoring-11.png" alt=""></p>
+
 <p>If an alert is triggered, you will get a mail like this:</p>
-<p><img src="../assets/images/Avd-Error-Monitoring-12.png" alt="" /></p>
-<p>I plan to have this alerting soon available in <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> to show on <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydras’</a> dashboard if host pools are having trouble.</p>
+
+<p><img src="../assets/images/Avd-Error-Monitoring-12.png" alt=""></p>
+
+<p>I plan to have this alerting soon available in <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra</a> to show on <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydras&#39;</a> dashboard if host pools are having trouble.</p>
+
 <p><strong>Tip:</strong> You can count all the errors in your environment with a KUSTO query. This is very useful to figure out other non-issue error messages:</p>
-<pre><code>WVDErrors
+<div class="highlight"><pre><code class="language-" data-lang="">WVDErrors
 | summarize count() by CodeSymbolic, Message
 | order by count_ desc
-</code></pre>-->
+</code></pre></div>-->
 	
     
 </section>

@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Monitoring End-User Computing Environments with Azure OMS LogAnalytics with Deploy to Azure | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Monitoring End-User Computing Environments with Azure OMS LogAnalytics with Deploy to Azure" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,22 +460,34 @@
                 
                 <!-- End Toc -->
                 <p>Several months ago, I built a solution focused on <a href="https://www.sepago.de/azure-monitor/">monitoring the user experiences on remote desktop environments based on Citrix XenApp, XenDesktop and Microsoft RDS</a>. Particularly RDS/RDP was imported because there is no solution from Microsoft.</p>
+
 <p>End-user computing environments are complex and not easy to monitor. The most common monitoring solutions are focused on typical server parameters like CPU and memory consumption, free disk space and so on. But administrators need more insight into the parameters responsible for the user experience like bandwidth, latency, utilization of the virtual hardware by application, etc.</p>
+
 <p>To meet these demands, I decided to build a solution considering the following requirements:</p>
+
 <ul>
 <li>Storing the raw data without aggregation to an average value per hour. I need the data per minute – for all times</li>
 <li>I need a “time back” mode to look back in the RDS environment to each time frame in the past</li>
 <li>Avoidance of any Infrastructure-as-a-service like a Windows application server, SQL database or the like</li>
 </ul>
+
 <p>It was obvious to use an Azure service as a platform for my solution.  And so, I built my solution based on Azure OMS LogAnalytics. Azure OMS offers a “big-data style” platform to save, index, query and visualize data. The core part of this solution is my small agent: Installed on each worker (Citrix or Microsoft) it collects, combines and uploads data to your personal Azure OMS Log Analytics workspace. And of course: It offers monitoring of RDS/Citrix workers in any cloud as well as on-premises / hybrid works.</p>
+
 <p>Description of the full solution (incl. download): <a href="http://loganalytics.sepago.com/">http://loganalytics.sepago.com/</a></p>
+
 <p>After several improvements, I can now offer a quicker and saver deployment and update for a prepared OMS workspace directly into your Azure subscription.</p>
+
 <p>To do this: Go to <a href="https://github.com/MarcelMeurer/LogAnalytics-for-Citrix-and-RDS">https://github.com/MarcelMeurer/LogAnalytics-for-Citrix-and-RDS</a> and deploy your workspace directly. It’s as simple as any other deployment from the Azure marketplace: Just click the right “Deploy to Azure” button and enter a few parameters.</p>
+
 <p>You will get a prepared Azure OMS workspace including the tiles and views for this solution. The rollout workspace is a “standalone” pricing tier with a 360 days retention.</p>
+
 <p><a href="https://github.com/MarcelMeurer/LogAnalytics-for-Citrix-and-RDS">https://github.com/MarcelMeurer/LogAnalytics-for-Citrix-and-RDS</a></p>
-<p><a href=""><img src="/wp-content/uploads/2018/04/itpc_la_github.png" alt="itpc_la_github" /></a></p>
+
+<p><a href=""><img src="/wp-content/uploads/2018/04/itpc_la_github.png" alt="itpc_la_github"></a></p>
+
 <p><a href="https://www.youtube.com/watch?v=A5ehFVIDotU">https://www.youtube.com/watch?v=A5ehFVIDotU
 </a></p>
+
 <p>First published on: <a href="https://www.sepago.de/blog/monitoring-end-user-computing-environments-with-azure-oms-loganalytics-with-deploy-to-azure/">https://www.sepago.de/blog/monitoring-end-user-computing-environments-with-azure-oms-loganalytics-with-deploy-to-azure/</a></p>
 
             </div>

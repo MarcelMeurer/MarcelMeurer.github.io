@@ -10,12 +10,12 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND) | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates)." />
-<meta property="og:description" content="Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates)." />
+<meta name="description" content="Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don&#39;t want to imagine what happens if Windows shuts down during Windows Updates)." />
+<meta property="og:description" content="Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don&#39;t want to imagine what happens if Windows shuts down during Windows Updates)." />
 <link rel="canonical" href="https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/" />
 <meta property="og:url" content="https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/WSUS-API-04.png" />
 <meta property="twitter:title" content="Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2024-08-01T00:00:00+02:00","datePublished":"2024-08-01T00:00:00+02:00","description":"Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates).","headline":"Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)","image":"https://blog.itprocloud.de/assets/images/WSUS-API-04.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2024-08-01T00:00:00+02:00","datePublished":"2024-08-01T00:00:00+02:00","description":"Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don&#39;t want to imagine what happens if Windows shuts down during Windows Updates).","headline":"Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)","image":"https://blog.itprocloud.de/assets/images/WSUS-API-04.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -379,163 +379,181 @@
     <div class="article-post">
 	
 		<!-- change content to anchor styled output -->
-		<p>Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates).</p>
+		<p>Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don&#39;t want to imagine what happens if Windows shuts down during Windows Updates).</p>
+
 <p>Also, my solution, <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>, uses the API to install Windows updates. That also includes draining, starting, installing, rebooting, etc. - all that is needed to update an existing host or a golden master. E.g.: Example of the script collection for an update:</p>
-<p><img src="../assets/images/WSUS-API-05.png" alt="" /></p>
+
+<p><img src="../assets/images/WSUS-API-05.png" alt=""></p>
+
 <p>Unfortunately, a Microsoft patch broke the functionality of the Windows Update API. That is documented here: <a href="https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc">https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc</a></p>
+
 <p>If you have a broken computer, you will see the following error message: Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)
-<img src="../assets/images/WSUS-API-01.png" alt="" /></p>
-<p>The documentation also explains how to resolve the issue using a KIR (known issue recovery), which requires some handwork or automation. To make this as easy as possible for users of <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>, I added the installation of the KIR as part of the “BuiltIn: OS Install Windows Updates”. Finally, it downloads and installs the KIR package and activates it. A final reboot is needed to bring it to work. If you are using the script as part of the script collection (see image above), it will first patch the host and install updates on the second try of running the “BuiltIn: OS Install Windows Updates”.</p>
+<img src="../assets/images/WSUS-API-01.png" alt=""></p>
+
+<p>The documentation also explains how to resolve the issue using a KIR (known issue recovery), which requires some handwork or automation. To make this as easy as possible for users of <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>, I added the installation of the KIR as part of the &quot;BuiltIn: OS Install Windows Updates&quot;. Finally, it downloads and installs the KIR package and activates it. A final reboot is needed to bring it to work. If you are using the script as part of the script collection (see image above), it will first patch the host and install updates on the second try of running the &quot;BuiltIn: OS Install Windows Updates&quot;.</p>
+
 <p>To get the updated built-in scripts, you can click on the icon in the upper-right corner inside of the scripts page:
-<img src="../assets/images/WSUS-API-02.png" alt="" /></p>
+<img src="../assets/images/WSUS-API-02.png" alt=""></p>
+
 <p>Finally, you should have the updated script (reload the site first):
-<img src="../assets/images/WSUS-API-03.png" alt="" /></p>
+<img src="../assets/images/WSUS-API-03.png" alt=""></p>
+
 <p>After that, the Windows update procedure is working as expected:
-<img src="../assets/images/WSUS-API-04.png" alt="" /></p>
+<img src="../assets/images/WSUS-API-04.png" alt=""></p>
+
 <p>Do you want to adapt your scripts? Here is my implementation. Feel free to use it:</p>
-<pre><code># Install Windows security updates directly over the internet. VM downloads the packages directly from Microsoft using the Windows Update service. A restart is required after the installation, which can be done with the script collection &quot;OS Install Windows Updates&quot;.
+<div class="highlight"><pre><code class="language-" data-lang=""># Install Windows security updates directly over the internet. VM downloads the packages directly from Microsoft using the Windows Update service. A restart is required after the installation, which can be done with the script collection "OS Install Windows Updates".
 $updateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
 $updateSearcher = New-Object -ComObject Microsoft.Update.Searcher
 $updateSession = New-Object -ComObject Microsoft.Update.Session
 
-$updatesKb=&quot;&quot;
+$updatesKb=""
 
-write-host(&quot;Checking for updates&quot;)
-$result = $updateSearcher.Search(&quot;IsInstalled=0 and Type='Software' and IsHidden=0&quot;)
+write-host("Checking for updates")
+$result = $updateSearcher.Search("IsInstalled=0 and Type='Software' and IsHidden=0")
 
 if ($result.Updates.Count -EQ 0) {
-	write-host(&quot;No new updates found&quot;)
+    write-host("No new updates found")
 }
 else {
     try {
         $updateDownloader = $updateSession.CreateUpdateDownloader()
         $result.Updates|foreach {
-            write-host(&quot;Found: $($_.Title)&quot;)
-            $updatesKb=$updatesKb+$_.KBArticleIDs+&quot; &quot;
+            write-host("Found: $($_.Title)")
+            $updatesKb=$updatesKb+$_.KBArticleIDs+" "
             $updateCollection.Add($_)|Out-Null
         }
-        write-host(&quot;Downloading updates&quot;)
+        write-host("Downloading updates")
         $updateDownloader.Updates = $updateCollection
         $updateDownloads = $updateDownloader.Download()
         if (($updateDownloads.HResult -EQ 0) -AND ($updateDownloads.ResultCode -EQ 2)) {
-            write-host(&quot;Downloads success&quot;)
+            write-host("Downloads success")
         }
         else {
-            write-host(&quot;Downloads failed&quot;)
-            Write-host(&quot;ScriptReturnMessage:{Download failed}:ScriptReturnMessage&quot;)
+            write-host("Downloads failed")
+            Write-host("ScriptReturnMessage:{Download failed}:ScriptReturnMessage")
             exit
         }
-        write-host(&quot;Installing updates&quot;)
+        write-host("Installing updates")
         $updateInstaller = New-Object -ComObject Microsoft.Update.Installer
         $updateInstaller.Updates = $updateCollection
         $updateDownloads = $updateInstaller.Install()
 
-        write-host(&quot;Applied updates: $updatesKb&quot;)
+        write-host("Applied updates: $updatesKb")
     } catch {
-        if (($_ -like &quot;*0x8002802B*&quot;) -and (Get-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -ErrorAction Ignore).&quot;1931709068&quot; -ne 0) {
+        if (($_ -like "*0x8002802B*") -and (Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides" -Name "1931709068" -ErrorAction Ignore)."1931709068" -ne 0) {
             # Update API issue: https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc
-            $hotFixKirUrl=&quot;https://download.microsoft.com/download/3944f364-6483-49ab-af0d-3e2bd80dedaf/Windows%2011%2022H2%20KB5039302%20240711_20301%20Known%20Issue%20Rollback.msi&quot;
+            $hotFixKirUrl="https://download.microsoft.com/download/3944f364-6483-49ab-af0d-3e2bd80dedaf/Windows%2011%2022H2%20KB5039302%20240711_20301%20Known%20Issue%20Rollback.msi"
             try {
-                write-host (&quot;Try to download KIR file to bring Windows Update API back&quot;)
-                (New-Object System.Net.WebClient).DownloadFile($hotFixKirUrl, &quot;$env:temp\KIRKB5039302.msi&quot;)
+                write-host ("Try to download KIR file to bring Windows Update API back")
+                (New-Object System.Net.WebClient).DownloadFile($hotFixKirUrl, "$env:temp\KIRKB5039302.msi")
                 Start-Process msiexec.exe -Wait -ArgumentList '/I $env:temp\KIRKB5039302.msi /quiet'
-                if (-not (Test-Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot;)) {
-                    New-Item -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Force -ErrorAction SilentlyContinue
+                if (-not (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides")) {
+                    New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides" -Force -ErrorAction SilentlyContinue
                 }
-                New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -Value 0 -Force -ErrorAction SilentlyContinue
+                New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides" -Name "1931709068" -Value 0 -Force -ErrorAction SilentlyContinue
             } catch {
-                write-host (&quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&quot;)
+                write-host ("Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_")
                 throw $_
             }
             # A reboot is required
-            write-host(&quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;)
+            write-host("Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc")
         } else {
-            write-host (&quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&quot;)
+            write-host ("The KIR installation is installed. If this is not working, another issue prevents the update process: $_")
             throw $_
         }
     }
 }
 
-</code></pre>
+</code></pre></div>
 
-		<!--<p>Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don’t want to imagine what happens if Windows shuts down during Windows Updates).</p>
+		<!--<p>Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don&#39;t want to imagine what happens if Windows shuts down during Windows Updates).</p>
+
 <p>Also, my solution, <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>, uses the API to install Windows updates. That also includes draining, starting, installing, rebooting, etc. - all that is needed to update an existing host or a golden master. E.g.: Example of the script collection for an update:</p>
-<p><img src="../assets/images/WSUS-API-05.png" alt="" /></p>
+
+<p><img src="../assets/images/WSUS-API-05.png" alt=""></p>
+
 <p>Unfortunately, a Microsoft patch broke the functionality of the Windows Update API. That is documented here: <a href="https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc">https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc</a></p>
+
 <p>If you have a broken computer, you will see the following error message: Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)
-<img src="../assets/images/WSUS-API-01.png" alt="" /></p>
-<p>The documentation also explains how to resolve the issue using a KIR (known issue recovery), which requires some handwork or automation. To make this as easy as possible for users of <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>, I added the installation of the KIR as part of the “BuiltIn: OS Install Windows Updates”. Finally, it downloads and installs the KIR package and activates it. A final reboot is needed to bring it to work. If you are using the script as part of the script collection (see image above), it will first patch the host and install updates on the second try of running the “BuiltIn: OS Install Windows Updates”.</p>
+<img src="../assets/images/WSUS-API-01.png" alt=""></p>
+
+<p>The documentation also explains how to resolve the issue using a KIR (known issue recovery), which requires some handwork or automation. To make this as easy as possible for users of <a href="https://github.com/MarcelMeurer/WVD-Hydra">Hydra for Azure Virtual Desktop</a>, I added the installation of the KIR as part of the &quot;BuiltIn: OS Install Windows Updates&quot;. Finally, it downloads and installs the KIR package and activates it. A final reboot is needed to bring it to work. If you are using the script as part of the script collection (see image above), it will first patch the host and install updates on the second try of running the &quot;BuiltIn: OS Install Windows Updates&quot;.</p>
+
 <p>To get the updated built-in scripts, you can click on the icon in the upper-right corner inside of the scripts page:
-<img src="../assets/images/WSUS-API-02.png" alt="" /></p>
+<img src="../assets/images/WSUS-API-02.png" alt=""></p>
+
 <p>Finally, you should have the updated script (reload the site first):
-<img src="../assets/images/WSUS-API-03.png" alt="" /></p>
+<img src="../assets/images/WSUS-API-03.png" alt=""></p>
+
 <p>After that, the Windows update procedure is working as expected:
-<img src="../assets/images/WSUS-API-04.png" alt="" /></p>
+<img src="../assets/images/WSUS-API-04.png" alt=""></p>
+
 <p>Do you want to adapt your scripts? Here is my implementation. Feel free to use it:</p>
-<pre><code># Install Windows security updates directly over the internet. VM downloads the packages directly from Microsoft using the Windows Update service. A restart is required after the installation, which can be done with the script collection &quot;OS Install Windows Updates&quot;.
+<div class="highlight"><pre><code class="language-" data-lang=""># Install Windows security updates directly over the internet. VM downloads the packages directly from Microsoft using the Windows Update service. A restart is required after the installation, which can be done with the script collection "OS Install Windows Updates".
 $updateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
 $updateSearcher = New-Object -ComObject Microsoft.Update.Searcher
 $updateSession = New-Object -ComObject Microsoft.Update.Session
 
-$updatesKb=&quot;&quot;
+$updatesKb=""
 
-write-host(&quot;Checking for updates&quot;)
-$result = $updateSearcher.Search(&quot;IsInstalled=0 and Type='Software' and IsHidden=0&quot;)
+write-host("Checking for updates")
+$result = $updateSearcher.Search("IsInstalled=0 and Type='Software' and IsHidden=0")
 
 if ($result.Updates.Count -EQ 0) {
-	write-host(&quot;No new updates found&quot;)
+    write-host("No new updates found")
 }
 else {
     try {
         $updateDownloader = $updateSession.CreateUpdateDownloader()
         $result.Updates|foreach {
-            write-host(&quot;Found: $($_.Title)&quot;)
-            $updatesKb=$updatesKb+$_.KBArticleIDs+&quot; &quot;
+            write-host("Found: $($_.Title)")
+            $updatesKb=$updatesKb+$_.KBArticleIDs+" "
             $updateCollection.Add($_)|Out-Null
         }
-        write-host(&quot;Downloading updates&quot;)
+        write-host("Downloading updates")
         $updateDownloader.Updates = $updateCollection
         $updateDownloads = $updateDownloader.Download()
         if (($updateDownloads.HResult -EQ 0) -AND ($updateDownloads.ResultCode -EQ 2)) {
-            write-host(&quot;Downloads success&quot;)
+            write-host("Downloads success")
         }
         else {
-            write-host(&quot;Downloads failed&quot;)
-            Write-host(&quot;ScriptReturnMessage:{Download failed}:ScriptReturnMessage&quot;)
+            write-host("Downloads failed")
+            Write-host("ScriptReturnMessage:{Download failed}:ScriptReturnMessage")
             exit
         }
-        write-host(&quot;Installing updates&quot;)
+        write-host("Installing updates")
         $updateInstaller = New-Object -ComObject Microsoft.Update.Installer
         $updateInstaller.Updates = $updateCollection
         $updateDownloads = $updateInstaller.Install()
 
-        write-host(&quot;Applied updates: $updatesKb&quot;)
+        write-host("Applied updates: $updatesKb")
     } catch {
-        if (($_ -like &quot;*0x8002802B*&quot;) -and (Get-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -ErrorAction Ignore).&quot;1931709068&quot; -ne 0) {
+        if (($_ -like "*0x8002802B*") -and (Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides" -Name "1931709068" -ErrorAction Ignore)."1931709068" -ne 0) {
             # Update API issue: https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc
-            $hotFixKirUrl=&quot;https://download.microsoft.com/download/3944f364-6483-49ab-af0d-3e2bd80dedaf/Windows%2011%2022H2%20KB5039302%20240711_20301%20Known%20Issue%20Rollback.msi&quot;
+            $hotFixKirUrl="https://download.microsoft.com/download/3944f364-6483-49ab-af0d-3e2bd80dedaf/Windows%2011%2022H2%20KB5039302%20240711_20301%20Known%20Issue%20Rollback.msi"
             try {
-                write-host (&quot;Try to download KIR file to bring Windows Update API back&quot;)
-                (New-Object System.Net.WebClient).DownloadFile($hotFixKirUrl, &quot;$env:temp\KIRKB5039302.msi&quot;)
+                write-host ("Try to download KIR file to bring Windows Update API back")
+                (New-Object System.Net.WebClient).DownloadFile($hotFixKirUrl, "$env:temp\KIRKB5039302.msi")
                 Start-Process msiexec.exe -Wait -ArgumentList '/I $env:temp\KIRKB5039302.msi /quiet'
-                if (-not (Test-Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot;)) {
-                    New-Item -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Force -ErrorAction SilentlyContinue
+                if (-not (Test-Path "HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides")) {
+                    New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides" -Force -ErrorAction SilentlyContinue
                 }
-                New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -Value 0 -Force -ErrorAction SilentlyContinue
+                New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides" -Name "1931709068" -Value 0 -Force -ErrorAction SilentlyContinue
             } catch {
-                write-host (&quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&quot;)
+                write-host ("Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_")
                 throw $_
             }
             # A reboot is required
-            write-host(&quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;)
+            write-host("Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc")
         } else {
-            write-host (&quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&quot;)
+            write-host ("The KIR installation is installed. If this is not working, another issue prevents the update process: $_")
             throw $_
         }
     }
 }
 
-</code></pre>-->
+</code></pre></div>-->
 	
     
 </section>

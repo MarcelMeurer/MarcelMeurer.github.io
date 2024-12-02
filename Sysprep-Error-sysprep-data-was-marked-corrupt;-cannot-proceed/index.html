@@ -10,12 +10,12 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Sysprep error: RunPlatformActions:Sysprep data was marked corrupt; cannot proceed | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Sysprep error: RunPlatformActions:Sysprep data was marked corrupt; cannot proceed" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="I’m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session. To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep. One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:" />
-<meta property="og:description" content="I’m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session. To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep. One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:" />
+<meta name="description" content="I&#39;m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session. To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep. One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:" />
+<meta property="og:description" content="I&#39;m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session. To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep. One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:" />
 <link rel="canonical" href="https://blog.itprocloud.de/Sysprep-Error-sysprep-data-was-marked-corrupt;-cannot-proceed/" />
 <meta property="og:url" content="https://blog.itprocloud.de/Sysprep-Error-sysprep-data-was-marked-corrupt;-cannot-proceed/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Sysprep-05.png" />
 <meta property="twitter:title" content="Sysprep error: RunPlatformActions:Sysprep data was marked corrupt; cannot proceed" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2021-02-14T00:00:00+01:00","datePublished":"2021-02-14T00:00:00+01:00","description":"I’m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session. To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep. One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:","headline":"Sysprep error: RunPlatformActions:Sysprep data was marked corrupt; cannot proceed","image":"https://blog.itprocloud.de/assets/images/Sysprep-05.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Sysprep-Error-sysprep-data-was-marked-corrupt;-cannot-proceed/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Sysprep-Error-sysprep-data-was-marked-corrupt;-cannot-proceed/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2021-02-14T00:00:00+01:00","datePublished":"2021-02-14T00:00:00+01:00","description":"I&#39;m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session. To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep. One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:","headline":"Sysprep error: RunPlatformActions:Sysprep data was marked corrupt; cannot proceed","image":"https://blog.itprocloud.de/assets/images/Sysprep-05.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Sysprep-Error-sysprep-data-was-marked-corrupt;-cannot-proceed/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Sysprep-Error-sysprep-data-was-marked-corrupt;-cannot-proceed/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -459,23 +459,30 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>I’m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session.
+                <p>I&#39;m working in the WVD/AVD area and often create golden images to deploy session hosts for WVD/AVD - mainly based on Windows 10 Enterprise multi-session.
 To do that, I create a template VM in Azure based on Windows 10, joined it to the domain, install updates and applications, and create an image based on that VM. To make my life easier, I use WVDAdmin to generate the template and rolling it out later - but this is independent of the issue with Sysprep.
 One step of creating an image is to Sysprep the template image. I - or WVDAdmin is doing that - by running:</p>
-<pre><code>sysprep.exe /generalize /oobe /shutdown /mode:vm
-</code></pre>
+<div class="highlight"><pre><code class="language-" data-lang="">sysprep.exe /generalize /oobe /shutdown /mode:vm
+</code></pre></div>
 <p>In the last weeks, I got the feedback that Sysprep runs into an error if you sysprep a former syspreped virtual machine again - and if Windows-updates were installed between both preparations.</p>
-<p>The error is written in C:\Windows\System32\Panther\setupact.log is:</p>
-<pre><code>2021-02-09 17:17:55, Error      [0x0f00d6] SYSPRP RunPlatformActions:Sysprep data was marked corrupt; cannot proceed
+
+<p>The error is written in C:\Windows\System32\Panther\setupact.log is:
+<code>
+2021-02-09 17:17:55, Error      [0x0f00d6] SYSPRP RunPlatformActions:Sysprep data was marked corrupt; cannot proceed
 2021-02-09 17:17:55, Error      [0x0f0070] SYSPRP RunDlls:An error occurred while running registry sysprep DLLs, halting sysprep execution. dwRet = 0x27a
 2021-02-09 17:17:55, Error                 SYSPRP WinMain:Hit failure while processing sysprep re-specialize internal providers; hr = 0x8007027a
-</code></pre>
-<p>It took some time, but I found a way to bring sysprep back to work (even if I didn’t find the root cause of this issue). Keep in mind that this workaround doesn’t resolve the unknown reason and maybe bring your image in an unsupported state.</p>
+</code></p>
+
+<p>It took some time, but I found a way to bring sysprep back to work (even if I didn&#39;t find the root cause of this issue). Keep in mind that this workaround doesn&#39;t resolve the unknown reason and maybe bring your image in an unsupported state.</p>
+
 <p>Delete the following registry key or set it to 0:
-HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\Sysprep	SysprepCorrupt</p>
-<p>Powershell:</p>
-<pre><code>Remove-ItemProperty -Path &quot;HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\Sysprep&quot; -Name &quot;SysprepCorrupt&quot; -ErrorAction Ignore
-</code></pre>
+HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\Sysprep   SysprepCorrupt</p>
+
+<p>Powershell:
+<code>
+Remove-ItemProperty -Path &quot;HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Setup\Sysprep&quot; -Name &quot;SysprepCorrupt&quot; -ErrorAction Ignore
+</code></p>
+
             </div>
 
             <!-- Rating -->

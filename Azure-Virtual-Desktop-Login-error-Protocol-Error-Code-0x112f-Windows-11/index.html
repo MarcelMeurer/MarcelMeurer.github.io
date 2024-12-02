@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Azure Virtual Desktop - Login error Protocol Error Code 0x112f - Windows 11 | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Azure Virtual Desktop - Login error Protocol Error Code 0x112f - Windows 11" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,35 +460,39 @@
                 
                 <!-- End Toc -->
                 <p>Login error: Protocol Error Code 0x112f</p>
-<p>There are a lot of posts regarding this issue. I figured out that this old issue comes back in a specific combination with RDS settings and Windows 11.</p>
+
+<p>There are a lot of posts regarding this issue. I figured out that this old issue comes back in a specific combination with RDS settings and Windows 11. </p>
+
 <p>If a user has multiple monitors and connecting to AVD, an error message is raised, if:
 The session uses all of the monitors
-AVCHardwareEncodePreferred is set to 1 (e.g., by using the GPO “Configure H.264/AVC hardware encoding for Remote Desktop Connections”)
+AVCHardwareEncodePreferred is set to 1 (e.g., by using the GPO &quot;Configure H.264/AVC hardware encoding for Remote Desktop Connections&quot;)
 The operating system is Windows 11 (22H2) - I was not able to reproduce the issue with Windows 10 and with the same configuration</p>
+
 <p><strong>Solution:</strong>
 If policies are used: Unconfigure all protocol-related settings in Administrative Templates\Windows Components\Remote Desktop Services\Remote Desktop Session Host\Remote Session Environment.</p>
-<p>Configure the protocol-related settings through the registry on the hosts or on the Golden Master (e.g., with a script in <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for Azure Virtual Desktop</a> or <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>). Important is the value for <strong>AVCHardwareEncodePreferred</strong>. That should be 2 (which cannot be set with the GPO). The teams optimization is optional:</p>
-<pre><code>Write-Host &quot;RDS Settings&quot;
-New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;Policies&quot; -ErrorAction Ignore
-New-Item -Path &quot;HKLM:\SOFTWARE\Policies&quot; -Name &quot;Microsoft&quot; -ErrorAction Ignore
-New-Item -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft&quot; -Name &quot;Windows NT&quot; -ErrorAction Ignore
-New-Item -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT&quot; -Name &quot;Terminal Services&quot; -ErrorAction Ignore
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;AVC444ModePreferred&quot; -Value 0 -force  # if 1 - browser mm redirection is not workuing
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;AVCHardwareEncodePreferred&quot; -Value 2 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;bEnumerateHWBeforeSW&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;fEnableRemoteFXAdvancedRemoteApp&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;fEnableTimeZoneRedirection&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;KeepAliveEnable&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;KeepAliveInterval&quot; -Value 1 -force
 
-Write-Host &quot;Teams Optimization&quot;
-New-Item -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server&quot; -Name &quot;AddIns&quot; -ErrorAction Ignore
-New-Item -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns&quot; -Name &quot;WebRTC Redirector&quot; -ErrorAction Ignore
-New-Item -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector&quot; -Name &quot;Policy&quot; -ErrorAction Ignore
-New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy&quot; -Name &quot;ShareClientDesktop &quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy&quot; -Name &quot;DisableRAILScreensharing  &quot; -Value 0 -force
-New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy&quot; -Name &quot;DisableRAILAppSharing&quot; -Value 0 -force
-</code></pre>
+<p>Configure the protocol-related settings through the registry on the hosts or on the Golden Master (e.g., with a script in <a href="https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/">Hydra for Azure Virtual Desktop</a> or <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>). Important is the value for <strong>AVCHardwareEncodePreferred</strong>. That should be 2 (which cannot be set with the GPO). The teams optimization is optional:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">Write-Host "RDS Settings"
+New-Item -Path "HKLM:\SOFTWARE" -Name "Policies" -ErrorAction Ignore
+New-Item -Path "HKLM:\SOFTWARE\Policies" -Name "Microsoft" -ErrorAction Ignore
+New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft" -Name "Windows NT" -ErrorAction Ignore
+New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT" -Name "Terminal Services" -ErrorAction Ignore
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" -Name "AVC444ModePreferred" -Value 0 -force  # if 1 - browser mm redirection is not workuing
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" -Name "AVCHardwareEncodePreferred" -Value 2 -force
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" -Name "bEnumerateHWBeforeSW" -Value 1 -force
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" -Name "fEnableRemoteFXAdvancedRemoteApp" -Value 1 -force
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" -Name "fEnableTimeZoneRedirection" -Value 1 -force
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" -Name "KeepAliveEnable" -Value 1 -force
+New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" -Name "KeepAliveInterval" -Value 1 -force
+
+Write-Host "Teams Optimization"
+New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server" -Name "AddIns" -ErrorAction Ignore
+New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns" -Name "WebRTC Redirector" -ErrorAction Ignore
+New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector" -Name "Policy" -ErrorAction Ignore
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy" -Name "ShareClientDesktop " -Value 1 -force
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy" -Name "DisableRAILScreensharing  " -Value 0 -force
+New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Terminal Server\AddIns\WebRTC Redirector\Policy" -Name "DisableRAILAppSharing" -Value 0 -force
+</code></pre></div>
             </div>
 
             <!-- Rating -->

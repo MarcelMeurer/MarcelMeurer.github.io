@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Using WVDAdmin for Azure Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case) | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Using WVDAdmin for Azure Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,32 +460,40 @@
                 
                 <!-- End Toc -->
                 <h1 id="using-azure-starter-for-azure-windows-virtual-desktop-in-2-aad-environment-microsoft-demo-case">Using Azure Starter for Azure Windows Virtual Desktop in 2-AAD-Environment (Microsoft Demo Case)</h1>
+
 <p>Usually, the WVD/AVD tenant and the resources (sessions hosts) are in the same AAD tenant. If you have two Azure AD tenant, you can use WVDAdmin with a second service principal to access the session hosts.</p>
+
 <p>Example:</p>
+
 <ul>
-<li><strong>Azure AD 1 - “<em>my-msft.onMicrosoft.com</em>”</strong>
+<li><strong>Azure AD 1 - &quot;<em>my-msft.onMicrosoft.com</em>&quot;</strong>
+
+<h2 id="your-personal-aad-where-you-have-your-users-an-ad-controller-ad-connect-or-ad-domain-services-and-other-resources-in-this-aad-you-have-deployed-your-wvd-avd-tenant">- Your personal AAD where you have your users, an AD-Controller, AD-Connect (or AD domain services), and other resources. In this AAD you have deployed your WVD/AVD tenant.</h2></li>
+<li><strong>Azure AD 2 - &quot;<em>microsoft.onMicrosoft.com</em>&quot;</strong>
+
 <ul>
-<li>Your personal AAD where you have your users, an AD-Controller, AD-Connect (or AD domain services), and other resources. In this AAD you have deployed your WVD/AVD tenant.</li>
-<li></li>
+<li>You have no high-level permission to the AAD because it&#39;s own by your company and shared with many other users/professionals. In this AAD, you have a subscription (AIR) containing your session hosts. </li>
+</ul></li>
 </ul>
-</li>
-<li><strong>Azure AD 2 - “<em>microsoft.onMicrosoft.com</em>”</strong>
-<ul>
-<li>You have no high-level permission to the AAD because it’s own by your company and shared with many other users/professionals. In this AAD, you have a subscription (AIR) containing your session hosts.</li>
-</ul>
-</li>
-</ul>
-<p><img src="../assets/images/WVDAdmin/Split-AAD-02.png" alt="Split-AAD-02.png" /></p>
-<p>Create the <strong>first service principal</strong> in “my-msft.onMicrosoft.com”. Configure this service principal as described in the primary guide - except permitting to the resource group containing the session hosts and the vnet (these are in the other tenant). Use the data of this service principal in the welcom dialog of WVDAdmin.</p>
-<p>Create the <strong>second service principal</strong> in “microsoft.onMicrosoft.com”. Give the service principal contributor permission to the resource group containing the session hosts and to the vnet for the session host. Open the registry and navigate to <em>HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin</em>. Add three string value to configure the service principal to access the resource groups</p>
+
+<p><img src="../assets/images/WVDAdmin/Split-AAD-02.png" alt="Split-AAD-02.png"></p>
+
+<p>Create the <strong>first service principal</strong> in &quot;my-msft.onMicrosoft.com&quot;. Configure this service principal as described in the primary guide - except permitting to the resource group containing the session hosts and the vnet (these are in the other tenant). Use the data of this service principal in the welcom dialog of WVDAdmin.</p>
+
+<p>Create the <strong>second service principal</strong> in &quot;microsoft.onMicrosoft.com&quot;. Give the service principal contributor permission to the resource group containing the session hosts and to the vnet for the session host. Open the registry and navigate to <em>HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin</em>. Add three string value to configure the service principal to access the resource groups</p>
+
 <ul>
 <li>AzResAlternativeTenantId</li>
 <li>AzResAlternativeAppId</li>
 <li>AzResAlternativeAppSecret</li>
 </ul>
-<p><img src="../assets/images/WVDAdmin/Split-AAD-03.png" alt="Split-AAD-03.png" /></p>
-<p>If you use another tenant group name as “Default Tenant Group” add another string “TenantGroupName” and set your tenant group name.</p>
+
+<p><img src="../assets/images/WVDAdmin/Split-AAD-03.png" alt="Split-AAD-03.png"></p>
+
+<p>If you use another tenant group name as &quot;Default Tenant Group&quot; add another string &quot;TenantGroupName&quot; and set your tenant group name.</p>
+
 <p>This solution is supported from the current version 1.3.3</p>
+
 <p>Read more and download WVDAdmin on <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">the main page</a></p>
 
             </div>

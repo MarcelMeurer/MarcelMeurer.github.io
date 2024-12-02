@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Updating or cloning a Azure VM with standard security to trusted launch with secure boot and vTPM | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Updating or cloning a Azure VM with standard security to trusted launch with secure boot and vTPM" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,48 +460,61 @@
                 
                 <!-- End Toc -->
                 <p><strong>Note:</strong> If your source VM is based on the <strong>VM generation V1</strong>, follow this post to convert your VM: <a href="https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/">Creating a Windows Azure VM Generation V2 from a V2 VM</a>. Also, follow the link if you want to have an exact copy (and not a clone) of your VM.</p>
+
 <p>If you once installed an Azure VM with the standard of security, you can not convert this VM into a trusted launch-enabled VM with secure boot and vTPM. But that is sometimes necessary, e.g., if you want to upgrade from Windows 10 multi-user to Windows 11 multi-user.</p>
+
 <p>But there is a way to do that. You could capture your existing VM and store the image in a secure boot enabled. Compute Gallery definition in Azure. From this image version, you can create a new VM with a security-type trusted launch.</p>
+
 <h3 id="prepare-an-azure-compute-gallery">Prepare an Azure Compute Gallery</h3>
+
 <ul>
-<li>Create an Azure Compute Gallery “Conversion_Gallery” in the same resource group of your VM</li>
-<li>Add an Image Definition “Secure-VM”
+<li>Create an Azure Compute Gallery &quot;Conversion_Gallery&quot; in the same resource group of your VM</li>
+<li>Add an Image Definition &quot;Secure-VM&quot;
+
 <ul>
 <li>Security Type: Trusted Launch</li>
 <li>OS state: Generalized</li>
-<li>Tick “Accelerated networking” if this is enabled on your original VM</li>
+<li>Tick &quot;Accelerated networking&quot; if this is enabled on your original VM</li>
 <li>Fill Publisher, Offer, SKU with some information</li>
 <li>Click Review+Create, Create</li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<p><img src="../assets/images/To-TrustedLaunch-02.png" alt="" /></p>
+
+<p><img src="../assets/images/To-TrustedLaunch-02.png" alt=""></p>
+
 <h3 id="capturing-the-original-vm">Capturing the original VM</h3>
-<p>I’m using <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> to prevent that I must sysprep my original VM. <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> first makes a clone of the original VM and runs sysprep on the clone. In the end, I have an image in a compute gallery and the untouched original VM.</p>
-<p>In <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>:</p>
-<ul>
-<li>Azure -&gt; Virtual Machines -&gt; Resource Group -&gt; Right-click the VM and select “Create a template image”</li>
-<li>Enter an image name (no spaces)</li>
-<li>Select the resource group of the VM as Target RG</li>
-<li>Tick “Use Azure Compute Galleries”</li>
-<li>Select your Gallery and Gallery definition</li>
-<li>Your region from the list</li>
-<li>Hit “Capture”</li>
-<li>This will take a while to clone the VM, create an image and upload it to the image gallery.</li>
-</ul>
-<p><img src="../assets/images/To-TrustedLaunch-03.png" alt="" />
-<img src="../assets/images/To-TrustedLaunch-04.png" alt="" />
-<img src="../assets/images/To-TrustedLaunch-05.png" alt="" /></p>
+
+<p>I&#39;m using <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> to prevent that I must sysprep my original VM. <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> first makes a clone of the original VM and runs sysprep on the clone. In the end, I have an image in a compute gallery and the untouched original VM.</p>
+
+<p>In <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a>:
+- Azure -&gt; Virtual Machines -&gt; Resource Group -&gt; Right-click the VM and select &quot;Create a template image&quot;
+- Enter an image name (no spaces)
+- Select the resource group of the VM as Target RG
+- Tick &quot;Use Azure Compute Galleries&quot;
+- Select your Gallery and Gallery definition
+- Your region from the list
+- Hit &quot;Capture&quot;
+- This will take a while to clone the VM, create an image and upload it to the image gallery.</p>
+
+<p><img src="../assets/images/To-TrustedLaunch-03.png" alt="">
+<img src="../assets/images/To-TrustedLaunch-04.png" alt="">
+<img src="../assets/images/To-TrustedLaunch-05.png" alt=""></p>
+
 <p>Note: You can delete the also-created custom image (we only need the gallery image)</p>
+
 <h3 id="deploying-a-new-secure-boot-enabled-vm-from-the-image">Deploying a new secure boot-enabled VM from the image</h3>
+
 <p>With <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> or in the Azure Portal, you can create a new VM from that image containing all the applications. Please note that the new VM has a new name and compute identity.</p>
+
 <ul>
 <li>Go to the gallery definition in the Azure Portal and select your uploaded version.</li>
 <li>Hit + Create VM</li>
-<li>Fill out all parameters and ensure that you select the security type “Trusted Launch”</li>
+<li>Fill out all parameters and ensure that you select the security type &quot;Trusted Launch&quot;</li>
 </ul>
-<p><img src="../assets/images/To-TrustedLaunch-06.png" alt="" />
-<img src="../assets/images/To-TrustedLaunch-07.png" alt="" /></p>
+
+<p><img src="../assets/images/To-TrustedLaunch-06.png" alt="">
+<img src="../assets/images/To-TrustedLaunch-07.png" alt=""></p>
+
 <p>After the deployment, you have a new trusted launch-enabled VM based on your - still existing - original VM.</p>
 
             </div>

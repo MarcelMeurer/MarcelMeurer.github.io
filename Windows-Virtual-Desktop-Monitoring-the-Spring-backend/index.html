@@ -10,12 +10,12 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Azure Windows Virtual Desktop - Monitoring the Spring Backend - WVD | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Azure Windows Virtual Desktop - Monitoring the Spring Backend - WVD" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="The long await update from WVD/AVD is public. It comes with a full ARM integration and is natively useable in the Azure Portal. Some things changed from the Fall to Spring update, and that’s include monitoring." />
-<meta property="og:description" content="The long await update from WVD/AVD is public. It comes with a full ARM integration and is natively useable in the Azure Portal. Some things changed from the Fall to Spring update, and that’s include monitoring." />
+<meta name="description" content="The long await update from WVD/AVD is public. It comes with a full ARM integration and is natively useable in the Azure Portal. Some things changed from the Fall to Spring update, and that&#39;s include monitoring." />
+<meta property="og:description" content="The long await update from WVD/AVD is public. It comes with a full ARM integration and is natively useable in the Azure Portal. Some things changed from the Fall to Spring update, and that&#39;s include monitoring." />
 <link rel="canonical" href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Monitoring-the-Spring-backend/" />
 <meta property="og:url" content="https://blog.itprocloud.de/Windows-Virtual-Desktop-Monitoring-the-Spring-backend/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Azure%20Monitor%20for%20WVD/Blog-01-02.png" />
 <meta property="twitter:title" content="Azure Windows Virtual Desktop - Monitoring the Spring Backend - WVD" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2020-05-05T00:00:00+02:00","datePublished":"2020-05-05T00:00:00+02:00","description":"The long await update from WVD/AVD is public. It comes with a full ARM integration and is natively useable in the Azure Portal. Some things changed from the Fall to Spring update, and that’s include monitoring.","headline":"Azure Windows Virtual Desktop - Monitoring the Spring Backend - WVD","image":"https://blog.itprocloud.de/assets/images/Azure%20Monitor%20for%20WVD/Blog-01-02.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Monitoring-the-Spring-backend/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Monitoring-the-Spring-backend/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2020-05-05T00:00:00+02:00","datePublished":"2020-05-05T00:00:00+02:00","description":"The long await update from WVD/AVD is public. It comes with a full ARM integration and is natively useable in the Azure Portal. Some things changed from the Fall to Spring update, and that&#39;s include monitoring.","headline":"Azure Windows Virtual Desktop - Monitoring the Spring Backend - WVD","image":"https://blog.itprocloud.de/assets/images/Azure%20Monitor%20for%20WVD/Blog-01-02.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Monitoring-the-Spring-backend/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Monitoring-the-Spring-backend/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -459,113 +459,132 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>The long await update from WVD/AVD is public. It comes with a full ARM integration and is natively useable in the Azure Portal. Some things changed from the Fall to Spring update, and that’s include monitoring.</p>
-<p>In this post, I’m focused on monitoring the WVD/AVD backend and not monitoring the sessions, applications, session host performance, latency, etc. To exactly monitoring these metrics, check out the solution <a href="https://www.sepago.de/en/azure-monitor-en/">“Azure Monitor for WVD”</a> which works for Fall and the Spring update - and the new version comes with great Azure workbooks to additionally visualize data by host pool.</p>
+                <p>The long await update from WVD/AVD is public. It comes with a full ARM integration and is natively useable in the Azure Portal. Some things changed from the Fall to Spring update, and that&#39;s include monitoring.</p>
+
+<p>In this post, I&#39;m focused on monitoring the WVD/AVD backend and not monitoring the sessions, applications, session host performance, latency, etc. To exactly monitoring these metrics, check out the solution <a href="https://www.sepago.de/en/azure-monitor-en/">&quot;Azure Monitor for WVD&quot;</a> which works for Fall and the Spring update - and the new version comes with great Azure workbooks to additionally visualize data by host pool.</p>
+
 <p>The Fall update writes logs to Azure Monitor / Log Analytics as custom logs. There is a <a href="https://techcommunity.microsoft.com/t5/azure-sentinel/monitoring-windows-virtual-desktop-environments-fall-2019/ba-p/1356632">really good blog post</a> about this.</p>
+
 <p>The Spring update writes logs to Log Analytics as well, but they have a different name and schema. To enable logging the backend, you have to enable the diagnostic settings on all involved resources:</p>
+
 <ul>
 <li>Workspace</li>
 <li>Host Pool</li>
 <li>App Group</li>
 </ul>
-<p>Make sure that you select all logs and select your Log Analytics workspace (if you use sepago’s “Azure Monitor for WVD” use the same Log Analytics workspace for the backend logging)</p>
-<p>![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-05.png)</p>
+
+<p>Make sure that you select all logs and select your Log Analytics workspace (if you use sepago&#39;s &quot;Azure Monitor for WVD&quot; use the same Log Analytics workspace for the backend logging)</p>
+
+<p><img src="../assets/images/Azure%20Monitor%20for%20WVD/Blog-01-05.png" alt="Registry with values"></p>
+
 <p>If you have done this for all resources, the WVD/AVD send logs to the selected workspace. Keep in mind that writing the first entries can take up to 20 minutes to build the data schema initially.</p>
+
 <p>After a while, you should have log data in your Log Analytics workspace:</p>
-<p>![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-06.png)</p>
+
+<p><img src="../assets/images/Azure%20Monitor%20for%20WVD/Blog-01-06.png" alt="Registry with values"></p>
+
 <p>You can see the following logs (tables):</p>
+
 <ul>
 <li>WVDCheckpoints
+
 <ul>
-<li>Intermediate steps while establishing and running a connection</li>
-</ul>
-</li>
+<li>Intermediate steps while establishing and running a connection </li>
+</ul></li>
 <li>WVDConnections
+
 <ul>
 <li>Start/End of connections</li>
-</ul>
-</li>
+</ul></li>
 <li>WVDErrors
+
 <ul>
 <li>Errors while establishing a connection, failures during the administration, failures getting feed informations</li>
-</ul>
-</li>
+</ul></li>
 <li>WVDHostRegistrations
+
 <ul>
 <li>About session host registration to host pools</li>
-</ul>
-</li>
+</ul></li>
 <li>WVDManagement
+
 <ul>
 <li>Administration log</li>
+</ul></li>
 </ul>
-</li>
-</ul>
+
 <p>The logs are internally connectable with their correlation id you have in each log.</p>
-<h2 id="lets-start-digging-some-data">Let’s start digging some data</h2>
-<p>Open Log Analytics an go to “Logs” and run your queries based on the KUSTO query language.</p>
+
+<h2 id="lets-start-digging-some-data">Let&#39;s start digging some data</h2>
+
+<p>Open Log Analytics an go to &quot;Logs&quot; and run your queries based on the KUSTO query language.</p>
+
 <h3 id="count-of-brokered-sessions-by-state">Count of brokered sessions by state</h3>
-<pre><code>WVDConnections 
-| where State =~ &quot;Started&quot; and Type =~&quot;WVDConnections&quot; 
-| extend CState=iff(SessionHostOSVersion==&quot;&lt;&gt;&quot;,&quot;Failure&quot;,&quot;Success&quot;) | summarize Count=count() by State=CState
+<div class="highlight"><pre><code class="language-" data-lang="">WVDConnections 
+| where State =~ "Started" and Type =~"WVDConnections" 
+| extend CState=iff(SessionHostOSVersion=="&lt;&gt;","Failure","Success") | summarize Count=count() by State=CState
 | render piechart 
-</code></pre>
-<p>![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-02.png)</p>
+</code></pre></div>
+<p><img src="../assets/images/Azure%20Monitor%20for%20WVD/Blog-01-02.png" alt="Registry with values"></p>
+
 <h3 id="failed-connections">Failed connections</h3>
-<pre><code>WVDConnections 
-| where State =~ &quot;Started&quot; and Type =~&quot;WVDConnections&quot; 
-| extend Multi=split(_ResourceId, &quot;/&quot;) | extend CState=iff(SessionHostOSVersion==&quot;&lt;&gt;&quot;,&quot;Failure&quot;,&quot;Success&quot;)
-| where CState=~&quot;Failure&quot; 
+<div class="highlight"><pre><code class="language-" data-lang="">WVDConnections 
+| where State =~ "Started" and Type =~"WVDConnections" 
+| extend Multi=split(_ResourceId, "/") | extend CState=iff(SessionHostOSVersion=="&lt;&gt;","Failure","Success")
+| where CState=~"Failure" 
 | project TimeStamp=TimeGenerated, UserName, ResourceGroup=Multi[4], HostPool=Multi[8],ResourceAlias, SessionHost=SessionHostName, ClientOS=ClientOS, ClientWvdVersion=ClientVersion, CorrelationId
 | order by TimeStamp desc
-</code></pre>
+</code></pre></div>
 <h3 id="failed-connection-with-details">Failed connection with details</h3>
-<pre><code>WVDConnections | where State =~ &quot;Started&quot; and Type =~&quot;WVDConnections&quot; 
-| extend Multi=split(_ResourceId, &quot;/&quot;) | extend CState=iff(SessionHostOSVersion==&quot;&lt;&gt;&quot;,&quot;Failure&quot;,&quot;Success&quot;)
-| where CState =~&quot;Failure&quot;
+<div class="highlight"><pre><code class="language-" data-lang="">WVDConnections | where State =~ "Started" and Type =~"WVDConnections" 
+| extend Multi=split(_ResourceId, "/") | extend CState=iff(SessionHostOSVersion=="&lt;&gt;","Failure","Success")
+| where CState =~"Failure"
 | order by TimeGenerated desc
-| where State =~ &quot;Started&quot; | extend Multi=split(_ResourceId, &quot;/&quot;) 
-| project ResourceAlias, ResourceGroup=Multi[4], HostPool=Multi[8], SessionHostName ,UserName ,CState=iff(SessionHostOSVersion==&quot;&lt;&gt;&quot;,&quot;Failure&quot;,&quot;Success&quot;), CorrelationId, TimeGenerated
+| where State =~ "Started" | extend Multi=split(_ResourceId, "/") 
+| project ResourceAlias, ResourceGroup=Multi[4], HostPool=Multi[8], SessionHostName ,UserName ,CState=iff(SessionHostOSVersion=="&lt;&gt;","Failure","Success"), CorrelationId, TimeGenerated
 | join kind= leftouter (
     WVDErrors 
 ) on CorrelationId
-| extend DurationFromLogon=datetime_diff(&quot;Second&quot;,TimeGenerated1,TimeGenerated)
+| extend DurationFromLogon=datetime_diff("Second",TimeGenerated1,TimeGenerated)
 | project  TimeStamp=TimeGenerated, DurationFromLogon, UserName, ResourceAlias ,SessionHost=SessionHostName ,Source ,CodeSymbolic , ErrorMessage=Message, ErrorCode=Code, ErrorSource=Source ,ServiceError, CorrelationId
 | order by TimeStamp desc
-</code></pre>
+</code></pre></div>
 <h3 id="session-logon-duration-by-host-pool">Session logon duration by host pool</h3>
-<pre><code>WVDConnections 
-| where Type =~&quot;WVDConnections&quot; and State =~ &quot;Started&quot; | extend Multi=split(_ResourceId, &quot;/&quot;) | project ResourceAlias, HostPool=toupper(HP=Multi[8]), SessionHostName , UserName ,CState=iff(SessionHostOSVersion==&quot;&lt;&gt;&quot;,&quot;Failure&quot;,&quot;Success&quot;), CorrelationId, TimeGenerated, ResourceGroup=Multi[4], DesktopGroup_s=toupper(strcat(RG=Multi[4],&quot;.&quot;, HP=Multi[8])) 
+<div class="highlight"><pre><code class="language-" data-lang="">WVDConnections 
+| where Type =~"WVDConnections" and State =~ "Started" | extend Multi=split(_ResourceId, "/") | project ResourceAlias, HostPool=toupper(HP=Multi[8]), SessionHostName , UserName ,CState=iff(SessionHostOSVersion=="&lt;&gt;","Failure","Success"), CorrelationId, TimeGenerated, ResourceGroup=Multi[4], DesktopGroup_s=toupper(strcat(RG=Multi[4],".", HP=Multi[8])) 
 | join kind= leftouter (
     WVDCheckpoints 
 ) on CorrelationId
-| extend DurationFromLogon=datetime_diff(&quot;Second&quot;,TimeGenerated1,TimeGenerated)
-| where Name=~&quot;RdpStackLogon&quot; 
+| extend DurationFromLogon=datetime_diff("Second",TimeGenerated1,TimeGenerated)
+| where Name=~"RdpStackLogon" 
 | project UserName, ResourceGroup, DesktopGroup_s,SessionHost=SessionHostName, TimeStamp=TimeGenerated1, DurationFromLogon
 | summarize DurationInSeconds=avg(DurationFromLogon) by HostPool=DesktopGroup_s 
 | render columnchart kind=unstacked 
-</code></pre>
-<p>![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-01.png)</p>
+</code></pre></div>
+<p><img src="../assets/images/Azure%20Monitor%20for%20WVD/Blog-01-01.png" alt="Registry with values"></p>
+
 <h3 id="session-logon-duration-by-user-desc">Session logon duration by user (desc)</h3>
-<pre><code class="language-kusto">>WVDConnections 
-| where Type =~&quot;WVDConnections&quot; and State =~ &quot;Started&quot; | extend Multi=split(_ResourceId, &quot;/&quot;) | project ResourceAlias, HostPool=toupper(HP=Multi[8]), SessionHostName , UserName ,CState=iff(SessionHostOSVersion==&quot;&lt;&gt;&quot;,&quot;Failure&quot;,&quot;Success&quot;), CorrelationId, TimeGenerated, ResourceGroup=Multi[4], DesktopGroup_s=toupper(strcat(RG=Multi[4],&quot;.&quot;, HP=Multi[8])) 
+<div class="highlight"><pre><code class="language-kusto" data-lang="kusto">WVDConnections 
+| where Type =~"WVDConnections" and State =~ "Started" | extend Multi=split(_ResourceId, "/") | project ResourceAlias, HostPool=toupper(HP=Multi[8]), SessionHostName , UserName ,CState=iff(SessionHostOSVersion=="&lt;&gt;","Failure","Success"), CorrelationId, TimeGenerated, ResourceGroup=Multi[4], DesktopGroup_s=toupper(strcat(RG=Multi[4],".", HP=Multi[8])) 
 | join kind= leftouter (
     WVDCheckpoints 
 ) on CorrelationId
-| extend DurationFromLogon=datetime_diff(&quot;Second&quot;,TimeGenerated1,TimeGenerated)
-| where Name=~&quot;RdpStackLogon&quot; 
+| extend DurationFromLogon=datetime_diff("Second",TimeGenerated1,TimeGenerated)
+| where Name=~"RdpStackLogon" 
 | project UserName, ResourceGroup, DesktopGroup_s,SessionHost=SessionHostName, TimeStamp=TimeGenerated1, DurationFromLogon
 | summarize DurationInSeconds=avg(DurationFromLogon) by HostPool=UserName
 | order by DurationInSeconds desc 
-</code></pre>
+</code></pre></div>
 <h3 id="administrative-activities-over-time">Administrative activities over time</h3>
-<pre><code>WVDManagement 
+<div class="highlight"><pre><code class="language-" data-lang="">WVDManagement 
 | summarize Count=count() by bin(TimeGenerated,15)
 | render scatterchart 
-</code></pre>
-<p>![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-03.png)</p>
-<p>Good to know: Sepago’s commercial “Azure Monitor for WVD”  brings the ready to use Azure workbooks for the session and app monitoring and workbooks for the WVD/AVD backend:</p>
-<p>![Registry with values](../assets/images/Azure Monitor for WVD/Blog-01-07.png)</p>
+</code></pre></div>
+<p><img src="../assets/images/Azure%20Monitor%20for%20WVD/Blog-01-03.png" alt="Registry with values"></p>
+
+<p>Good to know: Sepago&#39;s commercial &quot;Azure Monitor for WVD&quot;  brings the ready to use Azure workbooks for the session and app monitoring and workbooks for the WVD/AVD backend:</p>
+
+<p><img src="../assets/images/Azure%20Monitor%20for%20WVD/Blog-01-07.png" alt="Registry with values"></p>
 
             </div>
 

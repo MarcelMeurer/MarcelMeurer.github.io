@@ -10,12 +10,12 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Azure Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Azure Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Azure Windows Virtual Desktop - Spring Release / Spring Update goes public today. I’m tremendously happy about that while this is the next big step that we have eagerly awaited." />
-<meta property="og:description" content="Azure Windows Virtual Desktop - Spring Release / Spring Update goes public today. I’m tremendously happy about that while this is the next big step that we have eagerly awaited." />
+<meta name="description" content="Azure Windows Virtual Desktop - Spring Release / Spring Update goes public today. I&#39;m tremendously happy about that while this is the next big step that we have eagerly awaited." />
+<meta property="og:description" content="Azure Windows Virtual Desktop - Spring Release / Spring Update goes public today. I&#39;m tremendously happy about that while this is the next big step that we have eagerly awaited." />
 <link rel="canonical" href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/" />
 <meta property="og:url" content="https://blog.itprocloud.de/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/WVDAdmin/WVDAdminSpringRelease.png" />
 <meta property="twitter:title" content="Azure Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2020-04-30T00:00:00+02:00","datePublished":"2020-04-30T00:00:00+02:00","description":"Azure Windows Virtual Desktop - Spring Release / Spring Update goes public today. I’m tremendously happy about that while this is the next big step that we have eagerly awaited.","headline":"Azure Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin","image":"https://blog.itprocloud.de/assets/images/WVDAdmin/WVDAdminSpringRelease.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2020-04-30T00:00:00+02:00","datePublished":"2020-04-30T00:00:00+02:00","description":"Azure Windows Virtual Desktop - Spring Release / Spring Update goes public today. I&#39;m tremendously happy about that while this is the next big step that we have eagerly awaited.","headline":"Azure Windows Virtual Desktop - Spring Release / Spring Update with WVDAdmin","image":"https://blog.itprocloud.de/assets/images/WVDAdmin/WVDAdminSpringRelease.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Spring-Update,-Spring-Release/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -459,8 +459,10 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>Azure Windows Virtual Desktop - Spring Release / Spring Update goes public today. I’m tremendously happy about that while this is the next big step that we have eagerly awaited.</p>
+                <p>Azure Windows Virtual Desktop - Spring Release / Spring Update goes public today. I&#39;m tremendously happy about that while this is the next big step that we have eagerly awaited.</p>
+
 <p>The spring release gives us some feature and changes that make it even easier to deploy apps and desktops to users:</p>
+
 <ul>
 <li>Add groups instead of users to desktops and apps</li>
 <li>Full integration of the administration of WVD/AVD in the Azure Portal</li>
@@ -468,44 +470,60 @@
 <li>Linking app groups and desktops into workspaces</li>
 <li>and a lot of more things</li>
 </ul>
-<p>Even the administration of WVD/AVD was missing before. This was one reason to build WVDAdmin. I was often asked in the past if WVDAdmin will be unnecessary after the spring release of WVD. My answer: Sure, for the administration, WVDAdmin will not be that important anymore, but some features still add value. That’s why I decided months ago to develop WVDAdmin further and also prepare it for the “Spring Release”. So I am proud to announce that WVDAdmin is ready for the Spring Release starting with the already available version 1.5.</p>
-<p>To enable the Spring Release feature set a registry key (the current version will have this enabled by default):</p>
-<pre><code>HKCU\Software\ITProCloud\WVDAdmin
 
-(Reg_DWord) &quot;FeatureSet&quot; = 1
-</code></pre>
-<p><img src="../assets/images/WVDAdmin/SpringReleaseRegistry.png" alt="AADBrowser" /></p>
-<p>First, register the new service provide Microsoft.DesktopVirtualization on your Azure subscription (one-time process). You must be owner of this subscription to do this. Go to your subscription -&gt; Resource providers -&gt;  search for “Microsoft.DesktopVirtualization” and click register:</p>
-<p><img src="../assets/images/WVDAdmin/ResourceProvider.png" alt="AADBrowser" /></p>
-<p>If you restart WVDAdmin you will see the new note “WVD V2” which displays your resources in the Spring Release. Please make sure that your service principal has the right permission to create and administrate your resources (the sp needs owner permission to the resource group containing your host pool, app groups, … to assign users and groups).</p>
-<p><img src="../assets/images/WVDAdmin/SpringReleaseGui.png" alt="AADBrowser" /></p>
+<p>Even the administration of WVD/AVD was missing before. This was one reason to build WVDAdmin. I was often asked in the past if WVDAdmin will be unnecessary after the spring release of WVD. My answer: Sure, for the administration, WVDAdmin will not be that important anymore, but some features still add value. That&#39;s why I decided months ago to develop WVDAdmin further and also prepare it for the &quot;Spring Release&quot;. So I am proud to announce that WVDAdmin is ready for the Spring Release starting with the already available version 1.5.</p>
+
+<p>To enable the Spring Release feature set a registry key (the current version will have this enabled by default):</p>
+<div class="highlight"><pre><code class="language-" data-lang="">HKCU\Software\ITProCloud\WVDAdmin
+
+(Reg_DWord) "FeatureSet" = 1
+</code></pre></div>
+<p><img src="../assets/images/WVDAdmin/SpringReleaseRegistry.png" alt="AADBrowser"></p>
+
+<p>First, register the new service provide Microsoft.DesktopVirtualization on your Azure subscription (one-time process). You must be owner of this subscription to do this. Go to your subscription -&gt; Resource providers -&gt;  search for &quot;Microsoft.DesktopVirtualization&quot; and click register:</p>
+
+<p><img src="../assets/images/WVDAdmin/ResourceProvider.png" alt="AADBrowser"></p>
+
+<p>If you restart WVDAdmin you will see the new note &quot;WVD V2&quot; which displays your resources in the Spring Release. Please make sure that your service principal has the right permission to create and administrate your resources (the sp needs owner permission to the resource group containing your host pool, app groups, ... to assign users and groups).</p>
+
+<p><img src="../assets/images/WVDAdmin/SpringReleaseGui.png" alt="AADBrowser"></p>
+
 <p>But what can you do with WVDAdmin compared to the portal integration? You can (e.g.):</p>
+
 <ul>
 <li>Administrate all resources with a Windows GUI</li>
-<li>Create “golden images” from template/master VMs</li>
+<li>Create &quot;golden images&quot; from template/master VMs</li>
 <li>Rollout several session hosts into differents host pools (in both WVD/AVD releases)</li>
 <li>Re-use you created WVDAdmin images without any change</li>
 <li>Higher flexibility rolling out new session hosts in different ways (you can use different VMSizes and images in one host pool)</li>
 <li>Easy to use user administration to send messages, logoff, disconnect or shadowing users over the full environment (filterable)</li>
-<li>…</li>
+<li>...</li>
 </ul>
-<p>From an architectural perspective, the “Spring Update” is really close to the previews release. But there are a few differences:</p>
+
+<p>From an architectural perspective, the &quot;Spring Update&quot; is really close to the previews release. But there are a few differences:</p>
+
 <ul>
 <li>WVD tenant and tenant groups are no longer used</li>
-<li>“Workspaces” summarize multiple apps and desktop groups. These apps and desktops are shown in the client grouped by workspaces</li>
+<li>&quot;Workspaces&quot; summarize multiple apps and desktop groups. These apps and desktops are shown in the client grouped by workspaces</li>
 <li>All resources like host pools, app groups are ARM resources in the Azure portal.</li>
 <li>App groups must be in the same region as the host pools</li>
-<li>A Workspace can group apps and desktop groups in the same region</li>
+<li>A Workspace can group apps and desktop groups in the same region </li>
 <li>The regions of the session hosts are completely independent of the regions of the host pools (which is great)</li>
 <li>Today you have only a few regions to roll out host pools and workspaces (which is not so important because you can rollout the   session hosts in any region)</li>
 <li>And you can assign groups to apps and desktops</li>
-<li>…</li>
+<li>...</li>
 </ul>
-<p><img src="../assets/images/WVDAdmin/SpringReleaseVSWVD.png" alt="AADBrowser" /></p>
+
+<p><img src="../assets/images/WVDAdmin/SpringReleaseVSWVD.png" alt="AADBrowser"></p>
+
 <p>Check out my video rolling out session hosts from an existing WVD/AVD image into the spring update (sorry for the bad sound - I will change this later):</p>
+
 <iframe width="800" height="815" src="https://www.youtube-nocookie.com/embed/Nb97VBiNQLI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-<p>More details and download: <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">WVDAdmin</a></p>
+
+<p>More details and download: <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">WVDAdmin</a> </p>
+
 <p>And get additional information from <a href="https://www.linkedin.com/pulse/next-big-innovation-windows-virtual-desktop-here-freek-berson/">Freek Berson</a></p>
+
 <p>Official announcement: <a href="https://www.microsoft.com/en-us/microsoft-365/blog/2020/04/30/enable-remote-work-faster-new-windows-virtual-desktop-capabilities/">https://www.microsoft.com/en-us/microsoft-365/blog/2020/04/30/enable-remote-work-faster-new-windows-virtual-desktop-capabilities/</a></p>
 
             </div>

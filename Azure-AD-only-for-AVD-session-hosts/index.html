@@ -10,12 +10,12 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>WVDAdmin supports AAD only deployments for AVD / WVD - AAD: Azure AD | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="WVDAdmin supports AAD only deployments for AVD / WVD - AAD: Azure AD" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="One of the announcements of the Microsoft Inspire 2021 was the option to join session hosts #AAD only. I’m happy to have the implementation also ready in #WVDAdmin." />
-<meta property="og:description" content="One of the announcements of the Microsoft Inspire 2021 was the option to join session hosts #AAD only. I’m happy to have the implementation also ready in #WVDAdmin." />
+<meta name="description" content="One of the announcements of the Microsoft Inspire 2021 was the option to join session hosts #AAD only. I&#39;m happy to have the implementation also ready in #WVDAdmin." />
+<meta property="og:description" content="One of the announcements of the Microsoft Inspire 2021 was the option to join session hosts #AAD only. I&#39;m happy to have the implementation also ready in #WVDAdmin." />
 <link rel="canonical" href="https://blog.itprocloud.de/Azure-AD-only-for-AVD-session-hosts/" />
 <meta property="og:url" content="https://blog.itprocloud.de/Azure-AD-only-for-AVD-session-hosts/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/WVDAdmin/AADOnlyJoin.png" />
 <meta property="twitter:title" content="WVDAdmin supports AAD only deployments for AVD / WVD - AAD: Azure AD" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2021-07-15T00:00:00+02:00","datePublished":"2021-07-15T00:00:00+02:00","description":"One of the announcements of the Microsoft Inspire 2021 was the option to join session hosts #AAD only. I’m happy to have the implementation also ready in #WVDAdmin.","headline":"WVDAdmin supports AAD only deployments for AVD / WVD - AAD: Azure AD","image":"https://blog.itprocloud.de/assets/images/WVDAdmin/AADOnlyJoin.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Azure-AD-only-for-AVD-session-hosts/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Azure-AD-only-for-AVD-session-hosts/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2021-07-15T00:00:00+02:00","datePublished":"2021-07-15T00:00:00+02:00","description":"One of the announcements of the Microsoft Inspire 2021 was the option to join session hosts #AAD only. I&#39;m happy to have the implementation also ready in #WVDAdmin.","headline":"WVDAdmin supports AAD only deployments for AVD / WVD - AAD: Azure AD","image":"https://blog.itprocloud.de/assets/images/WVDAdmin/AADOnlyJoin.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Azure-AD-only-for-AVD-session-hosts/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Azure-AD-only-for-AVD-session-hosts/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -379,43 +379,61 @@
     <div class="article-post">
 	
 		<!-- change content to anchor styled output -->
-		<p>One of the announcements of the Microsoft Inspire 2021 was the option to join session hosts #AAD only. I’m happy to have the implementation also ready in #WVDAdmin.</p>
-<p>There are some prerequisites for AAD joined session hosts:</p>
-<ul>
-<li>Host pool in a validation environment</li>
-<li>RDP settings contains <em>targetisaadjoined:i:1</em></li>
-<li>User must have RBAC with role <strong>Virtual Machine User Login</strong> or <strong>Virtual Machine Administrator Login</strong> to the VM or resource group</li>
-<li>Client device must be AAD joined (or use the web interface)</li>
-</ul>
-<p>Even FSLogix cannot be used.</p>
-<p>Check the full description here: <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/deploy-azure-ad-joined-vm">https://docs.microsoft.com/en-us/azure/virtual-desktop/deploy-azure-ad-joined-vm</a></p>
-<p>To rollout a session host AAD only tick “AAD only” in the rollout tab. OU, domain user and password are not needed.</p>
-<p><img src="/assets/images/WVDAdmin/AADOnlyJoin.png" alt="" /></p>
-<p>An AAD-only session host shows up with the host name in the session host list - the domain suffix is missing. You can also check Azure AD to verify the connection to the AAD domain.</p>
-<p><img src="/assets/images/WVDAdmin/AADOnlyJoin-Hosts01.png" alt="" /></p>
-<p>WVDAdmin: <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</a></p>
-<p>What’s about #Hydra? Hydra auto-scales and manages even AAD only joined session host. Early next week, you can deploy AAD only hosts even with #Hydra</p>
-<p><img src="/assets/images/Hydra/Hydra-120.png" alt="" /></p>
-<p><strong>More about my project “Hydra”:</strong> <a href="https://github.com/marcelmeurer/wvd-hydra">https://github.com/marcelmeurer/wvd-hydra</a></p>
+		<p>One of the announcements of the Microsoft Inspire 2021 was the option to join session hosts #AAD only. I&#39;m happy to have the implementation also ready in #WVDAdmin.</p>
 
-		<!--<p>One of the announcements of the Microsoft Inspire 2021 was the option to join session hosts #AAD only. I’m happy to have the implementation also ready in #WVDAdmin.</p>
-<p>There are some prerequisites for AAD joined session hosts:</p>
-<ul>
-<li>Host pool in a validation environment</li>
-<li>RDP settings contains <em>targetisaadjoined:i:1</em></li>
-<li>User must have RBAC with role <strong>Virtual Machine User Login</strong> or <strong>Virtual Machine Administrator Login</strong> to the VM or resource group</li>
-<li>Client device must be AAD joined (or use the web interface)</li>
-</ul>
+<p>There are some prerequisites for AAD joined session hosts: 
+- Host pool in a validation environment
+- RDP settings contains <em>targetisaadjoined:i:1</em>
+- User must have RBAC with role <strong>Virtual Machine User Login</strong> or <strong>Virtual Machine Administrator Login</strong> to the VM or resource group
+- Client device must be AAD joined (or use the web interface)</p>
+
 <p>Even FSLogix cannot be used.</p>
+
 <p>Check the full description here: <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/deploy-azure-ad-joined-vm">https://docs.microsoft.com/en-us/azure/virtual-desktop/deploy-azure-ad-joined-vm</a></p>
-<p>To rollout a session host AAD only tick “AAD only” in the rollout tab. OU, domain user and password are not needed.</p>
-<p><img src="/assets/images/WVDAdmin/AADOnlyJoin.png" alt="" /></p>
+
+<p>To rollout a session host AAD only tick &quot;AAD only&quot; in the rollout tab. OU, domain user and password are not needed.</p>
+
+<p><img src="/assets/images/WVDAdmin/AADOnlyJoin.png" alt=""></p>
+
 <p>An AAD-only session host shows up with the host name in the session host list - the domain suffix is missing. You can also check Azure AD to verify the connection to the AAD domain.</p>
-<p><img src="/assets/images/WVDAdmin/AADOnlyJoin-Hosts01.png" alt="" /></p>
+
+<p><img src="/assets/images/WVDAdmin/AADOnlyJoin-Hosts01.png" alt=""></p>
+
 <p>WVDAdmin: <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</a></p>
-<p>What’s about #Hydra? Hydra auto-scales and manages even AAD only joined session host. Early next week, you can deploy AAD only hosts even with #Hydra</p>
-<p><img src="/assets/images/Hydra/Hydra-120.png" alt="" /></p>
-<p><strong>More about my project “Hydra”:</strong> <a href="https://github.com/marcelmeurer/wvd-hydra">https://github.com/marcelmeurer/wvd-hydra</a></p>
+
+<p>What&#39;s about #Hydra? Hydra auto-scales and manages even AAD only joined session host. Early next week, you can deploy AAD only hosts even with #Hydra</p>
+
+<p><img src="/assets/images/Hydra/Hydra-120.png" alt=""></p>
+
+<p><strong>More about my project &quot;Hydra&quot;:</strong> <a href="https://github.com/marcelmeurer/wvd-hydra">https://github.com/marcelmeurer/wvd-hydra</a></p>
+
+		<!--<p>One of the announcements of the Microsoft Inspire 2021 was the option to join session hosts #AAD only. I&#39;m happy to have the implementation also ready in #WVDAdmin.</p>
+
+<p>There are some prerequisites for AAD joined session hosts: 
+- Host pool in a validation environment
+- RDP settings contains <em>targetisaadjoined:i:1</em>
+- User must have RBAC with role <strong>Virtual Machine User Login</strong> or <strong>Virtual Machine Administrator Login</strong> to the VM or resource group
+- Client device must be AAD joined (or use the web interface)</p>
+
+<p>Even FSLogix cannot be used.</p>
+
+<p>Check the full description here: <a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/deploy-azure-ad-joined-vm">https://docs.microsoft.com/en-us/azure/virtual-desktop/deploy-azure-ad-joined-vm</a></p>
+
+<p>To rollout a session host AAD only tick &quot;AAD only&quot; in the rollout tab. OU, domain user and password are not needed.</p>
+
+<p><img src="/assets/images/WVDAdmin/AADOnlyJoin.png" alt=""></p>
+
+<p>An AAD-only session host shows up with the host name in the session host list - the domain suffix is missing. You can also check Azure AD to verify the connection to the AAD domain.</p>
+
+<p><img src="/assets/images/WVDAdmin/AADOnlyJoin-Hosts01.png" alt=""></p>
+
+<p>WVDAdmin: <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</a></p>
+
+<p>What&#39;s about #Hydra? Hydra auto-scales and manages even AAD only joined session host. Early next week, you can deploy AAD only hosts even with #Hydra</p>
+
+<p><img src="/assets/images/Hydra/Hydra-120.png" alt=""></p>
+
+<p><strong>More about my project &quot;Hydra&quot;:</strong> <a href="https://github.com/marcelmeurer/wvd-hydra">https://github.com/marcelmeurer/wvd-hydra</a></p>
 -->
 	
     

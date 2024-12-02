@@ -10,12 +10,12 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Creating devices for Azure IoT Hub with SAS token automatically | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Creating devices for Azure IoT Hub with SAS token automatically" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A few weeks ago, I started an IoT project with a company responsible for a huge amount of different buildings around the world. We deployed several virtual and physical sensors in Azure IoT Hub. Doing this we had three challenges:" />
-<meta property="og:description" content="A few weeks ago, I started an IoT project with a company responsible for a huge amount of different buildings around the world. We deployed several virtual and physical sensors in Azure IoT Hub. Doing this we had three challenges:" />
+<meta name="description" content="A few weeks ago, I started an IoT project with a company responsible for a huge amount of different buildings around the world. We deployed several virtual and physical sensors in Azure IoT Hub. Doing this we had three challenges: [Reflection.Assembly]::LoadWithPartialName(&quot;System.Web&quot;)| out-null [Reflection.Assembly]::LoadWithPartialName(&quot;System.Web&quot;)| out-null [Reflection.Assembly]::LoadWithPartialName(&quot;System.Web&quot;)| out-null" />
+<meta property="og:description" content="A few weeks ago, I started an IoT project with a company responsible for a huge amount of different buildings around the world. We deployed several virtual and physical sensors in Azure IoT Hub. Doing this we had three challenges: [Reflection.Assembly]::LoadWithPartialName(&quot;System.Web&quot;)| out-null [Reflection.Assembly]::LoadWithPartialName(&quot;System.Web&quot;)| out-null [Reflection.Assembly]::LoadWithPartialName(&quot;System.Web&quot;)| out-null" />
 <link rel="canonical" href="https://blog.itprocloud.de/Creating-devices-for-Azure-IoT-Hub-with-SAS-token-automatically/" />
 <meta property="og:url" content="https://blog.itprocloud.de/Creating-devices-for-Azure-IoT-Hub-with-SAS-token-automatically/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/wp-content/uploads/2018/11/IOT-1024x410.png" />
 <meta property="twitter:title" content="Creating devices for Azure IoT Hub with SAS token automatically" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2018-11-23T00:00:00+01:00","datePublished":"2018-11-23T00:00:00+01:00","description":"A few weeks ago, I started an IoT project with a company responsible for a huge amount of different buildings around the world. We deployed several virtual and physical sensors in Azure IoT Hub. Doing this we had three challenges:","headline":"Creating devices for Azure IoT Hub with SAS token automatically","image":"https://blog.itprocloud.de/wp-content/uploads/2018/11/IOT-1024x410.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Creating-devices-for-Azure-IoT-Hub-with-SAS-token-automatically/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Creating-devices-for-Azure-IoT-Hub-with-SAS-token-automatically/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2018-11-23T00:00:00+01:00","datePublished":"2018-11-23T00:00:00+01:00","description":"A few weeks ago, I started an IoT project with a company responsible for a huge amount of different buildings around the world. We deployed several virtual and physical sensors in Azure IoT Hub. Doing this we had three challenges: [Reflection.Assembly]::LoadWithPartialName(&quot;System.Web&quot;)| out-null [Reflection.Assembly]::LoadWithPartialName(&quot;System.Web&quot;)| out-null [Reflection.Assembly]::LoadWithPartialName(&quot;System.Web&quot;)| out-null","headline":"Creating devices for Azure IoT Hub with SAS token automatically","image":"https://blog.itprocloud.de/wp-content/uploads/2018/11/IOT-1024x410.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Creating-devices-for-Azure-IoT-Hub-with-SAS-token-automatically/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Creating-devices-for-Azure-IoT-Hub-with-SAS-token-automatically/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -460,13 +460,15 @@
                 
                 <!-- End Toc -->
                 <p>A few weeks ago, I started an IoT project with a company responsible for a huge amount of different buildings around the world. We deployed several virtual and physical sensors in Azure IoT Hub. Doing this we had three challenges:</p>
+
 <ul>
 <li>Deploy new IoT devices in Azure IoT hub in a batch</li>
 <li>Generate SAS tokens for these IoT devices</li>
 <li>Generate SAS tokens even if a device still exist in Azure IoT Hub</li>
 </ul>
+
 <p>The requirement of batch processing avoids the use of the Device Explorer to generate SAS token. Therefore, I wrote a short PowerShell script:</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kr">function</span><span class="w"> </span><span class="nf">New-SASToken</span><span class="w">
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="kr">function</span><span class="w"> </span><span class="nf">New-SASToken</span><span class="w">
 </span><span class="p">{</span><span class="w">
 </span><span class="kr">PARAM</span><span class="p">(</span><span class="w">
 </span><span class="p">[</span><span class="n">Parameter</span><span class="p">(</span><span class="n">Mandatory</span><span class="o">=</span><span class="nv">$True</span><span class="p">)]</span><span class="w">
@@ -574,10 +576,13 @@
 </span><span class="n">Send-IoTDeviceTestString</span><span class="w"> </span><span class="nt">-sasToken</span><span class="w"> </span><span class="nv">$sasToken</span><span class="w">
 </span><span class="n">write-host</span><span class="p">(</span><span class="s2">"--------------------------"</span><span class="p">)</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
+</span></code></pre></div>
 <p>Feel free to use it in your projects.</p>
+
 <p>Feedback welcome</p>
-<p><img src="/wp-content/uploads/2018/11/IOT-1024x410.png" alt="img" /></p>
+
+<p><img src="/wp-content/uploads/2018/11/IOT-1024x410.png" alt="img"></p>
+
 <p>First published on: <a href="https://www.sepago.de/blog/creating-devices-for-azure-iot-hub-with-sas-token-automatically/">https://www.sepago.de/blog/creating-devices-for-azure-iot-hub-with-sas-token-automatically/</a></p>
 
             </div>

@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Adding Guest Users to Azure AD from Excel with PowerShell | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Adding Guest Users to Azure AD from Excel with PowerShell" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -460,8 +460,11 @@
                 
                 <!-- End Toc -->
                 <p>Sharing access across different tenants in one of the key benefits of Azure AD. My customers appreciate that they can provide Azure-based solution to their cooperated users and to guest users as well. Cooperated users include users from the group and subsidiaries. They all can access resources with one identity – on-premises and in the cloud (Same-sign-on, single-sign-on).</p>
+
 <p>Guest users can be deployed manually via the Azure portal, via PowerShell or with a connector to another system (like SAP HR).</p>
+
 <p>Adding users from an Excel file can be done with PowerShell. To show an example I created an Excel file with some headers:</p>
+
 <ul>
 <li>Company</li>
 <li>Surname</li>
@@ -469,16 +472,20 @@
 <li>Mail</li>
 <li>Job role</li>
 </ul>
-<p><img src="/wp-content/uploads/2018/07/excel01-1-1024x260.png" alt="img" /></p>
+
+<p><img src="/wp-content/uploads/2018/07/excel01-1-1024x260.png" alt="img"></p>
+
 <p>To add this user, we must archive these steps:</p>
+
 <ul>
 <li>Login into Azure AD with appropriate rights</li>
 <li>Enumerate through the excel table</li>
 <li>Inviting the user</li>
 <li>Adding the right properties (company, name, surname, …) to the invited user object</li>
 </ul>
+
 <p>To do this I prepared this script:</p>
-<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$invocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Get-Variable</span><span class="w"> </span><span class="nx">MyInvocation</span><span class="p">)</span><span class="o">.</span><span class="nf">Value</span><span class="w">
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="nv">$invocation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">Get-Variable</span><span class="w"> </span><span class="nx">MyInvocation</span><span class="p">)</span><span class="o">.</span><span class="nf">Value</span><span class="w">
 </span><span class="nv">$directorypath</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Split-Path</span><span class="w"> </span><span class="nv">$invocation</span><span class="o">.</span><span class="nf">MyCommand</span><span class="o">.</span><span class="nf">Path</span><span class="w">
 </span><span class="nv">$directorypath</span><span class="w">
 
@@ -517,9 +524,11 @@
   </span><span class="n">Set-AzureADUser</span><span class="w"> </span><span class="nt">-ObjectId</span><span class="w"> </span><span class="nv">$invitation</span><span class="o">.</span><span class="nf">InvitedUser</span><span class="o">.</span><span class="nf">Id</span><span class="w"> </span><span class="nt">-Displayname</span><span class="w"> </span><span class="nv">$user</span><span class="o">.</span><span class="nf">Displayname</span><span class="w">
   </span><span class="nv">$RowNum</span><span class="o">++</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div></div>
+</span></code></pre></div>
 <p>If you run this script all users in the excel file will be invited to your Azure AD tenant.</p>
+
 <p>Remark: The company field can not be written to an Azure AD user object (read-only). So I write the company to the department field.</p>
+
 <p>First published on: <a href="https://www.sepago.de/blog/adding-guest-users-to-azure-ad-from-excel-with-powershell/">https://www.sepago.de/blog/adding-guest-users-to-azure-ad-from-excel-with-powershell/</a></p>
 
             </div>

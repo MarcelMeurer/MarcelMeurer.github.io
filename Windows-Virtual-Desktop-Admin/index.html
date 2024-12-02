@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD) | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -391,82 +391,83 @@
         
       </h1>
     
-<p>Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.</p>
-<p>Are you interested in the new “Hydra for Azure Virtual Desktop” solution to manage AVD even better with a lot of automation? <a href="https://github.com/MarcelMeurer/WVD-Hydra">Check it out here.</a></p>
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 10/24/2024</strong></a></p>
+
+<p>Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I&#39;m happy to share it with the community.</p>
+
+<p>Are you interested in the new &quot;Hydra for Azure Virtual Desktop&quot; solution to manage AVD even better with a lot of automation? <a href="https://github.com/MarcelMeurer/WVD-Hydra">Check it out here.</a></p>
+
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 10/24/2024</strong></a></p>
+
 <p><a href="https://youtu.be/fH1_FzNyJf0">Check out the Youtube video to install and configure WVDAdmin in four steps</a></p>
-<p>The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:</p>
+
+<p>The current version supports a lot of configuration and administration capabilities, and I&#39;m continuously improving WVDAdmin. Some features:</p>
+
 <ul>
 <li>Imaging
+
 <ul>
 <li>Create images from golden masters (without destroying the master)</li>
 <li>Handle sysprep and modern app</li>
 <li>Clean-up</li>
 <li>Use of shared image gallery definitions</li>
-</ul>
-</li>
+</ul></li>
 <li>Rollout
+
 <ul>
 <li>Rollout of multiple session hosts</li>
-<li>Store some base settings encrypted for reuse (domain join name, password, …)</li>
+<li>Store some base settings encrypted for reuse (domain join name, password, ...)</li>
 <li>Select VM type for each rollout (is not fixed to the host pool)</li>
 <li>Use of ephemeral disks</li>
 <li>Support of a second partition from the master VM (D:)</li>
 <li>Azure Monitor</li>
 <li>AAD only, join to MEM/intune</li>
-</ul>
-</li>
+</ul></li>
 <li>AVD Support
+
 <ul>
 <li>Classic AVD</li>
 <li>ARM AVD (Spring Update)</li>
 <li>Migration of resources and session hosts</li>
-</ul>
-</li>
+</ul></li>
 <li>Working with AVD resources
+
 <ul>
-<li>Add/create/delete
-<ul>
+<li>Add/create/delete</li>
 <li>Host Pools</li>
 <li>Application groups</li>
 <li>Workspaces</li>
 <li>Session hosts</li>
-</ul>
-</li>
-<li>Working with user sessions
-<ul>
+<li>Working with user sessions</li>
 <li>Disconnect</li>
 <li>Logoff</li>
 <li>Send message</li>
 <li>Shadow</li>
-</ul>
-</li>
-</ul>
-</li>
+</ul></li>
 <li>Session hosts
+
 <ul>
 <li>Move between host pools</li>
 <li>Start/Stop/Restart</li>
 <li>Delete - with VM, disk, and nic</li>
 <li>Get error report from AVD agent</li>
-<li>Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, …)</li>
+<li>Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, ...)</li>
 <li>Change drain-mode</li>
 <li>Change disk type, e.g.: on-start -&gt; to Premium, after deallocation -&gt; to HDD(for cost savings)</li>
 <li>Remove user assignment</li>
-</ul>
-</li>
+</ul></li>
 <li>Virtual machine
+
 <ul>
 <li>List all VMs with power state in all subscriptions</li>
 <li>Start/Stop/Restart</li>
-<li>Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, …)</li>
+<li>Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, ...)</li>
 <li>Shrink disk to 64 or 32 GByte (to create small images for ephemeral hosts)</li>
 <li>Change disk type, e.g.: on-start -&gt; to premium, after deallocation -&gt; to HDD (for cost savings)</li>
 <li>Create and restore snapshots with a click</li>
 <li>Add an existing domain-joined VM as a session host</li>
-</ul>
-</li>
+</ul></li>
 <li>Others
+
 <ul>
 <li>Multi-Tenant switch</li>
 <li>Split-Tenant mode</li>
@@ -475,9 +476,8 @@
 <li>Start and deallocate Scale Set instances</li>
 <li>Re-image Scale Set instances</li>
 <li>Remove customer-managed key (CMK)</li>
-</ul>
-</li>
-<li>…</li>
+</ul></li>
+<li>...</li>
 </ul>
       <h1 id="installation">
         
@@ -495,18 +495,19 @@
         
       </h2>
     
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 10/24/2024</strong></a>
+
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 10/24/2024</strong></a>
 <a href="https://youtu.be/fH1_FzNyJf0">Check out the Youtube video to install and configure WVDAdmin in four steps</a></p>
-<details><summary>I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.</summary>
-<table>
-<thead>
+
+<p><details><summary>I&#39;m continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.</summary></p>
+
+<table><thead>
 <tr>
 <th>Release</th>
 <th>Date</th>
 <th>Changes &amp; Notes</th>
 </tr>
-</thead>
-<tbody>
+</thead><tbody>
 <tr>
 <td>1.9.11.0</td>
 <td>2024-10-24</td>
@@ -520,7 +521,7 @@
 <tr>
 <td>1.9.06.0</td>
 <td>2024-07-04</td>
-<td>Change: Change of the API to get a registration token of a pool in response to Microsofts mail: “Update to Microsoft Desktop Virtualization API version 2023-09-05 by August 2, 2024, to avoid potential impact”</td>
+<td>Change: Change of the API to get a registration token of a pool in response to Microsofts mail: &quot;Update to Microsoft Desktop Virtualization API version 2023-09-05 by August 2, 2024, to avoid potential impact&quot;</td>
 </tr>
 <tr>
 <td>1.9.05.0</td>
@@ -645,7 +646,7 @@
 <tr>
 <td>1.7.49.0</td>
 <td></td>
-<td>Add: Secure boot enabled hosts are now supporting ‘Guest Attestation’ (automatically installed)</td>
+<td>Add: Secure boot enabled hosts are now supporting &#39;Guest Attestation&#39; (automatically installed)</td>
 </tr>
 <tr>
 <td>1.7.48.0</td>
@@ -680,7 +681,7 @@
 <tr>
 <td>1.7.42.0</td>
 <td></td>
-<td>Add: You can filter on the ‘Virtual Machines’ by the string ‘!orphanhosts’. That shows all VMs created by WVDAdmin or Hydra as a session host but currently not part of any seen host pool (used internally the tags WVD.Path or AVD.Path); Change: Modify WVD.Path/AVD.Path in another way while moving a session host to another host pool</td>
+<td>Add: You can filter on the &#39;Virtual Machines&#39; by the string &#39;!orphanhosts&#39;. That shows all VMs created by WVDAdmin or Hydra as a session host but currently not part of any seen host pool (used internally the tags WVD.Path or AVD.Path); Change: Modify WVD.Path/AVD.Path in another way while moving a session host to another host pool</td>
 </tr>
 <tr>
 <td>1.7.41.0</td>
@@ -695,7 +696,7 @@
 <tr>
 <td>1.7.39.0</td>
 <td></td>
-<td>Add: You can enable “Secure Boot” for marketplace images and for Custom Images in an Azure Compute Gallery (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition)</td>
+<td>Add: You can enable &quot;Secure Boot&quot; for marketplace images and for Custom Images in an Azure Compute Gallery (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition)</td>
 </tr>
 <tr>
 <td>1.7.38.0</td>
@@ -885,22 +886,22 @@
 <tr>
 <td>1.6.89.0</td>
 <td></td>
-<td>Add: Workaround to fix an issue in the Azure API querying VM. In subscriptions with a lot of VMs an error message could given back from the API which will be workaround with this version. Original error message from Azure: Resource provider ‘Microsoft.Compute’ failed to return collection response for type ‘virtualMachines’</td>
+<td>Add: Workaround to fix an issue in the Azure API querying VM. In subscriptions with a lot of VMs an error message could given back from the API which will be workaround with this version. Original error message from Azure: Resource provider &#39;Microsoft.Compute&#39; failed to return collection response for type &#39;virtualMachines&#39;</td>
 </tr>
 <tr>
 <td>1.6.88.0</td>
 <td></td>
-<td>Add: Option to rollout virtual machines based on an image without joining to WVD/AVD (for servers, new golden masters, …), Update: Newest PowerShell script for generalizing and deployment to 3.0: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a></td>
+<td>Add: Option to rollout virtual machines based on an image without joining to WVD/AVD (for servers, new golden masters, ...), Update: Newest PowerShell script for generalizing and deployment to 3.0: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a></td>
 </tr>
 <tr>
 <td>1.6.87.0</td>
 <td></td>
-<td>Add: Option to switch on “Power on connect” for pooled (and assigned) host pools (preview feature)</td>
+<td>Add: Option to switch on &quot;Power on connect&quot; for pooled (and assigned) host pools (preview feature)</td>
 </tr>
 <tr>
 <td>1.6.86.0</td>
 <td></td>
-<td>Add: Option to directly roll-out new session hosts with actice Azure Disk Encryption (ADE) - See “secret features” below</td>
+<td>Add: Option to directly roll-out new session hosts with actice Azure Disk Encryption (ADE) - See &quot;secret features&quot; below</td>
 </tr>
 <tr>
 <td>1.6.83.0</td>
@@ -925,7 +926,7 @@
 <tr>
 <td>1.6.79.0</td>
 <td></td>
-<td>Add: VM list in the “Virtual Machines” node are now showing the private IP</td>
+<td>Add: VM list in the &quot;Virtual Machines&quot; node are now showing the private IP</td>
 </tr>
 <tr>
 <td>1.6.77.0</td>
@@ -945,7 +946,7 @@
 <tr>
 <td>1.6.73.0</td>
 <td></td>
-<td>Add: Automatically change the disk type on start/stop: Add a tag “<a href="../Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD">WVD.AdvDiskType</a>” to a VM with the value “StandardSSD_LRS” or “Premium_LRS”. On the stop, the disk is converted to HDD (lowes costs), and on start, the disk is converted to the named type.  Works only with WVDAdmin (not from the Azure Portal or scaling solutions)</td>
+<td>Add: Automatically change the disk type on start/stop: Add a tag &quot;<a href="../Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD">WVD.AdvDiskType</a>&quot; to a VM with the value &quot;StandardSSD_LRS&quot; or &quot;Premium_LRS&quot;. On the stop, the disk is converted to HDD (lowes costs), and on start, the disk is converted to the named type.  Works only with WVDAdmin (not from the Azure Portal or scaling solutions)</td>
 </tr>
 <tr>
 <td>1.6.72.0</td>
@@ -960,7 +961,7 @@
 <tr>
 <td>1.6.70.0</td>
 <td></td>
-<td>Add: For preview only: Checkbox to enable upcoming “Start on connect feature”</td>
+<td>Add: For preview only: Checkbox to enable upcoming &quot;Start on connect feature&quot;</td>
 </tr>
 <tr>
 <td>1.6.69.0</td>
@@ -1020,7 +1021,7 @@
 <tr>
 <td>1.6.54.0</td>
 <td></td>
-<td>Add: Function to delete unused disks and nics; Add: More logging for the rollout of session hosts; Add: New VM-types, like L4s_v2, …</td>
+<td>Add: Function to delete unused disks and nics; Add: More logging for the rollout of session hosts; Add: New VM-types, like L4s_v2, ...</td>
 </tr>
 <tr>
 <td>1.6.53.0</td>
@@ -1070,7 +1071,7 @@
 <tr>
 <td>1.6.34.0</td>
 <td></td>
-<td>Fix: The drop-down list “Feature release” was not shown correctly. Feature release is the selector between the different WVD/AVD versions like Fall (WVD classic) and Spring (WVD modern on ARM)</td>
+<td>Fix: The drop-down list &quot;Feature release&quot; was not shown correctly. Feature release is the selector between the different WVD/AVD versions like Fall (WVD classic) and Spring (WVD modern on ARM)</td>
 </tr>
 <tr>
 <td>1.6.32.0</td>
@@ -1105,7 +1106,7 @@
 <tr>
 <td>1.6.24.0</td>
 <td></td>
-<td>Add: Multi selection and action on session hosts for ARM if you select a session host container; Fix: Scale Set instances wasn’t shown in 1.6.23</td>
+<td>Add: Multi selection and action on session hosts for ARM if you select a session host container; Fix: Scale Set instances wasn&#39;t shown in 1.6.23</td>
 </tr>
 <tr>
 <td>1.6.23.0</td>
@@ -1115,7 +1116,7 @@
 <tr>
 <td>1.6.22.0</td>
 <td></td>
-<td>Add: Support for shared image galleries: Add a shared image gallery from the Azure Portal into a resource group managed by WVDAdmin. In WVDAdmin right-click an existing image and select “copy to shared image gallery”. An image can be rolled-out right clicking the shared image</td>
+<td>Add: Support for shared image galleries: Add a shared image gallery from the Azure Portal into a resource group managed by WVDAdmin. In WVDAdmin right-click an existing image and select &quot;copy to shared image gallery&quot;. An image can be rolled-out right clicking the shared image</td>
 </tr>
 <tr>
 <td>1.6.21.0</td>
@@ -1125,7 +1126,7 @@
 <tr>
 <td>1.6.18.0</td>
 <td></td>
-<td>Fix: API change from Microsoft cause that updating a host pool property fails if the location is written like “Central US” (centralus is no problem); Add: First version able to deploy session hosts from images in a image gallery</td>
+<td>Fix: API change from Microsoft cause that updating a host pool property fails if the location is written like &quot;Central US&quot; (centralus is no problem); Add: First version able to deploy session hosts from images in a image gallery</td>
 </tr>
 <tr>
 <td>1.6.16.0</td>
@@ -1135,7 +1136,7 @@
 <tr>
 <td>1.6.14.0</td>
 <td></td>
-<td>Add: Support US Government Cloud. Activate: Add a new string Reg_SZ “Environment” with value “US” to HKCU\SOFTWARE\ITProCloud\WVDAdmin”</td>
+<td>Add: Support US Government Cloud. Activate: Add a new string Reg_SZ &quot;Environment&quot; with value &quot;US&quot; to HKCU\SOFTWARE\ITProCloud\WVDAdmin&quot;</td>
 </tr>
 <tr>
 <td>1.6.12.0</td>
@@ -1150,7 +1151,7 @@
 <tr>
 <td>1.6.9.00</td>
 <td></td>
-<td>Fix: Generating toke for Spring host pool fails sometimes (Error: ExpirationTime value must be between one hour and 30 days from now”  - An error occurred while gathering an WVD2 token from backend: Object reference not set to an instance of an object.)</td>
+<td>Fix: Generating toke for Spring host pool fails sometimes (Error: ExpirationTime value must be between one hour and 30 days from now&quot;  - An error occurred while gathering an WVD2 token from backend: Object reference not set to an instance of an object.)</td>
 </tr>
 <tr>
 <td>1.6.5.00</td>
@@ -1165,7 +1166,7 @@
 <tr>
 <td>1.6.2.00</td>
 <td></td>
-<td>Add: New naming feature for new session host. Default (is): Name for a session host is the highest matching name +1; new concept (must be enabled): Name for a session host is the next free name. To enable add a reg dword to HKCU\Software\ITProCloud\WVDAdmin Name:NamingMode and value to “1”</td>
+<td>Add: New naming feature for new session host. Default (is): Name for a session host is the highest matching name +1; new concept (must be enabled): Name for a session host is the next free name. To enable add a reg dword to HKCU\Software\ITProCloud\WVDAdmin Name:NamingMode and value to &quot;1&quot;</td>
 </tr>
 <tr>
 <td>1.6.1.00</td>
@@ -1175,7 +1176,7 @@
 <tr>
 <td>1.6.0.00</td>
 <td></td>
-<td>Change: The tag WVD.Path is aligned to Microsoft naming of “tenant” and “host pool” for the spring update. Tenant=resource group name and no longer subscription name</td>
+<td>Change: The tag WVD.Path is aligned to Microsoft naming of &quot;tenant&quot; and &quot;host pool&quot; for the spring update. Tenant=resource group name and no longer subscription name</td>
 </tr>
 <tr>
 <td>1.5.9.00</td>
@@ -1185,12 +1186,12 @@
 <tr>
 <td>1.5.7.00</td>
 <td></td>
-<td>Add: You can join existing VM’ to a host pool (VMs must be domain joined and not in a host pool right now)</td>
+<td>Add: You can join existing VM&#39; to a host pool (VMs must be domain joined and not in a host pool right now)</td>
 </tr>
 <tr>
 <td>1.5.6.00</td>
 <td></td>
-<td>Add: You can now move session host around host pools not created with WVDAdmin (it downloads the necessary files automatically); you can join existing VM’ to a host pool (VMs must be domain joined)</td>
+<td>Add: You can now move session host around host pools not created with WVDAdmin (it downloads the necessary files automatically); you can join existing VM&#39; to a host pool (VMs must be domain joined)</td>
 </tr>
 <tr>
 <td>1.5.5.00</td>
@@ -1265,7 +1266,7 @@
 <tr>
 <td>1.3.1.00</td>
 <td></td>
-<td>Fix: WVDAdmin crashed if 1.3.0 is your first version of WVDAdmin (HKEY_CURRENT_USER\Software\ITProCloud doesn’t exist while checking for multi-tenancy mode)</td>
+<td>Fix: WVDAdmin crashed if 1.3.0 is your first version of WVDAdmin (HKEY_CURRENT_USER\Software\ITProCloud doesn&#39;t exist while checking for multi-tenancy mode)</td>
 </tr>
 <tr>
 <td>1.3.0.00</td>
@@ -1310,7 +1311,7 @@
 <tr>
 <td>1.0.0.29</td>
 <td></td>
-<td>Add: Supporting “special license mode” to save up to 50% on compute-cost (<a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license">https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license</a>)</td>
+<td>Add: Supporting &quot;special license mode&quot; to save up to 50% on compute-cost (<a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license">https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license</a>)</td>
 </tr>
 <tr>
 <td>1.0.0.26</td>
@@ -1332,9 +1333,9 @@
 <td></td>
 <td>First published version - without auto-update of WVDAdmin</td>
 </tr>
-</tbody>
-</table>
-</details><br/>
+</tbody></table>
+
+<p></details><br/></p>
       <h2 id="configuration">
         
         
@@ -1351,21 +1352,37 @@
         
       </h2>
     
+
 <p>To work with the GUI, you need a service principal (function account) with permission to administrate access to the AVD and Azure resources. I decide to use a service principal to avoid confusion if my Azure AD user is only a guest account in the AVD tenant I have to administrate and easily switch between different tenants.</p>
-<p>To create a service principal, go to your Azure AD -&gt; <a href="https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps" target="_blank">App registration</a> -&gt; New registration and type a name for your principal like “ svc_WVDAdmin” and press “register”.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-001.png" alt="documentation-001" /></p>
-<p>Click on “certificates &amp; secrets”. Click “new client secret”, select a validity period and a description (like “Key01”). Press “add”.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-002.png" alt="documentation-002" /></p>
+
+<p>To create a service principal, go to your Azure AD -&gt; <a href="https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps" target="_blank">App registration</a> -&gt; New registration and type a name for your principal like &quot; svc_WVDAdmin&quot; and press &quot;register&quot;.</p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-001.png" alt="documentation-001"></p>
+
+<p>Click on &quot;certificates &amp; secrets&quot;. Click &quot;new client secret&quot;, select a validity period and a description (like &quot;Key01&quot;). Press &quot;add&quot;.</p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-002.png" alt="documentation-002"></p>
+
 <p>Copy the generated key directly - it will never be displayed again. Note the key for later.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-003.png" alt="documentation-003" /></p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-003.png" alt="documentation-003"></p>
+
 <p>To assign users to app groups, the service principal needs one API permissions to get the users and groups from Azure AD (optional):</p>
-<p>Add the permission “Microsoft Graph” -&gt; Application Permission -&gt; Directory.Read.All</p>
-<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png" alt="AADBrowser" /></p>
+
+<p>Add the permission &quot;Microsoft Graph&quot; -&gt; Application Permission -&gt; Directory.Read.All</p>
+
+<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png" alt="AADBrowser"></p>
+
 <p>To consent, the permission and administrator of Azure AD have to grant this:</p>
-<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png" alt="AADBrowser" /></p>
-<p>Go to “Overview”. Note the “Application (client) ID” and the “Directory (tenant) ID” as well.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-004.png" alt="documentation-004" /></p>
+
+<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png" alt="AADBrowser"></p>
+
+<p>Go to &quot;Overview&quot;. Note the &quot;Application (client) ID&quot; and the &quot;Directory (tenant) ID&quot; as well.</p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-004.png" alt="documentation-004"></p>
+
 <p>You now have all data for your service principal:</p>
+
 <ul>
 <li>Tenant id</li>
 <li>Service principal id (application id)</li>
@@ -1379,7 +1396,9 @@
         
       </h2>
     
+
 <p>This chapter is for AVD ARM / Spring. <a href="#azure-resource-permissions">Skip</a> this chapter if you only work with WVD Classic (Fall).</p>
+
 <p>The service principal needs permission to add and modify AVD resource objects (host pools, workspaces, app groups). To assign users and groups to app groups, the service principal needs the owner role on the resource groups you want to use for your AVD environment. Add the service principal in the next step and use the <strong>owner</strong> role.</p>
       <h2 id="register-resource-provider">
         
@@ -1389,9 +1408,11 @@
         
       </h2>
     
+
 <p>If you have never worked with AVD, you have to register the AVD resource provider once. To do that, go to the Azure portal -&gt; subscriptions -&gt; select your subscription -&gt; Resource providers</p>
-<p>Search for “Microsoft.DesktopVirtualization” and click on “Register”.
-<img src="../assets/images/WVDAdmin/documentation-015.png" alt="documentation-015" /></p>
+
+<p>Search for &quot;Microsoft.DesktopVirtualization&quot; and click on &quot;Register&quot;.
+<img src="../assets/images/WVDAdmin/documentation-015.png" alt="documentation-015"></p>
       <h2 id="azure-resource-permissions">
         
         
@@ -1400,24 +1421,34 @@
         
       </h2>
     
-<p>The service principal needs permission to subscriptions or resource groups to manage your AVD resources, imaging template VM and rollout session hosts.</p>
-<p>Open the Azure portal and go to the resource groups you want to use or to the subscriptions. In each resource group/subscription, click “Access control (IAM)” -&gt; select “Add” -&gt; Add role assignment. Select “owner” and search in “Select” for your service principal name. Click on the principal and save the settings.</p>
-<p><strong>Note:</strong> Owner is needed to assign users to app groups. For other resources, “contributor” is fine.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-006.png" alt="documentation-006" /></p>
-<p>The service principal must have permissions to your virtual network (vnet) to assign new VMs to the right subnet. Go to your vnet, click “Access control (IAM)” -&gt; select “Add” -&gt; Add role assignment. Select “contributor” and search in “select” for your service principal name. Click the principal and save the settings. You could skip this step if you assigned the service principal to the subscription or to the resource group containing your vnet.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-007.png" alt="documentation-007" /></p>
+
+<p>The service principal needs permission to subscriptions or resource groups to manage your AVD resources, imaging template VM and rollout session hosts. </p>
+
+<p>Open the Azure portal and go to the resource groups you want to use or to the subscriptions. In each resource group/subscription, click &quot;Access control (IAM)&quot; -&gt; select &quot;Add&quot; -&gt; Add role assignment. Select &quot;owner&quot; and search in &quot;Select&quot; for your service principal name. Click on the principal and save the settings.</p>
+
+<p><strong>Note:</strong> Owner is needed to assign users to app groups. For other resources, &quot;contributor&quot; is fine.</p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-006.png" alt="documentation-006"></p>
+
+<p>The service principal must have permissions to your virtual network (vnet) to assign new VMs to the right subnet. Go to your vnet, click &quot;Access control (IAM)&quot; -&gt; select &quot;Add&quot; -&gt; Add role assignment. Select &quot;contributor&quot; and search in &quot;select&quot; for your service principal name. Click the principal and save the settings. You could skip this step if you assigned the service principal to the subscription or to the resource group containing your vnet.</p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-007.png" alt="documentation-007"></p>
       <h2 id="prepare-your-native-active-directory">
         
         
-          Prepare your “native” Active Directory <a href="#prepare-your-native-active-directory"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+          Prepare your &quot;native&quot; Active Directory <a href="#prepare-your-native-active-directory"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
         
         
       </h2>
     
-<p>Today each session host must be part of a “native” active directory domain (or have to use the domain services). To add new session hosts unattended, we need an administrative user account to add a computer object to the active directory domain. You can use an existing one, or you can create a new service user:</p>
-<p>Open “Active Directory Users and Computers” and create a user object with a complex password, and set a password to “never expire” (if you fine with this). I added the user <a href="mailto:srv_WVD-Join@itprocloud.de">srv_WVD-Join@itprocloud.de</a>.</p>
+
+<p>Today each session host must be part of a &quot;native&quot; active directory domain (or have to use the domain services). To add new session hosts unattended, we need an administrative user account to add a computer object to the active directory domain. You can use an existing one, or you can create a new service user:</p>
+
+<p>Open &quot;Active Directory Users and Computers&quot; and create a user object with a complex password, and set a password to &quot;never expire&quot; (if you fine with this). I added the user <a href="mailto:srv_WVD-Join@itprocloud.de">srv_WVD-Join@itprocloud.de</a>.</p>
+
 <p>Delegate permission for the user to an OU. I found a really good blog post from <a href="https://twitter.com/prajwaldesai">Prajwal Desai</a>. Check out hist post on (external web site): <a href="https://www.prajwaldesai.com/allow-domain-user-to-add-computer-to-domain/" target="_blank">Method 2 – Delegate rights to user/group using Active Directory Users and Computers</a></p>
-<p>In my case I added my function account to: “OU=WVD,OU=Azure,OU=Site,OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test”</p>
+
+<p>In my case I added my function account to: &quot;OU=WVD,OU=Azure,OU=Site,OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test&quot;</p>
       <h2 id="optional-create-a-file-share">
         
         
@@ -1426,31 +1457,42 @@
         
       </h2>
     
-<p>In earlier versions (&lt;1.6.40), you had to provide the deployment script and the AVD agent binaries on a custom file share or blob storage. With WVDAdmin 1.6.40 or newer, this no longer mandatory.
-In some cases, where virtual machines don’t have access to the internet to download the AVD agent binaries, you can use a custom file share.</p>
-<details><summary>Read more.</summary><br/>
+
+<p>In earlier versions (<1.6.40), you had to provide the deployment script and the AVD agent binaries on a custom file share or blob storage. With WVDAdmin 1.6.40 or newer, this no longer mandatory.
+In some cases, where virtual machines don't have access to the internet to download the AVD agent binaries, you can use a custom file share.
+<details><summary>Read more.</summary><br/></p>
+
 <p><em>Hint: Alternatively, you can use Azure blob storage to store the script. Make the blob storage read-only and use the URL as rollout script-path. E.g.: <a href="https://sharedservices01.blob.core.windows.net/wvd">https://sharedservices01.blob.core.windows.net/wvd</a></em></p>
+
 <p>Create a file share for the configuration script (which adds new session hosts to the domain and install the AVD agent). Give everyone at least read permissions. Set the NTFS permissions to everyone and read. This is necessary while during the first startup, the VM extension tries to execute the script. In this process, the file share is accessed anonymously.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-009.png" alt="documentation-009" /></p>
-<p><img src="../assets/images/WVDAdmin/documentation-010.png" alt="documentation-010" /></p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-009.png" alt="documentation-009"></p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-010.png" alt="documentation-010"></p>
+
 <p>Place the following files in this share:</p>
+
 <ul>
 <li><a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a> (rename the download to .ps1)</li>
 <li><a href="https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv">Microsoft.RDInfra.RDAgent.msi</a> (rename the file)</li>
 <li><a href="https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH">Microsoft.RDInfra.RDAgentBootLoader.msi</a> (rename the file)</li>
 </ul>
+
 <p>Make sure that you rename the files to fit the list above (without version numbers).</p>
-<p><img src="../assets/images/WVDAdmin/documentation-011.png" alt="documentation-011" /></p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-011.png" alt="documentation-011"></p>
+
 <p><strong>Important:</strong> If you are using Windows Server <strong>2019</strong> as file share, make sure that anonymous file share access is enabled. Create a GPO for the session hosts containing the following configurations:</p>
+
 <ul>
 <li>Security Options:
+
 <ul>
 <li>Accounts: Guest Account Status: Enabled</li>
 <li>Network access: Let Everyone permissions apply to anonymous users: Enabled</li>
-<li>Network access: Do not allow anonymous enumeration of SAM accounts and shares: Disabled</li>
-</ul>
-</details><br/>
-</li>
+<li>Network access: Do not allow anonymous enumeration of SAM accounts and shares: Disabled
+</details><br/></li>
+</ul></li>
 </ul>
       <h1 id="configure-wvdadmin">
         
@@ -1460,12 +1502,18 @@ In some cases, where virtual machines don’t have access to the internet to dow
         
       </h1>
     
-<p>Please start WVDAdmin. Before you load AVD and Azure data, copy the Azure tenant id, service principal id, and service principal key into the welcome tab. Press save and load the data by clicking “Reload all”.</p>
+
+<p>Please start WVDAdmin. Before you load AVD and Azure data, copy the Azure tenant id, service principal id, and service principal key into the welcome tab. Press save and load the data by clicking &quot;Reload all&quot;.</p>
+
 <p>You are now able to administrate WVD, create images from template VMs and rollout new session hosts.</p>
+
 <p>The first time you want to roll out new session hosts, you have to enter some information from your Active Directory and file share configuration from above:</p>
-<p><img src="../assets/images/WVDAdmin/documentation-012.png" alt="documentation-012" /></p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-012.png" alt="documentation-012"></p>
+
 <p>Local Admin and local pw. are the local administrator account credentials which you can enter at this time.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-013.png" alt="documentation-013" /></p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-013.png" alt="documentation-013"></p>
       <h1 id="build-an-image">
         
         
@@ -1474,9 +1522,13 @@ In some cases, where virtual machines don’t have access to the internet to dow
         
       </h1>
     
+
 <p>You can rollout VMs and VM Scale Set with images created by WVDAdmin. These images contain the logic to join the AD domain and WVD.</p>
+
 <p>You can simple create an image from a template VM. The template VM must part of your AD like a standard client. You have not to sysprep or to normalize this template VM. Use the same template VM for Windows and application updates.</p>
+
 <p>Following these steps to build your template:</p>
+
 <ul>
 <li>Install a VM in the Azure portal. Select the right OS (like Windows 10 Enterprise for Virtual Desktops)</li>
 <li>Make all Windows updates</li>
@@ -1485,18 +1537,21 @@ In some cases, where virtual machines don’t have access to the internet to dow
 <li>Make your customizing (like installing language packages)</li>
 <li>Shutdown the template VM</li>
 </ul>
+
 <p>To create the image, open WVDAdmin and</p>
+
 <ul>
 <li>Navigate to the Azure template VM (Azure -&gt; Virtual Machines -&gt; RG -&gt; VM)</li>
-<li>Right-click -&gt; “Create a template image”</li>
+<li>Right-click -&gt; &quot;Create a template image&quot;</li>
 <li>Select the resource group to store the image</li>
-<li>Press “Capture”</li>
+<li>Press &quot;Capture&quot;</li>
 </ul>
+
 <p>You can and should reuse the template VM for new updates and applications. After these changes, shut down the template VM and create a new image.</p>
-      <h1 id="tipps-amp-tricks">
+      <h1 id="tipps-tricks">
         
         
-          Tipps &amp; Tricks <a href="#tipps-amp-tricks"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+          Tipps &amp; Tricks <a href="#tipps-tricks"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
         
         
       </h1>
@@ -1509,52 +1564,56 @@ In some cases, where virtual machines don’t have access to the internet to dow
         
       </h2>
     
-<p>First node: VM Scale Sets cannot autoscale AVD session hosts. Auto-scaling only works for stateless services like a web server. But if you need hundreds of session hosts, then VM Scale Set allows you to work with these numbers efficiently.</p>
+
+<p>First node: VM Scale Sets cannot autoscale AVD session hosts. Auto-scaling only works for stateless services like a web server. But if you need hundreds of session hosts, then VM Scale Set allows you to work with these numbers efficiently.
 <details><summary>Read more</summary><br/>
-From version 1.2.5, WVDAdmin support VM Scale Sets. A Scale Set can have several instances, which are the VMs / session hosts. There are some essential things you have to know if you use VM Scale Set with WVDAdmin and AVD itself:
+From version 1.2.5, WVDAdmin support VM Scale Sets. A Scale Set can have several instances, which are the VMs / session hosts. There are some essential things you have to know if you use VM Scale Set with WVDAdmin and AVD itself:</p>
+
 <ul>
-<li>Build a Scale Set with WVDAdmin. Select an image, right-click and select “Create session host from image”. Check “Rollout as VM Scale Set”</li>
+<li>Build a Scale Set with WVDAdmin. Select an image, right-click and select &quot;Create session host from image&quot;. Check &quot;Rollout as VM Scale Set&quot;</li>
 <li>You can use regular disks and ephemeral disks. If you use ephemeral disks, you cannot deallocate the instances of your Scale Set. You have to delete the instances</li>
 <li>Today, you can not use ultra disks</li>
 <li>You can add and remove instances with WVDAdmin or in the Azure Portal. New instances will join the domain and WVD</li>
-<li>A new instance can only join AVD if the session host with the new name doesn’t exist. If you delete instances, the session host entry will also be removed</li>
-<li>You can re-image single instances or all instances of a Scale Set. After that, the instances are “clean” as at the first rollout</li>
-<li>Adding instances or re-imaging assumes that the Scale Set configuration (which is a custom script extension) has a valid AVD token to join new instances to WVD. While AVD provides only one token per host pool and that the token can be expiring, you can update the token with a right-click on the Scale Set and select “Update WVD token”. The max. lifetime of a token is 59 days</li>
+<li>A new instance can only join AVD if the session host with the new name doesn&#39;t exist. If you delete instances, the session host entry will also be removed</li>
+<li>You can re-image single instances or all instances of a Scale Set. After that, the instances are &quot;clean&quot; as at the first rollout</li>
+<li>Adding instances or re-imaging assumes that the Scale Set configuration (which is a custom script extension) has a valid AVD token to join new instances to WVD. While AVD provides only one token per host pool and that the token can be expiring, you can update the token with a right-click on the Scale Set and select &quot;Update WVD token&quot;. The max. lifetime of a token is 59 days</li>
 <li>Unfortunately, WVDAdmin cannot change the source image for a VM Scale Set. So if you want to update the image for a host pool, take these steps:
+
 <ul>
 <li>Rollout a new Scale Set based on the new image</li>
 <li>Disable new logons for the old session host from the previous Scale Set</li>
 <li>Test the host pool based on the new Scale Set</li>
 <li>If no user logged on to the ancient Scale Set, remove all instances from the Scale Set (this deletes the session hosts in AVD as well)</li>
-<li>Remove the Scale Set</li>
+<li>Remove the Scale Set
+</details><br/></li>
+</ul></li>
 </ul>
-</details><br/>
-</li>
-</ul>
-      <h2 id="ephemeral--disks">
+      <h2 id="ephemeral-disks">
         
         
-          Ephemeral  disks <a href="#ephemeral--disks"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+          Ephemeral  disks <a href="#ephemeral-disks"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
         
         
       </h2>
     
-<p>Ephemeral disks are awesome. They give you a high performance free of charge. Especially in a AVD multiuser environment where no data a stored permanently on the session hosts, this kind of disk can give you some value add.</p>
+
+<p>Ephemeral disks are awesome. They give you a high performance free of charge. Especially in a AVD multiuser environment where no data a stored permanently on the session hosts, this kind of disk can give you some value add.
 <details><summary>Read more</summary><br/>
-Ephemeral disks are running on the Azure hypervisor and not stored. This has some advantages:
+Ephemeral disks are running on the Azure hypervisor and not stored. This has some advantages:</p>
+
 <ul>
 <li>There are no storage costs (!)</li>
 <li>A very high data throughput because the disks exist on the hypervisor</li>
-<li>See <a href="https://twitter.com/michawets">@MichaWets</a>   blog post for more information:  <a href="https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/">https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/</a></li>
+<li>See <a href="https://twitter.com/michawets">@MichaWets</a>   blog post for more information:  <a href="https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/">https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/</a> </li>
 </ul>
-<p>Please note:</p>
-<ul>
-<li>You can not deallocate a VM with this disk type - you have to delete the VM (and roll out a new one instead of starting a “normal” VM)</li>
-<li>Not each VM size is available, and there are limitations of the disk size (image size for rollout) based on the VM size: Max ephemeral disk size for  Standard_D4s_v3  is 64 GByte while a  Standard_D8s_v3 can have up to 128 GByte. See <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general">https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general</a></li>
-<li>If the Azure hypervisor fails, your session host will fail as well and can not be re-deployed automatically</li>
-</ul>
-<p><img src="../assets/images/WVDAdmin/documentation-014.png" alt="documentation-001" /></p>
-</details><br/>
+
+<p>Please note:
+- You can not deallocate a VM with this disk type - you have to delete the VM (and roll out a new one instead of starting a &quot;normal&quot; VM)
+- Not each VM size is available, and there are limitations of the disk size (image size for rollout) based on the VM size: Max ephemeral disk size for  Standard_D4s_v3  is 64 GByte while a  Standard_D8s_v3 can have up to 128 GByte. See <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general">https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general</a> 
+- If the Azure hypervisor fails, your session host will fail as well and can not be re-deployed automatically</p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-014.png" alt="documentation-001">
+</details><br/></p>
       <h2 id="secret-features">
         
         
@@ -1563,8 +1622,9 @@ Ephemeral disks are running on the Azure hypervisor and not stored. This has som
         
       </h2>
     
-<p>WVDAdmin has some features not directly visible but configurable via registry keys. All settings in the registry are in the current user part under HKEY_CURRENT_USER\SOFTWARE\ITProCloud\WVDAdmin. Keep in mind to restart WVDAdmin after changing the registry settings.</p>
-<details><summary>Read more</summary><br/>
+
+<p>WVDAdmin has some features not directly visible but configurable via registry keys. All settings in the registry are in the current user part under HKEY_CURRENT_USER\SOFTWARE\ITProCloud\WVDAdmin. Keep in mind to restart WVDAdmin after changing the registry settings.
+<details><summary>Read more</summary><br/></p>
       <h3 id="dark-mode">
         
         
@@ -1573,6 +1633,7 @@ Ephemeral disks are running on the Azure hypervisor and not stored. This has som
         
       </h3>
     
+
 <p>From version 1.7.33 WVDAdmin can be run in dark-mode. Set the following reg value and restart WVDAdmin: HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin\DarkMode to 1 (DarkMode is REG_DWORD32)</p>
       <h3 id="multi-tenant-mode">
         
@@ -1582,6 +1643,7 @@ Ephemeral disks are running on the Azure hypervisor and not stored. This has som
         
       </h3>
     
+
 <p>From version 1.3.0 WVDAdmin will support a multi-AAD-tenancy mode allowing to switch the Azure AD tenant very easily.
 <a href="../Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners">Follow this link</a></p>
       <h3 id="having-multiple-service-principals-for-a-single-tenant">
@@ -1592,7 +1654,8 @@ Ephemeral disks are running on the Azure hypervisor and not stored. This has som
         
       </h3>
     
-<p>In the Multi-Tenant-Mode, you can add one service principal per tenant. Sometimes you need more service principals for the same tenant. You can add more service principals for a tenant if you append #1 directly behind the tenant id (or #2, …).</p>
+
+<p>In the Multi-Tenant-Mode, you can add one service principal per tenant. Sometimes you need more service principals for the same tenant. You can add more service principals for a tenant if you append #1 directly behind the tenant id (or #2, ...).</p>
       <h3 id="naming-of-the-session-hosts">
         
         
@@ -1601,7 +1664,8 @@ Ephemeral disks are running on the Azure hypervisor and not stored. This has som
         
       </h3>
     
-<p>If you deploy session hosts to a host pool, WVDAdmin counts up the names from the highest available VM. E.g., if you have a session host with the name “WVD-PROD-012” and you rollout new hosts (WVD-PROD-###), the first new hostname is “WVD-PROD-013” - even if you have gaps in the existing numeration. You can force WVDAdmin to fill this gaps (non-existing hosts in the naming schema) if you set the following registry key:
+
+<p>If you deploy session hosts to a host pool, WVDAdmin counts up the names from the highest available VM. E.g., if you have a session host with the name &quot;WVD-PROD-012&quot; and you rollout new hosts (WVD-PROD-###), the first new hostname is &quot;WVD-PROD-013&quot; - even if you have gaps in the existing numeration. You can force WVDAdmin to fill this gaps (non-existing hosts in the naming schema) if you set the following registry key:
 Reg-DWord: <strong>NamingMode</strong> = <strong>1</strong></p>
       <h3 id="split-tenant">
         
@@ -1611,6 +1675,7 @@ Reg-DWord: <strong>NamingMode</strong> = <strong>1</strong></p>
         
       </h3>
     
+
 <p>Usually, the AVD tenant and the resources (sessions hosts) are in the same AAD tenant. If you have two Azure AD tenant, you can use WVDAdmin with a second service principal for the session hosts (resource tenant).
 <a href="../Windows-Virtual-Desktop-Admin-for-2-tenant-mode">Follow this link</a></p>
       <h3 id="us-government-cloud">
@@ -1621,6 +1686,7 @@ Reg-DWord: <strong>NamingMode</strong> = <strong>1</strong></p>
         
       </h3>
     
+
 <p>WVDAdmin can be used to deploy AVD in the Azure Government Cloud. You can enable WVDAdmin to work in the US Government Cloud via registry:
 Reg-SZ: <strong>Environment</strong> = <strong>US</strong></p>
       <h3 id="run-custom-actions-simultaneously">
@@ -1631,6 +1697,7 @@ Reg-SZ: <strong>Environment</strong> = <strong>US</strong></p>
         
       </h3>
     
+
 <p>From version 1.6.15, WVDAdmin supports custom scripts to run administrative tasks simultaneously on different session hosts. And that is easy to use and to extend.
 <a href="../Windows-Virtual-Desktop-Admin-CustomScripts">Follow this link</a></p>
       <h3 id="add-a-session-host-automatically-to-an-asg">
@@ -1641,8 +1708,9 @@ Reg-SZ: <strong>Environment</strong> = <strong>US</strong></p>
         
       </h3>
     
+
 <p>You can add a session host automatically to application security groups (ASG) within the rollout process. To achieve this, add one or more tags to the host pool containing your new session hosts. Name <strong>WVD.Default.ASG.X</strong> and add the azure resource id of an existing asg. X can be numbers to assign more ASGs. You can copy the id from an ASG from your browser. It looks like this: /subscriptions/&lt;subscription-id&gt;/resourcegroups/&lt;resourcegroup-name&gt;/providers/Microsoft.Network/applicationSecurityGroups/&lt;asg-name&gt;
-<img src="../assets/images/WVDAdmin/asg-001.png" alt="Tag for ASG" /></p>
+<img src="../assets/images/WVDAdmin/asg-001.png" alt="Tag for ASG"></p>
       <h3 id="add-a-session-host-automatically-to-a-loadbalancer-backend-pool">
         
         
@@ -1651,6 +1719,7 @@ Reg-SZ: <strong>Environment</strong> = <strong>US</strong></p>
         
       </h3>
     
+
 <p>You can add a session host automatically to a loadbalancer backend pool within the rollout process. To achieve this, add one or more tags to the host pool containing your new session hosts. Name <strong>WVD.Default.LBPool.X</strong> and add the azure resource id of an existing loadbalancer backend pool. X can be numbers to assign more ASGs. You can copy the id from a pool from your browser. It looks like this: /subscriptions/&lt;subscription-id&gt;/resourcegroups/&lt;resourcegroup-name&gt;/providers/Microsoft.Network/loadBalancers/&lt;loadbalancer-name&gt;/backendAddressPools/&lt;pool-name&gt;
 Keep in mind to use availability sets for each rollout to use this feature.</p>
       <h3 id="rollout-session-hosts-with-azure-disk-encryption-ade">
@@ -1661,8 +1730,9 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
         
       </h3>
     
-<p>Set two tags to the host pool to use it: “WVD.Default.KeyVault.Id” with the resource id of the KeyVault, “WVD.Default.KeyVault.KeyUri” with the URI (including the version) of the prepared key to wrap the secret.</p>
-</details><br/>
+
+<p>Set two tags to the host pool to use it: &quot;WVD.Default.KeyVault.Id&quot; with the resource id of the KeyVault, &quot;WVD.Default.KeyVault.KeyUri&quot; with the URI (including the version) of the prepared key to wrap the secret.
+</details><br/></p>
       <h1 id="troubleshooting">
         
         
@@ -1679,6 +1749,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
         
       </h2>
     
+
 <ul>
 <li>The image is not created. An error message occurs:</li>
 <li>Check if your template VM part of the AD</li>
@@ -1687,11 +1758,11 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <li>Azure portal: Go to the temp VM (next to the template VM) and check the extension installation state. There should be an error message like script not found, access denied, etc.</li>
 <li>Have you renamed the RD agent and bootloader?</li>
 <li>Is the script saved correctly: ITPC-WVD-Image-Processing.ps1, not ITPC-WVD-Image-Processing.ps1.txt</li>
-<li>Don’t forget to delete the temp VM and temp disk to avoid costs</li>
+<li>Don&#39;t forget to delete the temp VM and temp disk to avoid costs</li>
 <li>Make sure that your template VM uses managed disk</li>
 <li>The script generates additional log files in %WinDir%\System32\LogFiles</li>
-<li><em>Windows 7</em>: Make sure to install PowerShell 5.1 and all Windows updates (including the optional updates without the language packages) to the template VM and restart the VM to take effect: <a href="https://www.microsoft.com/en-us/download/details.aspx?id=54616">https://www.microsoft.com/en-us/download/details.aspx?id=54616</a> Makes sure that you use the newest script file from 09/2020: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a></li>
-<li>NEW: An endless loop of “Waiting for the temporary vm (power off)” : Update to the newest PowerShell script for generalizing: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a></li>
+<li><em>Windows 7</em>: Make sure to install PowerShell 5.1 and all Windows updates (including the optional updates without the language packages) to the template VM and restart the VM to take effect: <a href="https://www.microsoft.com/en-us/download/details.aspx?id=54616">https://www.microsoft.com/en-us/download/details.aspx?id=54616</a> Makes sure that you use the newest script file from 09/2020: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a><br></li>
+<li>NEW: An endless loop of &quot;Waiting for the temporary vm (power off)&quot; : Update to the newest PowerShell script for generalizing: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a><br></li>
 </ul>
       <h2 id="others">
         
@@ -1701,98 +1772,101 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
         
       </h2>
     
+
 <ul>
 <li>You have created a host pool, an app group, and assigned a user to the app group, but the user cannot see the apps/desktop.
+
 <ul>
-<li>For AVD ARM: Don’t forget to create a workspace and link the app group in the workspace. The workspace is mandatory to show the users’ resources.</li>
+<li>For AVD ARM: Don&#39;t forget to create a workspace and link the app group in the workspace. The workspace is mandatory to show the users&#39; resources.</li>
 <li>For the HTML5 web site: Check the correct web address:
+
 <ul>
 <li>ARM/Spring: <a href="https://aka.ms/wvdarmweb">https://aka.ms/wvdarmweb</a></li>
 <li>Classic/Fall: <a href="http://aka.ms/wvdweb">http://aka.ms/wvdweb</a></li>
+</ul></li>
+</ul></li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 10/24/2024</strong></a></p>
+
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 10/24/2024</strong></a></p>
 
 						<!--<h1 id="azure-windows-virtual-desktop-administration-with-wvdadmin">Azure Windows Virtual Desktop administration with WVDAdmin</h1>
-<p>Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I’m happy to share it with the community.</p>
-<p>Are you interested in the new “Hydra for Azure Virtual Desktop” solution to manage AVD even better with a lot of automation? <a href="https://github.com/MarcelMeurer/WVD-Hydra">Check it out here.</a></p>
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 10/24/2024</strong></a></p>
+
+<p>Azure (Windows) Virtual Desktop is generally available under continuous improvement and currently available in the ARM and in the Classic (Fall) version. The ARM version is completely into the Azure Portal.  Sometimes it helps to have a native GUI to make some configuration and - for me, most important - to have an easy image handling to deploy session hosts based on a template VM (golden image approach). Therefore I build a native Windows application to do this, and I&#39;m happy to share it with the community.</p>
+
+<p>Are you interested in the new &quot;Hydra for Azure Virtual Desktop&quot; solution to manage AVD even better with a lot of automation? <a href="https://github.com/MarcelMeurer/WVD-Hydra">Check it out here.</a></p>
+
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 10/24/2024</strong></a></p>
+
 <p><a href="https://youtu.be/fH1_FzNyJf0">Check out the Youtube video to install and configure WVDAdmin in four steps</a></p>
-<p>The current version supports a lot of configuration and administration capabilities, and I’m continuously improving WVDAdmin. Some features:</p>
+
+<p>The current version supports a lot of configuration and administration capabilities, and I&#39;m continuously improving WVDAdmin. Some features:</p>
+
 <ul>
 <li>Imaging
+
 <ul>
 <li>Create images from golden masters (without destroying the master)</li>
 <li>Handle sysprep and modern app</li>
 <li>Clean-up</li>
 <li>Use of shared image gallery definitions</li>
-</ul>
-</li>
+</ul></li>
 <li>Rollout
+
 <ul>
 <li>Rollout of multiple session hosts</li>
-<li>Store some base settings encrypted for reuse (domain join name, password, …)</li>
+<li>Store some base settings encrypted for reuse (domain join name, password, ...)</li>
 <li>Select VM type for each rollout (is not fixed to the host pool)</li>
 <li>Use of ephemeral disks</li>
 <li>Support of a second partition from the master VM (D:)</li>
 <li>Azure Monitor</li>
 <li>AAD only, join to MEM/intune</li>
-</ul>
-</li>
+</ul></li>
 <li>AVD Support
+
 <ul>
 <li>Classic AVD</li>
 <li>ARM AVD (Spring Update)</li>
 <li>Migration of resources and session hosts</li>
-</ul>
-</li>
+</ul></li>
 <li>Working with AVD resources
+
 <ul>
-<li>Add/create/delete
-<ul>
+<li>Add/create/delete</li>
 <li>Host Pools</li>
 <li>Application groups</li>
 <li>Workspaces</li>
 <li>Session hosts</li>
-</ul>
-</li>
-<li>Working with user sessions
-<ul>
+<li>Working with user sessions</li>
 <li>Disconnect</li>
 <li>Logoff</li>
 <li>Send message</li>
 <li>Shadow</li>
-</ul>
-</li>
-</ul>
-</li>
+</ul></li>
 <li>Session hosts
+
 <ul>
 <li>Move between host pools</li>
 <li>Start/Stop/Restart</li>
 <li>Delete - with VM, disk, and nic</li>
 <li>Get error report from AVD agent</li>
-<li>Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, …)</li>
+<li>Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, ...)</li>
 <li>Change drain-mode</li>
 <li>Change disk type, e.g.: on-start -&gt; to Premium, after deallocation -&gt; to HDD(for cost savings)</li>
 <li>Remove user assignment</li>
-</ul>
-</li>
+</ul></li>
 <li>Virtual machine
+
 <ul>
 <li>List all VMs with power state in all subscriptions</li>
 <li>Start/Stop/Restart</li>
-<li>Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, …)</li>
+<li>Run scripts remotely on hosts (trigger Windows updates, enable RDP Shortpath, ...)</li>
 <li>Shrink disk to 64 or 32 GByte (to create small images for ephemeral hosts)</li>
 <li>Change disk type, e.g.: on-start -&gt; to premium, after deallocation -&gt; to HDD (for cost savings)</li>
 <li>Create and restore snapshots with a click</li>
 <li>Add an existing domain-joined VM as a session host</li>
-</ul>
-</li>
+</ul></li>
 <li>Others
+
 <ul>
 <li>Multi-Tenant switch</li>
 <li>Split-Tenant mode</li>
@@ -1801,24 +1875,26 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <li>Start and deallocate Scale Set instances</li>
 <li>Re-image Scale Set instances</li>
 <li>Remove customer-managed key (CMK)</li>
+</ul></li>
+<li>...</li>
 </ul>
-</li>
-<li>…</li>
-</ul>
+
 <h1 id="installation">Installation</h1>
+
 <h2 id="release-history">Release History</h2>
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 10/24/2024</strong></a>
+
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 10/24/2024</strong></a>
 <a href="https://youtu.be/fH1_FzNyJf0">Check out the Youtube video to install and configure WVDAdmin in four steps</a></p>
-<details><summary>I'm continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.</summary>
-<table>
-<thead>
+
+<p><details><summary>I&#39;m continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.</summary></p>
+
+<table><thead>
 <tr>
 <th>Release</th>
 <th>Date</th>
 <th>Changes &amp; Notes</th>
 </tr>
-</thead>
-<tbody>
+</thead><tbody>
 <tr>
 <td>1.9.11.0</td>
 <td>2024-10-24</td>
@@ -1832,7 +1908,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.9.06.0</td>
 <td>2024-07-04</td>
-<td>Change: Change of the API to get a registration token of a pool in response to Microsofts mail: “Update to Microsoft Desktop Virtualization API version 2023-09-05 by August 2, 2024, to avoid potential impact”</td>
+<td>Change: Change of the API to get a registration token of a pool in response to Microsofts mail: &quot;Update to Microsoft Desktop Virtualization API version 2023-09-05 by August 2, 2024, to avoid potential impact&quot;</td>
 </tr>
 <tr>
 <td>1.9.05.0</td>
@@ -1957,7 +2033,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.7.49.0</td>
 <td></td>
-<td>Add: Secure boot enabled hosts are now supporting ‘Guest Attestation’ (automatically installed)</td>
+<td>Add: Secure boot enabled hosts are now supporting &#39;Guest Attestation&#39; (automatically installed)</td>
 </tr>
 <tr>
 <td>1.7.48.0</td>
@@ -1992,7 +2068,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.7.42.0</td>
 <td></td>
-<td>Add: You can filter on the ‘Virtual Machines’ by the string ‘!orphanhosts’. That shows all VMs created by WVDAdmin or Hydra as a session host but currently not part of any seen host pool (used internally the tags WVD.Path or AVD.Path); Change: Modify WVD.Path/AVD.Path in another way while moving a session host to another host pool</td>
+<td>Add: You can filter on the &#39;Virtual Machines&#39; by the string &#39;!orphanhosts&#39;. That shows all VMs created by WVDAdmin or Hydra as a session host but currently not part of any seen host pool (used internally the tags WVD.Path or AVD.Path); Change: Modify WVD.Path/AVD.Path in another way while moving a session host to another host pool</td>
 </tr>
 <tr>
 <td>1.7.41.0</td>
@@ -2007,7 +2083,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.7.39.0</td>
 <td></td>
-<td>Add: You can enable “Secure Boot” for marketplace images and for Custom Images in an Azure Compute Gallery (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition)</td>
+<td>Add: You can enable &quot;Secure Boot&quot; for marketplace images and for Custom Images in an Azure Compute Gallery (configure the VM image definition to support Secure Boot before copying a captured image to the gallery definition)</td>
 </tr>
 <tr>
 <td>1.7.38.0</td>
@@ -2197,22 +2273,22 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.6.89.0</td>
 <td></td>
-<td>Add: Workaround to fix an issue in the Azure API querying VM. In subscriptions with a lot of VMs an error message could given back from the API which will be workaround with this version. Original error message from Azure: Resource provider ‘Microsoft.Compute’ failed to return collection response for type ‘virtualMachines’</td>
+<td>Add: Workaround to fix an issue in the Azure API querying VM. In subscriptions with a lot of VMs an error message could given back from the API which will be workaround with this version. Original error message from Azure: Resource provider &#39;Microsoft.Compute&#39; failed to return collection response for type &#39;virtualMachines&#39;</td>
 </tr>
 <tr>
 <td>1.6.88.0</td>
 <td></td>
-<td>Add: Option to rollout virtual machines based on an image without joining to WVD/AVD (for servers, new golden masters, …), Update: Newest PowerShell script for generalizing and deployment to 3.0: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a></td>
+<td>Add: Option to rollout virtual machines based on an image without joining to WVD/AVD (for servers, new golden masters, ...), Update: Newest PowerShell script for generalizing and deployment to 3.0: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a></td>
 </tr>
 <tr>
 <td>1.6.87.0</td>
 <td></td>
-<td>Add: Option to switch on “Power on connect” for pooled (and assigned) host pools (preview feature)</td>
+<td>Add: Option to switch on &quot;Power on connect&quot; for pooled (and assigned) host pools (preview feature)</td>
 </tr>
 <tr>
 <td>1.6.86.0</td>
 <td></td>
-<td>Add: Option to directly roll-out new session hosts with actice Azure Disk Encryption (ADE) - See “secret features” below</td>
+<td>Add: Option to directly roll-out new session hosts with actice Azure Disk Encryption (ADE) - See &quot;secret features&quot; below</td>
 </tr>
 <tr>
 <td>1.6.83.0</td>
@@ -2237,7 +2313,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.6.79.0</td>
 <td></td>
-<td>Add: VM list in the “Virtual Machines” node are now showing the private IP</td>
+<td>Add: VM list in the &quot;Virtual Machines&quot; node are now showing the private IP</td>
 </tr>
 <tr>
 <td>1.6.77.0</td>
@@ -2257,7 +2333,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.6.73.0</td>
 <td></td>
-<td>Add: Automatically change the disk type on start/stop: Add a tag “<a href="../Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD">WVD.AdvDiskType</a>” to a VM with the value “StandardSSD_LRS” or “Premium_LRS”. On the stop, the disk is converted to HDD (lowes costs), and on start, the disk is converted to the named type.  Works only with WVDAdmin (not from the Azure Portal or scaling solutions)</td>
+<td>Add: Automatically change the disk type on start/stop: Add a tag &quot;<a href="../Changing-the-disk-type-automatically-while-starting-or-deallocating-a-session-host,-VM-for-WVD">WVD.AdvDiskType</a>&quot; to a VM with the value &quot;StandardSSD_LRS&quot; or &quot;Premium_LRS&quot;. On the stop, the disk is converted to HDD (lowes costs), and on start, the disk is converted to the named type.  Works only with WVDAdmin (not from the Azure Portal or scaling solutions)</td>
 </tr>
 <tr>
 <td>1.6.72.0</td>
@@ -2272,7 +2348,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.6.70.0</td>
 <td></td>
-<td>Add: For preview only: Checkbox to enable upcoming “Start on connect feature”</td>
+<td>Add: For preview only: Checkbox to enable upcoming &quot;Start on connect feature&quot;</td>
 </tr>
 <tr>
 <td>1.6.69.0</td>
@@ -2332,7 +2408,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.6.54.0</td>
 <td></td>
-<td>Add: Function to delete unused disks and nics; Add: More logging for the rollout of session hosts; Add: New VM-types, like L4s_v2, …</td>
+<td>Add: Function to delete unused disks and nics; Add: More logging for the rollout of session hosts; Add: New VM-types, like L4s_v2, ...</td>
 </tr>
 <tr>
 <td>1.6.53.0</td>
@@ -2382,7 +2458,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.6.34.0</td>
 <td></td>
-<td>Fix: The drop-down list “Feature release” was not shown correctly. Feature release is the selector between the different WVD/AVD versions like Fall (WVD classic) and Spring (WVD modern on ARM)</td>
+<td>Fix: The drop-down list &quot;Feature release&quot; was not shown correctly. Feature release is the selector between the different WVD/AVD versions like Fall (WVD classic) and Spring (WVD modern on ARM)</td>
 </tr>
 <tr>
 <td>1.6.32.0</td>
@@ -2417,7 +2493,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.6.24.0</td>
 <td></td>
-<td>Add: Multi selection and action on session hosts for ARM if you select a session host container; Fix: Scale Set instances wasn’t shown in 1.6.23</td>
+<td>Add: Multi selection and action on session hosts for ARM if you select a session host container; Fix: Scale Set instances wasn&#39;t shown in 1.6.23</td>
 </tr>
 <tr>
 <td>1.6.23.0</td>
@@ -2427,7 +2503,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.6.22.0</td>
 <td></td>
-<td>Add: Support for shared image galleries: Add a shared image gallery from the Azure Portal into a resource group managed by WVDAdmin. In WVDAdmin right-click an existing image and select “copy to shared image gallery”. An image can be rolled-out right clicking the shared image</td>
+<td>Add: Support for shared image galleries: Add a shared image gallery from the Azure Portal into a resource group managed by WVDAdmin. In WVDAdmin right-click an existing image and select &quot;copy to shared image gallery&quot;. An image can be rolled-out right clicking the shared image</td>
 </tr>
 <tr>
 <td>1.6.21.0</td>
@@ -2437,7 +2513,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.6.18.0</td>
 <td></td>
-<td>Fix: API change from Microsoft cause that updating a host pool property fails if the location is written like “Central US” (centralus is no problem); Add: First version able to deploy session hosts from images in a image gallery</td>
+<td>Fix: API change from Microsoft cause that updating a host pool property fails if the location is written like &quot;Central US&quot; (centralus is no problem); Add: First version able to deploy session hosts from images in a image gallery</td>
 </tr>
 <tr>
 <td>1.6.16.0</td>
@@ -2447,7 +2523,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.6.14.0</td>
 <td></td>
-<td>Add: Support US Government Cloud. Activate: Add a new string Reg_SZ “Environment” with value “US” to HKCU\SOFTWARE\ITProCloud\WVDAdmin”</td>
+<td>Add: Support US Government Cloud. Activate: Add a new string Reg_SZ &quot;Environment&quot; with value &quot;US&quot; to HKCU\SOFTWARE\ITProCloud\WVDAdmin&quot;</td>
 </tr>
 <tr>
 <td>1.6.12.0</td>
@@ -2462,7 +2538,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.6.9.00</td>
 <td></td>
-<td>Fix: Generating toke for Spring host pool fails sometimes (Error: ExpirationTime value must be between one hour and 30 days from now”  - An error occurred while gathering an WVD2 token from backend: Object reference not set to an instance of an object.)</td>
+<td>Fix: Generating toke for Spring host pool fails sometimes (Error: ExpirationTime value must be between one hour and 30 days from now&quot;  - An error occurred while gathering an WVD2 token from backend: Object reference not set to an instance of an object.)</td>
 </tr>
 <tr>
 <td>1.6.5.00</td>
@@ -2477,7 +2553,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.6.2.00</td>
 <td></td>
-<td>Add: New naming feature for new session host. Default (is): Name for a session host is the highest matching name +1; new concept (must be enabled): Name for a session host is the next free name. To enable add a reg dword to HKCU\Software\ITProCloud\WVDAdmin Name:NamingMode and value to “1”</td>
+<td>Add: New naming feature for new session host. Default (is): Name for a session host is the highest matching name +1; new concept (must be enabled): Name for a session host is the next free name. To enable add a reg dword to HKCU\Software\ITProCloud\WVDAdmin Name:NamingMode and value to &quot;1&quot;</td>
 </tr>
 <tr>
 <td>1.6.1.00</td>
@@ -2487,7 +2563,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.6.0.00</td>
 <td></td>
-<td>Change: The tag WVD.Path is aligned to Microsoft naming of “tenant” and “host pool” for the spring update. Tenant=resource group name and no longer subscription name</td>
+<td>Change: The tag WVD.Path is aligned to Microsoft naming of &quot;tenant&quot; and &quot;host pool&quot; for the spring update. Tenant=resource group name and no longer subscription name</td>
 </tr>
 <tr>
 <td>1.5.9.00</td>
@@ -2497,12 +2573,12 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.5.7.00</td>
 <td></td>
-<td>Add: You can join existing VM’ to a host pool (VMs must be domain joined and not in a host pool right now)</td>
+<td>Add: You can join existing VM&#39; to a host pool (VMs must be domain joined and not in a host pool right now)</td>
 </tr>
 <tr>
 <td>1.5.6.00</td>
 <td></td>
-<td>Add: You can now move session host around host pools not created with WVDAdmin (it downloads the necessary files automatically); you can join existing VM’ to a host pool (VMs must be domain joined)</td>
+<td>Add: You can now move session host around host pools not created with WVDAdmin (it downloads the necessary files automatically); you can join existing VM&#39; to a host pool (VMs must be domain joined)</td>
 </tr>
 <tr>
 <td>1.5.5.00</td>
@@ -2577,7 +2653,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.3.1.00</td>
 <td></td>
-<td>Fix: WVDAdmin crashed if 1.3.0 is your first version of WVDAdmin (HKEY_CURRENT_USER\Software\ITProCloud doesn’t exist while checking for multi-tenancy mode)</td>
+<td>Fix: WVDAdmin crashed if 1.3.0 is your first version of WVDAdmin (HKEY_CURRENT_USER\Software\ITProCloud doesn&#39;t exist while checking for multi-tenancy mode)</td>
 </tr>
 <tr>
 <td>1.3.0.00</td>
@@ -2622,7 +2698,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <tr>
 <td>1.0.0.29</td>
 <td></td>
-<td>Add: Supporting “special license mode” to save up to 50% on compute-cost (<a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license">https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license</a>)</td>
+<td>Add: Supporting &quot;special license mode&quot; to save up to 50% on compute-cost (<a href="https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license">https://docs.microsoft.com/en-us/azure/virtual-desktop/apply-windows-license</a>)</td>
 </tr>
 <tr>
 <td>1.0.0.26</td>
@@ -2644,88 +2720,148 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <td></td>
 <td>First published version - without auto-update of WVDAdmin</td>
 </tr>
-</tbody>
-</table>
-</details><br/>
+</tbody></table>
+
+<p></details><br/></p>
+
 <h2 id="configuration">Configuration</h2>
+
 <h2 id="service-principal-functional-account">Service principal (functional account)</h2>
+
 <p>To work with the GUI, you need a service principal (function account) with permission to administrate access to the AVD and Azure resources. I decide to use a service principal to avoid confusion if my Azure AD user is only a guest account in the AVD tenant I have to administrate and easily switch between different tenants.</p>
-<p>To create a service principal, go to your Azure AD -&gt; <a href="https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps" target="_blank">App registration</a> -&gt; New registration and type a name for your principal like “ svc_WVDAdmin” and press “register”.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-001.png" alt="documentation-001" /></p>
-<p>Click on “certificates &amp; secrets”. Click “new client secret”, select a validity period and a description (like “Key01”). Press “add”.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-002.png" alt="documentation-002" /></p>
+
+<p>To create a service principal, go to your Azure AD -&gt; <a href="https://portal.azure.com/#blade/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/RegisteredApps" target="_blank">App registration</a> -&gt; New registration and type a name for your principal like &quot; svc_WVDAdmin&quot; and press &quot;register&quot;.</p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-001.png" alt="documentation-001"></p>
+
+<p>Click on &quot;certificates &amp; secrets&quot;. Click &quot;new client secret&quot;, select a validity period and a description (like &quot;Key01&quot;). Press &quot;add&quot;.</p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-002.png" alt="documentation-002"></p>
+
 <p>Copy the generated key directly - it will never be displayed again. Note the key for later.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-003.png" alt="documentation-003" /></p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-003.png" alt="documentation-003"></p>
+
 <p>To assign users to app groups, the service principal needs one API permissions to get the users and groups from Azure AD (optional):</p>
-<p>Add the permission “Microsoft Graph” -&gt; Application Permission -&gt; Directory.Read.All</p>
-<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png" alt="AADBrowser" /></p>
+
+<p>Add the permission &quot;Microsoft Graph&quot; -&gt; Application Permission -&gt; Directory.Read.All</p>
+
+<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png" alt="AADBrowser"></p>
+
 <p>To consent, the permission and administrator of Azure AD have to grant this:</p>
-<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png" alt="AADBrowser" /></p>
-<p>Go to “Overview”. Note the “Application (client) ID” and the “Directory (tenant) ID” as well.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-004.png" alt="documentation-004" /></p>
+
+<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png" alt="AADBrowser"></p>
+
+<p>Go to &quot;Overview&quot;. Note the &quot;Application (client) ID&quot; and the &quot;Directory (tenant) ID&quot; as well.</p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-004.png" alt="documentation-004"></p>
+
 <p>You now have all data for your service principal:</p>
+
 <ul>
 <li>Tenant id</li>
 <li>Service principal id (application id)</li>
 <li>Service principal key</li>
 </ul>
+
 <h2 id="avd-permissions">AVD permissions</h2>
+
 <p>This chapter is for AVD ARM / Spring. <a href="#azure-resource-permissions">Skip</a> this chapter if you only work with WVD Classic (Fall).</p>
+
 <p>The service principal needs permission to add and modify AVD resource objects (host pools, workspaces, app groups). To assign users and groups to app groups, the service principal needs the owner role on the resource groups you want to use for your AVD environment. Add the service principal in the next step and use the <strong>owner</strong> role.</p>
+
 <h2 id="register-resource-provider">Register Resource Provider</h2>
+
 <p>If you have never worked with AVD, you have to register the AVD resource provider once. To do that, go to the Azure portal -&gt; subscriptions -&gt; select your subscription -&gt; Resource providers</p>
-<p>Search for “Microsoft.DesktopVirtualization” and click on “Register”.
-<img src="../assets/images/WVDAdmin/documentation-015.png" alt="documentation-015" /></p>
+
+<p>Search for &quot;Microsoft.DesktopVirtualization&quot; and click on &quot;Register&quot;.
+<img src="../assets/images/WVDAdmin/documentation-015.png" alt="documentation-015"></p>
+
 <h2 id="azure-resource-permissions">Azure resource permissions</h2>
-<p>The service principal needs permission to subscriptions or resource groups to manage your AVD resources, imaging template VM and rollout session hosts.</p>
-<p>Open the Azure portal and go to the resource groups you want to use or to the subscriptions. In each resource group/subscription, click “Access control (IAM)” -&gt; select “Add” -&gt; Add role assignment. Select “owner” and search in “Select” for your service principal name. Click on the principal and save the settings.</p>
-<p><strong>Note:</strong> Owner is needed to assign users to app groups. For other resources, “contributor” is fine.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-006.png" alt="documentation-006" /></p>
-<p>The service principal must have permissions to your virtual network (vnet) to assign new VMs to the right subnet. Go to your vnet, click “Access control (IAM)” -&gt; select “Add” -&gt; Add role assignment. Select “contributor” and search in “select” for your service principal name. Click the principal and save the settings. You could skip this step if you assigned the service principal to the subscription or to the resource group containing your vnet.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-007.png" alt="documentation-007" /></p>
-<h2 id="prepare-your-native-active-directory">Prepare your “native” Active Directory</h2>
-<p>Today each session host must be part of a “native” active directory domain (or have to use the domain services). To add new session hosts unattended, we need an administrative user account to add a computer object to the active directory domain. You can use an existing one, or you can create a new service user:</p>
-<p>Open “Active Directory Users and Computers” and create a user object with a complex password, and set a password to “never expire” (if you fine with this). I added the user <a href="mailto:srv_WVD-Join@itprocloud.de">srv_WVD-Join@itprocloud.de</a>.</p>
+
+<p>The service principal needs permission to subscriptions or resource groups to manage your AVD resources, imaging template VM and rollout session hosts. </p>
+
+<p>Open the Azure portal and go to the resource groups you want to use or to the subscriptions. In each resource group/subscription, click &quot;Access control (IAM)&quot; -&gt; select &quot;Add&quot; -&gt; Add role assignment. Select &quot;owner&quot; and search in &quot;Select&quot; for your service principal name. Click on the principal and save the settings.</p>
+
+<p><strong>Note:</strong> Owner is needed to assign users to app groups. For other resources, &quot;contributor&quot; is fine.</p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-006.png" alt="documentation-006"></p>
+
+<p>The service principal must have permissions to your virtual network (vnet) to assign new VMs to the right subnet. Go to your vnet, click &quot;Access control (IAM)&quot; -&gt; select &quot;Add&quot; -&gt; Add role assignment. Select &quot;contributor&quot; and search in &quot;select&quot; for your service principal name. Click the principal and save the settings. You could skip this step if you assigned the service principal to the subscription or to the resource group containing your vnet.</p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-007.png" alt="documentation-007"></p>
+
+<h2 id="prepare-your-native-active-directory">Prepare your &quot;native&quot; Active Directory</h2>
+
+<p>Today each session host must be part of a &quot;native&quot; active directory domain (or have to use the domain services). To add new session hosts unattended, we need an administrative user account to add a computer object to the active directory domain. You can use an existing one, or you can create a new service user:</p>
+
+<p>Open &quot;Active Directory Users and Computers&quot; and create a user object with a complex password, and set a password to &quot;never expire&quot; (if you fine with this). I added the user <a href="mailto:srv_WVD-Join@itprocloud.de">srv_WVD-Join@itprocloud.de</a>.</p>
+
 <p>Delegate permission for the user to an OU. I found a really good blog post from <a href="https://twitter.com/prajwaldesai">Prajwal Desai</a>. Check out hist post on (external web site): <a href="https://www.prajwaldesai.com/allow-domain-user-to-add-computer-to-domain/" target="_blank">Method 2 – Delegate rights to user/group using Active Directory Users and Computers</a></p>
-<p>In my case I added my function account to: “OU=WVD,OU=Azure,OU=Site,OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test”</p>
+
+<p>In my case I added my function account to: &quot;OU=WVD,OU=Azure,OU=Site,OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test&quot;</p>
+
 <h2 id="optional-create-a-file-share">Optional: Create a file share</h2>
-<p>In earlier versions (&lt;1.6.40), you had to provide the deployment script and the AVD agent binaries on a custom file share or blob storage. With WVDAdmin 1.6.40 or newer, this no longer mandatory.
-In some cases, where virtual machines don’t have access to the internet to download the AVD agent binaries, you can use a custom file share.</p>
-<details><summary>Read more.</summary><br/>
+
+<p>In earlier versions (<1.6.40), you had to provide the deployment script and the AVD agent binaries on a custom file share or blob storage. With WVDAdmin 1.6.40 or newer, this no longer mandatory.
+In some cases, where virtual machines don't have access to the internet to download the AVD agent binaries, you can use a custom file share.
+<details><summary>Read more.</summary><br/></p>
+
 <p><em>Hint: Alternatively, you can use Azure blob storage to store the script. Make the blob storage read-only and use the URL as rollout script-path. E.g.: <a href="https://sharedservices01.blob.core.windows.net/wvd">https://sharedservices01.blob.core.windows.net/wvd</a></em></p>
+
 <p>Create a file share for the configuration script (which adds new session hosts to the domain and install the AVD agent). Give everyone at least read permissions. Set the NTFS permissions to everyone and read. This is necessary while during the first startup, the VM extension tries to execute the script. In this process, the file share is accessed anonymously.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-009.png" alt="documentation-009" /></p>
-<p><img src="../assets/images/WVDAdmin/documentation-010.png" alt="documentation-010" /></p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-009.png" alt="documentation-009"></p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-010.png" alt="documentation-010"></p>
+
 <p>Place the following files in this share:</p>
+
 <ul>
 <li><a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a> (rename the download to .ps1)</li>
 <li><a href="https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv">Microsoft.RDInfra.RDAgent.msi</a> (rename the file)</li>
 <li><a href="https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH">Microsoft.RDInfra.RDAgentBootLoader.msi</a> (rename the file)</li>
 </ul>
+
 <p>Make sure that you rename the files to fit the list above (without version numbers).</p>
-<p><img src="../assets/images/WVDAdmin/documentation-011.png" alt="documentation-011" /></p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-011.png" alt="documentation-011"></p>
+
 <p><strong>Important:</strong> If you are using Windows Server <strong>2019</strong> as file share, make sure that anonymous file share access is enabled. Create a GPO for the session hosts containing the following configurations:</p>
+
 <ul>
 <li>Security Options:
+
 <ul>
 <li>Accounts: Guest Account Status: Enabled</li>
 <li>Network access: Let Everyone permissions apply to anonymous users: Enabled</li>
-<li>Network access: Do not allow anonymous enumeration of SAM accounts and shares: Disabled</li>
+<li>Network access: Do not allow anonymous enumeration of SAM accounts and shares: Disabled
+</details><br/></li>
+</ul></li>
 </ul>
-</details><br/>
-</li>
-</ul>
+
 <h1 id="configure-wvdadmin">Configure WVDAdmin</h1>
-<p>Please start WVDAdmin. Before you load AVD and Azure data, copy the Azure tenant id, service principal id, and service principal key into the welcome tab. Press save and load the data by clicking “Reload all”.</p>
+
+<p>Please start WVDAdmin. Before you load AVD and Azure data, copy the Azure tenant id, service principal id, and service principal key into the welcome tab. Press save and load the data by clicking &quot;Reload all&quot;.</p>
+
 <p>You are now able to administrate WVD, create images from template VMs and rollout new session hosts.</p>
+
 <p>The first time you want to roll out new session hosts, you have to enter some information from your Active Directory and file share configuration from above:</p>
-<p><img src="../assets/images/WVDAdmin/documentation-012.png" alt="documentation-012" /></p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-012.png" alt="documentation-012"></p>
+
 <p>Local Admin and local pw. are the local administrator account credentials which you can enter at this time.</p>
-<p><img src="../assets/images/WVDAdmin/documentation-013.png" alt="documentation-013" /></p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-013.png" alt="documentation-013"></p>
+
 <h1 id="build-an-image">Build an image</h1>
+
 <p>You can rollout VMs and VM Scale Set with images created by WVDAdmin. These images contain the logic to join the AD domain and WVD.</p>
+
 <p>You can simple create an image from a template VM. The template VM must part of your AD like a standard client. You have not to sysprep or to normalize this template VM. Use the same template VM for Windows and application updates.</p>
+
 <p>Following these steps to build your template:</p>
+
 <ul>
 <li>Install a VM in the Azure portal. Select the right OS (like Windows 10 Enterprise for Virtual Desktops)</li>
 <li>Make all Windows updates</li>
@@ -2734,88 +2870,123 @@ In some cases, where virtual machines don’t have access to the internet to dow
 <li>Make your customizing (like installing language packages)</li>
 <li>Shutdown the template VM</li>
 </ul>
+
 <p>To create the image, open WVDAdmin and</p>
+
 <ul>
 <li>Navigate to the Azure template VM (Azure -&gt; Virtual Machines -&gt; RG -&gt; VM)</li>
-<li>Right-click -&gt; “Create a template image”</li>
+<li>Right-click -&gt; &quot;Create a template image&quot;</li>
 <li>Select the resource group to store the image</li>
-<li>Press “Capture”</li>
+<li>Press &quot;Capture&quot;</li>
 </ul>
+
 <p>You can and should reuse the template VM for new updates and applications. After these changes, shut down the template VM and create a new image.</p>
-<h1 id="tipps-amp-tricks">Tipps &amp; Tricks</h1>
+
+<h1 id="tipps-tricks">Tipps &amp; Tricks</h1>
+
 <h2 id="vm-scale-sets">VM Scale Sets</h2>
-<p>First node: VM Scale Sets cannot autoscale AVD session hosts. Auto-scaling only works for stateless services like a web server. But if you need hundreds of session hosts, then VM Scale Set allows you to work with these numbers efficiently.</p>
+
+<p>First node: VM Scale Sets cannot autoscale AVD session hosts. Auto-scaling only works for stateless services like a web server. But if you need hundreds of session hosts, then VM Scale Set allows you to work with these numbers efficiently.
 <details><summary>Read more</summary><br/>
-From version 1.2.5, WVDAdmin support VM Scale Sets. A Scale Set can have several instances, which are the VMs / session hosts. There are some essential things you have to know if you use VM Scale Set with WVDAdmin and AVD itself:
+From version 1.2.5, WVDAdmin support VM Scale Sets. A Scale Set can have several instances, which are the VMs / session hosts. There are some essential things you have to know if you use VM Scale Set with WVDAdmin and AVD itself:</p>
+
 <ul>
-<li>Build a Scale Set with WVDAdmin. Select an image, right-click and select “Create session host from image”. Check “Rollout as VM Scale Set”</li>
+<li>Build a Scale Set with WVDAdmin. Select an image, right-click and select &quot;Create session host from image&quot;. Check &quot;Rollout as VM Scale Set&quot;</li>
 <li>You can use regular disks and ephemeral disks. If you use ephemeral disks, you cannot deallocate the instances of your Scale Set. You have to delete the instances</li>
 <li>Today, you can not use ultra disks</li>
 <li>You can add and remove instances with WVDAdmin or in the Azure Portal. New instances will join the domain and WVD</li>
-<li>A new instance can only join AVD if the session host with the new name doesn’t exist. If you delete instances, the session host entry will also be removed</li>
-<li>You can re-image single instances or all instances of a Scale Set. After that, the instances are “clean” as at the first rollout</li>
-<li>Adding instances or re-imaging assumes that the Scale Set configuration (which is a custom script extension) has a valid AVD token to join new instances to WVD. While AVD provides only one token per host pool and that the token can be expiring, you can update the token with a right-click on the Scale Set and select “Update WVD token”. The max. lifetime of a token is 59 days</li>
+<li>A new instance can only join AVD if the session host with the new name doesn&#39;t exist. If you delete instances, the session host entry will also be removed</li>
+<li>You can re-image single instances or all instances of a Scale Set. After that, the instances are &quot;clean&quot; as at the first rollout</li>
+<li>Adding instances or re-imaging assumes that the Scale Set configuration (which is a custom script extension) has a valid AVD token to join new instances to WVD. While AVD provides only one token per host pool and that the token can be expiring, you can update the token with a right-click on the Scale Set and select &quot;Update WVD token&quot;. The max. lifetime of a token is 59 days</li>
 <li>Unfortunately, WVDAdmin cannot change the source image for a VM Scale Set. So if you want to update the image for a host pool, take these steps:
+
 <ul>
 <li>Rollout a new Scale Set based on the new image</li>
 <li>Disable new logons for the old session host from the previous Scale Set</li>
 <li>Test the host pool based on the new Scale Set</li>
 <li>If no user logged on to the ancient Scale Set, remove all instances from the Scale Set (this deletes the session hosts in AVD as well)</li>
-<li>Remove the Scale Set</li>
+<li>Remove the Scale Set
+</details><br/></li>
+</ul></li>
 </ul>
-</details><br/>
-</li>
-</ul>
-<h2 id="ephemeral--disks">Ephemeral  disks</h2>
-<p>Ephemeral disks are awesome. They give you a high performance free of charge. Especially in a AVD multiuser environment where no data a stored permanently on the session hosts, this kind of disk can give you some value add.</p>
+
+<h2 id="ephemeral-disks">Ephemeral  disks</h2>
+
+<p>Ephemeral disks are awesome. They give you a high performance free of charge. Especially in a AVD multiuser environment where no data a stored permanently on the session hosts, this kind of disk can give you some value add.
 <details><summary>Read more</summary><br/>
-Ephemeral disks are running on the Azure hypervisor and not stored. This has some advantages:
+Ephemeral disks are running on the Azure hypervisor and not stored. This has some advantages:</p>
+
 <ul>
 <li>There are no storage costs (!)</li>
 <li>A very high data throughput because the disks exist on the hypervisor</li>
-<li>See <a href="https://twitter.com/michawets">@MichaWets</a>   blog post for more information:  <a href="https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/">https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/</a></li>
+<li>See <a href="https://twitter.com/michawets">@MichaWets</a>   blog post for more information:  <a href="https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/">https://www.cloud-architect.be/2019/07/15/windows-virtual-desktop-running-on-ephemeral-os-disks/</a> </li>
 </ul>
-<p>Please note:</p>
-<ul>
-<li>You can not deallocate a VM with this disk type - you have to delete the VM (and roll out a new one instead of starting a “normal” VM)</li>
-<li>Not each VM size is available, and there are limitations of the disk size (image size for rollout) based on the VM size: Max ephemeral disk size for  Standard_D4s_v3  is 64 GByte while a  Standard_D8s_v3 can have up to 128 GByte. See <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general">https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general</a></li>
-<li>If the Azure hypervisor fails, your session host will fail as well and can not be re-deployed automatically</li>
-</ul>
-<p><img src="../assets/images/WVDAdmin/documentation-014.png" alt="documentation-001" /></p>
-</details><br/>
+
+<p>Please note:
+- You can not deallocate a VM with this disk type - you have to delete the VM (and roll out a new one instead of starting a &quot;normal&quot; VM)
+- Not each VM size is available, and there are limitations of the disk size (image size for rollout) based on the VM size: Max ephemeral disk size for  Standard_D4s_v3  is 64 GByte while a  Standard_D8s_v3 can have up to 128 GByte. See <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general">https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general</a> 
+- If the Azure hypervisor fails, your session host will fail as well and can not be re-deployed automatically</p>
+
+<p><img src="../assets/images/WVDAdmin/documentation-014.png" alt="documentation-001">
+</details><br/></p>
+
 <h2 id="secret-features">Secret Features</h2>
-<p>WVDAdmin has some features not directly visible but configurable via registry keys. All settings in the registry are in the current user part under HKEY_CURRENT_USER\SOFTWARE\ITProCloud\WVDAdmin. Keep in mind to restart WVDAdmin after changing the registry settings.</p>
-<details><summary>Read more</summary><br/>
+
+<p>WVDAdmin has some features not directly visible but configurable via registry keys. All settings in the registry are in the current user part under HKEY_CURRENT_USER\SOFTWARE\ITProCloud\WVDAdmin. Keep in mind to restart WVDAdmin after changing the registry settings.
+<details><summary>Read more</summary><br/></p>
+
 <h3 id="dark-mode">Dark-mode</h3>
+
 <p>From version 1.7.33 WVDAdmin can be run in dark-mode. Set the following reg value and restart WVDAdmin: HKEY_CURRENT_USER\Software\ITProCloud\WVDAdmin\DarkMode to 1 (DarkMode is REG_DWORD32)</p>
+
 <h3 id="multi-tenant-mode">Multi-Tenant-Mode</h3>
+
 <p>From version 1.3.0 WVDAdmin will support a multi-AAD-tenancy mode allowing to switch the Azure AD tenant very easily.
 <a href="../Windows-Virtual-Desktop-Windows-Virtual-Desktop-Administration-for-CSP-and-Consulting-Partners">Follow this link</a></p>
+
 <h3 id="having-multiple-service-principals-for-a-single-tenant">Having multiple Service Principals for a single Tenant</h3>
-<p>In the Multi-Tenant-Mode, you can add one service principal per tenant. Sometimes you need more service principals for the same tenant. You can add more service principals for a tenant if you append #1 directly behind the tenant id (or #2, …).</p>
+
+<p>In the Multi-Tenant-Mode, you can add one service principal per tenant. Sometimes you need more service principals for the same tenant. You can add more service principals for a tenant if you append #1 directly behind the tenant id (or #2, ...).</p>
+
 <h3 id="naming-of-the-session-hosts">Naming of the Session Hosts</h3>
-<p>If you deploy session hosts to a host pool, WVDAdmin counts up the names from the highest available VM. E.g., if you have a session host with the name “WVD-PROD-012” and you rollout new hosts (WVD-PROD-###), the first new hostname is “WVD-PROD-013” - even if you have gaps in the existing numeration. You can force WVDAdmin to fill this gaps (non-existing hosts in the naming schema) if you set the following registry key:
+
+<p>If you deploy session hosts to a host pool, WVDAdmin counts up the names from the highest available VM. E.g., if you have a session host with the name &quot;WVD-PROD-012&quot; and you rollout new hosts (WVD-PROD-###), the first new hostname is &quot;WVD-PROD-013&quot; - even if you have gaps in the existing numeration. You can force WVDAdmin to fill this gaps (non-existing hosts in the naming schema) if you set the following registry key:
 Reg-DWord: <strong>NamingMode</strong> = <strong>1</strong></p>
+
 <h3 id="split-tenant">Split-Tenant</h3>
+
 <p>Usually, the AVD tenant and the resources (sessions hosts) are in the same AAD tenant. If you have two Azure AD tenant, you can use WVDAdmin with a second service principal for the session hosts (resource tenant).
 <a href="../Windows-Virtual-Desktop-Admin-for-2-tenant-mode">Follow this link</a></p>
+
 <h3 id="us-government-cloud">US-Government Cloud</h3>
+
 <p>WVDAdmin can be used to deploy AVD in the Azure Government Cloud. You can enable WVDAdmin to work in the US Government Cloud via registry:
 Reg-SZ: <strong>Environment</strong> = <strong>US</strong></p>
+
 <h3 id="run-custom-actions-simultaneously">Run custom actions simultaneously</h3>
+
 <p>From version 1.6.15, WVDAdmin supports custom scripts to run administrative tasks simultaneously on different session hosts. And that is easy to use and to extend.
 <a href="../Windows-Virtual-Desktop-Admin-CustomScripts">Follow this link</a></p>
+
 <h3 id="add-a-session-host-automatically-to-an-asg">Add a session host automatically to an ASG</h3>
+
 <p>You can add a session host automatically to application security groups (ASG) within the rollout process. To achieve this, add one or more tags to the host pool containing your new session hosts. Name <strong>WVD.Default.ASG.X</strong> and add the azure resource id of an existing asg. X can be numbers to assign more ASGs. You can copy the id from an ASG from your browser. It looks like this: /subscriptions/&lt;subscription-id&gt;/resourcegroups/&lt;resourcegroup-name&gt;/providers/Microsoft.Network/applicationSecurityGroups/&lt;asg-name&gt;
-<img src="../assets/images/WVDAdmin/asg-001.png" alt="Tag for ASG" /></p>
+<img src="../assets/images/WVDAdmin/asg-001.png" alt="Tag for ASG"></p>
+
 <h3 id="add-a-session-host-automatically-to-a-loadbalancer-backend-pool">Add a session host automatically to a Loadbalancer Backend Pool</h3>
+
 <p>You can add a session host automatically to a loadbalancer backend pool within the rollout process. To achieve this, add one or more tags to the host pool containing your new session hosts. Name <strong>WVD.Default.LBPool.X</strong> and add the azure resource id of an existing loadbalancer backend pool. X can be numbers to assign more ASGs. You can copy the id from a pool from your browser. It looks like this: /subscriptions/&lt;subscription-id&gt;/resourcegroups/&lt;resourcegroup-name&gt;/providers/Microsoft.Network/loadBalancers/&lt;loadbalancer-name&gt;/backendAddressPools/&lt;pool-name&gt;
 Keep in mind to use availability sets for each rollout to use this feature.</p>
+
 <h3 id="rollout-session-hosts-with-azure-disk-encryption-ade">Rollout session hosts with Azure Disk Encryption (ADE)</h3>
-<p>Set two tags to the host pool to use it: “WVD.Default.KeyVault.Id” with the resource id of the KeyVault, “WVD.Default.KeyVault.KeyUri” with the URI (including the version) of the prepared key to wrap the secret.</p>
-</details><br/>
+
+<p>Set two tags to the host pool to use it: &quot;WVD.Default.KeyVault.Id&quot; with the resource id of the KeyVault, &quot;WVD.Default.KeyVault.KeyUri&quot; with the URI (including the version) of the prepared key to wrap the secret.
+</details><br/></p>
+
 <h1 id="troubleshooting">Troubleshooting</h1>
+
 <h2 id="create-an-image">Create an Image</h2>
+
 <ul>
 <li>The image is not created. An error message occurs:</li>
 <li>Check if your template VM part of the AD</li>
@@ -2824,27 +2995,30 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <li>Azure portal: Go to the temp VM (next to the template VM) and check the extension installation state. There should be an error message like script not found, access denied, etc.</li>
 <li>Have you renamed the RD agent and bootloader?</li>
 <li>Is the script saved correctly: ITPC-WVD-Image-Processing.ps1, not ITPC-WVD-Image-Processing.ps1.txt</li>
-<li>Don’t forget to delete the temp VM and temp disk to avoid costs</li>
+<li>Don&#39;t forget to delete the temp VM and temp disk to avoid costs</li>
 <li>Make sure that your template VM uses managed disk</li>
 <li>The script generates additional log files in %WinDir%\System32\LogFiles</li>
-<li><em>Windows 7</em>: Make sure to install PowerShell 5.1 and all Windows updates (including the optional updates without the language packages) to the template VM and restart the VM to take effect: <a href="https://www.microsoft.com/en-us/download/details.aspx?id=54616">https://www.microsoft.com/en-us/download/details.aspx?id=54616</a> Makes sure that you use the newest script file from 09/2020: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a></li>
-<li>NEW: An endless loop of “Waiting for the temporary vm (power off)” : Update to the newest PowerShell script for generalizing: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a></li>
+<li><em>Windows 7</em>: Make sure to install PowerShell 5.1 and all Windows updates (including the optional updates without the language packages) to the template VM and restart the VM to take effect: <a href="https://www.microsoft.com/en-us/download/details.aspx?id=54616">https://www.microsoft.com/en-us/download/details.aspx?id=54616</a> Makes sure that you use the newest script file from 09/2020: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a><br></li>
+<li>NEW: An endless loop of &quot;Waiting for the temporary vm (power off)&quot; : Update to the newest PowerShell script for generalizing: <a href="https://blog.itprocloud.de/assets/files/AutoUpdate/Scripts/ITPC-WVD-Image-Processing.ps1.txt">ITPC-WVD-Image-Processing.ps1</a><br></li>
 </ul>
+
 <h2 id="others">Others</h2>
+
 <ul>
 <li>You have created a host pool, an app group, and assigned a user to the app group, but the user cannot see the apps/desktop.
+
 <ul>
-<li>For AVD ARM: Don’t forget to create a workspace and link the app group in the workspace. The workspace is mandatory to show the users’ resources.</li>
+<li>For AVD ARM: Don&#39;t forget to create a workspace and link the app group in the workspace. The workspace is mandatory to show the users&#39; resources.</li>
 <li>For the HTML5 web site: Check the correct web address:
+
 <ul>
 <li>ARM/Spring: <a href="https://aka.ms/wvdarmweb">https://aka.ms/wvdarmweb</a></li>
 <li>Classic/Fall: <a href="http://aka.ms/wvdweb">http://aka.ms/wvdweb</a></li>
+</ul></li>
+</ul></li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download" /> <strong>Download the latest release from 10/24/2024</strong></a></p>
+
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 10/24/2024</strong></a></p>
 -->
 					</div>
 					<!-- Side toc Container -->
@@ -2857,6 +3031,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 								<p><ul>
 <li><a href="#azure-windows-virtual-desktop-administration-with-wvdadmin">Azure Windows Virtual Desktop administration with WVDAdmin</a></li>
 <li><a href="#installation">Installation</a>
+
 <ul>
 <li><a href="#release-history">Release History</a></li>
 <li><a href="#configuration">Configuration</a></li>
@@ -2864,25 +3039,24 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <li><a href="#avd-permissions">AVD permissions</a></li>
 <li><a href="#register-resource-provider">Register Resource Provider</a></li>
 <li><a href="#azure-resource-permissions">Azure resource permissions</a></li>
-<li><a href="#prepare-your-native-active-directory">Prepare your “native” Active Directory</a></li>
+<li><a href="#prepare-your-native-active-directory">Prepare your &quot;native&quot; Active Directory</a></li>
 <li><a href="#optional-create-a-file-share">Optional: Create a file share</a></li>
-</ul>
-</li>
+</ul></li>
 <li><a href="#configure-wvdadmin">Configure WVDAdmin</a></li>
 <li><a href="#build-an-image">Build an image</a></li>
-<li><a href="#tipps-amp-tricks">Tipps &amp; Tricks</a>
+<li><a href="#tipps-tricks">Tipps &amp; Tricks</a>
+
 <ul>
 <li><a href="#vm-scale-sets">VM Scale Sets</a></li>
-<li><a href="#ephemeral--disks">Ephemeral  disks</a></li>
+<li><a href="#ephemeral-disks">Ephemeral  disks</a></li>
 <li><a href="#secret-features">Secret Features</a></li>
-</ul>
-</li>
+</ul></li>
 <li><a href="#troubleshooting">Troubleshooting</a>
+
 <ul>
 <li><a href="#create-an-image">Create an Image</a></li>
 <li><a href="#others">Others</a></li>
-</ul>
-</li>
+</ul></li>
 </ul><p/>
 							</div>
 						</div>

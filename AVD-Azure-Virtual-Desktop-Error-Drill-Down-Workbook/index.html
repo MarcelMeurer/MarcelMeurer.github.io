@@ -10,7 +10,7 @@
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
 <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook | ITProCloud Blog</title>
-<meta name="generator" content="Jekyll v4.3.3" />
+<meta name="generator" content="Jekyll v3.10.0" />
 <meta property="og:title" content="Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
@@ -21,12 +21,12 @@
 <meta property="og:site_name" content="ITProCloud Blog" />
 <meta property="og:image" content="https://blog.itprocloud.de/assets/images/AVD-Monitoring-Workbook-Errors.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2024-10-24T00:00:00+02:00" />
+<meta property="article:published_time" content="2024-12-02T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/AVD-Monitoring-Workbook-Errors.png" />
 <meta property="twitter:title" content="Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2024-10-24T00:00:00+02:00","datePublished":"2024-10-24T00:00:00+02:00","description":"Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:","headline":"Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook","image":"https://blog.itprocloud.de/assets/images/AVD-Monitoring-Workbook-Errors.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2024-12-02T00:00:00+01:00","datePublished":"2024-12-02T00:00:00+01:00","description":"Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:","headline":"Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook","image":"https://blog.itprocloud.de/assets/images/AVD-Monitoring-Workbook-Errors.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -380,14 +380,13 @@
 	
 		<!-- change content to anchor styled output -->
 		<p>Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:</p>
-<table>
-<thead>
+
+<table><thead>
 <tr>
 <th>Log Type</th>
 <th>Note</th>
 </tr>
-</thead>
-<tbody>
+</thead><tbody>
 <tr>
 <td>WVDAgentHealthStatus</td>
 <td>Details about the session hosts</td>
@@ -398,7 +397,7 @@
 </tr>
 <tr>
 <td>WVDErrors</td>
-<td>Error message from different sources (client, RDGateway, Loadbalancer, …)</td>
+<td>Error message from different sources (client, RDGateway, Loadbalancer, ...)</td>
 </tr>
 <tr>
 <td>WVDFeeds</td>
@@ -414,36 +413,47 @@
 </tr>
 <tr>
 <td>WVDCheckpoints</td>
-<td>Detailed information related to logins, errors, …</td>
+<td>Detailed information related to logins, errors, ...</td>
 </tr>
 <tr>
 <td>WVDConnectionNetworkData</td>
 <td>Network information (bandwidth and RTT)</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
+
 <p>To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&gt; Diagnostic settings -&gt; Add diagnostic settings -&gt; Select all Logs and target a log analytics workspace.</p>
-<p><img src="../assets/images/Avd-Error-Monitoring-01.png" alt="" /></p>
+
+<p><img src="../assets/images/Avd-Error-Monitoring-01.png" alt=""></p>
+
 <p>Alternatively, you can use <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> to do that (use version 1.7.25 or higher):</p>
-<p><img src="../assets/images/Avd-Error-Monitoring-02.png" alt="" /></p>
+
+<p><img src="../assets/images/Avd-Error-Monitoring-02.png" alt=""></p>
+
 <p>It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.</p>
-<p><img src="../assets/images/AVD-Monitoring-Workbook-Errors.png" alt="" /></p>
-<p><img src="../assets/images/MonitorSessionHosts-12.png" alt="" /></p>
-<p><img src="../assets/images/Avd-Error-Monitoring-13.png" alt="" /></p>
-<p><img src="../assets/images/Avd-Error-Monitoring-14.png" alt="" /></p>
+
+<p><img src="../assets/images/AVD-Monitoring-Workbook-Errors.png" alt=""></p>
+
+<p><img src="../assets/images/MonitorSessionHosts-12.png" alt=""></p>
+
+<p><img src="../assets/images/Avd-Error-Monitoring-13.png" alt=""></p>
+
+<p><img src="../assets/images/Avd-Error-Monitoring-14.png" alt=""></p>
+
 <p>You can install the workbook directly as a template into your subscription: <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json">Install the workbook</a></p>
+
 <p>After a while, the workbook is visible as a new template in: <strong>Log Analytics -&gt; Workbooks -&gt; Azure Virtual Desktop -&gt; AVD - Deep-Insights</strong></p>
-<p>You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “<em>ConnectionFailedClientDisconnected</em>” occurs if a session goes in the disconnected mode while the users close its notebook).</p>
+
+<p>You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., &quot;<em>ConnectionFailedClientDisconnected</em>&quot; occurs if a session goes in the disconnected mode while the users close its notebook).</p>
+
 <p>Please let me know if you have ideas to extend the workbook.</p>
-<table>
-<thead>
+
+<table><thead>
 <tr>
 <th>Version</th>
 <th>Date</th>
 <th>Note</th>
 </tr>
-</thead>
-<tbody>
+</thead><tbody>
 <tr>
 <td>1.1</td>
 <td>01/28/2022</td>
@@ -452,7 +462,7 @@
 <tr>
 <td>1.2</td>
 <td>02/17/2022</td>
-<td>Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include <strong>NetworkData</strong>); see <a href="https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397">https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397</a> <br /><br />Name changed to AVD - Deep-Insights</td>
+<td>Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include <strong>NetworkData</strong>); Renaming of the workbook</td>
 </tr>
 <tr>
 <td>1.3</td>
@@ -482,12 +492,12 @@
 <tr>
 <td>1.8</td>
 <td>11/14/2022</td>
-<td>A new tab “Resources”, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct</td>
+<td>A new tab &quot;Resources&quot;, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct</td>
 </tr>
 <tr>
 <td>1.9</td>
 <td>11/18/2022</td>
-<td>A new tab “Resources”, to show orphan VMs (where the session host object is missing)</td>
+<td>A new tab &quot;Resources&quot;, to show orphan VMs (where the session host object is missing)</td>
 </tr>
 <tr>
 <td>2.0</td>
@@ -497,22 +507,22 @@
 <tr>
 <td>2.1</td>
 <td>12/09/2022</td>
-<td>Added orphan disks and orphan nics to the “Resources” tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop, version 1.0.1.84 (comming soon))</td>
+<td>Added orphan disks and orphan nics to the &quot;Resources&quot; tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop, version 1.0.1.84 (comming soon))</td>
 </tr>
 <tr>
 <td>2.2</td>
 <td>02/02/2023</td>
-<td>Added “Water Markings” to query session information by the feature <a href="https://learn.microsoft.com/en-us/azure/virtual-desktop/watermarking">WaterMarking</a></td>
+<td>Added &quot;Water Markings&quot; to query session information by the feature <a href="https://learn.microsoft.com/en-us/azure/virtual-desktop/watermarking">WaterMarking</a></td>
 </tr>
 <tr>
 <td>2.3</td>
 <td>02/20/2023</td>
-<td>Added “Unresponding AVD Agents” in the tab “Resources” to identify running VM with a non responding AVD agent</td>
+<td>Added &quot;Unresponding AVD Agents&quot; in the tab &quot;Resources&quot; to identify running VM with a non responding AVD agent</td>
 </tr>
 <tr>
 <td>2.4</td>
 <td>02/21/2023</td>
-<td>Added new tab “FSLogix” to show the size, usage and free space of the FSLogix profiles</td>
+<td>Added new tab &quot;FSLogix&quot; to show the size, usage and free space of the FSLogix profiles</td>
 </tr>
 <tr>
 <td>2.5</td>
@@ -542,22 +552,27 @@
 <tr>
 <td>3.1</td>
 <td>10/24/2024</td>
-<td>Add: Show “TURN” in session bandwidth and latency (if session was connected via TURN)</td>
+<td>Add: Show &quot;TURN&quot; in session bandwidth and latency (if session was connected via TURN)</td>
 </tr>
-</tbody>
-</table>
-<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json"><img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" /></a></p>
-<p>Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don’t generate costs</p>
+<tr>
+<td>3.2</td>
+<td>11/29/2024</td>
+<td>Add: Show the country and city of the connections (based on the client internet IP)</td>
+</tr>
+</tbody></table>
+
+<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json"><img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure"></a></p>
+
+<p>Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don&#39;t generate costs.</p>
 
 		<!--<p>Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:</p>
-<table>
-<thead>
+
+<table><thead>
 <tr>
 <th>Log Type</th>
 <th>Note</th>
 </tr>
-</thead>
-<tbody>
+</thead><tbody>
 <tr>
 <td>WVDAgentHealthStatus</td>
 <td>Details about the session hosts</td>
@@ -568,7 +583,7 @@
 </tr>
 <tr>
 <td>WVDErrors</td>
-<td>Error message from different sources (client, RDGateway, Loadbalancer, …)</td>
+<td>Error message from different sources (client, RDGateway, Loadbalancer, ...)</td>
 </tr>
 <tr>
 <td>WVDFeeds</td>
@@ -584,36 +599,47 @@
 </tr>
 <tr>
 <td>WVDCheckpoints</td>
-<td>Detailed information related to logins, errors, …</td>
+<td>Detailed information related to logins, errors, ...</td>
 </tr>
 <tr>
 <td>WVDConnectionNetworkData</td>
 <td>Network information (bandwidth and RTT)</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
+
 <p>To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&gt; Diagnostic settings -&gt; Add diagnostic settings -&gt; Select all Logs and target a log analytics workspace.</p>
-<p><img src="../assets/images/Avd-Error-Monitoring-01.png" alt="" /></p>
+
+<p><img src="../assets/images/Avd-Error-Monitoring-01.png" alt=""></p>
+
 <p>Alternatively, you can use <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> to do that (use version 1.7.25 or higher):</p>
-<p><img src="../assets/images/Avd-Error-Monitoring-02.png" alt="" /></p>
+
+<p><img src="../assets/images/Avd-Error-Monitoring-02.png" alt=""></p>
+
 <p>It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.</p>
-<p><img src="../assets/images/AVD-Monitoring-Workbook-Errors.png" alt="" /></p>
-<p><img src="../assets/images/MonitorSessionHosts-12.png" alt="" /></p>
-<p><img src="../assets/images/Avd-Error-Monitoring-13.png" alt="" /></p>
-<p><img src="../assets/images/Avd-Error-Monitoring-14.png" alt="" /></p>
+
+<p><img src="../assets/images/AVD-Monitoring-Workbook-Errors.png" alt=""></p>
+
+<p><img src="../assets/images/MonitorSessionHosts-12.png" alt=""></p>
+
+<p><img src="../assets/images/Avd-Error-Monitoring-13.png" alt=""></p>
+
+<p><img src="../assets/images/Avd-Error-Monitoring-14.png" alt=""></p>
+
 <p>You can install the workbook directly as a template into your subscription: <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json">Install the workbook</a></p>
+
 <p>After a while, the workbook is visible as a new template in: <strong>Log Analytics -&gt; Workbooks -&gt; Azure Virtual Desktop -&gt; AVD - Deep-Insights</strong></p>
-<p>You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., “<em>ConnectionFailedClientDisconnected</em>” occurs if a session goes in the disconnected mode while the users close its notebook).</p>
+
+<p>You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., &quot;<em>ConnectionFailedClientDisconnected</em>&quot; occurs if a session goes in the disconnected mode while the users close its notebook).</p>
+
 <p>Please let me know if you have ideas to extend the workbook.</p>
-<table>
-<thead>
+
+<table><thead>
 <tr>
 <th>Version</th>
 <th>Date</th>
 <th>Note</th>
 </tr>
-</thead>
-<tbody>
+</thead><tbody>
 <tr>
 <td>1.1</td>
 <td>01/28/2022</td>
@@ -622,7 +648,7 @@
 <tr>
 <td>1.2</td>
 <td>02/17/2022</td>
-<td>Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include <strong>NetworkData</strong>); see <a href="https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397">https://techcommunity.microsoft.com/t5/azure-virtual-desktop/collect-and-query-network-data-for-azure-virtual-desktop/m-p/3140397</a> <br /><br />Name changed to AVD - Deep-Insights</td>
+<td>Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include <strong>NetworkData</strong>); Renaming of the workbook</td>
 </tr>
 <tr>
 <td>1.3</td>
@@ -652,12 +678,12 @@
 <tr>
 <td>1.8</td>
 <td>11/14/2022</td>
-<td>A new tab “Resources”, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct</td>
+<td>A new tab &quot;Resources&quot;, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct</td>
 </tr>
 <tr>
 <td>1.9</td>
 <td>11/18/2022</td>
-<td>A new tab “Resources”, to show orphan VMs (where the session host object is missing)</td>
+<td>A new tab &quot;Resources&quot;, to show orphan VMs (where the session host object is missing)</td>
 </tr>
 <tr>
 <td>2.0</td>
@@ -667,22 +693,22 @@
 <tr>
 <td>2.1</td>
 <td>12/09/2022</td>
-<td>Added orphan disks and orphan nics to the “Resources” tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop, version 1.0.1.84 (comming soon))</td>
+<td>Added orphan disks and orphan nics to the &quot;Resources&quot; tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop, version 1.0.1.84 (comming soon))</td>
 </tr>
 <tr>
 <td>2.2</td>
 <td>02/02/2023</td>
-<td>Added “Water Markings” to query session information by the feature <a href="https://learn.microsoft.com/en-us/azure/virtual-desktop/watermarking">WaterMarking</a></td>
+<td>Added &quot;Water Markings&quot; to query session information by the feature <a href="https://learn.microsoft.com/en-us/azure/virtual-desktop/watermarking">WaterMarking</a></td>
 </tr>
 <tr>
 <td>2.3</td>
 <td>02/20/2023</td>
-<td>Added “Unresponding AVD Agents” in the tab “Resources” to identify running VM with a non responding AVD agent</td>
+<td>Added &quot;Unresponding AVD Agents&quot; in the tab &quot;Resources&quot; to identify running VM with a non responding AVD agent</td>
 </tr>
 <tr>
 <td>2.4</td>
 <td>02/21/2023</td>
-<td>Added new tab “FSLogix” to show the size, usage and free space of the FSLogix profiles</td>
+<td>Added new tab &quot;FSLogix&quot; to show the size, usage and free space of the FSLogix profiles</td>
 </tr>
 <tr>
 <td>2.5</td>
@@ -712,12 +738,18 @@
 <tr>
 <td>3.1</td>
 <td>10/24/2024</td>
-<td>Add: Show “TURN” in session bandwidth and latency (if session was connected via TURN)</td>
+<td>Add: Show &quot;TURN&quot; in session bandwidth and latency (if session was connected via TURN)</td>
 </tr>
-</tbody>
-</table>
-<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json"><img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure" /></a></p>
-<p>Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don’t generate costs</p>
+<tr>
+<td>3.2</td>
+<td>11/29/2024</td>
+<td>Add: Show the country and city of the connections (based on the client internet IP)</td>
+</tr>
+</tbody></table>
+
+<p><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json"><img src="https://aka.ms/deploytoazurebutton" alt="Deploy to Azure"></a></p>
+
+<p>Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don&#39;t generate costs.</p>
 -->
 	
     
