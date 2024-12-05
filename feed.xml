@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 05 Dec 2024 09:09:57 +0100</pubDate>
-    <lastBuildDate>Thu, 05 Dec 2024 09:09:57 +0100</lastBuildDate>
+    <pubDate>Thu, 05 Dec 2024 09:10:42 +0100</pubDate>
+    <lastBuildDate>Thu, 05 Dec 2024 09:10:42 +0100</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
     
       <item>
@@ -67,11 +67,9 @@ Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started 
 &lt;p&gt;To &amp;quot;teach&amp;quot; the system account to use these credentials, we have to run the following command in the context of the system account:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;cmdkey.exe /add:&amp;lt;StorageAccountFqdn&amp;gt; /user:localhost\&amp;lt;StorageAccountName&amp;gt; /pass:&amp;lt;Key&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Example:
-&lt;code&gt;
-cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\avdaadstorage /pass:xxxxxxxxxxxxxxxx
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\avdaadstorage /pass:xxxxxxxxxxxxxxxx
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;After running the command on a host/VM, any access in the context of the system account to the storage runs with the configured credentials - to every share!&lt;/p&gt;
 
 &lt;p&gt;Great, our system can now access the shares on the storage account and has full permission. &lt;/p&gt;

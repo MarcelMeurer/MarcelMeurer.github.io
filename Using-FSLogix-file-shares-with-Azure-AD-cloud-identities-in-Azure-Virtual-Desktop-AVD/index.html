@@ -459,11 +459,9 @@ Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started 
 <p>To &quot;teach&quot; the system account to use these credentials, we have to run the following command in the context of the system account:</p>
 <div class="highlight"><pre><code class="language-" data-lang="">cmdkey.exe /add:&lt;StorageAccountFqdn&gt; /user:localhost\&lt;StorageAccountName&gt; /pass:&lt;Key&gt;
 </code></pre></div>
-<p>Example:
-<code>
-cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\avdaadstorage /pass:xxxxxxxxxxxxxxxx
-</code></p>
-
+<p>Example:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\avdaadstorage /pass:xxxxxxxxxxxxxxxx
+</code></pre></div>
 <p>After running the command on a host/VM, any access in the context of the system account to the storage runs with the configured credentials - to every share!</p>
 
 <p>Great, our system can now access the shares on the storage account and has full permission. </p>
@@ -795,11 +793,9 @@ Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started 
 <p>To &quot;teach&quot; the system account to use these credentials, we have to run the following command in the context of the system account:</p>
 <div class="highlight"><pre><code class="language-" data-lang="">cmdkey.exe /add:&lt;StorageAccountFqdn&gt; /user:localhost\&lt;StorageAccountName&gt; /pass:&lt;Key&gt;
 </code></pre></div>
-<p>Example:
-<code>
-cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\avdaadstorage /pass:xxxxxxxxxxxxxxxx
-</code></p>
-
+<p>Example:</p>
+<div class="highlight"><pre><code class="language-" data-lang="">cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\avdaadstorage /pass:xxxxxxxxxxxxxxxx
+</code></pre></div>
 <p>After running the command on a host/VM, any access in the context of the system account to the storage runs with the configured credentials - to every share!</p>
 
 <p>Great, our system can now access the shares on the storage account and has full permission. </p>
