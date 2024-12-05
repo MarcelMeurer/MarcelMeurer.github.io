@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 05 Dec 2024 09:03:24 +0100</pubDate>
-    <lastBuildDate>Thu, 05 Dec 2024 09:03:24 +0100</lastBuildDate>
+    <pubDate>Thu, 05 Dec 2024 09:07:05 +0100</pubDate>
+    <lastBuildDate>Thu, 05 Dec 2024 09:07:05 +0100</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
     
       <item>
@@ -24,7 +24,7 @@
 &lt;p&gt;&lt;strong&gt;Change of the script to work with Windows 11 22H2&lt;/strong&gt;
 Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key prevents this behavior.&lt;/p&gt;
 
-&lt;h2 id=&quot;update-2023-02-15&quot;&gt;Update 2023-02-15&lt;/h2&gt;
+&lt;h2 id=&quot;update-2024-12-05&quot;&gt;Update 2024-12-05&lt;/h2&gt;
 
 &lt;p&gt;&lt;strong&gt;Change of the script to include credentials in the profile&lt;/strong&gt;&lt;/p&gt;
 
