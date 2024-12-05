@@ -265,10 +265,6 @@
 <lastmod>2023-02-21T00:00:00+01:00</lastmod>
 </url>
 <url>
-<loc>https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/</loc>
-<lastmod>2023-03-02T00:00:00+01:00</lastmod>
-</url>
-<url>
 <loc>https://blog.itprocloud.de/WVDAdmin-Hydra-Package-Manager-Install-and-Update-apps/</loc>
 <lastmod>2023-03-28T00:00:00+02:00</lastmod>
 </url>
@@ -355,6 +351,10 @@
 <url>
 <loc>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</loc>
 <lastmod>2024-12-02T00:00:00+01:00</lastmod>
+</url>
+<url>
+<loc>https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/</loc>
+<lastmod>2024-12-05T00:00:00+01:00</lastmod>
 </url>
 <url>
 <loc>https://blog.itprocloud.de/about</loc>
