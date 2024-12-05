@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 05 Dec 2024 09:07:05 +0100</pubDate>
-    <lastBuildDate>Thu, 05 Dec 2024 09:07:05 +0100</lastBuildDate>
+    <pubDate>Thu, 05 Dec 2024 09:09:57 +0100</pubDate>
+    <lastBuildDate>Thu, 05 Dec 2024 09:09:57 +0100</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
     
       <item>
@@ -81,15 +81,13 @@ cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\avdaadstorag
 &lt;p&gt;To prevent that Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key is needed:&lt;/p&gt;
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force  # Only needed for Windows 11 22H2
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Remember that this disables &lt;a href=&quot;https://learn.microsoft.com/en-us/windows/security/identity-protection/credential-guard/credential-guard-manage#enable-virtualization-based-security-and-windows-defender-credential-guard&quot;&gt;Windows Defender Credential Guard&lt;/a&gt;.
-&lt;code&gt;
-New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\Software\Policies\Microsoft\AzureADAccount&amp;quot; -Name &amp;quot;LoadCredKeyFromProfile&amp;quot; -Value 1 -force
-&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Remember that this disables &lt;a href=&quot;https://learn.microsoft.com/en-us/windows/security/identity-protection/credential-guard/credential-guard-manage#enable-virtualization-based-security-and-windows-defender-credential-guard&quot;&gt;Windows Defender Credential Guard&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h3 id=&quot;credential-manager&quot;&gt;Credential manager&lt;/h3&gt;
 
 &lt;p&gt;If you save credentials to the credential manager, those credentials are not included in the profile. This can be changed by setting the following registry key and value&lt;/p&gt;
-
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\AzureADAccount&quot; -Name &quot;LoadCredKeyFromProfile&quot; -Value 1 -force
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;h2 id=&quot;configuring-fslogix&quot;&gt;Configuring FSLogix&lt;/h2&gt;
 
 &lt;p&gt;Next step: Configure FSLogix to use the system account. Normally, FSLogix will access the share to store and read profiles in the user context. That is normally fine if users are able to authenticate with their own identity. In our case, we want to use the system account. The following reg-key configures FSLogix to use the system account:&lt;/p&gt;
@@ -118,15 +116,13 @@ New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\Software\Policies\Microsoft\AzureA
 &lt;/tr&gt;
 &lt;/tbody&gt;&lt;/table&gt;
 
-&lt;p&gt;This value can be set via registry or PowerShell:
-&lt;code&gt;
-New-Item -Path &amp;quot;HKLM:\SOFTWARE&amp;quot; -Name &amp;quot;FSLogix&amp;quot; -ErrorAction Ignore
-New-Item -Path &amp;quot;HKLM:\SOFTWARE\FSLogix&amp;quot; -Name &amp;quot;Profiles&amp;quot; -ErrorAction Ignore
-New-ItemProperty -Path &amp;quot;HKLM:\SOFTWARE\FSLogix\Profiles&amp;quot; -Name &amp;quot;AccessNetworkAsComputerObject&amp;quot; -Value 1 -force
-New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\Software\Policies\Microsoft\AzureADAccount&amp;quot; -Name &amp;quot;LoadCredKeyFromProfile&amp;quot; -Value 1 -force # Include credentials in the profile
-New-ItemProperty -Path &amp;quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&amp;quot; -Name &amp;quot;LsaCfgFlags&amp;quot; -Value 0 -force  # Only needed for Windows 11 22H2
-&lt;/code&gt;&lt;/p&gt;
-
+&lt;p&gt;This value can be set via registry or PowerShell:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
+New-Item -Path &quot;HKLM:\SOFTWARE\FSLogix&quot; -Name &quot;Profiles&quot; -ErrorAction Ignore
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\AzureADAccount&quot; -Name &quot;LoadCredKeyFromProfile&quot; -Value 1 -force # Include credentials in the profile
+New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force  # Only needed for Windows 11 22H2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;If not already done, configure the file share:
 - Create a share on your storage account (e.g., profiles)
 - Configure FSLogix to use the share on each host:&lt;/p&gt;
@@ -225,7 +221,7 @@ New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;V
 New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
 
 # Include credentials in the profile
-New-ItemProperty -Path &quot;HKLM:\SYSTEM\Software\Policies\Microsoft\AzureADAccount&quot; -Name &quot;LoadCredKeyFromProfile&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\AzureADAccount&quot; -Name &quot;LoadCredKeyFromProfile&quot; -Value 1 -force
 
 # Store credentials to access the storage account
 cmdkey.exe /add:$fileServer /user:$($user) /pass:$($secret)
@@ -277,7 +273,7 @@ New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;V
 New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
 
 # Include credentials in the profile
-New-ItemProperty -Path &quot;HKLM:\SYSTEM\Software\Policies\Microsoft\AzureADAccount&quot; -Name &quot;LoadCredKeyFromProfile&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\AzureADAccount&quot; -Name &quot;LoadCredKeyFromProfile&quot; -Value 1 -force
 
 LogWriter(&quot;Setting credentials to access the storage account of the system&quot;)
 cmdkey.exe /add:$fileServer /user:$($global:Hydra_ServiceAccount_PSC.UserName) /pass:([System.Net.NetworkCredential]::new(&quot;&quot;,$global:Hydra_ServiceAccount_PSC.password).Password)
