@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 16 Dec 2024 17:25:04 +0100</pubDate>
-    <lastBuildDate>Mon, 16 Dec 2024 17:25:04 +0100</lastBuildDate>
+    <pubDate>Mon, 13 Jan 2025 20:25:25 +0100</pubDate>
+    <lastBuildDate>Mon, 13 Jan 2025 20:25:25 +0100</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
     
       <item>
@@ -17,7 +17,7 @@
 
 &lt;p&gt;Are you interested in the new &amp;quot;Hydra for Azure Virtual Desktop&amp;quot; solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 12/16/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 01/13/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 
@@ -105,7 +105,7 @@
 
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 12/16/2024&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 01/13/2025&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;details&gt;&lt;summary&gt;I&amp;#39;m continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;&lt;/p&gt;
@@ -117,6 +117,11 @@
 &lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;2.0.02.0&lt;/td&gt;
+&lt;td&gt;2025-01-13&lt;/td&gt;
+&lt;td&gt;Add: A feature to add a 2nd nic during the rollout to the host. Configure the tag &amp;quot;WVD.Default.VM.2ndNic&amp;quot; with the subnet resource id&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;2.0.01.0&lt;/td&gt;
 &lt;td&gt;2024-12-16&lt;/td&gt;
@@ -1212,7 +1217,11 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 
 &lt;h3 id=&quot;rollout-session-hosts-with-azure-disk-encryption-ade&quot;&gt;Rollout session hosts with Azure Disk Encryption (ADE)&lt;/h3&gt;
 
-&lt;p&gt;Set two tags to the host pool to use it: &amp;quot;WVD.Default.KeyVault.Id&amp;quot; with the resource id of the KeyVault, &amp;quot;WVD.Default.KeyVault.KeyUri&amp;quot; with the URI (including the version) of the prepared key to wrap the secret.
+&lt;p&gt;Set two tags to the host pool to use it: &amp;quot;WVD.Default.KeyVault.Id&amp;quot; with the resource id of the KeyVault, &amp;quot;WVD.Default.KeyVault.KeyUri&amp;quot; with the URI (including the version) of the prepared key to wrap the secret.&lt;/p&gt;
+
+&lt;h3 id=&quot;2nd-network-interface&quot;&gt;2nd Network interface&lt;/h3&gt;
+
+&lt;p&gt;Set a tag to the host pool with the name &amp;quot;WVD.Default.VM.2ndNic&amp;quot; and with the subnet resource id as value
 &lt;/details&gt;&lt;br/&gt;&lt;/p&gt;
 
 &lt;h1 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h1&gt;
@@ -1250,9 +1259,9 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 12/16/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 01/13/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Mon, 16 Dec 2024 00:00:00 +0100</pubDate>
+        <pubDate>Mon, 13 Jan 2025 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
         

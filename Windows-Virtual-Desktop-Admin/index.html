@@ -21,12 +21,12 @@
 <meta property="og:site_name" content="ITProCloud Blog" />
 <meta property="og:image" content="https://blog.itprocloud.de/assets/images/WVDAdmin-01.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2024-12-16T00:00:00+01:00" />
+<meta property="article:published_time" content="2025-01-13T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/WVDAdmin-01.png" />
 <meta property="twitter:title" content="WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2024-12-16T00:00:00+01:00","datePublished":"2024-12-16T00:00:00+01:00","description":"Azure Windows Virtual Desktop administration with WVDAdmin","headline":"WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)","image":"https://blog.itprocloud.de/assets/images/WVDAdmin-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2025-01-13T00:00:00+01:00","datePublished":"2025-01-13T00:00:00+01:00","description":"Azure Windows Virtual Desktop administration with WVDAdmin","headline":"WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)","image":"https://blog.itprocloud.de/assets/images/WVDAdmin-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -396,7 +396,7 @@
 
 <p>Are you interested in the new &quot;Hydra for Azure Virtual Desktop&quot; solution to manage AVD even better with a lot of automation? <a href="https://github.com/MarcelMeurer/WVD-Hydra">Check it out here.</a></p>
 
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 12/16/2024</strong></a></p>
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 01/13/2025</strong></a></p>
 
 <p><a href="https://youtu.be/fH1_FzNyJf0">Check out the Youtube video to install and configure WVDAdmin in four steps</a></p>
 
@@ -496,7 +496,7 @@
       </h2>
     
 
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 12/16/2024</strong></a>
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 01/13/2025</strong></a>
 <a href="https://youtu.be/fH1_FzNyJf0">Check out the Youtube video to install and configure WVDAdmin in four steps</a></p>
 
 <p><details><summary>I&#39;m continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.</summary></p>
@@ -508,6 +508,11 @@
 <th>Changes &amp; Notes</th>
 </tr>
 </thead><tbody>
+<tr>
+<td>2.0.02.0</td>
+<td>2025-01-13</td>
+<td>Add: A feature to add a 2nd nic during the rollout to the host. Configure the tag &quot;WVD.Default.VM.2ndNic&quot; with the subnet resource id</td>
+</tr>
 <tr>
 <td>2.0.01.0</td>
 <td>2024-12-16</td>
@@ -1741,7 +1746,17 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
       </h3>
     
 
-<p>Set two tags to the host pool to use it: &quot;WVD.Default.KeyVault.Id&quot; with the resource id of the KeyVault, &quot;WVD.Default.KeyVault.KeyUri&quot; with the URI (including the version) of the prepared key to wrap the secret.
+<p>Set two tags to the host pool to use it: &quot;WVD.Default.KeyVault.Id&quot; with the resource id of the KeyVault, &quot;WVD.Default.KeyVault.KeyUri&quot; with the URI (including the version) of the prepared key to wrap the secret.</p>
+      <h3 id="2nd-network-interface">
+        
+        
+          2nd Network interface <a href="#2nd-network-interface"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h3>
+    
+
+<p>Set a tag to the host pool with the name &quot;WVD.Default.VM.2ndNic&quot; and with the subnet resource id as value
 </details><br/></p>
       <h1 id="troubleshooting">
         
@@ -1797,7 +1812,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 </ul></li>
 </ul>
 
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 12/16/2024</strong></a></p>
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 01/13/2025</strong></a></p>
 
 						<!--<h1 id="azure-windows-virtual-desktop-administration-with-wvdadmin">Azure Windows Virtual Desktop administration with WVDAdmin</h1>
 
@@ -1805,7 +1820,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 
 <p>Are you interested in the new &quot;Hydra for Azure Virtual Desktop&quot; solution to manage AVD even better with a lot of automation? <a href="https://github.com/MarcelMeurer/WVD-Hydra">Check it out here.</a></p>
 
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 12/16/2024</strong></a></p>
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 01/13/2025</strong></a></p>
 
 <p><a href="https://youtu.be/fH1_FzNyJf0">Check out the Youtube video to install and configure WVDAdmin in four steps</a></p>
 
@@ -1893,7 +1908,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 
 <h2 id="release-history">Release History</h2>
 
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 12/16/2024</strong></a>
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 01/13/2025</strong></a>
 <a href="https://youtu.be/fH1_FzNyJf0">Check out the Youtube video to install and configure WVDAdmin in four steps</a></p>
 
 <p><details><summary>I&#39;m continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.</summary></p>
@@ -1905,6 +1920,11 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 <th>Changes &amp; Notes</th>
 </tr>
 </thead><tbody>
+<tr>
+<td>2.0.02.0</td>
+<td>2025-01-13</td>
+<td>Add: A feature to add a 2nd nic during the rollout to the host. Configure the tag &quot;WVD.Default.VM.2ndNic&quot; with the subnet resource id</td>
+</tr>
 <tr>
 <td>2.0.01.0</td>
 <td>2024-12-16</td>
@@ -3000,7 +3020,11 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 
 <h3 id="rollout-session-hosts-with-azure-disk-encryption-ade">Rollout session hosts with Azure Disk Encryption (ADE)</h3>
 
-<p>Set two tags to the host pool to use it: &quot;WVD.Default.KeyVault.Id&quot; with the resource id of the KeyVault, &quot;WVD.Default.KeyVault.KeyUri&quot; with the URI (including the version) of the prepared key to wrap the secret.
+<p>Set two tags to the host pool to use it: &quot;WVD.Default.KeyVault.Id&quot; with the resource id of the KeyVault, &quot;WVD.Default.KeyVault.KeyUri&quot; with the URI (including the version) of the prepared key to wrap the secret.</p>
+
+<h3 id="2nd-network-interface">2nd Network interface</h3>
+
+<p>Set a tag to the host pool with the name &quot;WVD.Default.VM.2ndNic&quot; and with the subnet resource id as value
 </details><br/></p>
 
 <h1 id="troubleshooting">Troubleshooting</h1>
@@ -3038,7 +3062,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 </ul></li>
 </ul>
 
-<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 12/16/2024</strong></a></p>
+<p><a href="../assets/files/WVDAdmin.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 01/13/2025</strong></a></p>
 -->
 					</div>
 					<!-- Side toc Container -->
@@ -3156,7 +3180,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
     <div class="container">
         <div class="row">
             <div class="col-md-5 col-sm-5 text-center text-lg-left">
-                Copyright © 2024 ITProCloud Blog 
+                Copyright © 2025 ITProCloud Blog 
             </div>
             <div class="col-md-4 col-sm-4 text-center text-lg-left">
                 <a href="/Impressum">Impressum</a>/<a href="/ImpressumEn">Imprint</a> - 
