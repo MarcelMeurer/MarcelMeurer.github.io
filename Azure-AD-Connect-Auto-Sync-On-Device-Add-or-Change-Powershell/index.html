@@ -482,107 +482,107 @@ SyncOnDemand.ps1 -Install
 
 <p><strong>Note:</strong> This is a workaround. Use at your own risk</p>
 
-<p>Script (must be run as an administrator):
-```
-param(
+<p>Script (must be run as an administrator):</p>
+<div class="highlight"><pre><code class="language-" data-lang="">param(
     [Parameter(Mandatory=$false)]
     [Switch]$Install
 )
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12</p>
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-<p>if ($Install) {
-    Write-Host &quot;Installing script to $env:windir&quot;
-    Copy-Item &quot;$($MyInvocation.InvocationName)&quot; -Destination (&quot;$($env:windir)\SyncOnDemand.ps1&quot;)</p>
-<div class="highlight"><pre><code class="language-" data-lang="">$action = New-ScheduledTaskAction -Execute "$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe" -Argument "-executionPolicy Unrestricted -File `"$($env:windir)\SyncOnDemand.ps1`""
-$trigger = New-ScheduledTaskTrigger -AtStartup
-$principal = New-ScheduledTaskPrincipal 'NT Authority\SYSTEM'
-$settingsSet = New-ScheduledTaskSettingsSet
-$settingsSet.Enabled=$true
-#$settingsSet.IdleSettings.IdleDuration=0
-$settingsSet.StopIfGoingOnBatteries=$false
-$settingsSet.DisallowStartIfOnBatteries=$false
-$settingsSet.ExecutionTimeLimit="PT0H"
 
-$task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
-Register-ScheduledTask -TaskName 'ITPC-ADConnect-OnDemand' -InputObject $task -ErrorAction Ignore | Out-Null
-Start-ScheduledTask -TaskName 'ITPC-ADConnect-OnDemand'
-Write-Host "Starting the task"
-return
-</code></pre></div>
-<p>}</p>
+if ($Install) {
+    Write-Host "Installing script to $env:windir"
+    Copy-Item "$($MyInvocation.InvocationName)" -Destination ("$($env:windir)\SyncOnDemand.ps1")
 
-<h1 id="parameter">Parameter</h1>
+    $action = New-ScheduledTaskAction -Execute "$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe" -Argument "-executionPolicy Unrestricted -File `"$($env:windir)\SyncOnDemand.ps1`""
+    $trigger = New-ScheduledTaskTrigger -AtStartup
+    $principal = New-ScheduledTaskPrincipal 'NT Authority\SYSTEM'
+    $settingsSet = New-ScheduledTaskSettingsSet
+    $settingsSet.Enabled=$true
+    #$settingsSet.IdleSettings.IdleDuration=0
+    $settingsSet.StopIfGoingOnBatteries=$false
+    $settingsSet.DisallowStartIfOnBatteries=$false
+    $settingsSet.ExecutionTimeLimit="PT0H"
 
-<p>$OuPath = &quot;LDAP://OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test&quot;
+    $task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
+    Register-ScheduledTask -TaskName 'ITPC-ADConnect-OnDemand' -InputObject $task -ErrorAction Ignore | Out-Null
+    Start-ScheduledTask -TaskName 'ITPC-ADConnect-OnDemand'
+    Write-Host "Starting the task"
+    return
+}
+
+
+# Parameter
+$OuPath = "LDAP://OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test"
 $AcceptChangesForTheLastMinutes=30
-$RunEachSeconds = 3</p>
+$RunEachSeconds = 3
 
-<h1 id="initialize">Initialize</h1>
+# Initialize
+$cycle = Get-Date
+$table=@{}
 
-<p>$cycle = Get-Date
-$table=@{}</p>
 
-<p>try {
+try {
     Get-ADSyncScheduler | Out-Null
 } catch {
-    Write-Error &quot;Command Get-ADSyncScheduler not exist. Please check your configuration. This script must run on a computer with AD-Connect installed&quot;
+    Write-Error "Command Get-ADSyncScheduler not exist. Please check your configuration. This script must run on a computer with AD-Connect installed"
     return
-}</p>
+}
 
-<p>do {
+
+do {
     $lastStart = Get-Date
-    $dt=($lastStart.AddMinutes(-$AcceptChangesForTheLastMinutes)).ToUniversalTime().ToString(&quot;yyyyMMddHHmmss.0Z&quot;)
+    $dt=($lastStart.AddMinutes(-$AcceptChangesForTheLastMinutes)).ToUniversalTime().ToString("yyyyMMddHHmmss.0Z")
     $newObjects=0
     # cleanup ignore-list
     $table.clone().GetEnumerator() | foreach {
-        if ($<em>.Value -le $lastStart.AddMinutes(-$AcceptChangesForTheLastMinutes)) {
-                Write-Host &quot;Removing computer from the ignore-list: $($</em>.Name)&quot;
+        if ($_.Value -le $lastStart.AddMinutes(-$AcceptChangesForTheLastMinutes)) {
+                Write-Host "Removing computer from the ignore-list: $($_.Name)"
                 $table.Remove($_.Name)
             }
-    }</p>
-<div class="highlight"><pre><code class="language-" data-lang="">$search=[adsisearcher]"(&amp;(ObjectCategory=computer)(|(whenchanged&gt;=$dt)(whencreated&gt;=$dt)))"
-$search.SearchScope = "Subtree"
-$search.PageSize=150000
-$search.SearchRoot = $OuPath
-
-$obj2=$search.FindAll()
-Write-Host "Computer objects found: $($obj2.Count)"
-$obj2 | foreach {
-    $le=$table[$_.Path]
-    if ($le -eq $null) {
-        $table.Add($_.Path,$lastStart)
-        Write-Host "Found an updated computer: $($_.Path)"
-        $newObjects++
-    } else {
-        Write-Host "Skipping computer while object is in the ignore-list for a while: $($_.Path)"
     }
-}
 
-Write-Host "Ignore list: $($table.Count)"
-Write-Host "New objects: $newObjects"
-if ($newObjects -gt 0) {
-    Write-Host "Starting delta sync"
-    try {
+    $search=[adsisearcher]"(&amp;(ObjectCategory=computer)(|(whenchanged&gt;=$dt)(whencreated&gt;=$dt)))"
+    $search.SearchScope = "Subtree"
+    $search.PageSize=150000
+    $search.SearchRoot = $OuPath
+
+    $obj2=$search.FindAll()
+    Write-Host "Computer objects found: $($obj2.Count)"
+    $obj2 | foreach {
+        $le=$table[$_.Path]
+        if ($le -eq $null) {
+            $table.Add($_.Path,$lastStart)
+            Write-Host "Found an updated computer: $($_.Path)"
+            $newObjects++
+        } else {
+            Write-Host "Skipping computer while object is in the ignore-list for a while: $($_.Path)"
+        }
+    }
+
+    Write-Host "Ignore list: $($table.Count)"
+    Write-Host "New objects: $newObjects"
+    if ($newObjects -gt 0) {
+        Write-Host "Starting delta sync"
+        try {
+            do {
+                Sleep -Seconds 1
+            } while ((Get-ADSyncScheduler).SyncCycleInProgress)
+            Start-ADSyncSyncCycle -PolicyType Delta | Out-Null
+        } catch {
+            Write-Error "Delta sync failed"
+            $table=@{}
+        }
         do {
             Sleep -Seconds 1
         } while ((Get-ADSyncScheduler).SyncCycleInProgress)
-        Start-ADSyncSyncCycle -PolicyType Delta | Out-Null
-    } catch {
-        Write-Error "Delta sync failed"
-        $table=@{}
+        Write-Host "Delta sync done"
     }
-    do {
-        Sleep -Seconds 1
-    } while ((Get-ADSyncScheduler).SyncCycleInProgress)
-    Write-Host "Delta sync done"
-}
-Write-Host "Waiting for the next cycle"
-Write-Host
-Sleep -Seconds $RunEachSeconds
+    Write-Host "Waiting for the next cycle"
+    Write-Host
+    Sleep -Seconds $RunEachSeconds
+} while ($true)
 </code></pre></div>
-<p>} while ($true)
-```</p>
-
             </div>
 
             <!-- Rating -->
