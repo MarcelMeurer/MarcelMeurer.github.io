@@ -21,12 +21,12 @@
 <meta property="og:site_name" content="ITProCloud Blog" />
 <meta property="og:image" content="https://blog.itprocloud.de/assets/images/AAD-Only-FSLogix-000.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2024-12-05T00:00:00+01:00" />
+<meta property="article:published_time" content="2025-03-13T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/AAD-Only-FSLogix-000.png" />
 <meta property="twitter:title" content="Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2024-12-05T00:00:00+01:00","datePublished":"2024-12-05T00:00:00+01:00","description":"With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don&#39;t need to have network line-of-sight to the domain controller.","headline":"Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD","image":"https://blog.itprocloud.de/assets/images/AAD-Only-FSLogix-000.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2025-03-13T00:00:00+01:00","datePublished":"2025-03-13T00:00:00+01:00","description":"With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don&#39;t need to have network line-of-sight to the domain controller.","headline":"Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD","image":"https://blog.itprocloud.de/assets/images/AAD-Only-FSLogix-000.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -413,6 +413,16 @@ Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started 
     
 
 <p><strong>Change of the script to include credentials in the profile</strong></p>
+      <h2 id="update-2025-03-13">
+        
+        
+          Update 2025-03-13 <a href="#update-2025-03-13"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
+        
+        
+      </h2>
+    
+
+<p><strong>Fix of the script to include credentials in the profile</strong></p>
       <h2 id="workaround">
         
         
@@ -642,6 +652,7 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\FSLogix\Profiles" -Name "VolumeType" -Val
 New-ItemProperty -Path "HKLM:\SOFTWARE\FSLogix\Profiles" -Name "AccessNetworkAsComputerObject" -Value 1 -force
 
 # Include credentials in the profile
+New-Item -Path "HKLM:\Software\Policies\Microsoft" -Name "AzureADAccount" -ErrorAction Ignore
 New-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\AzureADAccount" -Name "LoadCredKeyFromProfile" -Value 1 -force
 
 # Store credentials to access the storage account
@@ -701,6 +712,7 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\FSLogix\Profiles" -Name "VolumeType" -Val
 New-ItemProperty -Path "HKLM:\SOFTWARE\FSLogix\Profiles" -Name "AccessNetworkAsComputerObject" -Value 1 -force
 
 # Include credentials in the profile
+New-Item -Path "HKLM:\Software\Policies\Microsoft" -Name "AzureADAccount" -ErrorAction Ignore
 New-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\AzureADAccount" -Name "LoadCredKeyFromProfile" -Value 1 -force
 
 LogWriter("Setting credentials to access the storage account of the system")
@@ -753,6 +765,10 @@ Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started 
 <h2 id="update-2024-12-05">Update 2024-12-05</h2>
 
 <p><strong>Change of the script to include credentials in the profile</strong></p>
+
+<h2 id="update-2025-03-13">Update 2025-03-13</h2>
+
+<p><strong>Fix of the script to include credentials in the profile</strong></p>
 
 <h2 id="workaround">Workaround</h2>
 
@@ -945,6 +961,7 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\FSLogix\Profiles" -Name "VolumeType" -Val
 New-ItemProperty -Path "HKLM:\SOFTWARE\FSLogix\Profiles" -Name "AccessNetworkAsComputerObject" -Value 1 -force
 
 # Include credentials in the profile
+New-Item -Path "HKLM:\Software\Policies\Microsoft" -Name "AzureADAccount" -ErrorAction Ignore
 New-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\AzureADAccount" -Name "LoadCredKeyFromProfile" -Value 1 -force
 
 # Store credentials to access the storage account
@@ -997,6 +1014,7 @@ New-ItemProperty -Path "HKLM:\SOFTWARE\FSLogix\Profiles" -Name "VolumeType" -Val
 New-ItemProperty -Path "HKLM:\SOFTWARE\FSLogix\Profiles" -Name "AccessNetworkAsComputerObject" -Value 1 -force
 
 # Include credentials in the profile
+New-Item -Path "HKLM:\Software\Policies\Microsoft" -Name "AzureADAccount" -ErrorAction Ignore
 New-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\AzureADAccount" -Name "LoadCredKeyFromProfile" -Value 1 -force
 
 LogWriter("Setting credentials to access the storage account of the system")
