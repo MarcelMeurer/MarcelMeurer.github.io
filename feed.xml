@@ -5,349 +5,9 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 17 Mar 2025 11:58:45 +0100</pubDate>
-    <lastBuildDate>Mon, 17 Mar 2025 11:58:45 +0100</lastBuildDate>
+    <pubDate>Mon, 24 Mar 2025 17:48:57 -0700</pubDate>
+    <lastBuildDate>Mon, 24 Mar 2025 17:48:57 -0700</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
-    
-      <item>
-        <title>Deployment of an Azure Virtual Desktop image failed after updating to Windows 24H2 with a blue screen 0xc000000f</title>
-        <description>&lt;p&gt;Several users reported a failure during the rollout of images in Azure Virtual Desktop in the last months. The error pattern was always the same: The virtual machine was built, and the next step failed while the VM was no longer running.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/bs-0xc000000f-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;We figured out that the VM installation resulted in a blue screen with the error message 0xc000000f, Windows shut down internally, and the VM was stopped in Azure. That was reproducible and caused by the image itself. The image was created by capturing a Golden Master with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; or &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; (which can image an existing VM without destroying it).&lt;/p&gt;
-
-&lt;p&gt;Interesting: Older images from the same Golden Masters are working. The only difference between them is that the Golden Master was updated to Windows 11 24H2.&lt;/p&gt;
-
-&lt;p&gt;So, we inspected the Golden Master and started the imaging process step by step. After a while, we figured out that during the Sysprep process, Windows started to encrypt the C: drive. During the encryption, Sysprep finished and shut down the VM, and the imaging process continued. Unfortunately, the captured image is half encrypted and, for that reason, not deployable as a new VM/host.&lt;/p&gt;
-
-&lt;p&gt;We never figured out why this happened after upgrading to 24H2, and that also doesn&amp;#39;t happen if your Golden Master was built on 24H2 initially.&lt;/p&gt;
-
-&lt;p&gt;Solution: The solution is more of a workaround. But if we disable the Bit Locker service on the Golden Master, the Sysprep process will not encrypt the C: drive, and the image will be deployable.&lt;/p&gt;
-
-&lt;p&gt;The upcoming version of Hydra and WVDAdmin will disable the Bit Locker service temporarily during the imaging process.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 17 Mar 2025 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/Rollout-Image-BlueScreen-0xc000000f-24h2/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Rollout-Image-BlueScreen-0xc000000f-24h2/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Entra</category>
-        
-      </item>
-    
-      <item>
-        <title>Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD</title>
-        <description>&lt;p&gt;With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don&amp;#39;t need to have network line-of-sight to the domain controller. &lt;/p&gt;
-
-&lt;p&gt;However, the user identities must still be hybrid / synchronized from a legacy AD right now. And that prevents having AAD-only users in a multi-user pool in AVD where a profile is mostly mandatory.&lt;/p&gt;
-
-&lt;h2 id=&quot;update-2023-03-02&quot;&gt;Update 2023-03-02&lt;/h2&gt;
-
-&lt;p&gt;There was an issue in the script/parameter for cmdkey. The parameter we need is /add not /generic&lt;/p&gt;
-
-&lt;h2 id=&quot;update-2023-02-15&quot;&gt;Update 2023-02-15&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Change of the script to work with Windows 11 22H2&lt;/strong&gt;
-Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key prevents this behavior.&lt;/p&gt;
-
-&lt;h2 id=&quot;update-2024-12-05&quot;&gt;Update 2024-12-05&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Change of the script to include credentials in the profile&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;update-2025-03-13&quot;&gt;Update 2025-03-13&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Fix of the script to include credentials in the profile&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;workaround&quot;&gt;Workaround&lt;/h2&gt;
-
-&lt;p&gt;I found a nice workaround to do the same with cloud-only users in Azure AD - including the use of FSLogix file shares.&lt;/p&gt;
-
-&lt;p&gt;Today, an Azure file share cannot be configured to use the AAD like an AD to set NTFS permissions. This is necessary to give the users the right permissions to create a profile folder on the share and have full access only to their own created files (the profile disk). Users should never have access to the profile disks of other users - to prevent data theft or to modify other users&amp;#39; data).&lt;/p&gt;
-
-&lt;p&gt;But how to handle this? For this workaround, I use a technic I have often used in the past to cover similar challenges (like &lt;a href=&quot;https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/&quot;&gt;this post&lt;/a&gt;). In Windows, you can configure on a resource level what credential should be used - and that on a per-user level. This also works for the system account and, therefore, also for services. So, we are able to &amp;quot;teach&amp;quot; the system account to use specific credentials to access an Azure storage account.&lt;/p&gt;
-
-&lt;p&gt;In our case, we need credentials to have full access to an Azure file share. And there are credentials to do that: The storage account credentials. Each storage account has credentials that can be used to have full access. You can grab the credentials from the &amp;quot;Access Key&amp;quot; menu in the storage account:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-005.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;Collect the right values:&lt;/p&gt;
-
-&lt;table&gt;&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;User name:&lt;/td&gt;
-&lt;td&gt;localhost\&lt;storageAccountName\&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Secret:&lt;/td&gt;
-&lt;td&gt;&amp;lt;Key&amp;gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;StorageAccountFqdn:&lt;/td&gt;
-&lt;td&gt;&amp;lt;storageAccountName&amp;gt;.file.core.net (the files endpoint)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;In my example, the user name is &amp;quot;localhost\avdaadstorage&amp;quot; and &amp;lt;StorageAccountFqdn&amp;gt; is &amp;quot;avdaadstorage.file.core.windows.net&amp;quot;&lt;/p&gt;
-
-&lt;p&gt;To &amp;quot;teach&amp;quot; the system account to use these credentials, we have to run the following command in the context of the system account:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;cmdkey.exe /add:&amp;lt;StorageAccountFqdn&amp;gt; /user:localhost\&amp;lt;StorageAccountName&amp;gt; /pass:&amp;lt;Key&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Example:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\avdaadstorage /pass:xxxxxxxxxxxxxxxx
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;After running the command on a host/VM, any access in the context of the system account to the storage runs with the configured credentials - to every share!&lt;/p&gt;
-
-&lt;p&gt;Great, our system can now access the shares on the storage account and has full permission. &lt;/p&gt;
-
-&lt;h3 id=&quot;window-11-22h2-and-credential-guard-with-uefi-lock&quot;&gt;Window 11 22H2 and Credential Guard with UEFI lock&lt;/h3&gt;
-
-&lt;p&gt;To prevent that Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key is needed:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force  # Only needed for Windows 11 22H2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Remember that this disables &lt;a href=&quot;https://learn.microsoft.com/en-us/windows/security/identity-protection/credential-guard/credential-guard-manage#enable-virtualization-based-security-and-windows-defender-credential-guard&quot;&gt;Windows Defender Credential Guard&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h3 id=&quot;credential-manager&quot;&gt;Credential manager&lt;/h3&gt;
-
-&lt;p&gt;If you save credentials to the credential manager, those credentials are not included in the profile. This can be changed by setting the following registry key and value&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\AzureADAccount&quot; -Name &quot;LoadCredKeyFromProfile&quot; -Value 1 -force
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;configuring-fslogix&quot;&gt;Configuring FSLogix&lt;/h2&gt;
-
-&lt;p&gt;Next step: Configure FSLogix to use the system account. Normally, FSLogix will access the share to store and read profiles in the user context. That is normally fine if users are able to authenticate with their own identity. In our case, we want to use the system account. The following reg-key configures FSLogix to use the system account:&lt;/p&gt;
-
-&lt;table&gt;&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Path:&lt;/td&gt;
-&lt;td&gt;HKLM:\SOFTWARE\FSLogix\Profiles&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Name:&lt;/td&gt;
-&lt;td&gt;AccessNetworkAsComputerObject&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Type:&lt;/td&gt;
-&lt;td&gt;DWord&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Value:&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;This value can be set via registry or PowerShell:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
-New-Item -Path &quot;HKLM:\SOFTWARE\FSLogix&quot; -Name &quot;Profiles&quot; -ErrorAction Ignore
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\AzureADAccount&quot; -Name &quot;LoadCredKeyFromProfile&quot; -Value 1 -force # Include credentials in the profile
-New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force  # Only needed for Windows 11 22H2
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If not already done, configure the file share:
-- Create a share on your storage account (e.g., profiles)
-- Configure FSLogix to use the share on each host:&lt;/p&gt;
-
-&lt;table&gt;&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Path:&lt;/td&gt;
-&lt;td&gt;HKLM:\SOFTWARE\FSLogix\Profiles&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Name:&lt;/td&gt;
-&lt;td&gt;VHDLocations&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Type:&lt;/td&gt;
-&lt;td&gt;Reg_SZ&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Value:&lt;/td&gt;
-&lt;td&gt;\\&lt;StorageAccountFqdn\&gt;\&amp;lt;ProfileShareName&amp;gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;And enable FSLogix profile service:&lt;/p&gt;
-
-&lt;table&gt;&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Path:&lt;/td&gt;
-&lt;td&gt;HKLM:\SOFTWARE\FSLogix\Profiles&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Name:&lt;/td&gt;
-&lt;td&gt;Enabled&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Type:&lt;/td&gt;
-&lt;td&gt;DWord&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;Value:&lt;/td&gt;
-&lt;td&gt;1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;After that, users can log in to the hosts, and the profile is stored on the file share on the storage account:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-000.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;security&quot;&gt;Security&lt;/h2&gt;
-
-&lt;p&gt;How secure is that? 
-- Users cannot access their own or other profiles by entering the path to the share while they don&amp;#39;t have the storage account credentials. 
-- Users can also not run programs in the system context (if they are not local admins on the host - what I expect).
-- Every local administrator of a host can run processes in the system context: So the local admin permissions/role must be secured to prevent admins from accessing the profile storage indirectly or reading the storage account credentials.
-- Azure Administrator with the permission Microsoft.Compute/virtualMachines/runCommand/action can send scripts running in the system context to a host/VM (like a contributor). That is comparable to local administrator permission.
-- The system has permission to access all shares on the storage account with the credentials. Not only the profile share. It makes sense to have a separate share for the profiles.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Summary:&lt;/strong&gt; Users with non-admin permissions can not access other users&amp;#39; profiles. Local admins are able to do this, but local admins are able to compromise users in other ways. So local admin privileges &lt;strong&gt;should be considered carefully&lt;/strong&gt;. Same for privileged access in Azure.&lt;/p&gt;
-
-&lt;h2 id=&quot;do-the-full-configuration-with-a-script&quot;&gt;Do the full configuration with a script&lt;/h2&gt;
-
-&lt;p&gt;Let me share a script you can use to do the full configuration with a script. In the script, I also set some other basic configurations I mostly use for FSLogix. Keep in mind that the user name is part of the path and profile disk name. If you rename the display name of a user, the user will get a new profile.&lt;/p&gt;
-
-&lt;p&gt;The script must be executed directly after the rollout of a new host in the system context. It&amp;#39;s not possible to do that on the Master VM while the credential store is reset during sysprep. To run the script in the system context, use PSEXEC to open PowerShell in the system context (psexec /s powershell.exe).&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;WARNING:&lt;/strong&gt; The script contains a secret. Delete the script from the host&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;write-host &quot;Configuring FSLogix&quot;
-$fileServer=&quot;avdaadstorage.file.core.windows.net&quot;
-$profileShare=&quot;\\$($fileServer)\profiles&quot;
-
-$user=&quot;localhost\avdaadstorage&quot;
-$secret=&quot;###################&quot;
-
-New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
-New-Item -Path &quot;HKLM:\SOFTWARE\FSLogix&quot; -Name &quot;Profiles&quot; -ErrorAction Ignore
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;Enabled&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VHDLocations&quot; -Value $profileShare -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ConcurrentUserSessions&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;DeleteLocalProfileWhenVHDShouldApply&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;FlipFlopProfileDirectoryName&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;IsDynamic&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;KeepLocalDir&quot; -Value 0 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ProfileType&quot; -Value 0 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;SizeInMBs&quot; -Value 40000 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VolumeType&quot; -Value &quot;VHDX&quot; -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
-
-# Include credentials in the profile
-New-Item -Path &quot;HKLM:\Software\Policies\Microsoft&quot; -Name &quot;AzureADAccount&quot; -ErrorAction Ignore
-New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\AzureADAccount&quot; -Name &quot;LoadCredKeyFromProfile&quot; -Value 1 -force
-
-# Store credentials to access the storage account
-cmdkey.exe /add:$fileServer /user:$($user) /pass:$($secret)
-# Disable Windows Defender Credential Guard (only needed for Windows 11 22H2)
-New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force
-
-write-host &quot;The script has finished.&quot;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id=&quot;use-hydra-to-run-the-script-on-demand-or-automatically-after-each-rollout&quot;&gt;Use Hydra to run the script on-demand or automatically after each rollout&lt;/h2&gt;
-
-&lt;p&gt;You can use &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; to apply the script automatically after rolling out a new host. &lt;/p&gt;
-
-&lt;p&gt;Open the host pool configuration in Hydra -&amp;gt; Base and configure the service account:
-- Service account name: localhost\avdaadstorage
-- Service account password: &amp;lt;key of the storage account&amp;gt;
-- Save&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-002.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;Scripts and Collections -&amp;gt; Scripts
-- Duplicate an existing script to have a new one
-- Check &amp;quot;Service Account&amp;quot;
-- Give it a good name (e.g., &amp;quot;FSLogix and Cloud Accounts - Hydra integrated&amp;quot;)
-- Copy the following script into the code field
-- Save&lt;/p&gt;
-
-&lt;p&gt;Script:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;# Check, if service account available
-if ($global:Hydra_ServiceAccount_PSC -eq $null) {
-    throw &quot;Failed: Service account missing - The script needs a configured service account. You can configure the service account (having full access to the FSLogix profile share on the host pool configuration.&quot;
-}
-
-LogWriter(&quot;Configuring FSLogix&quot;)
-$fileServer=&quot;$($($global:Hydra_ServiceAccount_PSC.UserName).Split(&apos;\&apos;)[1]).file.core.windows.net&quot;
-$profileShare=&quot;\\$($fileServer)\profiles&quot;
-
-New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
-New-Item -Path &quot;HKLM:\SOFTWARE\FSLogix&quot; -Name &quot;Profiles&quot; -ErrorAction Ignore
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;Enabled&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VHDLocations&quot; -Value $profileShare -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ConcurrentUserSessions&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;DeleteLocalProfileWhenVHDShouldApply&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;FlipFlopProfileDirectoryName&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;IsDynamic&quot; -Value 1 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;KeepLocalDir&quot; -Value 0 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ProfileType&quot; -Value 0 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;SizeInMBs&quot; -Value 40000 -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VolumeType&quot; -Value &quot;VHDX&quot; -force
-New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
-
-# Include credentials in the profile
-New-Item -Path &quot;HKLM:\Software\Policies\Microsoft&quot; -Name &quot;AzureADAccount&quot; -ErrorAction Ignore
-New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\AzureADAccount&quot; -Name &quot;LoadCredKeyFromProfile&quot; -Value 1 -force
-
-LogWriter(&quot;Setting credentials to access the storage account of the system&quot;)
-cmdkey.exe /add:$fileServer /user:$($global:Hydra_ServiceAccount_PSC.UserName) /pass:([System.Net.NetworkCredential]::new(&quot;&quot;,$global:Hydra_ServiceAccount_PSC.password).Password)
-LogWriter(&quot;Disable Windows Defender Credential Guard (only needed for Windows 11 22H2)&quot;)
-New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force
-
-OutputWriter(&quot;The script has finished.&quot;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-001.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;After that, you can trigger the script on a host or let it run automatically after each deployment:
-- Open the host pool configuration in Hydra -&amp;gt; New Session Host Rollout
-- Configure the rollout parameter
-- Select the script in &amp;quot;Run script or script collection after deployment&amp;quot;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-003.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;After that a new rollout looks like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-004.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;others&quot;&gt;Others&lt;/h2&gt;
-
-&lt;p&gt;And yes, there are other options to run the script in the system context automatically. Please ensure that the password/secret &lt;strong&gt;is not stored on the host&amp;#39;s disk&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Hint:&lt;/strong&gt; You can create another share for MSIX App-Attach packages. The system account also has permission to load the packages.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note: It&amp;#39;s a nice workaround to bridge the time until there is a native solution in Azure. Please use it at your own risk.&lt;/strong&gt;&lt;/p&gt;
-</description>
-        <pubDate>Thu, 13 Mar 2025 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -357,7 +17,7 @@ OutputWriter(&quot;The script has finished.&quot;)
 
 &lt;p&gt;Are you interested in the new &amp;quot;Hydra for Azure Virtual Desktop&amp;quot; solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 01/13/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 03/24/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 
@@ -445,7 +105,7 @@ OutputWriter(&quot;The script has finished.&quot;)
 
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 01/13/2025&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 03/24/2025&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;details&gt;&lt;summary&gt;I&amp;#39;m continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;&lt;/p&gt;
@@ -457,6 +117,11 @@ OutputWriter(&quot;The script has finished.&quot;)
 &lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;2.0.03.0&lt;/td&gt;
+&lt;td&gt;2025-03-24&lt;/td&gt;
+&lt;td&gt;Add: Alternativ download URL for the AVD agent to avoid the 502 Bad Gateway error from Microsoft&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;2.0.02.0&lt;/td&gt;
 &lt;td&gt;2025-01-13&lt;/td&gt;
@@ -1599,11 +1264,351 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 01/13/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 03/24/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Mon, 13 Jan 2025 00:00:00 +0100</pubDate>
+        <pubDate>Mon, 24 Mar 2025 00:00:00 -0700</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Deployment of an Azure Virtual Desktop image failed after updating to Windows 24H2 with a blue screen 0xc000000f</title>
+        <description>&lt;p&gt;Several users reported a failure during the rollout of images in Azure Virtual Desktop in the last months. The error pattern was always the same: The virtual machine was built, and the next step failed while the VM was no longer running.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/bs-0xc000000f-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;We figured out that the VM installation resulted in a blue screen with the error message 0xc000000f, Windows shut down internally, and the VM was stopped in Azure. That was reproducible and caused by the image itself. The image was created by capturing a Golden Master with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; or &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; (which can image an existing VM without destroying it).&lt;/p&gt;
+
+&lt;p&gt;Interesting: Older images from the same Golden Masters are working. The only difference between them is that the Golden Master was updated to Windows 11 24H2.&lt;/p&gt;
+
+&lt;p&gt;So, we inspected the Golden Master and started the imaging process step by step. After a while, we figured out that during the Sysprep process, Windows started to encrypt the C: drive. During the encryption, Sysprep finished and shut down the VM, and the imaging process continued. Unfortunately, the captured image is half encrypted and, for that reason, not deployable as a new VM/host.&lt;/p&gt;
+
+&lt;p&gt;We never figured out why this happened after upgrading to 24H2, and that also doesn&amp;#39;t happen if your Golden Master was built on 24H2 initially.&lt;/p&gt;
+
+&lt;p&gt;Solution: The solution is more of a workaround. But if we disable the Bit Locker service on the Golden Master, the Sysprep process will not encrypt the C: drive, and the image will be deployable.&lt;/p&gt;
+
+&lt;p&gt;The upcoming version of Hydra and WVDAdmin will disable the Bit Locker service temporarily during the imaging process.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 17 Mar 2025 00:00:00 -0700</pubDate>
+        <link>https://blog.itprocloud.de/Rollout-Image-BlueScreen-0xc000000f-24h2/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Rollout-Image-BlueScreen-0xc000000f-24h2/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Entra</category>
+        
+      </item>
+    
+      <item>
+        <title>Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD</title>
+        <description>&lt;p&gt;With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don&amp;#39;t need to have network line-of-sight to the domain controller. &lt;/p&gt;
+
+&lt;p&gt;However, the user identities must still be hybrid / synchronized from a legacy AD right now. And that prevents having AAD-only users in a multi-user pool in AVD where a profile is mostly mandatory.&lt;/p&gt;
+
+&lt;h2 id=&quot;update-2023-03-02&quot;&gt;Update 2023-03-02&lt;/h2&gt;
+
+&lt;p&gt;There was an issue in the script/parameter for cmdkey. The parameter we need is /add not /generic&lt;/p&gt;
+
+&lt;h2 id=&quot;update-2023-02-15&quot;&gt;Update 2023-02-15&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Change of the script to work with Windows 11 22H2&lt;/strong&gt;
+Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key prevents this behavior.&lt;/p&gt;
+
+&lt;h2 id=&quot;update-2024-12-05&quot;&gt;Update 2024-12-05&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Change of the script to include credentials in the profile&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;update-2025-03-13&quot;&gt;Update 2025-03-13&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Fix of the script to include credentials in the profile&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;workaround&quot;&gt;Workaround&lt;/h2&gt;
+
+&lt;p&gt;I found a nice workaround to do the same with cloud-only users in Azure AD - including the use of FSLogix file shares.&lt;/p&gt;
+
+&lt;p&gt;Today, an Azure file share cannot be configured to use the AAD like an AD to set NTFS permissions. This is necessary to give the users the right permissions to create a profile folder on the share and have full access only to their own created files (the profile disk). Users should never have access to the profile disks of other users - to prevent data theft or to modify other users&amp;#39; data).&lt;/p&gt;
+
+&lt;p&gt;But how to handle this? For this workaround, I use a technic I have often used in the past to cover similar challenges (like &lt;a href=&quot;https://blog.itprocloud.de/How-to-use-MSIX-AppAttach-without-having-computer-accounts-synced-for-Azure-Virtual-Desktop-AD-synced-Azure-Files/&quot;&gt;this post&lt;/a&gt;). In Windows, you can configure on a resource level what credential should be used - and that on a per-user level. This also works for the system account and, therefore, also for services. So, we are able to &amp;quot;teach&amp;quot; the system account to use specific credentials to access an Azure storage account.&lt;/p&gt;
+
+&lt;p&gt;In our case, we need credentials to have full access to an Azure file share. And there are credentials to do that: The storage account credentials. Each storage account has credentials that can be used to have full access. You can grab the credentials from the &amp;quot;Access Key&amp;quot; menu in the storage account:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-005.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Collect the right values:&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;User name:&lt;/td&gt;
+&lt;td&gt;localhost\&lt;storageAccountName\&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Secret:&lt;/td&gt;
+&lt;td&gt;&amp;lt;Key&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;StorageAccountFqdn:&lt;/td&gt;
+&lt;td&gt;&amp;lt;storageAccountName&amp;gt;.file.core.net (the files endpoint)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;In my example, the user name is &amp;quot;localhost\avdaadstorage&amp;quot; and &amp;lt;StorageAccountFqdn&amp;gt; is &amp;quot;avdaadstorage.file.core.windows.net&amp;quot;&lt;/p&gt;
+
+&lt;p&gt;To &amp;quot;teach&amp;quot; the system account to use these credentials, we have to run the following command in the context of the system account:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;cmdkey.exe /add:&amp;lt;StorageAccountFqdn&amp;gt; /user:localhost\&amp;lt;StorageAccountName&amp;gt; /pass:&amp;lt;Key&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;cmdkey.exe /add:avdaadstorage.file.core.windows.net /user:localhost\avdaadstorage /pass:xxxxxxxxxxxxxxxx
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;After running the command on a host/VM, any access in the context of the system account to the storage runs with the configured credentials - to every share!&lt;/p&gt;
+
+&lt;p&gt;Great, our system can now access the shares on the storage account and has full permission. &lt;/p&gt;
+
+&lt;h3 id=&quot;window-11-22h2-and-credential-guard-with-uefi-lock&quot;&gt;Window 11 22H2 and Credential Guard with UEFI lock&lt;/h3&gt;
+
+&lt;p&gt;To prevent that Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started again. The additional registry key is needed:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force  # Only needed for Windows 11 22H2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Remember that this disables &lt;a href=&quot;https://learn.microsoft.com/en-us/windows/security/identity-protection/credential-guard/credential-guard-manage#enable-virtualization-based-security-and-windows-defender-credential-guard&quot;&gt;Windows Defender Credential Guard&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;credential-manager&quot;&gt;Credential manager&lt;/h3&gt;
+
+&lt;p&gt;If you save credentials to the credential manager, those credentials are not included in the profile. This can be changed by setting the following registry key and value&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\AzureADAccount&quot; -Name &quot;LoadCredKeyFromProfile&quot; -Value 1 -force
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&quot;configuring-fslogix&quot;&gt;Configuring FSLogix&lt;/h2&gt;
+
+&lt;p&gt;Next step: Configure FSLogix to use the system account. Normally, FSLogix will access the share to store and read profiles in the user context. That is normally fine if users are able to authenticate with their own identity. In our case, we want to use the system account. The following reg-key configures FSLogix to use the system account:&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Path:&lt;/td&gt;
+&lt;td&gt;HKLM:\SOFTWARE\FSLogix\Profiles&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Name:&lt;/td&gt;
+&lt;td&gt;AccessNetworkAsComputerObject&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Type:&lt;/td&gt;
+&lt;td&gt;DWord&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Value:&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;This value can be set via registry or PowerShell:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
+New-Item -Path &quot;HKLM:\SOFTWARE\FSLogix&quot; -Name &quot;Profiles&quot; -ErrorAction Ignore
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\AzureADAccount&quot; -Name &quot;LoadCredKeyFromProfile&quot; -Value 1 -force # Include credentials in the profile
+New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force  # Only needed for Windows 11 22H2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;If not already done, configure the file share:
+- Create a share on your storage account (e.g., profiles)
+- Configure FSLogix to use the share on each host:&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Path:&lt;/td&gt;
+&lt;td&gt;HKLM:\SOFTWARE\FSLogix\Profiles&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Name:&lt;/td&gt;
+&lt;td&gt;VHDLocations&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Type:&lt;/td&gt;
+&lt;td&gt;Reg_SZ&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Value:&lt;/td&gt;
+&lt;td&gt;\\&lt;StorageAccountFqdn\&gt;\&amp;lt;ProfileShareName&amp;gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;And enable FSLogix profile service:&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Path:&lt;/td&gt;
+&lt;td&gt;HKLM:\SOFTWARE\FSLogix\Profiles&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Name:&lt;/td&gt;
+&lt;td&gt;Enabled&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Type:&lt;/td&gt;
+&lt;td&gt;DWord&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Value:&lt;/td&gt;
+&lt;td&gt;1&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;After that, users can log in to the hosts, and the profile is stored on the file share on the storage account:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-000.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;security&quot;&gt;Security&lt;/h2&gt;
+
+&lt;p&gt;How secure is that? 
+- Users cannot access their own or other profiles by entering the path to the share while they don&amp;#39;t have the storage account credentials. 
+- Users can also not run programs in the system context (if they are not local admins on the host - what I expect).
+- Every local administrator of a host can run processes in the system context: So the local admin permissions/role must be secured to prevent admins from accessing the profile storage indirectly or reading the storage account credentials.
+- Azure Administrator with the permission Microsoft.Compute/virtualMachines/runCommand/action can send scripts running in the system context to a host/VM (like a contributor). That is comparable to local administrator permission.
+- The system has permission to access all shares on the storage account with the credentials. Not only the profile share. It makes sense to have a separate share for the profiles.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Summary:&lt;/strong&gt; Users with non-admin permissions can not access other users&amp;#39; profiles. Local admins are able to do this, but local admins are able to compromise users in other ways. So local admin privileges &lt;strong&gt;should be considered carefully&lt;/strong&gt;. Same for privileged access in Azure.&lt;/p&gt;
+
+&lt;h2 id=&quot;do-the-full-configuration-with-a-script&quot;&gt;Do the full configuration with a script&lt;/h2&gt;
+
+&lt;p&gt;Let me share a script you can use to do the full configuration with a script. In the script, I also set some other basic configurations I mostly use for FSLogix. Keep in mind that the user name is part of the path and profile disk name. If you rename the display name of a user, the user will get a new profile.&lt;/p&gt;
+
+&lt;p&gt;The script must be executed directly after the rollout of a new host in the system context. It&amp;#39;s not possible to do that on the Master VM while the credential store is reset during sysprep. To run the script in the system context, use PSEXEC to open PowerShell in the system context (psexec /s powershell.exe).&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;WARNING:&lt;/strong&gt; The script contains a secret. Delete the script from the host&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;write-host &quot;Configuring FSLogix&quot;
+$fileServer=&quot;avdaadstorage.file.core.windows.net&quot;
+$profileShare=&quot;\\$($fileServer)\profiles&quot;
+
+$user=&quot;localhost\avdaadstorage&quot;
+$secret=&quot;###################&quot;
+
+New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
+New-Item -Path &quot;HKLM:\SOFTWARE\FSLogix&quot; -Name &quot;Profiles&quot; -ErrorAction Ignore
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;Enabled&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VHDLocations&quot; -Value $profileShare -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ConcurrentUserSessions&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;DeleteLocalProfileWhenVHDShouldApply&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;FlipFlopProfileDirectoryName&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;IsDynamic&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;KeepLocalDir&quot; -Value 0 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ProfileType&quot; -Value 0 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;SizeInMBs&quot; -Value 40000 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VolumeType&quot; -Value &quot;VHDX&quot; -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
+
+# Include credentials in the profile
+New-Item -Path &quot;HKLM:\Software\Policies\Microsoft&quot; -Name &quot;AzureADAccount&quot; -ErrorAction Ignore
+New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\AzureADAccount&quot; -Name &quot;LoadCredKeyFromProfile&quot; -Value 1 -force
+
+# Store credentials to access the storage account
+cmdkey.exe /add:$fileServer /user:$($user) /pass:$($secret)
+# Disable Windows Defender Credential Guard (only needed for Windows 11 22H2)
+New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force
+
+write-host &quot;The script has finished.&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h2 id=&quot;use-hydra-to-run-the-script-on-demand-or-automatically-after-each-rollout&quot;&gt;Use Hydra to run the script on-demand or automatically after each rollout&lt;/h2&gt;
+
+&lt;p&gt;You can use &lt;a href=&quot;https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; to apply the script automatically after rolling out a new host. &lt;/p&gt;
+
+&lt;p&gt;Open the host pool configuration in Hydra -&amp;gt; Base and configure the service account:
+- Service account name: localhost\avdaadstorage
+- Service account password: &amp;lt;key of the storage account&amp;gt;
+- Save&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-002.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Scripts and Collections -&amp;gt; Scripts
+- Duplicate an existing script to have a new one
+- Check &amp;quot;Service Account&amp;quot;
+- Give it a good name (e.g., &amp;quot;FSLogix and Cloud Accounts - Hydra integrated&amp;quot;)
+- Copy the following script into the code field
+- Save&lt;/p&gt;
+
+&lt;p&gt;Script:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;# Check, if service account available
+if ($global:Hydra_ServiceAccount_PSC -eq $null) {
+    throw &quot;Failed: Service account missing - The script needs a configured service account. You can configure the service account (having full access to the FSLogix profile share on the host pool configuration.&quot;
+}
+
+LogWriter(&quot;Configuring FSLogix&quot;)
+$fileServer=&quot;$($($global:Hydra_ServiceAccount_PSC.UserName).Split(&apos;\&apos;)[1]).file.core.windows.net&quot;
+$profileShare=&quot;\\$($fileServer)\profiles&quot;
+
+New-Item -Path &quot;HKLM:\SOFTWARE&quot; -Name &quot;FSLogix&quot; -ErrorAction Ignore
+New-Item -Path &quot;HKLM:\SOFTWARE\FSLogix&quot; -Name &quot;Profiles&quot; -ErrorAction Ignore
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;Enabled&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VHDLocations&quot; -Value $profileShare -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ConcurrentUserSessions&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;DeleteLocalProfileWhenVHDShouldApply&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;FlipFlopProfileDirectoryName&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;IsDynamic&quot; -Value 1 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;KeepLocalDir&quot; -Value 0 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;ProfileType&quot; -Value 0 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;SizeInMBs&quot; -Value 40000 -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;VolumeType&quot; -Value &quot;VHDX&quot; -force
+New-ItemProperty -Path &quot;HKLM:\SOFTWARE\FSLogix\Profiles&quot; -Name &quot;AccessNetworkAsComputerObject&quot; -Value 1 -force
+
+# Include credentials in the profile
+New-Item -Path &quot;HKLM:\Software\Policies\Microsoft&quot; -Name &quot;AzureADAccount&quot; -ErrorAction Ignore
+New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\AzureADAccount&quot; -Name &quot;LoadCredKeyFromProfile&quot; -Value 1 -force
+
+LogWriter(&quot;Setting credentials to access the storage account of the system&quot;)
+cmdkey.exe /add:$fileServer /user:$($global:Hydra_ServiceAccount_PSC.UserName) /pass:([System.Net.NetworkCredential]::new(&quot;&quot;,$global:Hydra_ServiceAccount_PSC.password).Password)
+LogWriter(&quot;Disable Windows Defender Credential Guard (only needed for Windows 11 22H2)&quot;)
+New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Control\Lsa&quot; -Name &quot;LsaCfgFlags&quot; -Value 0 -force
+
+OutputWriter(&quot;The script has finished.&quot;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-001.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;After that, you can trigger the script on a host or let it run automatically after each deployment:
+- Open the host pool configuration in Hydra -&amp;gt; New Session Host Rollout
+- Configure the rollout parameter
+- Select the script in &amp;quot;Run script or script collection after deployment&amp;quot;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-003.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;After that a new rollout looks like this:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/AAD-Only-FSLogix-004.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;others&quot;&gt;Others&lt;/h2&gt;
+
+&lt;p&gt;And yes, there are other options to run the script in the system context automatically. Please ensure that the password/secret &lt;strong&gt;is not stored on the host&amp;#39;s disk&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Hint:&lt;/strong&gt; You can create another share for MSIX App-Attach packages. The system account also has permission to load the packages.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note: It&amp;#39;s a nice workaround to bridge the time until there is a native solution in Azure. Please use it at your own risk.&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 13 Mar 2025 00:00:00 -0700</pubDate>
+        <link>https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/</guid>
         
         
         <category>Windows Virtual Desktop</category>
@@ -1800,7 +1805,7 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 
 &lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don&amp;#39;t generate costs.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 02 Dec 2024 00:00:00 +0100</pubDate>
+        <pubDate>Mon, 02 Dec 2024 00:00:00 -0800</pubDate>
         <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
         
@@ -1844,7 +1849,7 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 
 &lt;p&gt;Even if that doesn&amp;#39;t solve my challenge very well, it&amp;#39;s a nice workaround or at least increased my insights.&lt;/p&gt;
 </description>
-        <pubDate>Tue, 08 Oct 2024 00:00:00 +0200</pubDate>
+        <pubDate>Tue, 08 Oct 2024 00:00:00 -0700</pubDate>
         <link>https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/</guid>
         
@@ -1996,7 +2001,7 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
 
 &lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
 </description>
-        <pubDate>Thu, 03 Oct 2024 00:00:00 +0200</pubDate>
+        <pubDate>Thu, 03 Oct 2024 00:00:00 -0700</pubDate>
         <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</guid>
         
@@ -2062,7 +2067,7 @@ if (Test-Path -Path &quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckRepor
 
 &lt;p&gt;It&amp;#39;s also a good idea to open a ticket to let Microsoft fix this issue with the service/AVD agent.&lt;/p&gt;
 </description>
-        <pubDate>Thu, 26 Sep 2024 00:00:00 +0200</pubDate>
+        <pubDate>Thu, 26 Sep 2024 00:00:00 -0700</pubDate>
         <link>https://blog.itprocloud.de/AVD-Need-Assistance-NAT-shape-is-Undetermined-when-probing-TURN-relay-health-check-failed/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Need-Assistance-NAT-shape-is-Undetermined-when-probing-TURN-relay-health-check-failed/</guid>
         
@@ -2209,7 +2214,7 @@ $appExecutable = &amp;quot;finance.exe&amp;quot;
 
 &lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 16 Sep 2024 00:00:00 +0200</pubDate>
+        <pubDate>Mon, 16 Sep 2024 00:00:00 -0700</pubDate>
         <link>https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</guid>
         
@@ -2585,7 +2590,7 @@ if ($mode -like &quot;install&quot;) {
     LogWriter(&quot;Done&quot;)
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-        <pubDate>Fri, 23 Aug 2024 00:00:00 +0200</pubDate>
+        <pubDate>Fri, 23 Aug 2024 00:00:00 -0700</pubDate>
         <link>https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</guid>
         
@@ -2685,7 +2690,7 @@ else {
 }
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-        <pubDate>Thu, 01 Aug 2024 00:00:00 +0200</pubDate>
+        <pubDate>Thu, 01 Aug 2024 00:00:00 -0700</pubDate>
         <link>https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/</guid>
         
