@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 24 Mar 2025 17:51:14 -0700</pubDate>
-    <lastBuildDate>Mon, 24 Mar 2025 17:51:14 -0700</lastBuildDate>
+    <pubDate>Mon, 31 Mar 2025 16:51:30 +0200</pubDate>
+    <lastBuildDate>Mon, 31 Mar 2025 16:51:30 +0200</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
     
       <item>
@@ -17,7 +17,7 @@
 
 &lt;p&gt;Are you interested in the new &amp;quot;Hydra for Azure Virtual Desktop&amp;quot; solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 03/24/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 03/31/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 
@@ -105,7 +105,7 @@
 
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 03/24/2025&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 03/31/2025&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;details&gt;&lt;summary&gt;I&amp;#39;m continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;&lt;/p&gt;
@@ -117,6 +117,11 @@
 &lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;2.0.04.0&lt;/td&gt;
+&lt;td&gt;2025-03-31&lt;/td&gt;
+&lt;td&gt;Change: Correct some typos; update of an Azure package (to access storage accounts)&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;2.0.03.0&lt;/td&gt;
 &lt;td&gt;2025-03-24&lt;/td&gt;
@@ -1264,9 +1269,9 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 03/24/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 03/31/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Mon, 24 Mar 2025 00:00:00 -0700</pubDate>
+        <pubDate>Mon, 31 Mar 2025 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
         
@@ -1295,7 +1300,7 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 
 &lt;p&gt;The upcoming version of Hydra and WVDAdmin will disable the Bit Locker service temporarily during the imaging process.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 17 Mar 2025 00:00:00 -0700</pubDate>
+        <pubDate>Mon, 17 Mar 2025 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Rollout-Image-BlueScreen-0xc000000f-24h2/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Rollout-Image-BlueScreen-0xc000000f-24h2/</guid>
         
@@ -1606,7 +1611,7 @@ OutputWriter(&quot;The script has finished.&quot;)
 
 &lt;p&gt;&lt;strong&gt;Note: It&amp;#39;s a nice workaround to bridge the time until there is a native solution in Azure. Please use it at your own risk.&lt;/strong&gt;&lt;/p&gt;
 </description>
-        <pubDate>Thu, 13 Mar 2025 00:00:00 -0700</pubDate>
+        <pubDate>Thu, 13 Mar 2025 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/</guid>
         
@@ -1805,7 +1810,7 @@ OutputWriter(&quot;The script has finished.&quot;)
 
 &lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don&amp;#39;t generate costs.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 02 Dec 2024 00:00:00 -0800</pubDate>
+        <pubDate>Mon, 02 Dec 2024 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
         
@@ -1849,7 +1854,7 @@ OutputWriter(&quot;The script has finished.&quot;)
 
 &lt;p&gt;Even if that doesn&amp;#39;t solve my challenge very well, it&amp;#39;s a nice workaround or at least increased my insights.&lt;/p&gt;
 </description>
-        <pubDate>Tue, 08 Oct 2024 00:00:00 -0700</pubDate>
+        <pubDate>Tue, 08 Oct 2024 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/</guid>
         
@@ -2001,7 +2006,7 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
 
 &lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
 </description>
-        <pubDate>Thu, 03 Oct 2024 00:00:00 -0700</pubDate>
+        <pubDate>Thu, 03 Oct 2024 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</guid>
         
@@ -2067,7 +2072,7 @@ if (Test-Path -Path &quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckRepor
 
 &lt;p&gt;It&amp;#39;s also a good idea to open a ticket to let Microsoft fix this issue with the service/AVD agent.&lt;/p&gt;
 </description>
-        <pubDate>Thu, 26 Sep 2024 00:00:00 -0700</pubDate>
+        <pubDate>Thu, 26 Sep 2024 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/AVD-Need-Assistance-NAT-shape-is-Undetermined-when-probing-TURN-relay-health-check-failed/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Need-Assistance-NAT-shape-is-Undetermined-when-probing-TURN-relay-health-check-failed/</guid>
         
@@ -2214,7 +2219,7 @@ $appExecutable = &amp;quot;finance.exe&amp;quot;
 
 &lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
 </description>
-        <pubDate>Mon, 16 Sep 2024 00:00:00 -0700</pubDate>
+        <pubDate>Mon, 16 Sep 2024 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</guid>
         
@@ -2590,7 +2595,7 @@ if ($mode -like &quot;install&quot;) {
     LogWriter(&quot;Done&quot;)
 }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-        <pubDate>Fri, 23 Aug 2024 00:00:00 -0700</pubDate>
+        <pubDate>Fri, 23 Aug 2024 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</guid>
         
@@ -2690,7 +2695,7 @@ else {
 }
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-        <pubDate>Thu, 01 Aug 2024 00:00:00 -0700</pubDate>
+        <pubDate>Thu, 01 Aug 2024 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/</guid>
         
