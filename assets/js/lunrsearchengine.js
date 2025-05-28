@@ -18,12 +18,12 @@ var documents = [{
     "id": 3,
     "url": "https://blog.itprocloud.de/Impressum",
     "title": "Impressum",
-    "body": "Angaben gemäß § 5 TMGITProCloud GmbHEichholzer Weg 3551519 OdenthalDeutschland / Germany Vertreten durch:Marcel Meurer, Geschäftsführer Kontakt:Telefon: +49 2207 8497770E-Mail: marcel. meurer@itprocloud. com Registereintrag:Eintragung im Registergericht: KölnRegisternummer: HRB 107207 Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:Marcel MeurerEichholzer Weg 3551519 Odenthal  "
+    "body": "Angaben gemäß § 5 TMGITProCloud GmbHEichholzer Weg 3551519 OdenthalDeutschland / Germany Vertreten durch:Melissa Lee Herman, GeschäftsführerJohn Anthony Vigeant, Geschäftsführer Kontakt:Telefon: +49 2207 8497770E-Mail: info@itprocloud. com (monitored email box) Registereintrag:Eintragung im Registergericht: KölnRegisternummer: HRB 107207 Inhaltlich Verantwortlicher gemäß § 18 Abs. 2 MStV:Marcel MeurerEichholzer Weg 3551519 Odenthal  "
     }, {
     "id": 4,
     "url": "https://blog.itprocloud.de/ImpressumEn",
     "title": "Imprint",
-    "body": "Information in accordance with section 5 TMG:ITProCloud GmbHEichholzer Weg 3551519 OdenthalGermany Represented by:Marcel Meurer, CEO Contact:Phone: +49 2207 8497770Mail: marcel. meurer@itprocloud. com Register entry:Entry in the register court: CologneNumber: HRB 107207 Person responsible for content in accordance with 55 Abs. 2 RStV:Marcel MeurerEichholzer Weg 3551519 Odenthal  "
+    "body": "Information in accordance with section 5 TMG:ITProCloud GmbHEichholzer Weg 3551519 OdenthalGermany Represented by:Melissa Lee Herman, Managing DirectorJohn Anthony Vigeant, Managing Director Contact:Phone: +49 2207 8497770E-Mail: info@itprocloud. com (monitored email box) Register entry:Entry in the register court: CologneNumber: HRB 107207 Person responsible for content in accordance with § 18 Abs. 2 MStV:Marcel MeurerEichholzer Weg 3551519 Odenthal  "
     }, {
     "id": 5,
     "url": "https://blog.itprocloud.de/",
@@ -308,7 +308,7 @@ var documents = [{
     "id": 61,
     "url": "https://blog.itprocloud.de/Hydra-for-Azure-Virtual-Desktop-AVD-is-available-in-the-Azure-Marketplace/",
     "title": "Hydra is publicly available and listed on the Azure Marketplace",
-    "body": "2021/09/02 - I&#39;m pleased that my project Hydra is now listed in the Azure Marketplace as a deployable solution into the customers&#39; subscription - which is essential to make sure that no personal data cross the customers&#39; boundaries. In short:Hydra is the solution to manage Azure Virtual Desktop for one or more tenants. Hydra&#39;s web platform allows administrators to deploy new session hosts, configure an auto-adapt scaling, maintain session hosts and pools automatically, and much more.  Start it right now - it&#39;s entirely free for environments having up to six-session hosts per pool. And even the commercial licensing is very favorable. Azure Marketplace More about Hydra "
+    "body": "2021/09/02 - I&#39;m pleased that my project Hydra is now listed in the Azure Marketplace as a deployable solution into the customers&#39; subscription - which is essential to make sure that no personal data cross the customers&#39; boundaries. In short:Hydra is the solution to manage Azure Virtual Desktop for one or more tenants. Hydra&#39;s web platform allows administrators to deploy new session hosts, configure an auto-adapt scaling, maintain session hosts and pools automatically, and much more.  Start it right now - it&#39;s entirely free for environments having up to five session hosts per pool. And even the commercial licensing is very favourable. Azure Marketplace More about Hydra "
     }, {
     "id": 62,
     "url": "https://blog.itprocloud.de/Scripts-and-Script-Collections-available-in-Hydra-for-the-automation-of-Windows-Azure-Virtual-Desktop-AVD-WVD/",
