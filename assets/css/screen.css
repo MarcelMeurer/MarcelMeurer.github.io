@@ -519,7 +519,7 @@ ul.tags li a:hover {
 .sep {
     height: 1px;
     width: 20px;
-    background: #999;
+    background: #333;
     margin: 0px auto;
     margin-bottom: 1.2rem;
 }
@@ -729,7 +729,7 @@ img {
     padding: 15px 0 0 0;
     text-align: center;
     margin-bottom: 0rem;
-    color: #999;
+    color: #333;
     border-top: 1px solid #ddd;
 }
 
