@@ -488,11 +488,11 @@
 
 <p>Make sure that you rename the files to fit the list above (without version numbers).</p>
 
-<p><img src="../assets/images/WVDAdmin/Migrate-02.png" alt="AADBrowser"></p>
+<p><img src="../assets/images/WVDAdmin/Migrate-02.png" alt="RDAgent and bootloader files"></p>
 
 <p>But first: If you are new to WVD/AVD Spring update and have never used it before in your subscription, you have to register the service provider Microsoft.DesktopVirtualization (one-time process). You must be the owner of this subscription to do this. Go to your subscription -&gt; Resource providers -&gt; search for &quot;Microsoft.DesktopVirtualization&quot; and click register:</p>
 
-<p><img src="../assets/images/WVDAdmin/ResourceProvider.png" alt="AADBrowser"></p>
+<p><img src="../assets/images/WVDAdmin/ResourceProvider.png" alt="Register resource provider"></p>
 
 <h2 id="the-migration-process">The migration process</h2>
 
@@ -539,10 +539,10 @@
 <li><a href="https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH">Microsoft.RDInfra.RDAgentBootLoader.msi</a> (rename the file)</li>
 </ul>
 
-<p><img src="../assets/images/WVDAdmin/Migrate-02.png" alt="AADBrowser"></p></li>
+<p><img src="../assets/images/WVDAdmin/Migrate-02.png" alt="RDagent and bootloader files"></p></li>
 <li><p>You cannot have app groups with from different host pools with the same name in one resource group</p></li>
 <li><p>Register Microsoft.DesktopVirtualization service provider
-<img src="../assets/images/WVDAdmin/ResourceProvider.png" alt="AADBrowser"></p></li>
+<img src="../assets/images/WVDAdmin/ResourceProvider.png" alt="Register resource provider"></p></li>
 <li><p>The service principal of WVDAdmin needs owner permission to the resource groups containing the app groups to add/remove users</p></li>
 <li><p>The HTML5 client has a new URL: <a href="https://rdweb.wvd.microsoft.com/arm/webclient">https://rdweb.wvd.microsoft.com/arm/webclient</a></p></li>
 <li><p>If you &quot;lost&quot; a session host you can add them manually to a host pool by doing:</p></li>

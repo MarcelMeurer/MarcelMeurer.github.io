@@ -474,26 +474,26 @@
 
 <p>From Version 1.4.7 you have another option: You can now browse the Azure AD for users AND groups to add them.</p>
 
-<p><img src="../assets/images/WVDAdmin/AadBrowser-01.png" alt="AADBrowser"></p>
+<p><img src="../assets/images/WVDAdmin/AadBrowser-01.png" alt="Browse in AAD"></p>
 
 <p>If you have added users and groups with the new function, <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin">WVDAdmin</a> will fill out the text field with the UPN&#39;s of the selected users and group members (only members, no external accounts).</p>
 
-<p><img src="../assets/images/WVDAdmin/AadBrowser-02.png" alt="AADBrowser"></p>
+<p><img src="../assets/images/WVDAdmin/AadBrowser-02.png" alt="Add user"></p>
 
 <p>This function doesn&#39;t resolve the missing function in the WVD/AVD but can give you an easier way to handle this until the function is integrated into WVD/AVD itself.</p>
 
 <p>Requirement: The service principal needs permission to browse the Azure Active directory. To do this go to the Azure Portal -&gt; Active Directory -&gt; App Registration -&gt; Select your Service Principal -&gt; API Permissions
 Add the permission &quot;Azure Active Directory Graph&quot; -&gt; Application Permission -&gt; Directory.Read.All</p>
 
-<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01.png" alt="AADBrowser"></p>
+<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01.png" alt="Configure permissions in AAD - 1"></p>
 
 <p>To be read for the <em>WVD Spring Update</em> you have to give the service principal access to the Graph API: Add the permission &quot;Microsoft Graph&quot; -&gt; Application Permission -&gt; Directory.Read.All</p>
 
-<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png" alt="AADBrowser"></p>
+<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-01b.png" alt="COnfigure permissions in AAD - 2"></p>
 
 <p>To consent the permission and administrator of Azure AD have to grant this:</p>
 
-<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png" alt="AADBrowser"></p>
+<p><img src="../assets/images/WVDAdmin/SP-PermissionToReadDirectoryObjects-02.png" alt="Consent the configuration"></p>
 
             </div>
 

@@ -476,10 +476,10 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
 <div class="highlight"><pre><code class="language-" data-lang="">sysprep.exe /generalize /oobe /shutdown /mode:vm
 </code></pre></div>
 <p>Sometimes I run into an issue, and Sysprep stops work with an error message:
-<img src="../assets/images/Sysprep-01.png" alt="Sysprep"></p>
+<img src="../assets/images/Sysprep-01.png" alt="Sysprep error message"></p>
 
 <p>Digging into the log file show the issue:
-<img src="../assets/images/Sysprep-02.png" alt="Sysprep"></p>
+<img src="../assets/images/Sysprep-02.png" alt="Sysprep logfile"></p>
 
 <p>Error: Package XXXXXXX was installed for a user, but not provisioned for all users.</p>
 
@@ -491,7 +491,7 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
 <div class="highlight"><pre><code class="language-" data-lang="">Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm')}
 </code></pre></div>
 <p>The returned object shows that this package is only installed for the local administrator (installing the apps from the Windows Store). The user querying this data (mm-admin) doesn&#39;t have this package installed.
-<img src="../assets/images/Sysprep-03.png" alt="Sysprep"></p>
+<img src="../assets/images/Sysprep-03.png" alt="Sysprep error message in detail"></p>
 
 <p>Okay. Appx packages from the store are personnel and not shared with all users on a VM (to install appx packages for all users, you have to sideload the packages with DISM.exe). So I tried to remove this app from all users:_</p>
 <div class="highlight"><pre><code class="language-" data-lang="">Get-AppxPackage -AllUsers | ? {$_.packagefullname.contains('5319275A.WhatsAppDesktop_2.2027.10.0_x64__cv1g1gvanyjgm')} | Remove-AppxPackage -AllUsers
@@ -505,7 +505,7 @@ One step of creating an image is to Sysprep the template image. I - or WVDAdmin 
 &lt;sysprepValidate methodName="SysprepGeneralizeValidate" moduleName="$(runtime.system32)\AppxSysprep.dll"&gt;&lt;/sysprepValidate&gt;
 &lt;sysprepModule methodName="SysprepGeneralize" moduleName="$(runtime.system32)\AppxSysprep.dll"&gt;&lt;/sysprepModule&gt;&lt;/imaging&gt;&lt;imaging exclude=""&gt;&lt;assemblyIdentity name="Microsoft-Windows-SecureBoot-FirmwareUpdate" version="10.0.19041.1" publicKeyToken="31bf3856ad364e35" processorArchitecture="amd64" versionScope="NonSxS"&gt;&lt;/assemblyIdentity&gt;
 </code></pre></div>
-<p><img src="../assets/images/Sysprep-04.png" alt="Sysprep"></p>
+<p><img src="../assets/images/Sysprep-04.png" alt="Sysprep file fixed"></p>
 
 <p>After that Sysprep runs without an issue. Rolling out a session host based on the new image works, and even the user could logon without a problem (and yes: they don&#39;t have the Store apps from the local admin - as expected).</p>
 

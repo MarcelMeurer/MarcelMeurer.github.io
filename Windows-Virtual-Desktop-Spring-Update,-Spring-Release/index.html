@@ -489,15 +489,15 @@
 
 (Reg_DWord) "FeatureSet" = 1
 </code></pre></div>
-<p><img src="../assets/images/WVDAdmin/SpringReleaseRegistry.png" alt="AADBrowser"></p>
+<p><img src="../assets/images/WVDAdmin/SpringReleaseRegistry.png" alt="Configure spring release in registry"></p>
 
 <p>First, register the new service provide Microsoft.DesktopVirtualization on your Azure subscription (one-time process). You must be owner of this subscription to do this. Go to your subscription -&gt; Resource providers -&gt;  search for &quot;Microsoft.DesktopVirtualization&quot; and click register:</p>
 
-<p><img src="../assets/images/WVDAdmin/ResourceProvider.png" alt="AADBrowser"></p>
+<p><img src="../assets/images/WVDAdmin/ResourceProvider.png" alt="Register resource provider"></p>
 
 <p>If you restart WVDAdmin you will see the new note &quot;WVD V2&quot; which displays your resources in the Spring Release. Please make sure that your service principal has the right permission to create and administrate your resources (the sp needs owner permission to the resource group containing your host pool, app groups, ... to assign users and groups).</p>
 
-<p><img src="../assets/images/WVDAdmin/SpringReleaseGui.png" alt="AADBrowser"></p>
+<p><img src="../assets/images/WVDAdmin/SpringReleaseGui.png" alt="UI showing the spring release"></p>
 
 <p>But what can you do with WVDAdmin compared to the portal integration? You can (e.g.):</p>
 
