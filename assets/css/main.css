@@ -370,3 +370,12 @@ table tr th :last-child, table tr td :last-child {
 
 .side-toc {
   position: fixed; }
+
+body,
+.layout-page,
+.lead,
+.navbar,
+.nav-link,
+.navbar-brand,
+.navbar-nav .nav-link {
+  color: #333 !important; }

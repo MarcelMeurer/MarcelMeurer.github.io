@@ -12,12 +12,12 @@ License: https://www.wowthemes.net/freebies-license/
 }
 
 a {
-    color: #00ab6b;
+    color: #007a55;
     transition: all 0.2s;
 }
 
 a:hover {
-    color: #038252;
+    color: #005f46;
     text-decoration: none;
 }
 
@@ -149,7 +149,7 @@ section.recent-posts {
 
 .listfeaturedtag h4.card-text,
 .listrecent h4.card-text {
-    color: #333);
+    color: #333;
     font-size: 0.95rem;
     line-height: 1.6;
     font-weight: 400;
@@ -340,7 +340,7 @@ blockquote {
     border-left: 4px solid #00ab6b;
     padding: 0 20px;
     font-style: italic;
-    color: rgba(0, 0, 0, .5);
+    color: #333;
 }
 
 .article-post p,
@@ -597,23 +597,23 @@ ul.tags li a:hover {
 }
 
 .form-control::-webkit-input-placeholder {
-    color: rgba(0, 0, 0, .5);
+    color: #333;
 }
 
 .form-control:-moz-placeholder {
-    color: rgba(0, 0, 0, .5);
+    color: #333;
 }
 
 .form-control::-moz-placeholder {
-    color: rgba(0, 0, 0, .5);
+    color: #333;
 }
 
 .form-control:-ms-input-placeholder {
-    color: rgba(0, 0, 0, .5);
+    color: #333;
 }
 
 .form-control::-ms-input-placeholder {
-    color: rgba(0, 0, 0, .5);
+    color: #333;
 }
 
 .authorpage h1 {
