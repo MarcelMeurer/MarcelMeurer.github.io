@@ -18,12 +18,12 @@ var documents = [{
     "id": 3,
     "url": "https://blog.itprocloud.de/Impressum",
     "title": "Impressum",
-    "body": "Angaben gemäß § 5 TMGITProCloud GmbHEichholzer Weg 3551519 OdenthalDeutschland / Germany Vertreten durch:Melissa Lee Herman, GeschäftsführerJohn Anthony Vigeant, Geschäftsführer Kontakt:Telefon: +49 2207 8497770E-Mail: info@itprocloud. com (monitored email box) Registereintrag:Eintragung im Registergericht: KölnRegisternummer: HRB 107207 Inhaltlich Verantwortlicher gemäß § 18 Abs. 2 MStV:Marcel MeurerEichholzer Weg 3551519 Odenthal  "
+    "body": "Verantwortlich für diese Webseite, insbesondere also redaktionell verantwortlich / Angaben gemäß § 5 DDG:Marcel Meurer, ITProCloud GmbHE-Mail: marcel. meurer@itprocloud. comEichholzer Weg 3551519 OdenthalDeutschland / Germany Vertreten durch:Melissa Lee Herman, GeschäftsführerJohn Anthony Vigeant, Geschäftsführer Barrierefreiheit:Wir sind bemüht, unsere Webseite möglichst barrierefrei zu gestalten. Sollten Sie dennoch Probleme bei der Nutzung feststellen, freuen wir uns über eine kurze Rückmeldung per E-Mail an marcel. meurer@itprocloud. com. Kontakt:Telefon: +49 2207 8497770E-Mail: info@itprocloud. com (monitored email box) Registereintrag:Eintragung im Registergericht: KölnRegisternummer: HRB 107207 Inhaltlich Verantwortlicher gemäß § 18 Abs. 2 MStV:Marcel MeurerEichholzer Weg 3551519 Odenthal  "
     }, {
     "id": 4,
     "url": "https://blog.itprocloud.de/ImpressumEn",
     "title": "Imprint",
-    "body": "Information in accordance with section 5 TMG:ITProCloud GmbHEichholzer Weg 3551519 OdenthalGermany Represented by:Melissa Lee Herman, Managing DirectorJohn Anthony Vigeant, Managing Director Contact:Phone: +49 2207 8497770E-Mail: info@itprocloud. com (monitored email box) Register entry:Entry in the register court: CologneNumber: HRB 107207 Person responsible for content in accordance with § 18 Abs. 2 MStV:Marcel MeurerEichholzer Weg 3551519 Odenthal  "
+    "body": "Responsible for this website, in particular editorially responsible / information according to § 5 DDG:Marcel Meurer, ITProCloud GmbHMail: marcel. meurer@itprocloud. comEichholzer Weg 3551519 OdenthalGermany Represented by:Melissa Lee Herman, Managing DirectorJohn Anthony Vigeant, Managing Director Accessibility:We endeavor to make our website as accessible as possible. However, if you encounter any problems using it, please send us a brief email to marcel. meurer@itprocloud. com. Contact:Phone: +49 2207 8497770E-Mail: info@itprocloud. com (monitored email box) Register entry:Entry in the register court: CologneNumber: HRB 107207 Person responsible for content in accordance with § 18 Abs. 2 MStV:Marcel MeurerEichholzer Weg 3551519 Odenthal  "
     }, {
     "id": 5,
     "url": "https://blog.itprocloud.de/",

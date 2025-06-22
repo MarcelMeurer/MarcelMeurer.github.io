@@ -149,7 +149,7 @@ section.recent-posts {
 
 .listfeaturedtag h4.card-text,
 .listrecent h4.card-text {
-    color: rgba(0, 0, 0, .44);
+    color: #333);
     font-size: 0.95rem;
     line-height: 1.6;
     font-weight: 400;
@@ -198,7 +198,7 @@ section.recent-posts {
 
 .post-top-meta span {
     font-size: 0.9rem;
-    color: rgba(0, 0, 0, .44);
+    color: #333;
     display: inline-block;
 }
 
@@ -228,7 +228,7 @@ span.author-meta {
 
 span.post-date,
 span.post-read {
-    color: rgba(0, 0, 0, .44);
+    color: #333;
 }
 
 span.post-read-more {
@@ -239,7 +239,7 @@ span.post-read-more {
 }
 
 span.post-read-more a {
-    color: rgba(0, 0, 0, .44);
+    color: #333;
 }
 
 span.post-name a,
@@ -318,7 +318,7 @@ span.post-read-more a:hover {
     padding-top: 15px;
     padding-bottom: 12px;
     font-size: 0.8rem;
-    color: rgba(0, 0, 0, .44);
+    color: #333;
     margin-top: 50px;
     margin-bottom: 62px;
     position: relative;
@@ -474,8 +474,8 @@ blockquote {
 
 .share,
 .share a {
-    color: rgba(0, 0, 0, .44);
-    fill: rgba(0, 0, 0, .44);
+    color: #333;
+    fill: #333;
 }
 
 .graybg {
