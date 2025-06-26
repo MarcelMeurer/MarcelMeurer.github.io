@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 22 Jun 2025 13:26:12 +0200</pubDate>
-    <lastBuildDate>Sun, 22 Jun 2025 13:26:12 +0200</lastBuildDate>
+    <pubDate>Thu, 26 Jun 2025 14:00:08 +0200</pubDate>
+    <lastBuildDate>Thu, 26 Jun 2025 14:00:08 +0200</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
     
       <item>
@@ -1371,7 +1371,7 @@ Windows 11 22H2 removes the cmdkey entry if the host is deallocated and started 
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;StorageAccountFqdn:&lt;/td&gt;
-&lt;td&gt;&amp;lt;storageAccountName&amp;gt;.file.core.net (the files endpoint)&lt;/td&gt;
+&lt;td&gt;&amp;lt;storageAccountName&amp;gt;.file.core.windows.net (the files endpoint)&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;&lt;/table&gt;
 
