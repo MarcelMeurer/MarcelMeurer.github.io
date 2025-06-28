@@ -345,10 +345,6 @@
 <lastmod>2024-10-08T00:00:00+02:00</lastmod>
 </url>
 <url>
-<loc>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</loc>
-<lastmod>2024-12-02T00:00:00+01:00</lastmod>
-</url>
-<url>
 <loc>https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/</loc>
 <lastmod>2025-03-13T00:00:00+01:00</lastmod>
 </url>
@@ -359,6 +355,10 @@
 <url>
 <loc>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</loc>
 <lastmod>2025-04-01T00:00:00+02:00</lastmod>
+</url>
+<url>
+<loc>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</loc>
+<lastmod>2025-06-28T00:00:00+02:00</lastmod>
 </url>
 <url>
 <loc>https://blog.itprocloud.de/about</loc>

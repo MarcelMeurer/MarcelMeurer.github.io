@@ -14,8 +14,8 @@
 <meta property="og:title" content="How to get the Client IP Address in Azure Virtual Desktop" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="While migrating Virtual Desktop Environments to AVD, I got another challenge from the past: Sometimes, companies use the client IP address to identify the user&#39;s location to map a specific printer in the location." />
-<meta property="og:description" content="While migrating Virtual Desktop Environments to AVD, I got another challenge from the past: Sometimes, companies use the client IP address to identify the user&#39;s location to map a specific printer in the location." />
+<meta name="description" content="Due to a change of the AVD agent, the needed data are no longer in the eventlog. Therfore, the tool is no longer working." />
+<meta property="og:description" content="Due to a change of the AVD agent, the needed data are no longer in the eventlog. Therfore, the tool is no longer working." />
 <link rel="canonical" href="https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/" />
 <meta property="og:url" content="https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/AVD-Client-IP-00.png" />
 <meta property="twitter:title" content="How to get the Client IP Address in Azure Virtual Desktop" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2023-10-23T00:00:00+02:00","datePublished":"2023-10-23T00:00:00+02:00","description":"While migrating Virtual Desktop Environments to AVD, I got another challenge from the past: Sometimes, companies use the client IP address to identify the user&#39;s location to map a specific printer in the location.","headline":"How to get the Client IP Address in Azure Virtual Desktop","image":"https://blog.itprocloud.de/assets/images/AVD-Client-IP-00.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2023-10-23T00:00:00+02:00","datePublished":"2023-10-23T00:00:00+02:00","description":"Due to a change of the AVD agent, the needed data are no longer in the eventlog. Therfore, the tool is no longer working.","headline":"How to get the Client IP Address in Azure Virtual Desktop","image":"https://blog.itprocloud.de/assets/images/AVD-Client-IP-00.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Azure-Virtual-Desktop-Client-IP/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -470,7 +470,9 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>While migrating Virtual Desktop Environments to AVD, I got another challenge from the past: Sometimes, companies use the client IP address to identify the user&#39;s location to map a specific printer in the location.</p>
+                <p><strong><em>Due to a change of the AVD agent, the needed data are no longer in the eventlog. Therfore, the tool is no longer working.</em></strong></p>
+
+<p>While migrating Virtual Desktop Environments to AVD, I got another challenge from the past: Sometimes, companies use the client IP address to identify the user&#39;s location to map a specific printer in the location.</p>
 
 <p>Unfortunately, AVD didn&#39;t provide this client&#39;s IP address. Even the property of <em>WTSQuerySessionInformation</em> is empty. I only get the internet-faced IP address if I try to use the diagnostic settings. But not the client&#39;s own address.</p>
 
