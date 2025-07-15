@@ -14,8 +14,8 @@
 <meta property="og:title" content="Securing an app service, a key vault, and a database with private endpoints" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Kommunikation is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string)." />
-<meta property="og:description" content="A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Kommunikation is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string)." />
+<meta name="description" content="A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Communication is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string)." />
+<meta property="og:description" content="A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Communication is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string)." />
 <link rel="canonical" href="https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/" />
 <meta property="og:url" content="https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
@@ -26,7 +26,7 @@
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/SecureWebApp.png" />
 <meta property="twitter:title" content="Securing an app service, a key vault, and a database with private endpoints" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2022-05-30T00:00:00+02:00","datePublished":"2022-05-30T00:00:00+02:00","description":"A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Kommunikation is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string).","headline":"Securing an app service, a key vault, and a database with private endpoints","image":"https://blog.itprocloud.de/assets/images/SecureWebApp.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2022-05-30T00:00:00+02:00","datePublished":"2022-05-30T00:00:00+02:00","description":"A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Communication is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string).","headline":"Securing an app service, a key vault, and a database with private endpoints","image":"https://blog.itprocloud.de/assets/images/SecureWebApp.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Securing-an-app-service,-a-key-vault,-and-a-database-with-private-endpoints/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -390,7 +390,7 @@
     <div class="article-post">
 	
 		<!-- change content to anchor styled output -->
-		<p>A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Kommunikation is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string).</p>
+		<p>A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Communication is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string).</p>
 
 <p>The key vaults and database endpoints are reachable over the public internet. The strong authentication from the app services ensures that the app service gets access.</p>
 
@@ -402,7 +402,7 @@
 
 <p><img src="../assets/images/SecureWebApp.png" alt=""></p>
 
-		<!--<p>A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Kommunikation is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string).</p>
+		<!--<p>A typical Azure application uses an app service representing the front end, a database to store the data and configuration settings, and a key vault to keep secrets (like the connection string to the database). Communication is done encrypted, and the app service has to authenticate to the vault (mostly done via managed identity) and to the database (often done with a connection string).</p>
 
 <p>The key vaults and database endpoints are reachable over the public internet. The strong authentication from the app services ensures that the app service gets access.</p>
 
