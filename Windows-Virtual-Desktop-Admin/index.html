@@ -1497,7 +1497,7 @@
 
 <p>Open &quot;Active Directory Users and Computers&quot; and create a user object with a complex password, and set a password to &quot;never expire&quot; (if you fine with this). I added the user <a href="mailto:srv_WVD-Join@itprocloud.de">srv_WVD-Join@itprocloud.de</a>.</p>
 
-<p>Delegate permission for the user to an OU. I found a really good blog post from <a href="https://twitter.com/prajwaldesai">Prajwal Desai</a>. Check out hist post on (external web site): <a href="https://www.prajwaldesai.com/allow-domain-user-to-add-computer-to-domain/" target="_blank">Method 2 – Delegate rights to user/group using Active Directory Users and Computers</a></p>
+<p>Delegate permission for the service user to an OU. Check out this post to configure a <a href="https://github.com/MarcelMeurer/WVD-Hydra/blob/main/delegated-domainjoin.md">delegated domain-join</a> account (<strong>never, ever an admin account!</strong>).</p>
 
 <p>In my case I added my function account to: &quot;OU=WVD,OU=Azure,OU=Site,OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test&quot;</p>
       <h2 id="optional-create-a-file-share">
@@ -2898,7 +2898,7 @@ Keep in mind to use availability sets for each rollout to use this feature.</p>
 
 <p>Open &quot;Active Directory Users and Computers&quot; and create a user object with a complex password, and set a password to &quot;never expire&quot; (if you fine with this). I added the user <a href="mailto:srv_WVD-Join@itprocloud.de">srv_WVD-Join@itprocloud.de</a>.</p>
 
-<p>Delegate permission for the user to an OU. I found a really good blog post from <a href="https://twitter.com/prajwaldesai">Prajwal Desai</a>. Check out hist post on (external web site): <a href="https://www.prajwaldesai.com/allow-domain-user-to-add-computer-to-domain/" target="_blank">Method 2 – Delegate rights to user/group using Active Directory Users and Computers</a></p>
+<p>Delegate permission for the service user to an OU. Check out this post to configure a <a href="https://github.com/MarcelMeurer/WVD-Hydra/blob/main/delegated-domainjoin.md">delegated domain-join</a> account (<strong>never, ever an admin account!</strong>).</p>
 
 <p>In my case I added my function account to: &quot;OU=WVD,OU=Azure,OU=Site,OU=Servers,OU=Sys,OU=Organisation,DC=ITProCloud,DC=test&quot;</p>
 
