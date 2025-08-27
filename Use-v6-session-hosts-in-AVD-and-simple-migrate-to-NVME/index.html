@@ -6,27 +6,27 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>Shrink FSLogix profiles automatically with Hydra | ITProCloud Blog</title>
+<title>From SCSI to NVMe in Azure Virtual Desktop - Reuse your current golden master VM - or convert it | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>Shrink FSLogix profiles automatically with Hydra | ITProCloud Blog</title>
+<title>From SCSI to NVMe in Azure Virtual Desktop - Reuse your current golden master VM - or convert it | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v3.10.0" />
-<meta property="og:title" content="Shrink FSLogix profiles automatically with Hydra" />
+<meta property="og:title" content="From SCSI to NVMe in Azure Virtual Desktop - Reuse your current golden master VM - or convert it" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Intro" />
-<meta property="og:description" content="Intro" />
-<link rel="canonical" href="https://blog.itprocloud.de/Shrink-FSLogix-Disks-automatically-with-Hydra/" />
-<meta property="og:url" content="https://blog.itprocloud.de/Shrink-FSLogix-Disks-automatically-with-Hydra/" />
+<meta name="description" content="Why NVMe Matters" />
+<meta property="og:description" content="Why NVMe Matters" />
+<link rel="canonical" href="https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/" />
+<meta property="og:url" content="https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="https://blog.itprocloud.de/assets/images/Hydra/FSLogixShrink-Disk-00.png" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/NVME-Image-01.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2021-09-25T00:00:00+02:00" />
+<meta property="article:published_time" content="2025-08-27T00:00:00+02:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/Hydra/FSLogixShrink-Disk-00.png" />
-<meta property="twitter:title" content="Shrink FSLogix profiles automatically with Hydra" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/NVME-Image-01.png" />
+<meta property="twitter:title" content="From SCSI to NVMe in Azure Virtual Desktop - Reuse your current golden master VM - or convert it" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2021-09-25T00:00:00+02:00","datePublished":"2021-09-25T00:00:00+02:00","description":"Intro","headline":"Shrink FSLogix profiles automatically with Hydra","image":"https://blog.itprocloud.de/assets/images/Hydra/FSLogixShrink-Disk-00.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Shrink-FSLogix-Disks-automatically-with-Hydra/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Shrink-FSLogix-Disks-automatically-with-Hydra/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2025-08-27T00:00:00+02:00","datePublished":"2025-08-27T00:00:00+02:00","description":"Why NVMe Matters","headline":"From SCSI to NVMe in Azure Virtual Desktop - Reuse your current golden master VM - or convert it","image":"https://blog.itprocloud.de/assets/images/NVME-Image-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -46,7 +46,7 @@
 
 
 
-<body class="layout-page">
+<body class="layout-post">
 	<!-- defer loading of font and font awesome -->
 	<!-- <noscript id="deferred-styles"> -->
 		<link rel="stylesheet" href="/assets/fa/css/all.css" crossorigin="anonymous"> 
@@ -382,120 +382,239 @@
 <!-- Content
 ================================================== -->
 <div class="main-content">
-    <section>
-    <div class="section-title">
-        <h2><span>Shrink FSLogix profiles automatically with Hydra</span></h2>
+    <!-- Begin Article
+================================================== -->
+<div class="container">
+    <div class="row">
+
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=From SCSI to NVMe in Azure Virtual Desktop - Reuse your current golden master VM - or convert it&url=https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/&title=From SCSI to NVMe in Azure Virtual Desktop - Reuse your current golden master VM - or convert it" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+    </ul>
+    
+    <div class="sep">
     </div>
-
-    <div class="article-post">
-	
-		<!-- change content to anchor styled output -->
-		<h2 id="intro">
-        
-        
-          Intro <a href="#intro"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
-        
-        
-      </h2>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
     
+</div>
 
-<p>FSLogix profile disks increase their size over time - even if a user deletes data and the data amount goes down. Like <a href="https://twitter.com/jimmoyle">Jim Moyle</a> wrote: &quot;Dynamically Expanding disks do not natively shrink when the volume of data within them reduces, they stay at the &#39;High water mark&#39; of historical data volume within them.&quot; </p>
+        </div>
 
-<p>While you are paying for usage or allocated storage, having the profile disk small is a good way to go.</p>
-
-<p>Jim provides a <a href="https://github.com/FSLogix/Invoke-FslShrinkDisk">script</a> to shrink the FSLogix profiles. Excellent work from Jim. </p>
-
-<p>I added a script in Hydra to download and run the script from Jim to shrink FSLogix disk. This script can be used in a script schedule on a host pool to shrink the disk maybe one time a week.</p>
-
-<p>Update Hydra to the newest version
-Having the host target &quot;A single host in the pool&quot; Hydra version 1.0.1.16 is needed. You can update Hydra in the Azure portal -&gt; Your Hydra web app -&gt; Deployment Center -&gt; Sync
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-01.png" alt=""></p>
-      <h2 id="download-the-newest-build-in-scripts">
+        <!-- Post -->
         
-        
-          Download the newest build-in scripts <a href="#download-the-newest-build-in-scripts"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
-        
-        
-      </h2>
-    
 
-<p>Open the Hydra portal -&gt; Scripts -&gt; Click the button in the upper right corner:
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-02.png" alt=""></p>
-      <h2 id="service-account">
-        
-        
-          Service Account <a href="#service-account"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
-        
-        
-      </h2>
-    
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
 
-<p>Like the feature deleting FSLogix profile, the shrink method needs a service account configured on the host pool level. The account must have read/write permission to the FSLogix file share:
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-03.png" alt=""></p>
-      <h2 id="test-shrinking">
-        
-        
-          Test shrinking <a href="#test-shrinking"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
-        
-        
-      </h2>
-    
+                <!-- Author Box -->
+                
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                        
+                        <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
+                        
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href="https://blog.itprocloud.de">Marcel</a><a target="_blank" href="https://twitter.com/MarcelMeurer" class="btn follow">Follow</a>
+                        <span class="author-description">That's me: Marcel</span>
+                    </div>
+                </div>
+                
 
-<p>Make a first test for shrinking the profile disk from the session host view. Select one session host -&gt; Run script or collection -&gt; BuiltIn: Shrink FSLogix Disk
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-04.png" alt=""></p>
-      <h2 id="create-a-script-schedule-to-shrink-the-disks-automatically">
-        
-        
-          Create a script schedule to shrink the disks automatically. <a href="#create-a-script-schedule-to-shrink-the-disks-automatically"><img src="/assets/icons/link.png" alt="Link" width="15" height="15"></a>
-        
-        
-      </h2>
-    
+                <!-- Post Title -->
+                <h1 class="posttitle">From SCSI to NVMe in Azure Virtual Desktop - Reuse your current golden master VM - or convert it</h1>
 
-<p>If everything works fine, a script schedule can be configured to run the optimization maybe every week. <strong>It&#39;s important to run the script only on a single host.</strong>
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-05.png" alt=""></p>
+            </div>
 
-<p><strong>Get Hydra: <a href="https://azuremarketplace.microsoft.com/marketplace/apps/itprocloudgmbh1628775137215.hydra-deploy-d1">Azure Marketplace</a></strong></p>
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
 
-		<!--<h2 id="intro">Intro</h2>
+            <!-- Post Featured Image -->
+            
 
-<p>FSLogix profile disks increase their size over time - even if a user deletes data and the data amount goes down. Like <a href="https://twitter.com/jimmoyle">Jim Moyle</a> wrote: &quot;Dynamically Expanding disks do not natively shrink when the volume of data within them reduces, they stay at the &#39;High water mark&#39; of historical data volume within them.&quot; </p>
+            
+            <img class="featured-image img-fluid" src="/assets/images/NVME-Image-01.png" alt="From SCSI to NVMe in Azure Virtual Desktop - Reuse your current golden master VM - or convert it">
+            
 
-<p>While you are paying for usage or allocated storage, having the profile disk small is a good way to go.</p>
+            
+            <!-- End Featured Image -->
 
-<p>Jim provides a <a href="https://github.com/FSLogix/Invoke-FslShrinkDisk">script</a> to shrink the FSLogix profiles. Excellent work from Jim. </p>
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <h2 id="why-nvme-matters">Why NVMe Matters</h2>
 
-<p>I added a script in Hydra to download and run the script from Jim to shrink FSLogix disk. This script can be used in a script schedule on a host pool to shrink the disk maybe one time a week.</p>
+<ul>
+<li><strong>NVMe</strong> (Non-Volatile Memory Express) is a modern storage protocol designed for non-volatile flash memory. Compared to legacy SCSI, it delivers significantly higher <strong>IOPS</strong> and <strong>throughput</strong>. For I/O-intensive workloads, the performance gain is substantial (<a href="https://learn.microsoft.com/en-us/azure/virtual-machines/nvme-overview?utm_source=chatgpt.com">Microsoft Docs: NVMe overview</a>).</li>
+<li>With the <strong>v6 VM families</strong> (e.g., Dlsv6, Dldsv6), NVMe-backed local storage is now widely available. Benefits include:
 
-<p>Update Hydra to the newest version
-Having the host target &quot;A single host in the pool&quot; Hydra version 1.0.1.16 is needed. You can update Hydra in the Azure portal -&gt; Your Hydra web app -&gt; Deployment Center -&gt; Sync
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-01.png" alt=""></p>
+<ul>
+<li>Up to <strong>5× more CPU cache</strong></li>
+<li>Up to <strong>54 Gbps networking</strong></li>
+<li>Up to <strong>400k remote disk IOPS</strong></li>
+<li>Up to <strong>12 GB/s remote throughput via Azure Boost</strong><br>
+(<a href="https://techcommunity.microsoft.com/discussions/compute/boosting-performance-with-the-latest-generations-of-virtual-machines-in-azure/4381896?utm_source=chatgpt.com">Microsoft Tech Community</a>)</li>
+</ul></li>
+<li>Support for <strong>ephemeral OS disks with local NVMe storage</strong> is now GA, offering:
 
-<h2 id="download-the-newest-build-in-scripts">Download the newest build-in scripts</h2>
+<ul>
+<li>Up to <strong>10× faster OS disk performance</strong></li>
+<li>Ultra-low latency</li>
+<li>Modern processor architeture in comparision to the older ephemeral VM sizes</li>
+<li>Very fast reimaging<br>
+Perfect for stateless scaling scenarios like <strong>Azure Virtual Desktop (AVD)</strong><br>
+(<a href="https://techcommunity.microsoft.com/blog/azurecompute/announcing-general-availability-ephemeral-os-disk-support-for-v6-azure-vms/4415163?utm_source=chatgpt.com">Microsoft Tech Community</a>).</li>
+</ul></li>
+</ul>
 
-<p>Open the Hydra portal -&gt; Scripts -&gt; Click the button in the upper right corner:
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-02.png" alt=""></p>
+<hr>
 
-<h2 id="service-account">Service Account</h2>
+<h2 id="the-challenge">The Challenge</h2>
 
-<p>Like the feature deleting FSLogix profile, the shrink method needs a service account configured on the host pool level. The account must have read/write permission to the FSLogix file share:
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-03.png" alt=""></p>
+<p>It could be so easy to enjoy the new VM sizes — with either <strong>network disks</strong> or <strong>ephemeral disks</strong>. However, if you already maintain <strong>images and golden masters for Azure Virtual Desktop (AVD)</strong>, you’ll quickly realize that you cannot simply reuse them.  </p>
 
-<h2 id="test-shrinking">Test shrinking</h2>
+<p>Why? Because the <strong>disk architecture changes</strong> between your older images and the new NVMe-based VM families.  </p>
 
-<p>Make a first test for shrinking the profile disk from the session host view. Select one session host -&gt; Run script or collection -&gt; BuiltIn: Shrink FSLogix Disk
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-04.png" alt=""></p>
+<p>That leaves you with two main options:<br>
+- <strong>Create new golden masters</strong> directly on NVMe VM sizes, or<br>
+- <strong>Create new images</strong> of your existing golden masters and store them in an <strong>NVMe-enabled Azure Compute Gallery definition</strong>  </p>
 
-<h2 id="create-a-script-schedule-to-shrink-the-disks-automatically">Create a script schedule to shrink the disks automatically.</h2>
+<hr>
 
-<p>If everything works fine, a script schedule can be configured to run the optimization maybe every week. <strong>It&#39;s important to run the script only on a single host.</strong>
-<img src="../assets/images/Hydra/FSLogixShrink-Disk-05.png" alt=""></p>
+<h2 id="prepare-an-azure-compute-gallery-definition">Prepare an Azure Compute Gallery Definition</h2>
 
-<p><strong>Get Hydra: <a href="https://azuremarketplace.microsoft.com/marketplace/apps/itprocloudgmbh1628775137215.hydra-deploy-d1">Azure Marketplace</a></strong></p>
--->
-	
-    
-</section>
+<ol>
+<li>Navigate to your <strong>Azure Compute Gallery</strong> (create a new one if necessary)</li>
+<li>At the top, select <strong>Add → VM Image definition</strong></li>
+<li>Configure the definition and ensure you select:<br>
+
+<ul>
+<li><strong>Higher storage performance with NVMe</strong><br></li>
+<li>For secure boot masters and hosts: <strong>Trusted Launch</strong><br></li>
+</ul></li>
+</ol>
+
+<p>The following screenshot shows a secure boot + NVMe-enabled definition.<br>
+<img src="../assets/images/NVME-Image-02.png" alt=""></p>
+
+<p>Finally:<br>
+- Click <strong>Review and Create</strong> -&gt; <strong>Create</strong>.  </p>
+
+<p>If you are using <strong>Hydra</strong> for Azure Virtual Desktop, you can directly capture your <strong>existing golden master</strong> into this new compute gallery definition. Hydra will capture the image <strong>without destroying the golden master</strong>, so you can safely reuse your existing setup.
+<img src="../assets/images/NVME-Image-03.png" alt=""></p>
+
+<p>From here, you can use the <strong>gallery definition version</strong> to roll out <strong>new NVMe-based session hosts or virtual machines</strong> — with or without ephemeral disks.</p>
+
+<hr>
+
+<h2 id="notes-from-the-field">Notes from the Field</h2>
+
+<p>During my tests, some rollouts failed with a bluescreen (both with custom images and with Microsoft marketplace images). After a while, the rollout worked again. This suggests that there may occasionally be stability issues with the new v6 Boost VMs. It&#39;s good to have this in mind.
+Also good to know: You can use gallery definitions to migrate existing VMs. In this case use a &quot;Spezialized&quot; gallery definition. Please remember that maybe not any Windows version comes with the right drivers.</p>
+
+<hr>
+
+<h2 id="what-s-next">What’s Next</h2>
+
+<p>Follow me if you want to learn more about:<br>
+- How to <strong>increase performance in AVD with NVMe</strong>, and<br>
+- How to manage the <strong>Windows swapfile</strong> in a smarter way for even greater efficiency. 🚀+</p>
+
+            </div>
+
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2025-08-27">27 Aug 2025</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            <a class="prev d-block col-md-6" href="/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/"> &laquo; Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</a>
+            
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
+        </div>
+        <!-- End Post -->
+
+    </div>
+</div>
+<!-- End Article
+================================================== -->
+
+<!-- Begin Comments
+================================================== -->
+
+<!--End Comments
+================================================== -->
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
 </div>
 
 
@@ -595,6 +714,8 @@ Having the host target &quot;A single host in the pool&quot; Hydra version 1.0.1
 
 <script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
 
+
+<script id="dsq-count-scr" src="//.disqus.com/count.js"></script>
 
 
 <!-- Cookie Consent by TermsFeed https://www.TermsFeed.com created on https://www.cookieconsent.com/ -->

@@ -5,9 +5,100 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 24 Jul 2025 13:29:43 +0200</pubDate>
-    <lastBuildDate>Thu, 24 Jul 2025 13:29:43 +0200</lastBuildDate>
+    <pubDate>Wed, 27 Aug 2025 14:44:56 +0200</pubDate>
+    <lastBuildDate>Wed, 27 Aug 2025 14:44:56 +0200</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
+    
+      <item>
+        <title>From SCSI to NVMe in Azure Virtual Desktop - Reuse your current golden master VM - or convert it</title>
+        <description>&lt;h2 id=&quot;why-nvme-matters&quot;&gt;Why NVMe Matters&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;NVMe&lt;/strong&gt; (Non-Volatile Memory Express) is a modern storage protocol designed for non-volatile flash memory. Compared to legacy SCSI, it delivers significantly higher &lt;strong&gt;IOPS&lt;/strong&gt; and &lt;strong&gt;throughput&lt;/strong&gt;. For I/O-intensive workloads, the performance gain is substantial (&lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-machines/nvme-overview?utm_source=chatgpt.com&quot;&gt;Microsoft Docs: NVMe overview&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;With the &lt;strong&gt;v6 VM families&lt;/strong&gt; (e.g., Dlsv6, Dldsv6), NVMe-backed local storage is now widely available. Benefits include:
+
+&lt;ul&gt;
+&lt;li&gt;Up to &lt;strong&gt;5× more CPU cache&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Up to &lt;strong&gt;54 Gbps networking&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Up to &lt;strong&gt;400k remote disk IOPS&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Up to &lt;strong&gt;12 GB/s remote throughput via Azure Boost&lt;/strong&gt;&lt;br&gt;
+(&lt;a href=&quot;https://techcommunity.microsoft.com/discussions/compute/boosting-performance-with-the-latest-generations-of-virtual-machines-in-azure/4381896?utm_source=chatgpt.com&quot;&gt;Microsoft Tech Community&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Support for &lt;strong&gt;ephemeral OS disks with local NVMe storage&lt;/strong&gt; is now GA, offering:
+
+&lt;ul&gt;
+&lt;li&gt;Up to &lt;strong&gt;10× faster OS disk performance&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Ultra-low latency&lt;/li&gt;
+&lt;li&gt;Modern processor architeture in comparision to the older ephemeral VM sizes&lt;/li&gt;
+&lt;li&gt;Very fast reimaging&lt;br&gt;
+Perfect for stateless scaling scenarios like &lt;strong&gt;Azure Virtual Desktop (AVD)&lt;/strong&gt;&lt;br&gt;
+(&lt;a href=&quot;https://techcommunity.microsoft.com/blog/azurecompute/announcing-general-availability-ephemeral-os-disk-support-for-v6-azure-vms/4415163?utm_source=chatgpt.com&quot;&gt;Microsoft Tech Community&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;the-challenge&quot;&gt;The Challenge&lt;/h2&gt;
+
+&lt;p&gt;It could be so easy to enjoy the new VM sizes — with either &lt;strong&gt;network disks&lt;/strong&gt; or &lt;strong&gt;ephemeral disks&lt;/strong&gt;. However, if you already maintain &lt;strong&gt;images and golden masters for Azure Virtual Desktop (AVD)&lt;/strong&gt;, you’ll quickly realize that you cannot simply reuse them.  &lt;/p&gt;
+
+&lt;p&gt;Why? Because the &lt;strong&gt;disk architecture changes&lt;/strong&gt; between your older images and the new NVMe-based VM families.  &lt;/p&gt;
+
+&lt;p&gt;That leaves you with two main options:&lt;br&gt;
+- &lt;strong&gt;Create new golden masters&lt;/strong&gt; directly on NVMe VM sizes, or&lt;br&gt;
+- &lt;strong&gt;Create new images&lt;/strong&gt; of your existing golden masters and store them in an &lt;strong&gt;NVMe-enabled Azure Compute Gallery definition&lt;/strong&gt;  &lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;prepare-an-azure-compute-gallery-definition&quot;&gt;Prepare an Azure Compute Gallery Definition&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Navigate to your &lt;strong&gt;Azure Compute Gallery&lt;/strong&gt; (create a new one if necessary)&lt;/li&gt;
+&lt;li&gt;At the top, select &lt;strong&gt;Add → VM Image definition&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Configure the definition and ensure you select:&lt;br&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Higher storage performance with NVMe&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;For secure boot masters and hosts: &lt;strong&gt;Trusted Launch&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The following screenshot shows a secure boot + NVMe-enabled definition.&lt;br&gt;
+&lt;img src=&quot;../assets/images/NVME-Image-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally:&lt;br&gt;
+- Click &lt;strong&gt;Review and Create&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Create&lt;/strong&gt;.  &lt;/p&gt;
+
+&lt;p&gt;If you are using &lt;strong&gt;Hydra&lt;/strong&gt; for Azure Virtual Desktop, you can directly capture your &lt;strong&gt;existing golden master&lt;/strong&gt; into this new compute gallery definition. Hydra will capture the image &lt;strong&gt;without destroying the golden master&lt;/strong&gt;, so you can safely reuse your existing setup.
+&lt;img src=&quot;../assets/images/NVME-Image-03.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;From here, you can use the &lt;strong&gt;gallery definition version&lt;/strong&gt; to roll out &lt;strong&gt;new NVMe-based session hosts or virtual machines&lt;/strong&gt; — with or without ephemeral disks.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;notes-from-the-field&quot;&gt;Notes from the Field&lt;/h2&gt;
+
+&lt;p&gt;During my tests, some rollouts failed with a bluescreen (both with custom images and with Microsoft marketplace images). After a while, the rollout worked again. This suggests that there may occasionally be stability issues with the new v6 Boost VMs. It&amp;#39;s good to have this in mind.
+Also good to know: You can use gallery definitions to migrate existing VMs. In this case use a &amp;quot;Spezialized&amp;quot; gallery definition. Please remember that maybe not any Windows version comes with the right drivers.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;what-s-next&quot;&gt;What’s Next&lt;/h2&gt;
+
+&lt;p&gt;Follow me if you want to learn more about:&lt;br&gt;
+- How to &lt;strong&gt;increase performance in AVD with NVMe&lt;/strong&gt;, and&lt;br&gt;
+- How to manage the &lt;strong&gt;Windows swapfile&lt;/strong&gt; in a smarter way for even greater efficiency. 🚀+&lt;/p&gt;
+</description>
+        <pubDate>Wed, 27 Aug 2025 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
@@ -2623,106 +2714,6 @@ if ($mode -like &quot;install&quot;) {
         <pubDate>Fri, 23 Aug 2024 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Windows Update API issue - Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)</title>
-        <description>&lt;p&gt;Windows gives you access to work with Windows Update on an API level. This is often used to find, download, and install new updates programmatically. That makes special sense in Azure Virtual Desktop, which allows us to trigger Windows Updates in a maintenance Windows where autoscale is disabled (I don&amp;#39;t want to imagine what happens if Windows shuts down during Windows Updates).&lt;/p&gt;
-
-&lt;p&gt;Also, my solution, &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;, uses the API to install Windows updates. That also includes draining, starting, installing, rebooting, etc. - all that is needed to update an existing host or a golden master. E.g.: Example of the script collection for an update:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/WSUS-API-05.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;Unfortunately, a Microsoft patch broke the functionality of the Windows Update API. That is documented here: &lt;a href=&quot;https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;&gt;https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;If you have a broken computer, you will see the following error message: Exception from HRESULT: 0x8002802B (TYPE_E_ELEMENTNOTFOUND)
-&lt;img src=&quot;../assets/images/WSUS-API-01.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;The documentation also explains how to resolve the issue using a KIR (known issue recovery), which requires some handwork or automation. To make this as easy as possible for users of &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;, I added the installation of the KIR as part of the &amp;quot;BuiltIn: OS Install Windows Updates&amp;quot;. Finally, it downloads and installs the KIR package and activates it. A final reboot is needed to bring it to work. If you are using the script as part of the script collection (see image above), it will first patch the host and install updates on the second try of running the &amp;quot;BuiltIn: OS Install Windows Updates&amp;quot;.&lt;/p&gt;
-
-&lt;p&gt;To get the updated built-in scripts, you can click on the icon in the upper-right corner inside of the scripts page:
-&lt;img src=&quot;../assets/images/WSUS-API-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;Finally, you should have the updated script (reload the site first):
-&lt;img src=&quot;../assets/images/WSUS-API-03.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;After that, the Windows update procedure is working as expected:
-&lt;img src=&quot;../assets/images/WSUS-API-04.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;Do you want to adapt your scripts? Here is my implementation. Feel free to use it:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;# Install Windows security updates directly over the internet. VM downloads the packages directly from Microsoft using the Windows Update service. A restart is required after the installation, which can be done with the script collection &quot;OS Install Windows Updates&quot;.
-$updateCollection = New-Object -ComObject Microsoft.Update.UpdateColl
-$updateSearcher = New-Object -ComObject Microsoft.Update.Searcher
-$updateSession = New-Object -ComObject Microsoft.Update.Session
-
-$updatesKb=&quot;&quot;
-
-write-host(&quot;Checking for updates&quot;)
-$result = $updateSearcher.Search(&quot;IsInstalled=0 and Type=&apos;Software&apos; and IsHidden=0&quot;)
-
-if ($result.Updates.Count -EQ 0) {
-    write-host(&quot;No new updates found&quot;)
-}
-else {
-    try {
-        $updateDownloader = $updateSession.CreateUpdateDownloader()
-        $result.Updates|foreach {
-            write-host(&quot;Found: $($_.Title)&quot;)
-            $updatesKb=$updatesKb+$_.KBArticleIDs+&quot; &quot;
-            $updateCollection.Add($_)|Out-Null
-        }
-        write-host(&quot;Downloading updates&quot;)
-        $updateDownloader.Updates = $updateCollection
-        $updateDownloads = $updateDownloader.Download()
-        if (($updateDownloads.HResult -EQ 0) -AND ($updateDownloads.ResultCode -EQ 2)) {
-            write-host(&quot;Downloads success&quot;)
-        }
-        else {
-            write-host(&quot;Downloads failed&quot;)
-            Write-host(&quot;ScriptReturnMessage:{Download failed}:ScriptReturnMessage&quot;)
-            exit
-        }
-        write-host(&quot;Installing updates&quot;)
-        $updateInstaller = New-Object -ComObject Microsoft.Update.Installer
-        $updateInstaller.Updates = $updateCollection
-        $updateDownloads = $updateInstaller.Install()
-
-        write-host(&quot;Applied updates: $updatesKb&quot;)
-    } catch {
-        if (($_ -like &quot;*0x8002802B*&quot;) -and (Get-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -ErrorAction Ignore).&quot;1931709068&quot; -ne 0) {
-            # Update API issue: https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc
-            $hotFixKirUrl=&quot;https://download.microsoft.com/download/3944f364-6483-49ab-af0d-3e2bd80dedaf/Windows%2011%2022H2%20KB5039302%20240711_20301%20Known%20Issue%20Rollback.msi&quot;
-            try {
-                write-host (&quot;Try to download KIR file to bring Windows Update API back&quot;)
-                (New-Object System.Net.WebClient).DownloadFile($hotFixKirUrl, &quot;$env:temp\KIRKB5039302.msi&quot;)
-                Start-Process msiexec.exe -Wait -ArgumentList &apos;/I $env:temp\KIRKB5039302.msi /quiet&apos;
-                if (-not (Test-Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot;)) {
-                    New-Item -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Force -ErrorAction SilentlyContinue
-                }
-                New-ItemProperty -Path &quot;HKLM:\SYSTEM\CurrentControlSet\Policies\Microsoft\FeatureManagement\Overrides&quot; -Name &quot;1931709068&quot; -Value 0 -Force -ErrorAction SilentlyContinue
-            } catch {
-                write-host (&quot;Your system is possible affected by a known issue regarding the Windows Update API. Installing a rollback was not possible due to an error: $_&quot;)
-                throw $_
-            }
-            # A reboot is required
-            write-host(&quot;Known issue recovery was applied to the system, but no updates. A restart is required before the next update will work. https://learn.microsoft.com/en-us/windows/release-health/status-windows-11-23h2#3351msgdesc&quot;)
-        } else {
-            write-host (&quot;The KIR installation is installed. If this is not working, another issue prevents the update process: $_&quot;)
-            throw $_
-        }
-    }
-}
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-        <pubDate>Thu, 01 Aug 2024 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Update-API-issue-0x8002802B_TYPE_E_ELEMENTNOTFOUND/</guid>
         
         
         <category>Windows Virtual Desktop</category>
