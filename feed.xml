@@ -5,313 +5,9 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 27 Aug 2025 14:44:56 +0200</pubDate>
-    <lastBuildDate>Wed, 27 Aug 2025 14:44:56 +0200</lastBuildDate>
+    <pubDate>Mon, 08 Sep 2025 13:25:54 +0200</pubDate>
+    <lastBuildDate>Mon, 08 Sep 2025 13:25:54 +0200</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
-    
-      <item>
-        <title>From SCSI to NVMe in Azure Virtual Desktop - Reuse your current golden master VM - or convert it</title>
-        <description>&lt;h2 id=&quot;why-nvme-matters&quot;&gt;Why NVMe Matters&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;NVMe&lt;/strong&gt; (Non-Volatile Memory Express) is a modern storage protocol designed for non-volatile flash memory. Compared to legacy SCSI, it delivers significantly higher &lt;strong&gt;IOPS&lt;/strong&gt; and &lt;strong&gt;throughput&lt;/strong&gt;. For I/O-intensive workloads, the performance gain is substantial (&lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-machines/nvme-overview?utm_source=chatgpt.com&quot;&gt;Microsoft Docs: NVMe overview&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;With the &lt;strong&gt;v6 VM families&lt;/strong&gt; (e.g., Dlsv6, Dldsv6), NVMe-backed local storage is now widely available. Benefits include:
-
-&lt;ul&gt;
-&lt;li&gt;Up to &lt;strong&gt;5× more CPU cache&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Up to &lt;strong&gt;54 Gbps networking&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Up to &lt;strong&gt;400k remote disk IOPS&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Up to &lt;strong&gt;12 GB/s remote throughput via Azure Boost&lt;/strong&gt;&lt;br&gt;
-(&lt;a href=&quot;https://techcommunity.microsoft.com/discussions/compute/boosting-performance-with-the-latest-generations-of-virtual-machines-in-azure/4381896?utm_source=chatgpt.com&quot;&gt;Microsoft Tech Community&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Support for &lt;strong&gt;ephemeral OS disks with local NVMe storage&lt;/strong&gt; is now GA, offering:
-
-&lt;ul&gt;
-&lt;li&gt;Up to &lt;strong&gt;10× faster OS disk performance&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Ultra-low latency&lt;/li&gt;
-&lt;li&gt;Modern processor architeture in comparision to the older ephemeral VM sizes&lt;/li&gt;
-&lt;li&gt;Very fast reimaging&lt;br&gt;
-Perfect for stateless scaling scenarios like &lt;strong&gt;Azure Virtual Desktop (AVD)&lt;/strong&gt;&lt;br&gt;
-(&lt;a href=&quot;https://techcommunity.microsoft.com/blog/azurecompute/announcing-general-availability-ephemeral-os-disk-support-for-v6-azure-vms/4415163?utm_source=chatgpt.com&quot;&gt;Microsoft Tech Community&lt;/a&gt;).&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;the-challenge&quot;&gt;The Challenge&lt;/h2&gt;
-
-&lt;p&gt;It could be so easy to enjoy the new VM sizes — with either &lt;strong&gt;network disks&lt;/strong&gt; or &lt;strong&gt;ephemeral disks&lt;/strong&gt;. However, if you already maintain &lt;strong&gt;images and golden masters for Azure Virtual Desktop (AVD)&lt;/strong&gt;, you’ll quickly realize that you cannot simply reuse them.  &lt;/p&gt;
-
-&lt;p&gt;Why? Because the &lt;strong&gt;disk architecture changes&lt;/strong&gt; between your older images and the new NVMe-based VM families.  &lt;/p&gt;
-
-&lt;p&gt;That leaves you with two main options:&lt;br&gt;
-- &lt;strong&gt;Create new golden masters&lt;/strong&gt; directly on NVMe VM sizes, or&lt;br&gt;
-- &lt;strong&gt;Create new images&lt;/strong&gt; of your existing golden masters and store them in an &lt;strong&gt;NVMe-enabled Azure Compute Gallery definition&lt;/strong&gt;  &lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;prepare-an-azure-compute-gallery-definition&quot;&gt;Prepare an Azure Compute Gallery Definition&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Navigate to your &lt;strong&gt;Azure Compute Gallery&lt;/strong&gt; (create a new one if necessary)&lt;/li&gt;
-&lt;li&gt;At the top, select &lt;strong&gt;Add → VM Image definition&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Configure the definition and ensure you select:&lt;br&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Higher storage performance with NVMe&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;For secure boot masters and hosts: &lt;strong&gt;Trusted Launch&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;The following screenshot shows a secure boot + NVMe-enabled definition.&lt;br&gt;
-&lt;img src=&quot;../assets/images/NVME-Image-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;Finally:&lt;br&gt;
-- Click &lt;strong&gt;Review and Create&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Create&lt;/strong&gt;.  &lt;/p&gt;
-
-&lt;p&gt;If you are using &lt;strong&gt;Hydra&lt;/strong&gt; for Azure Virtual Desktop, you can directly capture your &lt;strong&gt;existing golden master&lt;/strong&gt; into this new compute gallery definition. Hydra will capture the image &lt;strong&gt;without destroying the golden master&lt;/strong&gt;, so you can safely reuse your existing setup.
-&lt;img src=&quot;../assets/images/NVME-Image-03.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;From here, you can use the &lt;strong&gt;gallery definition version&lt;/strong&gt; to roll out &lt;strong&gt;new NVMe-based session hosts or virtual machines&lt;/strong&gt; — with or without ephemeral disks.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;notes-from-the-field&quot;&gt;Notes from the Field&lt;/h2&gt;
-
-&lt;p&gt;During my tests, some rollouts failed with a bluescreen (both with custom images and with Microsoft marketplace images). After a while, the rollout worked again. This suggests that there may occasionally be stability issues with the new v6 Boost VMs. It&amp;#39;s good to have this in mind.
-Also good to know: You can use gallery definitions to migrate existing VMs. In this case use a &amp;quot;Spezialized&amp;quot; gallery definition. Please remember that maybe not any Windows version comes with the right drivers.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;what-s-next&quot;&gt;What’s Next&lt;/h2&gt;
-
-&lt;p&gt;Follow me if you want to learn more about:&lt;br&gt;
-- How to &lt;strong&gt;increase performance in AVD with NVMe&lt;/strong&gt;, and&lt;br&gt;
-- How to manage the &lt;strong&gt;Windows swapfile&lt;/strong&gt; in a smarter way for even greater efficiency. 🚀+&lt;/p&gt;
-</description>
-        <pubDate>Wed, 27 Aug 2025 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
-        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
-
-&lt;table&gt;&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Log Type&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
-&lt;td&gt;Details about the session hosts&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDConnections&lt;/td&gt;
-&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDErrors&lt;/td&gt;
-&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, ...)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDFeeds&lt;/td&gt;
-&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
-&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDManagement&lt;/td&gt;
-&lt;td&gt;Log about administrative tasks&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDCheckpoints&lt;/td&gt;
-&lt;td&gt;Detailed information related to logins, errors, ...&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDConnectionNetworkData&lt;/td&gt;
-&lt;td&gt;Network information (bandwidth and RTT)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that (use version 1.7.25 or higher):&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-14.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;After a while, the workbook is visible as a new template in: &lt;strong&gt;Log Analytics -&amp;gt; Workbooks -&amp;gt; Azure Virtual Desktop -&amp;gt; AVD - Deep-Insights&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., &amp;quot;&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;&amp;quot; occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
-
-&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
-
-&lt;table&gt;&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Version&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1&lt;/td&gt;
-&lt;td&gt;01/28/2022&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.2&lt;/td&gt;
-&lt;td&gt;02/17/2022&lt;/td&gt;
-&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); Renaming of the workbook&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.3&lt;/td&gt;
-&lt;td&gt;03/16/2022&lt;/td&gt;
-&lt;td&gt;Include Logon timing (GPO, FSLogix, Authentication, etc.)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.4&lt;/td&gt;
-&lt;td&gt;04/14/2022&lt;/td&gt;
-&lt;td&gt;In Session Bandwidths &amp;amp; Latencies: The connection type is shown if RDP Short Path is used (Public, Private). See: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.5&lt;/td&gt;
-&lt;td&gt;05/03/2022&lt;/td&gt;
-&lt;td&gt;New visualization: Logon timing per day and category over the time&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.6&lt;/td&gt;
-&lt;td&gt;10/11/2022&lt;/td&gt;
-&lt;td&gt;New visualization: Connections over time, unhealthy session hosts, graphic performance&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.7&lt;/td&gt;
-&lt;td&gt;11/03/2022&lt;/td&gt;
-&lt;td&gt;Optimization for charts to show data over a large time frame&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.8&lt;/td&gt;
-&lt;td&gt;11/14/2022&lt;/td&gt;
-&lt;td&gt;A new tab &amp;quot;Resources&amp;quot;, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.9&lt;/td&gt;
-&lt;td&gt;11/18/2022&lt;/td&gt;
-&lt;td&gt;A new tab &amp;quot;Resources&amp;quot;, to show orphan VMs (where the session host object is missing)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.0&lt;/td&gt;
-&lt;td&gt;12/01/2022&lt;/td&gt;
-&lt;td&gt;Changed the description for the estimated available bandwidth&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.1&lt;/td&gt;
-&lt;td&gt;12/09/2022&lt;/td&gt;
-&lt;td&gt;Added orphan disks and orphan nics to the &amp;quot;Resources&amp;quot; tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop, version 1.0.1.84 (comming soon))&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.2&lt;/td&gt;
-&lt;td&gt;02/02/2023&lt;/td&gt;
-&lt;td&gt;Added &amp;quot;Water Markings&amp;quot; to query session information by the feature &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/watermarking&quot;&gt;WaterMarking&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.3&lt;/td&gt;
-&lt;td&gt;02/20/2023&lt;/td&gt;
-&lt;td&gt;Added &amp;quot;Unresponding AVD Agents&amp;quot; in the tab &amp;quot;Resources&amp;quot; to identify running VM with a non responding AVD agent&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.4&lt;/td&gt;
-&lt;td&gt;02/21/2023&lt;/td&gt;
-&lt;td&gt;Added new tab &amp;quot;FSLogix&amp;quot; to show the size, usage and free space of the FSLogix profiles&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.5&lt;/td&gt;
-&lt;td&gt;03/08/2023&lt;/td&gt;
-&lt;td&gt;Fix in the time selector; allow to selecte multiple host pools; show active sessions with user name and started desktop/remote app&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.6&lt;/td&gt;
-&lt;td&gt;03/31/2023&lt;/td&gt;
-&lt;td&gt;Add: Show office container size and usage (ODFC) in the FSLogix tab (additional to the profile container)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.7&lt;/td&gt;
-&lt;td&gt;07/01/2023&lt;/td&gt;
-&lt;td&gt;Fix/Workaround: VHDFreeSpace is stored as text in MByte and not in GByte if the value is less then 1 GByte&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.8&lt;/td&gt;
-&lt;td&gt;10/13/2023&lt;/td&gt;
-&lt;td&gt;Add: Show the last heart beat time in the Orphan session hosts view and warns, if the heart beat is longer then 90 days ago&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3.0&lt;/td&gt;
-&lt;td&gt;06/24/2024&lt;/td&gt;
-&lt;td&gt;Fix: Orphan resources are now including temporary orphan hosts&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3.1&lt;/td&gt;
-&lt;td&gt;10/24/2024&lt;/td&gt;
-&lt;td&gt;Add: Show &amp;quot;TURN&amp;quot; in session bandwidth and latency (if session was connected via TURN)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3.2&lt;/td&gt;
-&lt;td&gt;11/29/2024&lt;/td&gt;
-&lt;td&gt;Add: Show the country and city of the connections (based on the client internet IP)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3.4&lt;/td&gt;
-&lt;td&gt;06/28/2025&lt;/td&gt;
-&lt;td&gt;Add: Show RTT and bandwidth by client location&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3.5&lt;/td&gt;
-&lt;td&gt;07/24/2025&lt;/td&gt;
-&lt;td&gt;Add: Show RDS Shortpath Multipath&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot;&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don&amp;#39;t generate costs.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 24 Jul 2025 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Azure Monitor</category>
-        
-        <category>Log Analytics</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -321,7 +17,7 @@ Also good to know: You can use gallery definitions to migrate existing VMs. In t
 
 &lt;p&gt;Are you interested in the new &amp;quot;Hydra for Azure Virtual Desktop&amp;quot; solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 07/18/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 09/08/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 
@@ -409,7 +105,7 @@ Also good to know: You can use gallery definitions to migrate existing VMs. In t
 
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 07/18/2025&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 09/08/2025&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;details&gt;&lt;summary&gt;I&amp;#39;m continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;&lt;/p&gt;
@@ -421,6 +117,11 @@ Also good to know: You can use gallery definitions to migrate existing VMs. In t
 &lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;2.1.01.0&lt;/td&gt;
+&lt;td&gt;2025-09-08&lt;/td&gt;
+&lt;td&gt;Fix: Getting a registration token for personal host pools failed sometimes&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;2.1.00.0&lt;/td&gt;
 &lt;td&gt;2025-07-18&lt;/td&gt;
@@ -1588,9 +1289,9 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 07/18/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 09/08/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Fri, 18 Jul 2025 00:00:00 +0200</pubDate>
+        <pubDate>Mon, 08 Sep 2025 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
         
@@ -1598,6 +1299,310 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
         <category>Windows Virtual Desktop</category>
         
         <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>From SCSI to NVMe in Azure Virtual Desktop - Reuse your current golden master VM - or convert it</title>
+        <description>&lt;h2 id=&quot;why-nvme-matters&quot;&gt;Why NVMe Matters&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;NVMe&lt;/strong&gt; (Non-Volatile Memory Express) is a modern storage protocol designed for non-volatile flash memory. Compared to legacy SCSI, it delivers significantly higher &lt;strong&gt;IOPS&lt;/strong&gt; and &lt;strong&gt;throughput&lt;/strong&gt;. For I/O-intensive workloads, the performance gain is substantial (&lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-machines/nvme-overview?utm_source=chatgpt.com&quot;&gt;Microsoft Docs: NVMe overview&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;With the &lt;strong&gt;v6 VM families&lt;/strong&gt; (e.g., Dlsv6, Dldsv6), NVMe-backed local storage is now widely available. Benefits include:
+
+&lt;ul&gt;
+&lt;li&gt;Up to &lt;strong&gt;5× more CPU cache&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Up to &lt;strong&gt;54 Gbps networking&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Up to &lt;strong&gt;400k remote disk IOPS&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Up to &lt;strong&gt;12 GB/s remote throughput via Azure Boost&lt;/strong&gt;&lt;br&gt;
+(&lt;a href=&quot;https://techcommunity.microsoft.com/discussions/compute/boosting-performance-with-the-latest-generations-of-virtual-machines-in-azure/4381896?utm_source=chatgpt.com&quot;&gt;Microsoft Tech Community&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Support for &lt;strong&gt;ephemeral OS disks with local NVMe storage&lt;/strong&gt; is now GA, offering:
+
+&lt;ul&gt;
+&lt;li&gt;Up to &lt;strong&gt;10× faster OS disk performance&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Ultra-low latency&lt;/li&gt;
+&lt;li&gt;Modern processor architeture in comparision to the older ephemeral VM sizes&lt;/li&gt;
+&lt;li&gt;Very fast reimaging&lt;br&gt;
+Perfect for stateless scaling scenarios like &lt;strong&gt;Azure Virtual Desktop (AVD)&lt;/strong&gt;&lt;br&gt;
+(&lt;a href=&quot;https://techcommunity.microsoft.com/blog/azurecompute/announcing-general-availability-ephemeral-os-disk-support-for-v6-azure-vms/4415163?utm_source=chatgpt.com&quot;&gt;Microsoft Tech Community&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;the-challenge&quot;&gt;The Challenge&lt;/h2&gt;
+
+&lt;p&gt;It could be so easy to enjoy the new VM sizes — with either &lt;strong&gt;network disks&lt;/strong&gt; or &lt;strong&gt;ephemeral disks&lt;/strong&gt;. However, if you already maintain &lt;strong&gt;images and golden masters for Azure Virtual Desktop (AVD)&lt;/strong&gt;, you’ll quickly realize that you cannot simply reuse them.  &lt;/p&gt;
+
+&lt;p&gt;Why? Because the &lt;strong&gt;disk architecture changes&lt;/strong&gt; between your older images and the new NVMe-based VM families.  &lt;/p&gt;
+
+&lt;p&gt;That leaves you with two main options:&lt;br&gt;
+- &lt;strong&gt;Create new golden masters&lt;/strong&gt; directly on NVMe VM sizes, or&lt;br&gt;
+- &lt;strong&gt;Create new images&lt;/strong&gt; of your existing golden masters and store them in an &lt;strong&gt;NVMe-enabled Azure Compute Gallery definition&lt;/strong&gt;  &lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;prepare-an-azure-compute-gallery-definition&quot;&gt;Prepare an Azure Compute Gallery Definition&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Navigate to your &lt;strong&gt;Azure Compute Gallery&lt;/strong&gt; (create a new one if necessary)&lt;/li&gt;
+&lt;li&gt;At the top, select &lt;strong&gt;Add -&amp;gt; VM Image definition&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Configure the definition and ensure you select:&lt;br&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Higher storage performance with NVMe&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;For secure boot masters and hosts: &lt;strong&gt;Trusted Launch&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The following screenshot shows a secure boot + NVMe-enabled definition.&lt;br&gt;
+&lt;img src=&quot;../assets/images/NVME-Image-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally:&lt;br&gt;
+- Click &lt;strong&gt;Review and Create&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Create&lt;/strong&gt;.  &lt;/p&gt;
+
+&lt;p&gt;If you are using &lt;strong&gt;Hydra&lt;/strong&gt; for Azure Virtual Desktop, you can directly capture your &lt;strong&gt;existing golden master&lt;/strong&gt; into this new compute gallery definition. Hydra will capture the image &lt;strong&gt;without destroying the golden master&lt;/strong&gt;, so you can safely reuse your existing setup.
+&lt;img src=&quot;../assets/images/NVME-Image-03.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;From here, you can use the &lt;strong&gt;gallery definition version&lt;/strong&gt; to roll out &lt;strong&gt;new NVMe-based session hosts or virtual machines&lt;/strong&gt; — with or without ephemeral disks.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;notes-from-the-field&quot;&gt;Notes from the Field&lt;/h2&gt;
+
+&lt;p&gt;During my tests, some rollouts failed with a bluescreen (both with custom images and with Microsoft marketplace images). After a while, the rollout worked again. This suggests that there may occasionally be stability issues with the new v6 Boost VMs. It&amp;#39;s good to have this in mind.
+Also good to know: You can use gallery definitions to migrate existing VMs. In this case use a &amp;quot;Spezialized&amp;quot; gallery definition. Please remember that maybe not any Windows version comes with the right drivers.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;what-s-next&quot;&gt;What’s Next&lt;/h2&gt;
+
+&lt;p&gt;Follow me if you want to learn more about:&lt;br&gt;
+- How to &lt;strong&gt;increase performance in AVD with NVMe&lt;/strong&gt;, and&lt;br&gt;
+- How to manage the &lt;strong&gt;Windows swapfile&lt;/strong&gt; in a smarter way for even greater efficiency. 🚀+&lt;/p&gt;
+</description>
+        <pubDate>Wed, 27 Aug 2025 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
+        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Log Type&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
+&lt;td&gt;Details about the session hosts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnections&lt;/td&gt;
+&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDErrors&lt;/td&gt;
+&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, ...)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDFeeds&lt;/td&gt;
+&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
+&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDManagement&lt;/td&gt;
+&lt;td&gt;Log about administrative tasks&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDCheckpoints&lt;/td&gt;
+&lt;td&gt;Detailed information related to logins, errors, ...&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnectionNetworkData&lt;/td&gt;
+&lt;td&gt;Network information (bandwidth and RTT)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that (use version 1.7.25 or higher):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-14.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;After a while, the workbook is visible as a new template in: &lt;strong&gt;Log Analytics -&amp;gt; Workbooks -&amp;gt; Azure Virtual Desktop -&amp;gt; AVD - Deep-Insights&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., &amp;quot;&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;&amp;quot; occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
+
+&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Version&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1&lt;/td&gt;
+&lt;td&gt;01/28/2022&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.2&lt;/td&gt;
+&lt;td&gt;02/17/2022&lt;/td&gt;
+&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); Renaming of the workbook&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.3&lt;/td&gt;
+&lt;td&gt;03/16/2022&lt;/td&gt;
+&lt;td&gt;Include Logon timing (GPO, FSLogix, Authentication, etc.)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.4&lt;/td&gt;
+&lt;td&gt;04/14/2022&lt;/td&gt;
+&lt;td&gt;In Session Bandwidths &amp;amp; Latencies: The connection type is shown if RDP Short Path is used (Public, Private). See: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.5&lt;/td&gt;
+&lt;td&gt;05/03/2022&lt;/td&gt;
+&lt;td&gt;New visualization: Logon timing per day and category over the time&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6&lt;/td&gt;
+&lt;td&gt;10/11/2022&lt;/td&gt;
+&lt;td&gt;New visualization: Connections over time, unhealthy session hosts, graphic performance&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7&lt;/td&gt;
+&lt;td&gt;11/03/2022&lt;/td&gt;
+&lt;td&gt;Optimization for charts to show data over a large time frame&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.8&lt;/td&gt;
+&lt;td&gt;11/14/2022&lt;/td&gt;
+&lt;td&gt;A new tab &amp;quot;Resources&amp;quot;, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.9&lt;/td&gt;
+&lt;td&gt;11/18/2022&lt;/td&gt;
+&lt;td&gt;A new tab &amp;quot;Resources&amp;quot;, to show orphan VMs (where the session host object is missing)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.0&lt;/td&gt;
+&lt;td&gt;12/01/2022&lt;/td&gt;
+&lt;td&gt;Changed the description for the estimated available bandwidth&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.1&lt;/td&gt;
+&lt;td&gt;12/09/2022&lt;/td&gt;
+&lt;td&gt;Added orphan disks and orphan nics to the &amp;quot;Resources&amp;quot; tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop, version 1.0.1.84 (comming soon))&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.2&lt;/td&gt;
+&lt;td&gt;02/02/2023&lt;/td&gt;
+&lt;td&gt;Added &amp;quot;Water Markings&amp;quot; to query session information by the feature &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/watermarking&quot;&gt;WaterMarking&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.3&lt;/td&gt;
+&lt;td&gt;02/20/2023&lt;/td&gt;
+&lt;td&gt;Added &amp;quot;Unresponding AVD Agents&amp;quot; in the tab &amp;quot;Resources&amp;quot; to identify running VM with a non responding AVD agent&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.4&lt;/td&gt;
+&lt;td&gt;02/21/2023&lt;/td&gt;
+&lt;td&gt;Added new tab &amp;quot;FSLogix&amp;quot; to show the size, usage and free space of the FSLogix profiles&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.5&lt;/td&gt;
+&lt;td&gt;03/08/2023&lt;/td&gt;
+&lt;td&gt;Fix in the time selector; allow to selecte multiple host pools; show active sessions with user name and started desktop/remote app&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.6&lt;/td&gt;
+&lt;td&gt;03/31/2023&lt;/td&gt;
+&lt;td&gt;Add: Show office container size and usage (ODFC) in the FSLogix tab (additional to the profile container)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.7&lt;/td&gt;
+&lt;td&gt;07/01/2023&lt;/td&gt;
+&lt;td&gt;Fix/Workaround: VHDFreeSpace is stored as text in MByte and not in GByte if the value is less then 1 GByte&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.8&lt;/td&gt;
+&lt;td&gt;10/13/2023&lt;/td&gt;
+&lt;td&gt;Add: Show the last heart beat time in the Orphan session hosts view and warns, if the heart beat is longer then 90 days ago&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.0&lt;/td&gt;
+&lt;td&gt;06/24/2024&lt;/td&gt;
+&lt;td&gt;Fix: Orphan resources are now including temporary orphan hosts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.1&lt;/td&gt;
+&lt;td&gt;10/24/2024&lt;/td&gt;
+&lt;td&gt;Add: Show &amp;quot;TURN&amp;quot; in session bandwidth and latency (if session was connected via TURN)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.2&lt;/td&gt;
+&lt;td&gt;11/29/2024&lt;/td&gt;
+&lt;td&gt;Add: Show the country and city of the connections (based on the client internet IP)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.4&lt;/td&gt;
+&lt;td&gt;06/28/2025&lt;/td&gt;
+&lt;td&gt;Add: Show RTT and bandwidth by client location&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.5&lt;/td&gt;
+&lt;td&gt;07/24/2025&lt;/td&gt;
+&lt;td&gt;Add: Show RDS Shortpath Multipath&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don&amp;#39;t generate costs.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 24 Jul 2025 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Azure Monitor</category>
+        
+        <category>Log Analytics</category>
         
       </item>
     
