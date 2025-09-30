@@ -5,9 +5,96 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 18 Sep 2025 15:35:52 +0200</pubDate>
-    <lastBuildDate>Thu, 18 Sep 2025 15:35:52 +0200</lastBuildDate>
+    <pubDate>Tue, 30 Sep 2025 11:21:01 +0200</pubDate>
+    <lastBuildDate>Tue, 30 Sep 2025 11:21:01 +0200</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
+    
+      <item>
+        <title>Creating a Windows Azure VM Generation V2 from a V1 VM</title>
+        <description>&lt;p&gt;Update 2025.02: Microsoft has provided an additional way to upgrade existing VMs: &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch-existing-vm-gen-1&quot;&gt;https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch-existing-vm-gen-1&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Microsoft has provided different VM sizes over the last years and also introduced the VM Generation V2 at the end of 2019. V2 VMs are different from V1 VMs and have the following advantages:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;UEFI&lt;/strong&gt; based (no longer bios-based)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Enhanced OS support&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Faster boot and disk support&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Advanced Security Features&lt;/strong&gt;, like Secure Boot, which ensures the integrity of the boot process, and BitLocker encryption, which enhances data protection&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Today, I expect that the most deployed VMs are V2, but I still see older V1 versions - including in my own environment. For example, I have several Golden Masters for Azure Virtual Desktop running Windows 10 22/h2 Multi-User. We still see V1 types because of the missing simple migration path. There is no native way in the Azure Portal to do this.&lt;/p&gt;
+
+&lt;p&gt;While I wanted to upgrade my Windows 10 Golden Masters to Windows 11, I came to the point of discovering that Windows 11 needs a V2 generation VM (for upgrading, trusted launch, vTPM, and secure boot must also be enabled). &lt;/p&gt;
+
+&lt;p&gt;After some research, I figured out that this is really not simple. I found a good blog post from &lt;a href=&quot;https://charbelnemnom.com/migrate-gen1-to-gen2-vms-on-azure/&quot;&gt;Charbel Nemnom&lt;/a&gt;, who provides a step-by-step solution. The solution is still complex, so I decided to write a PowerShell script to handle this complex process more easily.&lt;/p&gt;
+
+&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
+
+&lt;p&gt;We have our V1 virtual machine we want to convert. Instead of converting, we are building a new virtual machine (V2) with the converted OS disk of our V1 VM. So, in the end, we have two identical VMs: The original V1 VM and the V2 VM. If anything doesn&amp;#39;t work, we still have our original VM.&lt;/p&gt;
+
+&lt;p&gt;But takes some time, and the full process takes hours (for the script).&lt;/p&gt;
+
+&lt;p&gt;After configuring the script, the script enters the following steps:
+- Deallocates the V1 VM
+- Creates the new V2 VM with the same size in the same network, optional with trusted launch, secure boot, and vTPM
+- Makes a snapshot of the V1 OS disk and, from the snapshot, a cloned OS disk (still V1)
+- Creates an empty V2 disk with the same size and type as the V1 OS disk(this disk is supposed to be our converted OS disk)
+- Attaches the empty V2 disk and the cloned V1 OS disk to the new V2 VM
+- The script runs itself on the V2 VM
+  - Preparing the partitions of the attached disks
+  - Formatting the partitions
+  - Capturing the cloned V1 OS partition using DISM (that takes some time; in my last conversion, it took nearly 4 hours)
+  - Apply the captured image to the prepared partition of the empty V2 disk 
+  - Write the UEFI partition of the formerly empty V2 disk
+- Deallocates the V2 VM
+- Detach the attached disks
+- Swap the OS disk with the no longer empty V2 disk (the now converted OS disk of the V1 VM)
+- Starting the V2 VM
+- Doing some cleanup: Deleting the snapshot, the old V2 OS disk, the cloned V1 OS disk
+- &lt;strong&gt;Done&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/V1-V2-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;how-to-use-the-script&quot;&gt;How to use the script&lt;/h3&gt;
+
+&lt;p&gt;Open the script in a PowerShell editor like ISE (or VS Code). Connect to your Azure subscription using &lt;em&gt;Connect-AzAccount&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Modify the script to match your:
+- Your subscription Id
+- Your source V1 VM (name and resource group)
+- Your new V2 VM (name and resource group - ensure to have a different name or resource group; another name of the VM doesn&amp;#39;t reflect the computer name after the process)
+- Set $enabledTrustedLaunch = $true to also create your V2 VM trusted launch enabled, incl. secure boot and vTPM
+- The tempDiskSizeGb must be large enough to contain the temporary OS (Server 2022) and the content of the OS disk of the V1 VM (512 should be fine if the disk of the V1 VM is 128 GByte)&lt;/p&gt;
+
+&lt;p&gt;That&amp;#39;s all. You can run the script and come back after some hours to see the result.&lt;/p&gt;
+
+&lt;h3 id=&quot;hints&quot;&gt;Hints&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;If the VM size doesn&amp;#39;t support V2, modify the target VM size in the script&lt;/li&gt;
+&lt;li&gt;If something fails: Cleanup the temporarily created resources manually (snapshot, empty V2 disk, cloned V1 disk, and V2 VM)&lt;/li&gt;
+&lt;li&gt;Upgrading to Windows 11 multi-user: Check-out this video&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;where-is-the-script&quot;&gt;Where is the script&lt;/h3&gt;
+
+&lt;p&gt;You can find the script on github: &lt;a href=&quot;https://gist.github.com/MarcelMeurer/aab2ef8f36d7c634beebea771f54bf30&quot;&gt;Create-V2-From-V1-VM.ps1&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Or use the update script, which has much better error handling, clean-up, and handling of common DISM errors. The script was created by &lt;a href=&quot;https://x.com/PJ_Marcum&quot;&gt;John Marcum&lt;/a&gt;. Thanks a lot, Marcum, for providing this awesome development to the public 👍
+&lt;a href=&quot;https://gist.github.com/MarcelMeurer/1c0aa1f7ea5736095f1a4ccbd592b794&quot;&gt;Convert-AzVmGen1ToGen2.ps1&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 30 Sep 2025 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</guid>
+        
+        
+        <category>Azure</category>
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -2348,382 +2435,6 @@ $appExecutable = &amp;quot;finance.exe&amp;quot;
         <pubDate>Mon, 16 Sep 2024 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Improve AVD User Experience: Warm-Up to decreas User login time</title>
-        <description>&lt;p&gt;If you are running Azure Virtual Desktop with FSLogix, the first login to a host takes longer than the following logins. I also wrote about this effect (I call is Cold vs. Warm start) a few weeks ago here: &lt;a href=&quot;https://lnkd.in/eEQHP5gA&quot;&gt;https://lnkd.in/eEQHP5gA&lt;/a&gt; and &lt;a href=&quot;https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM&quot;&gt;https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;In short, If a VM is started in Azure, the first login of a user takes much longer than the login of the following users to this VM. And: It makes no difference if the first user logs in one or 30 minutes after starting the VM. I did a lot of tests by running &lt;em&gt;ProcMon, FileActivityWatch, and RegistryChangesView&lt;/em&gt; in the system context to capture events during the first login 🤓. I can clearly see dependencies to AppX packages on the VM. In my tests, processing of AppX packages for the first user took 120 seconds, and for the next user, only a few seconds. Right now, I cannot reproduce the first AppX processing without a user logging into the host (but I&amp;#39;m working on that). The first user will also see a black screen during the login.&lt;/p&gt;
-
-&lt;p&gt;Therefore, I did another test: Create a temporary local user on the VM directly after the start and make a login (autogenerated passwords and direct deletion of the users after the login).&lt;/p&gt;
-
-&lt;p&gt;The result is as expected: After the start of the VM, the warmup user triggers the AppX processing and other &amp;quot;initializations.&amp;quot; The next - regular - user experiences a much faster login while that is technically the second login for the VM.&lt;/p&gt;
-
-&lt;p&gt;I wrote a script to automate a local logon after each VM/host&amp;#39;s start. That may not be the best way to handle this solution, but it is a workaround until I find a more pragmatic solution without a warm-up user.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-UX-WarmUp-01.png&quot; alt=&quot;&quot;&gt;
-&lt;img src=&quot;../assets/images/AVD-UX-WarmUp-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;how-does-it-work&quot;&gt;How does it work?&lt;/h2&gt;
-
-&lt;p&gt;The script is started directly after the start of a VM/host and runs in the context of the computer. The following steps happen:
-- Temporarily, allow RDS logon without validation computer certificates (only for the system account)
-- Generate a local user (warm-up user) with a random password. The account automatically expires after 10 minutes
-- Add the user to the Remote Desktop User Group
-- Configure the sign-on via RDS to localhost
-- The warm-up user connects via RDS to localhost (the first user logon)
-- Wait 5 minutes
-- Logoff the user
-- Remove the user account
-- Remove the user profile from disk&lt;/p&gt;
-
-&lt;p&gt;There are some additional error-handling routines in the script. &lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Pro tip:&lt;/strong&gt; If you ever search for a way to get session information with PowerShell without parsing qwinsta.exe or quser.exe, check the script. It also contains a PowerShell method to log off a specific session.&lt;/p&gt;
-
-&lt;h2 id=&quot;install-the-warm-up-user-script&quot;&gt;Install the warm-up user script&lt;/h2&gt;
-
-&lt;p&gt;You can install the script on an existing host or on your Golden Master / Template VM (which you hopefully capture loss-less with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt; or &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;). Copy the script to the VM and run the following command in an administrative PowerShell:&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;.\WarmUp.ps1 -Mode Install&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;This copies the script to C:\windows\WarmUp.ps1 and creates a scheduled task to start the script automatically with the computer.&lt;/p&gt;
-
-&lt;h2 id=&quot;the-script&quot;&gt;The script&lt;/h2&gt;
-
-&lt;p&gt;Save it as WarmUp.ps1 or download it from here: &lt;a href=&quot;https://gist.github.com/MarcelMeurer/1044690ed2619c145305e8cc335948a5&quot;&gt;WarmUp.ps1&lt;/a&gt;&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;param(
-    [string] $Mode
-)
-
-Add-Type -Language CSharp -TypeDefinition @&apos;
-using System;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Collections.Generic;
-namespace Rds {
-    public static class Sessions {
-        [DllImport(&quot;wtsapi32.dll&quot;)]
-        static extern IntPtr WTSOpenServer([MarshalAs(UnmanagedType.LPStr)] String pServerName);
-        [DllImport(&quot;wtsapi32.dll&quot;)]
-        static extern void WTSCloseServer(IntPtr hServer);
-        [DllImport(&quot;wtsapi32.dll&quot;)]
-        static extern Int32 WTSEnumerateSessions(IntPtr hServer,
-            [MarshalAs(UnmanagedType.U4)] Int32 Reserved,
-            [MarshalAs(UnmanagedType.U4)] Int32 Version, ref IntPtr ppSessionInfo,
-            [MarshalAs(UnmanagedType.U4)] ref Int32 pCount);
-        [DllImport(&quot;wtsapi32.dll&quot;)]
-        static extern void WTSFreeMemory(IntPtr pMemory);
-        [DllImport(&quot;Wtsapi32.dll&quot;)]
-        static extern bool WTSQuerySessionInformation(System.IntPtr hServer, int sessionId, WTS_INFO_CLASS wtsInfoClass, out System.IntPtr ppBuffer, out uint pBytesReturned);
-        [DllImport(&quot;Wtsapi32.dll&quot;)]
-        static extern bool WTSLogoffSession(System.IntPtr hServer, int sessionId, bool wait);
-        [StructLayout(LayoutKind.Sequential)]
-        private struct WTS_SESSION_INFO {
-            public Int32 SessionID;
-            [MarshalAs(UnmanagedType.LPStr)]
-            public String pWinStationName;
-            public WtsConnect State;
-        }
-        public enum WTS_INFO_CLASS {
-            WTSInitialProgram,
-            WTSApplicationName,
-            WTSWorkingDirectory,
-            WTSOEMId,
-            WTSSessionId,
-            WTSUserName,
-            WTSWinStationName,
-            WTSDomainName,
-            WTSConnectState,
-            WTSClientBuildNumber,
-            WTSClientName,
-            WTSClientDirectory,
-            WTSClientProductId,
-            WTSClientHardwareId,
-            WTSClientAddress,
-            WTSClientDisplay,
-            WTSClientProtocolType,
-            WTSIdleTime,
-            WTSLogonTime,
-            WTSIncomingBytes,
-            WTSOutgoingBytes,
-            WTSIncomingFrames,
-            WTSOutgoingFrames,
-            WTSClientInfo,
-            WTSSessionInfo,
-            WTSSessionInfoEx,
-            WTSConfigInfo,
-            WTSValidationInfo,
-            WTSSessionAddressV4,
-            WTSIsRemoteSession
-        }
-        public enum WtsConnect {
-            Active,
-            Connected,
-            ConnectQuery,
-            Shadow,
-            Disconnected,
-            Idle,
-            Listen,
-            Reset,
-            Down,
-            Init
-        }
-        public class WtsSessionInformation {
-            public string InitialProgram;
-            public string ApplicationName;
-            public string WorkingDirectory;
-            public string OEMId;
-            public int SessionId;
-            public string UserName;
-            public string WinStationName;
-            public string DomainName;
-            public WtsConnect ConnectState;
-            public string ConnectStateString;
-            public int ClientBuildNumber;
-            public string ClientName;
-            public string ClientDirectory;
-        }
-        public static IntPtr OpenServer(String name) {
-            IntPtr server = WTSOpenServer(name);
-            return server;
-        }
-        public static void CloseServer(IntPtr serverHandle) {
-            WTSCloseServer(serverHandle);
-        }
-        public static bool LogoffSession(int id, bool waitForLogoff) {
-            IntPtr serverHandle = IntPtr.Zero;
-            serverHandle = OpenServer(Environment.MachineName);
-            IntPtr sessionInfoPtr = IntPtr.Zero;
-            try {
-                return WTSLogoffSession(serverHandle, id, waitForLogoff);
-            } catch (Exception e) {
-                Console.WriteLine(&quot;Exception querying session information: &quot; + e.ToString());
-            } finally {
-                WTSFreeMemory(sessionInfoPtr);
-                CloseServer(serverHandle);
-            }
-            return false;
-        }
-        public static WtsSessionInformation GetSession(string userName) {
-            var sessions=GetSessions();
-            return sessions.FirstOrDefault(n=&amp;gt;string.Equals(n.UserName, userName, StringComparison.InvariantCultureIgnoreCase));
-
-        }
-        public static List &amp;lt; WtsSessionInformation &amp;gt; GetSessions() {
-            var wtsList = new List &amp;lt; WtsSessionInformation &amp;gt; ();
-            IntPtr serverHandle = IntPtr.Zero;
-            serverHandle = OpenServer(Environment.MachineName);
-            IntPtr sessionInfoPtr = IntPtr.Zero;
-            try {
-                IntPtr sPtr = IntPtr.Zero;
-                Int32 sessionCount = 0;
-                Int32 retVal = WTSEnumerateSessions(serverHandle, 0, 1, ref sessionInfoPtr, ref sessionCount);
-                Int32 dataSize = Marshal.SizeOf(typeof(WTS_SESSION_INFO));
-                Int64 currentSession = (long) sessionInfoPtr;
-                uint bytes = 0;
-                if (retVal != 0) {
-                    for (int i = 0; i &amp;lt; sessionCount; i++) {
-                        WTS_SESSION_INFO si = (WTS_SESSION_INFO) Marshal.PtrToStructure((System.IntPtr) currentSession, typeof(WTS_SESSION_INFO));
-                        currentSession += dataSize;
-                        var wts = new WtsSessionInformation();
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSUserName, out sPtr, out bytes)) {
-                            wts.UserName = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSDomainName, out sPtr, out bytes)) {
-                            wts.DomainName = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSWinStationName, out sPtr, out bytes)) {
-                            wts.WinStationName = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSSessionId, out sPtr, out bytes)) {
-                            wts.SessionId = Marshal.ReadInt32(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSInitialProgram, out sPtr, out bytes)) {
-                            wts.InitialProgram = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSApplicationName, out sPtr, out bytes)) {
-                            wts.ApplicationName = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSWorkingDirectory, out sPtr, out bytes)) {
-                            wts.WorkingDirectory = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSConnectState, out sPtr, out bytes)) {
-                            wts.ConnectState = (WtsConnect) Marshal.ReadInt32(sPtr);
-                            wts.ConnectStateString = wts.ConnectState.ToString();
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSClientBuildNumber, out sPtr, out bytes)) {
-                            wts.ClientBuildNumber = Marshal.ReadInt32(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSClientName, out sPtr, out bytes)) {
-                            wts.ClientName = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (WTSQuerySessionInformation(serverHandle, si.SessionID, WTS_INFO_CLASS.WTSClientDirectory, out sPtr, out bytes)) {
-                            wts.ClientDirectory = Marshal.PtrToStringAnsi(sPtr);
-                            WTSFreeMemory(sPtr);
-                        }
-                        if (!string.IsNullOrEmpty(wts.UserName)) wtsList.Add(wts);
-                    }
-                }
-                return wtsList;
-            } catch (Exception e) {
-                Console.WriteLine(&quot;Exception querying session information: &quot; + e.ToString());
-            } finally {
-                WTSFreeMemory(sessionInfoPtr);
-                CloseServer(serverHandle);
-            }
-            return null;
-        }
-    }
-}
-&apos;@
-
-$LogDir=&quot;$($env:windir)\system32\LogFiles&quot;
-$LogFile=&quot;$($LogDir)\AVD.WarmUp.log&quot;
-function LogWriter($message) {
-    $message = &quot;$(Get-Date ([datetime]::UtcNow) -Format &quot;o&quot;) $message&quot;
-    write-host($message)
-    if ([System.IO.Directory]::Exists($LogDir)) { try { write-output($message) | Out-File $LogFile -Append } catch {} }
-}
-
-if ($mode -like &quot;install&quot;) {
-    LogWriter(&quot;Copy script to windir&quot;)
-    Copy-Item &quot;$($MyInvocation.InvocationName)&quot; -Destination ($env:windir + &quot;\WarmUp.ps1&quot;) 
-
-    LogWriter(&quot;Creating schedule task to run the script at startup&quot;)
-    $action = New-ScheduledTaskAction -Execute &quot;$env:windir\System32\WindowsPowerShell\v1.0\Powershell.exe&quot; -Argument &quot;-executionPolicy Unrestricted -File `&quot;$($env:windir)\WarmUp.ps1`&quot;&quot;
-    $trigger = New-ScheduledTaskTrigger -AtStartup
-    $principal = New-ScheduledTaskPrincipal &apos;NT Authority\SYSTEM&apos; -RunLevel Highest
-    $settingsSet = New-ScheduledTaskSettingsSet
-    $task = New-ScheduledTask -Action $action -Principal $principal -Trigger $trigger -Settings $settingsSet 
-    Register-ScheduledTask -TaskName &apos;ITPC-AVD-WarmUpUser&apos; -InputObject $task -ErrorAction Ignore
-    Enable-ScheduledTask -TaskName &apos;ITPC-AVD-WarmUpUser&apos;
-} else {
-
-    $localUserName = &quot;warmup-user&quot;
-
-    $characters = &apos;abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#&apos; #$%^&amp;amp;*()-_=+[]{}|;:,.&amp;lt;&amp;gt;?&apos;
-    $localUserPWPlain = -join (1..32 | ForEach-Object { Get-Random -InputObject $characters.ToCharArray() }) +&quot;!@1aA&quot;
-
-    $localUserPW =  ConvertTo-SecureString -String $localUserPWPlain -AsPlainText -Force # https://www.sharepointdiary.com/2020/04/powershell-generate-random-password.html
-
-
-    # Store default configuration
-    LogWriter(&quot;Getting local configuration to use saved credentials for the warmup user&quot;)
-    $oldAuthenticationLevelOverride=$null
-    if (Test-Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot;) {
-        $oldAuthenticationLevelOverride = Get-ItemProperty -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -ErrorAction SilentlyContinue
-    } else {
-        New-Item -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Force -ErrorAction SilentlyContinue
-    }
-    if ($oldAuthenticationLevelOverride -eq $null) {$oldAuthenticationLevelOverride = 99} else {$oldAuthenticationLevelOverride = $oldAuthenticationLevelOverride.AuthenticationLevelOverride}
-
-
-    try {
-        LogWriter(&quot;Modifying configuration to login warmup user with stored credentials&quot;)
-        # Set temporary configuration to allow user logins
-        New-ItemProperty -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -Value 0 -Force
-        New-ItemProperty -Path &quot;HKLM:\Software\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;DisablePasswordSaving&quot; -Value 1 -Force
-
-        # Prepare temporary local user
-        if ((Get-LocalUser -Name $localUserName -ErrorAction SilentlyContinue) -ne $null) {
-            LogWriter(&quot;Removing existing local warmup user&quot;)
-            Remove-LocalUser -Name $localUserName
-        }
-        LogWriter(&quot;Adding local user&quot;)
-        $localUser = New-LocalUser -Name $localUserName -Password $localUserPW -AccountExpires (Get-Date).AddMinutes(10) -PasswordNeverExpires -UserMayNotChangePassword
-        # Add user to remote desktop group
-        LogWriter(&quot;Adding user to the remote desktop group&quot;)
-        Add-LocalGroupMember -SID &quot;S-1-5-32-555&quot; -Member $localUserName -ErrorAction SilentlyContinue
-
-        # Login user
-        LogWriter(&quot;Adding credentials of the warmup user to the key store&quot;)
-        cmdkey /generic:TERMSRV/localhost /user:&quot;$($env:Computername)\$($localUserName)&quot; /pass:$localUserPWPlain
-        $startTime=Get-Date
-
-
-    $i=0
-    do {
-            LogWriter(&quot;Login in user warmup user&quot;)
-            if ($mstsc) {
-        $mstsc.Kill()
-        Start-Sleep -Seconds 6
-        }
-            $mstsc = Start-Process -PassThru -FilePath &quot;mstsc.exe&quot; -ArgumentList &quot;/v:localhost&quot;
-
-            # Wait for the user to login 
-            LogWriter(&quot;Waiting a few seconds&quot;)
-            Start-Sleep -Seconds 20
-            $i++        
-    } while ([Rds.Sessions]::GetSession($localUserName) -eq $null -and $i -le 10)
-
-        # Remove credentials
-        LogWriter(&quot;Removing credentials from the key store&quot;)
-        cmdkey /delete:TERMSRV/localhost
-
-        # Check, if user is connected
-        $session=[Rds.Sessions]::GetSession($localUserName)
-
-        if ($session -eq $null) {
-            LogWriter(&quot;Warning: Warm-up user is not connected. So, the workaround is not working for some reasons&quot;)
-        } else {
-            # Let the user for a while in the session and then logoff
-            LogWriter(&quot;Let the user logged in for a while&quot;)
-            Start-Sleep -Seconds 300
-            LogWriter(&quot;Logoff user&quot;)
-            [Rds.Sessions]::LogoffSession($session.SessionId, $true)
-            # Remove profile of the user
-            try {
-                LogWriter(&quot;Delete profile of the warm-up user&quot;)
-                @(Get-CimInstance -Class Win32_UserProfile | Where-Object { $_.Loaded -eq $false -and ($_.LocalPath.split(&apos;\&apos;)[-1] -like $localUserName -or $_.LocalPath.split(&apos;\&apos;)[-1] -like &quot;$($localUserName).*&quot;)}) | Remove-CimInstance
-
-            } catch {
-                LogWriter(&quot;Error: Cannot delete the profile of the warmup user: $_&quot;)
-            }
-
-        }
-        LogWriter(&quot;Terminate mstsc.exe, if running&quot;)
-        $mstsc.Kill()
-    } catch {
-        LogWriter(&quot;Error: $_&quot;)
-    } finally {
-        # Remove user
-        LogWriter(&quot;Disable and remove user&quot;)
-        Remove-LocalGroupMember -SID &quot;S-1-5-32-555&quot; -Member $localUserName
-        Disable-LocalUser -Name  $localUserName -ErrorAction SilentlyContinue
-        Remove-LocalUser -Name $localUserName -ErrorAction SilentlyContinue
-
-        # Restore default configuration
-        LogWriter(&quot;Restoring local configuration&quot;)
-        if ($oldAuthenticationLevelOverride -eq 99) {
-            Remove-ItemProperty &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -Force
-        } else {
-            New-ItemProperty -Path &quot;HKCU:\Software\Microsoft\Terminal Server Client&quot; -Name &quot;AuthenticationLevelOverride&quot; -Value $oldAuthenticationLevelOverride -Force
-        }
-    }
-    LogWriter(&quot;Done&quot;)
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
-        <pubDate>Fri, 23 Aug 2024 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</guid>
         
         
         <category>Windows Virtual Desktop</category>
