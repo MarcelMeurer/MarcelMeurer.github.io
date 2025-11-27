@@ -21,12 +21,12 @@
 <meta property="og:site_name" content="ITProCloud Blog" />
 <meta property="og:image" content="https://blog.itprocloud.de/assets/images/CountrySwitch.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2024-09-16T00:00:00+02:00" />
+<meta property="article:published_time" content="2025-11-19T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/CountrySwitch.png" />
 <meta property="twitter:title" content="CountrySwitch - First Logon Experience and language selector and an app starter for remote apps on network paths for AVD" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2024-09-16T00:00:00+02:00","datePublished":"2024-09-16T00:00:00+02:00","description":"First Logon Experience and language selector and an app starter for remote apps on network paths","headline":"CountrySwitch - First Logon Experience and language selector and an app starter for remote apps on network paths for AVD","image":"https://blog.itprocloud.de/assets/images/CountrySwitch.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2025-11-19T00:00:00+01:00","datePublished":"2025-11-19T00:00:00+01:00","description":"First Logon Experience and language selector and an app starter for remote apps on network paths","headline":"CountrySwitch - First Logon Experience and language selector and an app starter for remote apps on network paths for AVD","image":"https://blog.itprocloud.de/assets/images/CountrySwitch.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -403,7 +403,7 @@
       </h2>
     
 
-<p><a href="../assets/files/CountrySwitch.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 09/16/2024</strong></a></p>
+<p><a href="../assets/files/CountrySwitch.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 11/19/2025</strong></a></p>
       <h2 id="select-the-language-users">
         
         
@@ -426,7 +426,7 @@
 - The PowerShell script CountrySwitch-User.ps1 in the program files folder is started to do some optional customizing (language code is in $languageTag)</p>
 
 <p>CountrySwitch is linked in all users&#39; start menu:
-- Startup: With parameter \/RunOnce - Starts CountrySwitch at logon. The user will see the language selector only if the user is new and didn&#39;t select a language once (HKCU:\SOFTWARE\ITProCloud\CountrySwitch\Completed is set to 1 )
+- Startup: With parameter /RunOnce - Starts CountrySwitch at logon. The user will see the language selector only if the user is new and didn&#39;t select a language once (HKCU:\SOFTWARE\ITProCloud\CountrySwitch\Completed is set to 1 )
 - Direct: Without parameters - Users can star CountrySwitch manually to select the language</p>
 
 <p><strong>Note on Remote Apps</strong>: Remote apps are ignoring the autostart folder. To have CountrySwitch enabled for remote app, please configure a local Startup script (local policy for users) with the following parameters:
@@ -553,15 +553,20 @@ $appExecutable = &quot;finance.exe&quot;
 <td>2024-09-16</td>
 <td>Fix: Prevents that the logoff message is shown multiple times if the user multiple clicks on a flag</td>
 </tr>
+<tr>
+<td>1.2.0</td>
+<td>2025-11-19</td>
+<td>Add: Sets languages in the control panel (needed for Teams)</td>
+</tr>
 </tbody></table>
 
-<p><a href="../assets/files/CountrySwitch.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 09/16/2024</strong></a></p>
+<p><a href="../assets/files/CountrySwitch.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 11/19/2025</strong></a></p>
 
 <p>Please feel free to send me ideas for improvements.</p>
 
 						<!--<h2 id="first-logon-experience-and-language-selector-and-an-app-starter-for-remote-apps-on-network-paths">First Logon Experience and language selector and an app starter for remote apps on network paths</h2>
 
-<p><a href="../assets/files/CountrySwitch.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 09/16/2024</strong></a></p>
+<p><a href="../assets/files/CountrySwitch.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 11/19/2025</strong></a></p>
 
 <h2 id="select-the-language-users">Select the language (users)</h2>
 
@@ -578,7 +583,7 @@ $appExecutable = &quot;finance.exe&quot;
 - The PowerShell script CountrySwitch-User.ps1 in the program files folder is started to do some optional customizing (language code is in $languageTag)</p>
 
 <p>CountrySwitch is linked in all users&#39; start menu:
-- Startup: With parameter \/RunOnce - Starts CountrySwitch at logon. The user will see the language selector only if the user is new and didn&#39;t select a language once (HKCU:\SOFTWARE\ITProCloud\CountrySwitch\Completed is set to 1 )
+- Startup: With parameter /RunOnce - Starts CountrySwitch at logon. The user will see the language selector only if the user is new and didn&#39;t select a language once (HKCU:\SOFTWARE\ITProCloud\CountrySwitch\Completed is set to 1 )
 - Direct: Without parameters - Users can star CountrySwitch manually to select the language</p>
 
 <p><strong>Note on Remote Apps</strong>: Remote apps are ignoring the autostart folder. To have CountrySwitch enabled for remote app, please configure a local Startup script (local policy for users) with the following parameters:
@@ -687,9 +692,14 @@ $appExecutable = &quot;finance.exe&quot;
 <td>2024-09-16</td>
 <td>Fix: Prevents that the logoff message is shown multiple times if the user multiple clicks on a flag</td>
 </tr>
+<tr>
+<td>1.2.0</td>
+<td>2025-11-19</td>
+<td>Add: Sets languages in the control panel (needed for Teams)</td>
+</tr>
 </tbody></table>
 
-<p><a href="../assets/files/CountrySwitch.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 09/16/2024</strong></a></p>
+<p><a href="../assets/files/CountrySwitch.msi"><img src="../assets/icons/download.png" alt="Download"> <strong>Download the latest release from 11/19/2025</strong></a></p>
 
 <p>Please feel free to send me ideas for improvements.</p>
 -->
