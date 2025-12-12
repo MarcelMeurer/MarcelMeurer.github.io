@@ -5,379 +5,9 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 27 Nov 2025 17:45:46 +0100</pubDate>
-    <lastBuildDate>Thu, 27 Nov 2025 17:45:46 +0100</lastBuildDate>
+    <pubDate>Fri, 12 Dec 2025 16:44:03 +0100</pubDate>
+    <lastBuildDate>Fri, 12 Dec 2025 16:44:03 +0100</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
-    
-      <item>
-        <title>CountrySwitch - First Logon Experience and language selector and an app starter for remote apps on network paths for AVD</title>
-        <description>&lt;h2 id=&quot;first-logon-experience-and-language-selector-and-an-app-starter-for-remote-apps-on-network-paths&quot;&gt;First Logon Experience and language selector and an app starter for remote apps on network paths&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 11/19/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;select-the-language-users&quot;&gt;Select the language (users)&lt;/h2&gt;
-
-&lt;p&gt;In some environments, customers are running Azure on Windows 10/11 with multiple language packs installed. After the first login, users have to choose their language to customize the environment - that is not so easy, while users have to open the language settings and select the language. The first steps are outside the user&amp;#39;s language and are not easy to do for everyone.&lt;/p&gt;
-
-&lt;p&gt;I built a tool that makes it easier for users to select their language by clicking on the right flag. Currently, the following features are available:&lt;/p&gt;
-
-&lt;p&gt;Feature regarding the language selection:
-- The tool shows the installed language packages by a flag of the countries.
-- A welcome message in the present language welcomes the users.
-- The user selects the language settings with a click on the flag.
-- Hovering the mouse over a flag shows the country and language name.
-- The app configures the language settings (and does one logoff to apply the setting).
-- The PowerShell script CountrySwitch-User.ps1 in the program files folder is started to do some optional customizing (language code is in $languageTag)&lt;/p&gt;
-
-&lt;p&gt;CountrySwitch is linked in all users&amp;#39; start menu:
-- Startup: With parameter /RunOnce - Starts CountrySwitch at logon. The user will see the language selector only if the user is new and didn&amp;#39;t select a language once (HKCU:\SOFTWARE\ITProCloud\CountrySwitch\Completed is set to 1 )
-- Direct: Without parameters - Users can star CountrySwitch manually to select the language&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note on Remote Apps&lt;/strong&gt;: Remote apps are ignoring the autostart folder. To have CountrySwitch enabled for remote app, please configure a local Startup script (local policy for users) with the following parameters:
-Name of script: &amp;quot;C:\Program Files\ITProCloud.de\CountrySwitch\CountrySwitch.exe&amp;quot;
-Parameters: \/runonce&lt;/p&gt;
-
-&lt;h2 id=&quot;app-starter-for-remote-apps&quot;&gt;App Starter for remote apps&lt;/h2&gt;
-
-&lt;p&gt;CountrySwitch can also start a local or an application on a file share (which normally does not work directly with AVD). Publish CountrySwitch as a remote app with the following parameters:
-- &lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;&amp;lt;path to executable with parameters&amp;gt;&amp;quot; &amp;quot;&amp;lt;Working directory&amp;gt;&amp;quot;&lt;/code&gt;
-- &lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot; &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;If a remote app is started with CountrySwitch, CountrySwitch first starts the PowerShell script CountrySwitch-App.ps1 in the program files folder to do some optional customization. The following parameters are set in the script:&lt;/p&gt;
-
-&lt;p&gt;Example:
-&lt;code&gt;
-$languageTag = &amp;quot;unknown&amp;quot;,
-$appCommandline = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot;,
-$appWorkingDir = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;,
-$appParameter = &amp;quot;/db=vm1&amp;quot;,
-$appExecutable = &amp;quot;finance.exe&amp;quot;
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;The application starts after the PowerShell script finishes (CountrySwitch will run hidden and terminates after the start of the application (e.g., finance.exe).&lt;/p&gt;
-
-&lt;h2 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h2&gt;
-
-&lt;p&gt;CountrySwitch logs into %AppData%\ITProCloud&lt;/p&gt;
-
-&lt;p&gt;There are the following reg keys to optionally configure CountrySwitch (set the keys and value to modify the default settings):&lt;/p&gt;
-
-&lt;p&gt;HKLM:\SOFTWARE\Policies\ITProCloud\CountrySwitch (alls values are dword - 1 is true; 0 is false)&lt;/p&gt;
-
-&lt;table&gt;&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Key&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;th&gt;Default value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Enabled&lt;/td&gt;
-&lt;td&gt;If false, the application will not show up (except for /remoteapp (App starter mode))&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;ExitOnRunOnceCompleted&lt;/td&gt;
-&lt;td&gt;If the app is started with /runonce and the user has already completed the process, the application will not show up&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;ExitOnSingleLanguage&lt;/td&gt;
-&lt;td&gt;If only one language is installed, don&amp;#39;t show up&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;LogoffUserAfterSelectingNewLanguage&lt;/td&gt;
-&lt;td&gt;Logoff user after selecting a new language&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;LogoffUserAfterSelectingSameLanguage&lt;/td&gt;
-&lt;td&gt;Logoff user after selecting the same language as the user is still using&lt;/td&gt;
-&lt;td&gt;false&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;RunUserScriptAfterSelectingLanguage&lt;/td&gt;
-&lt;td&gt;Runs the ps script CountrySwitch-User.ps1 -languageTag {xx-YY} after the user selects a language&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;DisableUserScriptForAppStarterMode&lt;/td&gt;
-&lt;td&gt;If true, the app starter mode for a remote app will no longer trigger CountrySwitch-App before starting the application&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;release-notes&quot;&gt;Release notes&lt;/h2&gt;
-
-&lt;table&gt;&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Release&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1.3&lt;/td&gt;
-&lt;td&gt;2023-05-04&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1.4&lt;/td&gt;
-&lt;td&gt;2023-05-10&lt;/td&gt;
-&lt;td&gt;Update: CountrySwitch-User.ps1 had a typo&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1.7&lt;/td&gt;
-&lt;td&gt;2023-05-11&lt;/td&gt;
-&lt;td&gt;Fix: Avoid showing MSI installation screen for users if package unaccessible&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1.9&lt;/td&gt;
-&lt;td&gt;2024-09-16&lt;/td&gt;
-&lt;td&gt;Fix: Prevents that the logoff message is shown multiple times if the user multiple clicks on a flag&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.2.0&lt;/td&gt;
-&lt;td&gt;2025-11-19&lt;/td&gt;
-&lt;td&gt;Add: Sets languages in the control panel (needed for Teams)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 11/19/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 19 Nov 2025 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
-        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
-
-&lt;table&gt;&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Log Type&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
-&lt;td&gt;Details about the session hosts&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDConnections&lt;/td&gt;
-&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDErrors&lt;/td&gt;
-&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, ...)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDFeeds&lt;/td&gt;
-&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
-&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDManagement&lt;/td&gt;
-&lt;td&gt;Log about administrative tasks&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDCheckpoints&lt;/td&gt;
-&lt;td&gt;Detailed information related to logins, errors, ...&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;WVDConnectionNetworkData&lt;/td&gt;
-&lt;td&gt;Network information (bandwidth and RTT)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that (use version 1.7.25 or higher):&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-14.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;After a while, the workbook is visible as a new template in: &lt;strong&gt;Log Analytics -&amp;gt; Workbooks -&amp;gt; Azure Virtual Desktop -&amp;gt; AVD - Deep-Insights&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., &amp;quot;&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;&amp;quot; occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
-
-&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
-
-&lt;table&gt;&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Version&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Note&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1&lt;/td&gt;
-&lt;td&gt;01/28/2022&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.2&lt;/td&gt;
-&lt;td&gt;02/17/2022&lt;/td&gt;
-&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); Renaming of the workbook&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.3&lt;/td&gt;
-&lt;td&gt;03/16/2022&lt;/td&gt;
-&lt;td&gt;Include Logon timing (GPO, FSLogix, Authentication, etc.)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.4&lt;/td&gt;
-&lt;td&gt;04/14/2022&lt;/td&gt;
-&lt;td&gt;In Session Bandwidths &amp;amp; Latencies: The connection type is shown if RDP Short Path is used (Public, Private). See: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.5&lt;/td&gt;
-&lt;td&gt;05/03/2022&lt;/td&gt;
-&lt;td&gt;New visualization: Logon timing per day and category over the time&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.6&lt;/td&gt;
-&lt;td&gt;10/11/2022&lt;/td&gt;
-&lt;td&gt;New visualization: Connections over time, unhealthy session hosts, graphic performance&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.7&lt;/td&gt;
-&lt;td&gt;11/03/2022&lt;/td&gt;
-&lt;td&gt;Optimization for charts to show data over a large time frame&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.8&lt;/td&gt;
-&lt;td&gt;11/14/2022&lt;/td&gt;
-&lt;td&gt;A new tab &amp;quot;Resources&amp;quot;, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.9&lt;/td&gt;
-&lt;td&gt;11/18/2022&lt;/td&gt;
-&lt;td&gt;A new tab &amp;quot;Resources&amp;quot;, to show orphan VMs (where the session host object is missing)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.0&lt;/td&gt;
-&lt;td&gt;12/01/2022&lt;/td&gt;
-&lt;td&gt;Changed the description for the estimated available bandwidth&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.1&lt;/td&gt;
-&lt;td&gt;12/09/2022&lt;/td&gt;
-&lt;td&gt;Added orphan disks and orphan nics to the &amp;quot;Resources&amp;quot; tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop, version 1.0.1.84 (comming soon))&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.2&lt;/td&gt;
-&lt;td&gt;02/02/2023&lt;/td&gt;
-&lt;td&gt;Added &amp;quot;Water Markings&amp;quot; to query session information by the feature &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/watermarking&quot;&gt;WaterMarking&lt;/a&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.3&lt;/td&gt;
-&lt;td&gt;02/20/2023&lt;/td&gt;
-&lt;td&gt;Added &amp;quot;Unresponding AVD Agents&amp;quot; in the tab &amp;quot;Resources&amp;quot; to identify running VM with a non responding AVD agent&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.4&lt;/td&gt;
-&lt;td&gt;02/21/2023&lt;/td&gt;
-&lt;td&gt;Added new tab &amp;quot;FSLogix&amp;quot; to show the size, usage and free space of the FSLogix profiles&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.5&lt;/td&gt;
-&lt;td&gt;03/08/2023&lt;/td&gt;
-&lt;td&gt;Fix in the time selector; allow to selecte multiple host pools; show active sessions with user name and started desktop/remote app&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.6&lt;/td&gt;
-&lt;td&gt;03/31/2023&lt;/td&gt;
-&lt;td&gt;Add: Show office container size and usage (ODFC) in the FSLogix tab (additional to the profile container)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.7&lt;/td&gt;
-&lt;td&gt;07/01/2023&lt;/td&gt;
-&lt;td&gt;Fix/Workaround: VHDFreeSpace is stored as text in MByte and not in GByte if the value is less then 1 GByte&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;2.8&lt;/td&gt;
-&lt;td&gt;10/13/2023&lt;/td&gt;
-&lt;td&gt;Add: Show the last heart beat time in the Orphan session hosts view and warns, if the heart beat is longer then 90 days ago&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3.0&lt;/td&gt;
-&lt;td&gt;06/24/2024&lt;/td&gt;
-&lt;td&gt;Fix: Orphan resources are now including temporary orphan hosts&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3.1&lt;/td&gt;
-&lt;td&gt;10/24/2024&lt;/td&gt;
-&lt;td&gt;Add: Show &amp;quot;TURN&amp;quot; in session bandwidth and latency (if session was connected via TURN)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3.2&lt;/td&gt;
-&lt;td&gt;11/29/2024&lt;/td&gt;
-&lt;td&gt;Add: Show the country and city of the connections (based on the client internet IP)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3.4&lt;/td&gt;
-&lt;td&gt;06/28/2025&lt;/td&gt;
-&lt;td&gt;Add: Show RTT and bandwidth by client location&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3.5&lt;/td&gt;
-&lt;td&gt;07/24/2025&lt;/td&gt;
-&lt;td&gt;Add: Show RDS Shortpath Multipath&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;3.6&lt;/td&gt;
-&lt;td&gt;11/18/2025&lt;/td&gt;
-&lt;td&gt;Fix: Improved orphan detection for Azure Local; Calculating the FSLogix size on disk&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot;&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don&amp;#39;t generate costs.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 18 Nov 2025 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Azure Monitor</category>
-        
-        <category>Log Analytics</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -387,7 +17,7 @@ $appExecutable = &amp;quot;finance.exe&amp;quot;
 
 &lt;p&gt;Are you interested in the new &amp;quot;Hydra for Azure Virtual Desktop&amp;quot; solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 11/14/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 12/12/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 
@@ -475,7 +105,7 @@ $appExecutable = &amp;quot;finance.exe&amp;quot;
 
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 11/14/2025&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 12/12/2025&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;details&gt;&lt;summary&gt;I&amp;#39;m continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;&lt;/p&gt;
@@ -487,6 +117,11 @@ $appExecutable = &amp;quot;finance.exe&amp;quot;
 &lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;2.1.05.0&lt;/td&gt;
+&lt;td&gt;2025-12-12&lt;/td&gt;
+&lt;td&gt;Add: Imaging script improved to handle some issues during image creation/deployment&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;2.1.04.0&lt;/td&gt;
 &lt;td&gt;2025-11-14&lt;/td&gt;
@@ -1674,9 +1309,9 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 11/14/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 12/12/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Fri, 14 Nov 2025 00:00:00 +0100</pubDate>
+        <pubDate>Fri, 12 Dec 2025 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
         
@@ -1688,217 +1323,14 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
       </item>
     
       <item>
-        <title>Creating a Windows Azure VM Generation V2 from a V1 VM</title>
-        <description>&lt;p&gt;Update 2025.02: Microsoft has provided an additional way to upgrade existing VMs: &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch-existing-vm-gen-1&quot;&gt;https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch-existing-vm-gen-1&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Microsoft has provided different VM sizes over the last years and also introduced the VM Generation V2 at the end of 2019. V2 VMs are different from V1 VMs and have the following advantages:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;UEFI&lt;/strong&gt; based (no longer bios-based)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Enhanced OS support&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Faster boot and disk support&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Advanced Security Features&lt;/strong&gt;, like Secure Boot, which ensures the integrity of the boot process, and BitLocker encryption, which enhances data protection&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Today, I expect that the most deployed VMs are V2, but I still see older V1 versions - including in my own environment. For example, I have several Golden Masters for Azure Virtual Desktop running Windows 10 22/h2 Multi-User. We still see V1 types because of the missing simple migration path. There is no native way in the Azure Portal to do this.&lt;/p&gt;
-
-&lt;p&gt;While I wanted to upgrade my Windows 10 Golden Masters to Windows 11, I came to the point of discovering that Windows 11 needs a V2 generation VM (for upgrading, trusted launch, vTPM, and secure boot must also be enabled). &lt;/p&gt;
-
-&lt;p&gt;After some research, I figured out that this is really not simple. I found a good blog post from &lt;a href=&quot;https://charbelnemnom.com/migrate-gen1-to-gen2-vms-on-azure/&quot;&gt;Charbel Nemnom&lt;/a&gt;, who provides a step-by-step solution. The solution is still complex, so I decided to write a PowerShell script to handle this complex process more easily.&lt;/p&gt;
-
-&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
-
-&lt;p&gt;We have our V1 virtual machine we want to convert. Instead of converting, we are building a new virtual machine (V2) with the converted OS disk of our V1 VM. So, in the end, we have two identical VMs: The original V1 VM and the V2 VM. If anything doesn&amp;#39;t work, we still have our original VM.&lt;/p&gt;
-
-&lt;p&gt;But takes some time, and the full process takes hours (for the script).&lt;/p&gt;
-
-&lt;p&gt;After configuring the script, the script enters the following steps:
-- Deallocates the V1 VM
-- Creates the new V2 VM with the same size in the same network, optional with trusted launch, secure boot, and vTPM
-- Makes a snapshot of the V1 OS disk and, from the snapshot, a cloned OS disk (still V1)
-- Creates an empty V2 disk with the same size and type as the V1 OS disk(this disk is supposed to be our converted OS disk)
-- Attaches the empty V2 disk and the cloned V1 OS disk to the new V2 VM
-- The script runs itself on the V2 VM
-  - Preparing the partitions of the attached disks
-  - Formatting the partitions
-  - Capturing the cloned V1 OS partition using DISM (that takes some time; in my last conversion, it took nearly 4 hours)
-  - Apply the captured image to the prepared partition of the empty V2 disk 
-  - Write the UEFI partition of the formerly empty V2 disk
-- Deallocates the V2 VM
-- Detach the attached disks
-- Swap the OS disk with the no longer empty V2 disk (the now converted OS disk of the V1 VM)
-- Starting the V2 VM
-- Doing some cleanup: Deleting the snapshot, the old V2 OS disk, the cloned V1 OS disk
-- &lt;strong&gt;Done&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/V1-V2-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;how-to-use-the-script&quot;&gt;How to use the script&lt;/h3&gt;
-
-&lt;p&gt;Open the script in a PowerShell editor like ISE (or VS Code). Connect to your Azure subscription using &lt;em&gt;Connect-AzAccount&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Modify the script to match your:
-- Your subscription Id
-- Your source V1 VM (name and resource group)
-- Your new V2 VM (name and resource group - ensure to have a different name or resource group; another name of the VM doesn&amp;#39;t reflect the computer name after the process)
-- Set $enabledTrustedLaunch = $true to also create your V2 VM trusted launch enabled, incl. secure boot and vTPM
-- The tempDiskSizeGb must be large enough to contain the temporary OS (Server 2022) and the content of the OS disk of the V1 VM (512 should be fine if the disk of the V1 VM is 128 GByte)&lt;/p&gt;
-
-&lt;p&gt;That&amp;#39;s all. You can run the script and come back after some hours to see the result.&lt;/p&gt;
-
-&lt;h3 id=&quot;hints&quot;&gt;Hints&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;If the VM size doesn&amp;#39;t support V2, modify the target VM size in the script&lt;/li&gt;
-&lt;li&gt;If something fails: Cleanup the temporarily created resources manually (snapshot, empty V2 disk, cloned V1 disk, and V2 VM)&lt;/li&gt;
-&lt;li&gt;Upgrading to Windows 11 multi-user: Check-out this video&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;where-is-the-script&quot;&gt;Where is the script&lt;/h3&gt;
-
-&lt;p&gt;You can find the script on github: &lt;a href=&quot;https://gist.github.com/MarcelMeurer/aab2ef8f36d7c634beebea771f54bf30&quot;&gt;Create-V2-From-V1-VM.ps1&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Or use the update script, which has much better error handling, clean-up, and handling of common DISM errors. The script was created by &lt;a href=&quot;https://x.com/PJ_Marcum&quot;&gt;John Marcum&lt;/a&gt;. Thanks a lot, John, for providing this awesome development to the public 👍
-&lt;a href=&quot;https://gist.github.com/MarcelMeurer/1c0aa1f7ea5736095f1a4ccbd592b794&quot;&gt;Convert-AzVmGen1ToGen2.ps1&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Tue, 30 Sep 2025 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</guid>
-        
-        
-        <category>Azure</category>
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>From SCSI to NVMe in Azure Virtual Desktop - Reuse your current golden master VM - or convert it</title>
-        <description>&lt;h2 id=&quot;why-nvme-matters&quot;&gt;Why NVMe Matters&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;NVMe&lt;/strong&gt; (Non-Volatile Memory Express) is a modern storage protocol designed for non-volatile flash memory. Compared to legacy SCSI, it delivers significantly higher &lt;strong&gt;IOPS&lt;/strong&gt; and &lt;strong&gt;throughput&lt;/strong&gt;. For I/O-intensive workloads, the performance gain is substantial (&lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-machines/nvme-overview?utm_source=chatgpt.com&quot;&gt;Microsoft Docs: NVMe overview&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;With the &lt;strong&gt;v6 VM families&lt;/strong&gt; (e.g., Dlsv6, Dldsv6), NVMe-backed local storage is now widely available. Benefits include:
-
-&lt;ul&gt;
-&lt;li&gt;Up to &lt;strong&gt;5× more CPU cache&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Up to &lt;strong&gt;54 Gbps networking&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Up to &lt;strong&gt;400k remote disk IOPS&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Up to &lt;strong&gt;12 GB/s remote throughput via Azure Boost&lt;/strong&gt;&lt;br&gt;
-(&lt;a href=&quot;https://techcommunity.microsoft.com/discussions/compute/boosting-performance-with-the-latest-generations-of-virtual-machines-in-azure/4381896?utm_source=chatgpt.com&quot;&gt;Microsoft Tech Community&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Support for &lt;strong&gt;ephemeral OS disks with local NVMe storage&lt;/strong&gt; is now GA, offering:
-
-&lt;ul&gt;
-&lt;li&gt;Up to &lt;strong&gt;10× faster OS disk performance&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Ultra-low latency&lt;/li&gt;
-&lt;li&gt;Modern processor architeture in comparision to the older ephemeral VM sizes&lt;/li&gt;
-&lt;li&gt;Very fast reimaging&lt;br&gt;
-Perfect for stateless scaling scenarios like &lt;strong&gt;Azure Virtual Desktop (AVD)&lt;/strong&gt;&lt;br&gt;
-(&lt;a href=&quot;https://techcommunity.microsoft.com/blog/azurecompute/announcing-general-availability-ephemeral-os-disk-support-for-v6-azure-vms/4415163?utm_source=chatgpt.com&quot;&gt;Microsoft Tech Community&lt;/a&gt;).&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;the-challenge&quot;&gt;The Challenge&lt;/h2&gt;
-
-&lt;p&gt;It could be so easy to enjoy the new VM sizes — with either &lt;strong&gt;network disks&lt;/strong&gt; or &lt;strong&gt;ephemeral disks&lt;/strong&gt;. However, if you already maintain &lt;strong&gt;images and golden masters for Azure Virtual Desktop (AVD)&lt;/strong&gt;, you’ll quickly realize that you cannot simply reuse them.  &lt;/p&gt;
-
-&lt;p&gt;Why? Because the &lt;strong&gt;disk architecture changes&lt;/strong&gt; between your older images and the new NVMe-based VM families.  &lt;/p&gt;
-
-&lt;p&gt;That leaves you with two main options:&lt;br&gt;
-- &lt;strong&gt;Create new golden masters&lt;/strong&gt; directly on NVMe VM sizes, or&lt;br&gt;
-- &lt;strong&gt;Create new images&lt;/strong&gt; of your existing golden masters and store them in an &lt;strong&gt;NVMe-enabled Azure Compute Gallery definition&lt;/strong&gt;  &lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;prepare-an-azure-compute-gallery-definition&quot;&gt;Prepare an Azure Compute Gallery Definition&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Navigate to your &lt;strong&gt;Azure Compute Gallery&lt;/strong&gt; (create a new one if necessary)&lt;/li&gt;
-&lt;li&gt;At the top, select &lt;strong&gt;Add -&amp;gt; VM Image definition&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Configure the definition and ensure you select:&lt;br&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Higher storage performance with NVMe&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;For secure boot masters and hosts: &lt;strong&gt;Trusted Launch&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;The following screenshot shows a secure boot + NVMe-enabled definition.&lt;br&gt;
-&lt;img src=&quot;../assets/images/NVME-Image-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;Finally:&lt;br&gt;
-- Click &lt;strong&gt;Review and Create&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Create&lt;/strong&gt;.  &lt;/p&gt;
-
-&lt;p&gt;If you are using &lt;strong&gt;Hydra&lt;/strong&gt; for Azure Virtual Desktop, you can directly capture your &lt;strong&gt;existing golden master&lt;/strong&gt; into this new compute gallery definition. Hydra will capture the image &lt;strong&gt;without destroying the golden master&lt;/strong&gt;, so you can safely reuse your existing setup.
-&lt;img src=&quot;../assets/images/NVME-Image-03.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;From here, you can use the &lt;strong&gt;gallery definition version&lt;/strong&gt; to roll out &lt;strong&gt;new NVMe-based session hosts or virtual machines&lt;/strong&gt; — with or without ephemeral disks.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;notes-from-the-field&quot;&gt;Notes from the Field&lt;/h2&gt;
-
-&lt;p&gt;During my tests, some rollouts failed with a bluescreen (both with custom images and with Microsoft marketplace images). After a while, the rollout worked again. This suggests that there may occasionally be stability issues with the new v6 Boost VMs. It&amp;#39;s good to have this in mind.
-Also good to know: You can use gallery definitions to migrate existing VMs. In this case use a &amp;quot;Spezialized&amp;quot; gallery definition. Please remember that maybe not any Windows version comes with the right drivers.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;what-s-next&quot;&gt;What’s Next&lt;/h2&gt;
-
-&lt;p&gt;Follow me if you want to learn more about:&lt;br&gt;
-- How to &lt;strong&gt;increase performance in AVD with NVMe&lt;/strong&gt;, and&lt;br&gt;
-- How to manage the &lt;strong&gt;Windows swapfile&lt;/strong&gt; in a smarter way for even greater efficiency. 🚀+&lt;/p&gt;
-</description>
-        <pubDate>Wed, 27 Aug 2025 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Deployment of an Azure Virtual Desktop image failed after updating to Windows 24H2 with a blue screen 0xc000000f</title>
-        <description>&lt;p&gt;Several users reported a failure during the rollout of images in Azure Virtual Desktop in the last months. The error pattern was always the same: The virtual machine was built, and the next step failed while the VM was no longer running.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/bs-0xc000000f-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;We figured out that the VM installation resulted in a blue screen with the error message 0xc000000f, Windows shut down internally, and the VM was stopped in Azure. That was reproducible and caused by the image itself. The image was created by capturing a Golden Master with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; or &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; (which can image an existing VM without destroying it).&lt;/p&gt;
-
-&lt;p&gt;Interesting: Older images from the same Golden Masters are working. The only difference between them is that the Golden Master was updated to Windows 11 24H2.&lt;/p&gt;
-
-&lt;p&gt;So, we inspected the Golden Master and started the imaging process step by step. After a while, we figured out that during the Sysprep process, Windows started to encrypt the C: drive. During the encryption, Sysprep finished and shut down the VM, and the imaging process continued. Unfortunately, the captured image is half encrypted and, for that reason, not deployable as a new VM/host.&lt;/p&gt;
-
-&lt;p&gt;We never figured out why this happened after upgrading to 24H2, and that also doesn&amp;#39;t happen if your Golden Master was built on 24H2 initially.&lt;/p&gt;
-
-&lt;p&gt;Solution: The solution is more of a workaround. But if we disable the Bit Locker service on the Golden Master, the Sysprep process will not encrypt the C: drive, and the image will be deployable.&lt;/p&gt;
-
-&lt;p&gt;The upcoming version of Hydra and WVDAdmin will disable the Bit Locker service temporarily during the imaging process.&lt;/p&gt;
-</description>
-        <pubDate>Mon, 17 Mar 2025 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/Rollout-Image-BlueScreen-0xc000000f-24h2/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Rollout-Image-BlueScreen-0xc000000f-24h2/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Entra</category>
-        
-      </item>
-    
-      <item>
         <title>Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD</title>
-        <description>&lt;p&gt;With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don&amp;#39;t need to have network line-of-sight to the domain controller. &lt;/p&gt;
+        <description>&lt;h2 id=&quot;note&quot;&gt;Note&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Since 2025 Azure Files can handle cloud-only identities nativly (in the same tenant). This post is still interesting if you are looking for a workaround to work with external cloud identities.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://techcommunity.microsoft.com/blog/azurestorageblog/cloud-native-identity-with-azure-files-entra-only-secure-access-for-the-modern-e/4469778&quot;&gt;Microsoft Post&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don&amp;#39;t need to have network line-of-sight to the domain controller. &lt;/p&gt;
 
 &lt;p&gt;However, the user identities must still be hybrid / synchronized from a legacy AD right now. And that prevents having AAD-only users in a multi-user pool in AVD where a profile is mostly mandatory.&lt;/p&gt;
 
@@ -2194,7 +1626,7 @@ OutputWriter(&quot;The script has finished.&quot;)
 
 &lt;p&gt;&lt;strong&gt;Note: It&amp;#39;s a nice workaround to bridge the time until there is a native solution in Azure. Please use it at your own risk.&lt;/strong&gt;&lt;/p&gt;
 </description>
-        <pubDate>Thu, 13 Mar 2025 00:00:00 +0100</pubDate>
+        <pubDate>Fri, 12 Dec 2025 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Using-FSLogix-file-shares-with-Azure-AD-cloud-identities-in-Azure-Virtual-Desktop-AVD/</guid>
         
@@ -2202,48 +1634,6 @@ OutputWriter(&quot;The script has finished.&quot;)
         <category>Windows Virtual Desktop</category>
         
         <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Entra Dynamic Device Groups for Azure Virtual Desktop - Host Pools, Resource Groups and Subscriptions</title>
-        <description>&lt;p&gt;I was searching for an option to group all AVD hosts (Entra and hybrid joined) of a pool in a dynamic device group. Unfortunately, I didn&amp;#39;t find a perfect solution that works without modifying the device objects through the Graph API (or AD for hybrid joined devices (extensionAttributes)). If one of the readers knows a good solution for this, please share it.&lt;/p&gt;
-
-&lt;p&gt;Therefore, I checked the different properties of a device in Entra to find one I can use to create a dynamic device group. I prefer having a naming schema reflecting the specific host pools. AVD-DESIGN-001 and up counting would be a good match to identify all hosts of my pool &amp;quot;Design&amp;quot;. The rule is simple:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-02.png&quot; alt=&quot;&quot;&gt;
-&lt;code&gt;(device.displayName -startsWith &amp;quot;AVD-DESIGN-&amp;quot;)&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;After a while, the group contains all hosts/VMs matching this schema. The query can also be made more complex by including/excluding specific Windows types (multi-user or single-user OS).&lt;/p&gt;
-
-&lt;p&gt;I also found another interesting property in the devices for Entra joined VMs (not for hybrid joined):&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-03.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;The property &amp;quot;physicalIds&amp;quot; contains a list of strings. One string reflects the Azure resource ID of the virtual machine (the session hosts the linked VM):&lt;/p&gt;
-
-&lt;p&gt;The resource ID in Azure has a default schema that reflects the subscription ID, resource group name, provider, and the name of the resource. Some resources also have subtypes, which is not important for our VMs. The resource ID is always in the device property and is written with the join of the device to Entra.&lt;/p&gt;
-
-&lt;p&gt;We can now build dynamic device groups based on the resource group or subscription. If you are using different resource groups for your host pools, you can also use this method to group the VMs — independent from the naming concept. Or you can group all the VMs of your AVD subscription and combine them to validate the display names. That makes your dynamic group more resilient and excludes VMs from other subscriptions.&lt;/p&gt;
-
-&lt;p&gt;Here is an example of grouping all VMs in the resource group &amp;quot;WVD.Design2&amp;quot; in the given subscription:
-&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-04.png&quot; alt=&quot;&quot;&gt;
-&lt;code&gt;(device.devicePhysicalIds -any (_ -startsWith&amp;quot;[AzureResourceId]:/subscriptions/dcdce2ee-****-****-****-************/resourceGroups/wvd.Design2/providers/Microsoft.Compute/virtualMachines/&amp;quot;))&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;After a while, all VMs/hosts are members of the group.&lt;/p&gt;
-
-&lt;p&gt;Even if that doesn&amp;#39;t solve my challenge very well, it&amp;#39;s a nice workaround or at least increased my insights.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 08 Oct 2024 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Entra</category>
         
       </item>
     
@@ -2376,17 +1766,22 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
 &lt;td&gt;2024-10-03&lt;/td&gt;
 &lt;td&gt;Add: Feature: RunAtLogoff with a default value of 0&lt;/td&gt;
 &lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.8&lt;/td&gt;
+&lt;td&gt;2025-12-12&lt;/td&gt;
+&lt;td&gt;Fix: Calculation of file size&lt;/td&gt;
+&lt;/tr&gt;
 &lt;/tbody&gt;&lt;/table&gt;
 
 &lt;p&gt;&lt;br/&gt;&lt;/p&gt;
 
 &lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/OneDriveCleanUp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 10/03/2024&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/OneDriveCleanUp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 12/12/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
 </description>
-        <pubDate>Thu, 03 Oct 2024 00:00:00 +0200</pubDate>
+        <pubDate>Fri, 12 Dec 2025 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</guid>
         
@@ -2394,6 +1789,632 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
         <category>Windows Virtual Desktop</category>
         
         <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>CountrySwitch - First Logon Experience and language selector and an app starter for remote apps on network paths for AVD</title>
+        <description>&lt;h2 id=&quot;first-logon-experience-and-language-selector-and-an-app-starter-for-remote-apps-on-network-paths&quot;&gt;First Logon Experience and language selector and an app starter for remote apps on network paths&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 12/12/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;select-the-language-users&quot;&gt;Select the language (users)&lt;/h2&gt;
+
+&lt;p&gt;In some environments, customers are running Azure on Windows 10/11 with multiple language packs installed. After the first login, users have to choose their language to customize the environment - that is not so easy, while users have to open the language settings and select the language. The first steps are outside the user&amp;#39;s language and are not easy to do for everyone.&lt;/p&gt;
+
+&lt;p&gt;I built a tool that makes it easier for users to select their language by clicking on the right flag. Currently, the following features are available:&lt;/p&gt;
+
+&lt;p&gt;Feature regarding the language selection:
+- The tool shows the installed language packages by a flag of the countries.
+- A welcome message in the present language welcomes the users.
+- The user selects the language settings with a click on the flag.
+- Hovering the mouse over a flag shows the country and language name.
+- The app configures the language settings (and does one logoff to apply the setting).
+- The PowerShell script CountrySwitch-User.ps1 in the program files folder is started to do some optional customizing (language code is in $languageTag)&lt;/p&gt;
+
+&lt;p&gt;CountrySwitch is linked in all users&amp;#39; start menu:
+- Startup: With parameter /RunOnce - Starts CountrySwitch at logon. The user will see the language selector only if the user is new and didn&amp;#39;t select a language once (HKCU:\SOFTWARE\ITProCloud\CountrySwitch\Completed is set to 1 )
+- Direct: Without parameters - Users can star CountrySwitch manually to select the language&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note on Remote Apps&lt;/strong&gt;: Remote apps are ignoring the autostart folder. To have CountrySwitch enabled for remote app, please configure a local Startup script (local policy for users) with the following parameters:
+Name of script: &amp;quot;C:\Program Files\ITProCloud.de\CountrySwitch\CountrySwitch.exe&amp;quot;
+Parameters: \/runonce&lt;/p&gt;
+
+&lt;h2 id=&quot;app-starter-for-remote-apps&quot;&gt;App Starter for remote apps&lt;/h2&gt;
+
+&lt;p&gt;CountrySwitch can also start a local or an application on a file share (which normally does not work directly with AVD). Publish CountrySwitch as a remote app with the following parameters:
+- &lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;&amp;lt;path to executable with parameters&amp;gt;&amp;quot; &amp;quot;&amp;lt;Working directory&amp;gt;&amp;quot;&lt;/code&gt;
+- &lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot; &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;If a remote app is started with CountrySwitch, CountrySwitch first starts the PowerShell script CountrySwitch-App.ps1 in the program files folder to do some optional customization. The following parameters are set in the script:&lt;/p&gt;
+
+&lt;p&gt;Example:
+&lt;code&gt;
+$languageTag = &amp;quot;unknown&amp;quot;,
+$appCommandline = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot;,
+$appWorkingDir = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;,
+$appParameter = &amp;quot;/db=vm1&amp;quot;,
+$appExecutable = &amp;quot;finance.exe&amp;quot;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;The application starts after the PowerShell script finishes (CountrySwitch will run hidden and terminates after the start of the application (e.g., finance.exe).&lt;/p&gt;
+
+&lt;h2 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h2&gt;
+
+&lt;p&gt;CountrySwitch logs into %AppData%\ITProCloud&lt;/p&gt;
+
+&lt;p&gt;There are the following reg keys to optionally configure CountrySwitch (set the keys and value to modify the default settings):&lt;/p&gt;
+
+&lt;p&gt;HKLM:\SOFTWARE\Policies\ITProCloud\CountrySwitch (alls values are dword - 1 is true; 0 is false)&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Key&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;th&gt;Default value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Enabled&lt;/td&gt;
+&lt;td&gt;If false, the application will not show up (except for /remoteapp (App starter mode))&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ExitOnRunOnceCompleted&lt;/td&gt;
+&lt;td&gt;If the app is started with /runonce and the user has already completed the process, the application will not show up&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;ExitOnSingleLanguage&lt;/td&gt;
+&lt;td&gt;If only one language is installed, don&amp;#39;t show up&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LogoffUserAfterSelectingNewLanguage&lt;/td&gt;
+&lt;td&gt;Logoff user after selecting a new language&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;LogoffUserAfterSelectingSameLanguage&lt;/td&gt;
+&lt;td&gt;Logoff user after selecting the same language as the user is still using&lt;/td&gt;
+&lt;td&gt;false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RunUserScriptAfterSelectingLanguage&lt;/td&gt;
+&lt;td&gt;Runs the ps script CountrySwitch-User.ps1 -languageTag {xx-YY} after the user selects a language&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;DisableUserScriptForAppStarterMode&lt;/td&gt;
+&lt;td&gt;If true, the app starter mode for a remote app will no longer trigger CountrySwitch-App before starting the application&lt;/td&gt;
+&lt;td&gt;true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;release-notes&quot;&gt;Release notes&lt;/h2&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Release&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1.3&lt;/td&gt;
+&lt;td&gt;2023-05-04&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1.4&lt;/td&gt;
+&lt;td&gt;2023-05-10&lt;/td&gt;
+&lt;td&gt;Update: CountrySwitch-User.ps1 had a typo&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1.7&lt;/td&gt;
+&lt;td&gt;2023-05-11&lt;/td&gt;
+&lt;td&gt;Fix: Avoid showing MSI installation screen for users if package unaccessible&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1.9&lt;/td&gt;
+&lt;td&gt;2024-09-16&lt;/td&gt;
+&lt;td&gt;Fix: Prevents that the logoff message is shown multiple times if the user multiple clicks on a flag&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.2.0&lt;/td&gt;
+&lt;td&gt;2025-11-19&lt;/td&gt;
+&lt;td&gt;Add: Sets languages in the control panel (needed for Teams)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.3.0&lt;/td&gt;
+&lt;td&gt;2025-12-12&lt;/td&gt;
+&lt;td&gt;Fix: Sets languages in the control panel (needed for Teams)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 12/12/2025&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 12 Dec 2025 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Debugging Azure Virtual Desktop errors/issues/network latency and bandwidth with an interactive Workbook</title>
+        <description>&lt;p&gt;Correctly configured, Azure Virtual Desktop sends diagnostic data to a log analytics workspace (Azure Monitor). There are several logs containing data about the events in the backend:&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Log Type&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDAgentHealthStatus&lt;/td&gt;
+&lt;td&gt;Details about the session hosts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnections&lt;/td&gt;
+&lt;td&gt;All about connections from a user to a session host&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDErrors&lt;/td&gt;
+&lt;td&gt;Error message from different sources (client, RDGateway, Loadbalancer, ...)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDFeeds&lt;/td&gt;
+&lt;td&gt;Log about clients downloading information about the AVD resources&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDHostRegistrations&lt;/td&gt;
+&lt;td&gt;Logs if a host tries to register to a host pool&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDManagement&lt;/td&gt;
+&lt;td&gt;Log about administrative tasks&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDCheckpoints&lt;/td&gt;
+&lt;td&gt;Detailed information related to logins, errors, ...&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;WVDConnectionNetworkData&lt;/td&gt;
+&lt;td&gt;Network information (bandwidth and RTT)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;To get the logs, configure at least the host pool to send log information to a log analytics workspace. You can do this on a host pool level -&amp;gt; Diagnostic settings -&amp;gt; Add diagnostic settings -&amp;gt; Select all Logs and target a log analytics workspace.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-01.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Alternatively, you can use &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; to do that (use version 1.7.25 or higher):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;It will take a while before you can see the first data. The data can be queried with the KUSTO language or analyzed with custom workbooks. I prepared a workbook to dig into the data. Most visualizations are interactive. So you can drill down by selecting users, networks, agent versions, and more.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-Monitoring-Workbook-Errors.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/MonitorSessionHosts-12.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-13.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Avd-Error-Monitoring-14.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;You can install the workbook directly as a template into your subscription: &lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;Install the workbook&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;After a while, the workbook is visible as a new template in: &lt;strong&gt;Log Analytics -&amp;gt; Workbooks -&amp;gt; Azure Virtual Desktop -&amp;gt; AVD - Deep-Insights&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;You can select the time frame and host pool from the drop-down list. The other drop-down lists are optional. Please ensure that you have included the essential errors from the error selector. Remember that not all errors are making issues (e.g., &amp;quot;&lt;em&gt;ConnectionFailedClientDisconnected&lt;/em&gt;&amp;quot; occurs if a session goes in the disconnected mode while the users close its notebook).&lt;/p&gt;
+
+&lt;p&gt;Please let me know if you have ideas to extend the workbook.&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Version&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Note&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1&lt;/td&gt;
+&lt;td&gt;01/28/2022&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.2&lt;/td&gt;
+&lt;td&gt;02/17/2022&lt;/td&gt;
+&lt;td&gt;Include RTT and bandwidth (right now, host pool must be in the validation environment and diagnostic data must include &lt;strong&gt;NetworkData&lt;/strong&gt;); Renaming of the workbook&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.3&lt;/td&gt;
+&lt;td&gt;03/16/2022&lt;/td&gt;
+&lt;td&gt;Include Logon timing (GPO, FSLogix, Authentication, etc.)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.4&lt;/td&gt;
+&lt;td&gt;04/14/2022&lt;/td&gt;
+&lt;td&gt;In Session Bandwidths &amp;amp; Latencies: The connection type is shown if RDP Short Path is used (Public, Private). See: &lt;a href=&quot;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&quot;&gt;https://docs.microsoft.com/en-us/azure/virtual-desktop/shortpath-public&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.5&lt;/td&gt;
+&lt;td&gt;05/03/2022&lt;/td&gt;
+&lt;td&gt;New visualization: Logon timing per day and category over the time&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.6&lt;/td&gt;
+&lt;td&gt;10/11/2022&lt;/td&gt;
+&lt;td&gt;New visualization: Connections over time, unhealthy session hosts, graphic performance&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.7&lt;/td&gt;
+&lt;td&gt;11/03/2022&lt;/td&gt;
+&lt;td&gt;Optimization for charts to show data over a large time frame&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.8&lt;/td&gt;
+&lt;td&gt;11/14/2022&lt;/td&gt;
+&lt;td&gt;A new tab &amp;quot;Resources&amp;quot;, to show orphan session hosts; Fix: Number of active and inactive sessions - timeselector was not correct&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.9&lt;/td&gt;
+&lt;td&gt;11/18/2022&lt;/td&gt;
+&lt;td&gt;A new tab &amp;quot;Resources&amp;quot;, to show orphan VMs (where the session host object is missing)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.0&lt;/td&gt;
+&lt;td&gt;12/01/2022&lt;/td&gt;
+&lt;td&gt;Changed the description for the estimated available bandwidth&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.1&lt;/td&gt;
+&lt;td&gt;12/09/2022&lt;/td&gt;
+&lt;td&gt;Added orphan disks and orphan nics to the &amp;quot;Resources&amp;quot; tab (note: All orphand devices will also shown and could be removed in Hydra for Azure Virtual Desktop, version 1.0.1.84 (comming soon))&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.2&lt;/td&gt;
+&lt;td&gt;02/02/2023&lt;/td&gt;
+&lt;td&gt;Added &amp;quot;Water Markings&amp;quot; to query session information by the feature &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/watermarking&quot;&gt;WaterMarking&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.3&lt;/td&gt;
+&lt;td&gt;02/20/2023&lt;/td&gt;
+&lt;td&gt;Added &amp;quot;Unresponding AVD Agents&amp;quot; in the tab &amp;quot;Resources&amp;quot; to identify running VM with a non responding AVD agent&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.4&lt;/td&gt;
+&lt;td&gt;02/21/2023&lt;/td&gt;
+&lt;td&gt;Added new tab &amp;quot;FSLogix&amp;quot; to show the size, usage and free space of the FSLogix profiles&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.5&lt;/td&gt;
+&lt;td&gt;03/08/2023&lt;/td&gt;
+&lt;td&gt;Fix in the time selector; allow to selecte multiple host pools; show active sessions with user name and started desktop/remote app&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.6&lt;/td&gt;
+&lt;td&gt;03/31/2023&lt;/td&gt;
+&lt;td&gt;Add: Show office container size and usage (ODFC) in the FSLogix tab (additional to the profile container)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.7&lt;/td&gt;
+&lt;td&gt;07/01/2023&lt;/td&gt;
+&lt;td&gt;Fix/Workaround: VHDFreeSpace is stored as text in MByte and not in GByte if the value is less then 1 GByte&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;2.8&lt;/td&gt;
+&lt;td&gt;10/13/2023&lt;/td&gt;
+&lt;td&gt;Add: Show the last heart beat time in the Orphan session hosts view and warns, if the heart beat is longer then 90 days ago&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.0&lt;/td&gt;
+&lt;td&gt;06/24/2024&lt;/td&gt;
+&lt;td&gt;Fix: Orphan resources are now including temporary orphan hosts&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.1&lt;/td&gt;
+&lt;td&gt;10/24/2024&lt;/td&gt;
+&lt;td&gt;Add: Show &amp;quot;TURN&amp;quot; in session bandwidth and latency (if session was connected via TURN)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.2&lt;/td&gt;
+&lt;td&gt;11/29/2024&lt;/td&gt;
+&lt;td&gt;Add: Show the country and city of the connections (based on the client internet IP)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.4&lt;/td&gt;
+&lt;td&gt;06/28/2025&lt;/td&gt;
+&lt;td&gt;Add: Show RTT and bandwidth by client location&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.5&lt;/td&gt;
+&lt;td&gt;07/24/2025&lt;/td&gt;
+&lt;td&gt;Add: Show RDS Shortpath Multipath&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;3.6&lt;/td&gt;
+&lt;td&gt;11/18/2025&lt;/td&gt;
+&lt;td&gt;Fix: Improved orphan detection for Azure Local; Calculating the FSLogix size on disk&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fblog.itprocloud.de%2Fassets%2Ffiles%2FAzureDeployments%2FWorkbook-AVD-Error-Logging.json&quot;&gt;&lt;img src=&quot;https://aka.ms/deploytoazurebutton&quot; alt=&quot;Deploy to Azure&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Please click twice on create to accept the Microsoft Agreement of terms - Workbooks don&amp;#39;t generate costs.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 18 Nov 2025 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Azure-Virtual-Desktop-Error-Drill-Down-Workbook/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Azure Monitor</category>
+        
+        <category>Log Analytics</category>
+        
+      </item>
+    
+      <item>
+        <title>Creating a Windows Azure VM Generation V2 from a V1 VM</title>
+        <description>&lt;p&gt;Update 2025.02: Microsoft has provided an additional way to upgrade existing VMs: &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch-existing-vm-gen-1&quot;&gt;https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch-existing-vm-gen-1&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Microsoft has provided different VM sizes over the last years and also introduced the VM Generation V2 at the end of 2019. V2 VMs are different from V1 VMs and have the following advantages:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;UEFI&lt;/strong&gt; based (no longer bios-based)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Enhanced OS support&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Faster boot and disk support&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Advanced Security Features&lt;/strong&gt;, like Secure Boot, which ensures the integrity of the boot process, and BitLocker encryption, which enhances data protection&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Today, I expect that the most deployed VMs are V2, but I still see older V1 versions - including in my own environment. For example, I have several Golden Masters for Azure Virtual Desktop running Windows 10 22/h2 Multi-User. We still see V1 types because of the missing simple migration path. There is no native way in the Azure Portal to do this.&lt;/p&gt;
+
+&lt;p&gt;While I wanted to upgrade my Windows 10 Golden Masters to Windows 11, I came to the point of discovering that Windows 11 needs a V2 generation VM (for upgrading, trusted launch, vTPM, and secure boot must also be enabled). &lt;/p&gt;
+
+&lt;p&gt;After some research, I figured out that this is really not simple. I found a good blog post from &lt;a href=&quot;https://charbelnemnom.com/migrate-gen1-to-gen2-vms-on-azure/&quot;&gt;Charbel Nemnom&lt;/a&gt;, who provides a step-by-step solution. The solution is still complex, so I decided to write a PowerShell script to handle this complex process more easily.&lt;/p&gt;
+
+&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
+
+&lt;p&gt;We have our V1 virtual machine we want to convert. Instead of converting, we are building a new virtual machine (V2) with the converted OS disk of our V1 VM. So, in the end, we have two identical VMs: The original V1 VM and the V2 VM. If anything doesn&amp;#39;t work, we still have our original VM.&lt;/p&gt;
+
+&lt;p&gt;But takes some time, and the full process takes hours (for the script).&lt;/p&gt;
+
+&lt;p&gt;After configuring the script, the script enters the following steps:
+- Deallocates the V1 VM
+- Creates the new V2 VM with the same size in the same network, optional with trusted launch, secure boot, and vTPM
+- Makes a snapshot of the V1 OS disk and, from the snapshot, a cloned OS disk (still V1)
+- Creates an empty V2 disk with the same size and type as the V1 OS disk(this disk is supposed to be our converted OS disk)
+- Attaches the empty V2 disk and the cloned V1 OS disk to the new V2 VM
+- The script runs itself on the V2 VM
+  - Preparing the partitions of the attached disks
+  - Formatting the partitions
+  - Capturing the cloned V1 OS partition using DISM (that takes some time; in my last conversion, it took nearly 4 hours)
+  - Apply the captured image to the prepared partition of the empty V2 disk 
+  - Write the UEFI partition of the formerly empty V2 disk
+- Deallocates the V2 VM
+- Detach the attached disks
+- Swap the OS disk with the no longer empty V2 disk (the now converted OS disk of the V1 VM)
+- Starting the V2 VM
+- Doing some cleanup: Deleting the snapshot, the old V2 OS disk, the cloned V1 OS disk
+- &lt;strong&gt;Done&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/V1-V2-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;how-to-use-the-script&quot;&gt;How to use the script&lt;/h3&gt;
+
+&lt;p&gt;Open the script in a PowerShell editor like ISE (or VS Code). Connect to your Azure subscription using &lt;em&gt;Connect-AzAccount&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Modify the script to match your:
+- Your subscription Id
+- Your source V1 VM (name and resource group)
+- Your new V2 VM (name and resource group - ensure to have a different name or resource group; another name of the VM doesn&amp;#39;t reflect the computer name after the process)
+- Set $enabledTrustedLaunch = $true to also create your V2 VM trusted launch enabled, incl. secure boot and vTPM
+- The tempDiskSizeGb must be large enough to contain the temporary OS (Server 2022) and the content of the OS disk of the V1 VM (512 should be fine if the disk of the V1 VM is 128 GByte)&lt;/p&gt;
+
+&lt;p&gt;That&amp;#39;s all. You can run the script and come back after some hours to see the result.&lt;/p&gt;
+
+&lt;h3 id=&quot;hints&quot;&gt;Hints&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;If the VM size doesn&amp;#39;t support V2, modify the target VM size in the script&lt;/li&gt;
+&lt;li&gt;If something fails: Cleanup the temporarily created resources manually (snapshot, empty V2 disk, cloned V1 disk, and V2 VM)&lt;/li&gt;
+&lt;li&gt;Upgrading to Windows 11 multi-user: Check-out this video&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;where-is-the-script&quot;&gt;Where is the script&lt;/h3&gt;
+
+&lt;p&gt;You can find the script on github: &lt;a href=&quot;https://gist.github.com/MarcelMeurer/aab2ef8f36d7c634beebea771f54bf30&quot;&gt;Create-V2-From-V1-VM.ps1&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Or use the update script, which has much better error handling, clean-up, and handling of common DISM errors. The script was created by &lt;a href=&quot;https://x.com/PJ_Marcum&quot;&gt;John Marcum&lt;/a&gt;. Thanks a lot, John, for providing this awesome development to the public 👍
+&lt;a href=&quot;https://gist.github.com/MarcelMeurer/1c0aa1f7ea5736095f1a4ccbd592b794&quot;&gt;Convert-AzVmGen1ToGen2.ps1&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 30 Sep 2025 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</guid>
+        
+        
+        <category>Azure</category>
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>From SCSI to NVMe in Azure Virtual Desktop - Reuse your current golden master VM - or convert it</title>
+        <description>&lt;h2 id=&quot;why-nvme-matters&quot;&gt;Why NVMe Matters&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;NVMe&lt;/strong&gt; (Non-Volatile Memory Express) is a modern storage protocol designed for non-volatile flash memory. Compared to legacy SCSI, it delivers significantly higher &lt;strong&gt;IOPS&lt;/strong&gt; and &lt;strong&gt;throughput&lt;/strong&gt;. For I/O-intensive workloads, the performance gain is substantial (&lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-machines/nvme-overview?utm_source=chatgpt.com&quot;&gt;Microsoft Docs: NVMe overview&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;With the &lt;strong&gt;v6 VM families&lt;/strong&gt; (e.g., Dlsv6, Dldsv6), NVMe-backed local storage is now widely available. Benefits include:
+
+&lt;ul&gt;
+&lt;li&gt;Up to &lt;strong&gt;5× more CPU cache&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Up to &lt;strong&gt;54 Gbps networking&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Up to &lt;strong&gt;400k remote disk IOPS&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Up to &lt;strong&gt;12 GB/s remote throughput via Azure Boost&lt;/strong&gt;&lt;br&gt;
+(&lt;a href=&quot;https://techcommunity.microsoft.com/discussions/compute/boosting-performance-with-the-latest-generations-of-virtual-machines-in-azure/4381896?utm_source=chatgpt.com&quot;&gt;Microsoft Tech Community&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Support for &lt;strong&gt;ephemeral OS disks with local NVMe storage&lt;/strong&gt; is now GA, offering:
+
+&lt;ul&gt;
+&lt;li&gt;Up to &lt;strong&gt;10× faster OS disk performance&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Ultra-low latency&lt;/li&gt;
+&lt;li&gt;Modern processor architeture in comparision to the older ephemeral VM sizes&lt;/li&gt;
+&lt;li&gt;Very fast reimaging&lt;br&gt;
+Perfect for stateless scaling scenarios like &lt;strong&gt;Azure Virtual Desktop (AVD)&lt;/strong&gt;&lt;br&gt;
+(&lt;a href=&quot;https://techcommunity.microsoft.com/blog/azurecompute/announcing-general-availability-ephemeral-os-disk-support-for-v6-azure-vms/4415163?utm_source=chatgpt.com&quot;&gt;Microsoft Tech Community&lt;/a&gt;).&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;the-challenge&quot;&gt;The Challenge&lt;/h2&gt;
+
+&lt;p&gt;It could be so easy to enjoy the new VM sizes — with either &lt;strong&gt;network disks&lt;/strong&gt; or &lt;strong&gt;ephemeral disks&lt;/strong&gt;. However, if you already maintain &lt;strong&gt;images and golden masters for Azure Virtual Desktop (AVD)&lt;/strong&gt;, you’ll quickly realize that you cannot simply reuse them.  &lt;/p&gt;
+
+&lt;p&gt;Why? Because the &lt;strong&gt;disk architecture changes&lt;/strong&gt; between your older images and the new NVMe-based VM families.  &lt;/p&gt;
+
+&lt;p&gt;That leaves you with two main options:&lt;br&gt;
+- &lt;strong&gt;Create new golden masters&lt;/strong&gt; directly on NVMe VM sizes, or&lt;br&gt;
+- &lt;strong&gt;Create new images&lt;/strong&gt; of your existing golden masters and store them in an &lt;strong&gt;NVMe-enabled Azure Compute Gallery definition&lt;/strong&gt;  &lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;prepare-an-azure-compute-gallery-definition&quot;&gt;Prepare an Azure Compute Gallery Definition&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Navigate to your &lt;strong&gt;Azure Compute Gallery&lt;/strong&gt; (create a new one if necessary)&lt;/li&gt;
+&lt;li&gt;At the top, select &lt;strong&gt;Add -&amp;gt; VM Image definition&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Configure the definition and ensure you select:&lt;br&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Higher storage performance with NVMe&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;For secure boot masters and hosts: &lt;strong&gt;Trusted Launch&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;The following screenshot shows a secure boot + NVMe-enabled definition.&lt;br&gt;
+&lt;img src=&quot;../assets/images/NVME-Image-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally:&lt;br&gt;
+- Click &lt;strong&gt;Review and Create&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Create&lt;/strong&gt;.  &lt;/p&gt;
+
+&lt;p&gt;If you are using &lt;strong&gt;Hydra&lt;/strong&gt; for Azure Virtual Desktop, you can directly capture your &lt;strong&gt;existing golden master&lt;/strong&gt; into this new compute gallery definition. Hydra will capture the image &lt;strong&gt;without destroying the golden master&lt;/strong&gt;, so you can safely reuse your existing setup.
+&lt;img src=&quot;../assets/images/NVME-Image-03.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;From here, you can use the &lt;strong&gt;gallery definition version&lt;/strong&gt; to roll out &lt;strong&gt;new NVMe-based session hosts or virtual machines&lt;/strong&gt; — with or without ephemeral disks.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;notes-from-the-field&quot;&gt;Notes from the Field&lt;/h2&gt;
+
+&lt;p&gt;During my tests, some rollouts failed with a bluescreen (both with custom images and with Microsoft marketplace images). After a while, the rollout worked again. This suggests that there may occasionally be stability issues with the new v6 Boost VMs. It&amp;#39;s good to have this in mind.
+Also good to know: You can use gallery definitions to migrate existing VMs. In this case use a &amp;quot;Spezialized&amp;quot; gallery definition. Please remember that maybe not any Windows version comes with the right drivers.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;what-s-next&quot;&gt;What’s Next&lt;/h2&gt;
+
+&lt;p&gt;Follow me if you want to learn more about:&lt;br&gt;
+- How to &lt;strong&gt;increase performance in AVD with NVMe&lt;/strong&gt;, and&lt;br&gt;
+- How to manage the &lt;strong&gt;Windows swapfile&lt;/strong&gt; in a smarter way for even greater efficiency. 🚀+&lt;/p&gt;
+</description>
+        <pubDate>Wed, 27 Aug 2025 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Deployment of an Azure Virtual Desktop image failed after updating to Windows 24H2 with a blue screen 0xc000000f</title>
+        <description>&lt;p&gt;Several users reported a failure during the rollout of images in Azure Virtual Desktop in the last months. The error pattern was always the same: The virtual machine was built, and the next step failed while the VM was no longer running.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/bs-0xc000000f-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;We figured out that the VM installation resulted in a blue screen with the error message 0xc000000f, Windows shut down internally, and the VM was stopped in Azure. That was reproducible and caused by the image itself. The image was created by capturing a Golden Master with &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt; or &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; (which can image an existing VM without destroying it).&lt;/p&gt;
+
+&lt;p&gt;Interesting: Older images from the same Golden Masters are working. The only difference between them is that the Golden Master was updated to Windows 11 24H2.&lt;/p&gt;
+
+&lt;p&gt;So, we inspected the Golden Master and started the imaging process step by step. After a while, we figured out that during the Sysprep process, Windows started to encrypt the C: drive. During the encryption, Sysprep finished and shut down the VM, and the imaging process continued. Unfortunately, the captured image is half encrypted and, for that reason, not deployable as a new VM/host.&lt;/p&gt;
+
+&lt;p&gt;We never figured out why this happened after upgrading to 24H2, and that also doesn&amp;#39;t happen if your Golden Master was built on 24H2 initially.&lt;/p&gt;
+
+&lt;p&gt;Solution: The solution is more of a workaround. But if we disable the Bit Locker service on the Golden Master, the Sysprep process will not encrypt the C: drive, and the image will be deployable.&lt;/p&gt;
+
+&lt;p&gt;The upcoming version of Hydra and WVDAdmin will disable the Bit Locker service temporarily during the imaging process.&lt;/p&gt;
+</description>
+        <pubDate>Mon, 17 Mar 2025 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/Rollout-Image-BlueScreen-0xc000000f-24h2/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Rollout-Image-BlueScreen-0xc000000f-24h2/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Entra</category>
+        
+      </item>
+    
+      <item>
+        <title>Entra Dynamic Device Groups for Azure Virtual Desktop - Host Pools, Resource Groups and Subscriptions</title>
+        <description>&lt;p&gt;I was searching for an option to group all AVD hosts (Entra and hybrid joined) of a pool in a dynamic device group. Unfortunately, I didn&amp;#39;t find a perfect solution that works without modifying the device objects through the Graph API (or AD for hybrid joined devices (extensionAttributes)). If one of the readers knows a good solution for this, please share it.&lt;/p&gt;
+
+&lt;p&gt;Therefore, I checked the different properties of a device in Entra to find one I can use to create a dynamic device group. I prefer having a naming schema reflecting the specific host pools. AVD-DESIGN-001 and up counting would be a good match to identify all hosts of my pool &amp;quot;Design&amp;quot;. The rule is simple:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-02.png&quot; alt=&quot;&quot;&gt;
+&lt;code&gt;(device.displayName -startsWith &amp;quot;AVD-DESIGN-&amp;quot;)&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;After a while, the group contains all hosts/VMs matching this schema. The query can also be made more complex by including/excluding specific Windows types (multi-user or single-user OS).&lt;/p&gt;
+
+&lt;p&gt;I also found another interesting property in the devices for Entra joined VMs (not for hybrid joined):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-03.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;The property &amp;quot;physicalIds&amp;quot; contains a list of strings. One string reflects the Azure resource ID of the virtual machine (the session hosts the linked VM):&lt;/p&gt;
+
+&lt;p&gt;The resource ID in Azure has a default schema that reflects the subscription ID, resource group name, provider, and the name of the resource. Some resources also have subtypes, which is not important for our VMs. The resource ID is always in the device property and is written with the join of the device to Entra.&lt;/p&gt;
+
+&lt;p&gt;We can now build dynamic device groups based on the resource group or subscription. If you are using different resource groups for your host pools, you can also use this method to group the VMs — independent from the naming concept. Or you can group all the VMs of your AVD subscription and combine them to validate the display names. That makes your dynamic group more resilient and excludes VMs from other subscriptions.&lt;/p&gt;
+
+&lt;p&gt;Here is an example of grouping all VMs in the resource group &amp;quot;WVD.Design2&amp;quot; in the given subscription:
+&lt;img src=&quot;../assets/images/Entra-Dynamic-Device-Group-04.png&quot; alt=&quot;&quot;&gt;
+&lt;code&gt;(device.devicePhysicalIds -any (_ -startsWith&amp;quot;[AzureResourceId]:/subscriptions/dcdce2ee-****-****-****-************/resourceGroups/wvd.Design2/providers/Microsoft.Compute/virtualMachines/&amp;quot;))&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;After a while, all VMs/hosts are members of the group.&lt;/p&gt;
+
+&lt;p&gt;Even if that doesn&amp;#39;t solve my challenge very well, it&amp;#39;s a nice workaround or at least increased my insights.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 08 Oct 2024 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Dynamic-Device-Group-host-pool-session-host-resource-group/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Entra</category>
         
       </item>
     
