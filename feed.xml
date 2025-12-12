@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 12 Dec 2025 16:44:03 +0100</pubDate>
-    <lastBuildDate>Fri, 12 Dec 2025 16:44:03 +0100</lastBuildDate>
+    <pubDate>Fri, 12 Dec 2025 16:55:25 +0100</pubDate>
+    <lastBuildDate>Fri, 12 Dec 2025 16:55:25 +0100</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
     
       <item>
@@ -1324,11 +1324,9 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
     
       <item>
         <title>Using FSLogix file shares with Azure AD cloud identities in Azure Virtual Desktop - cloud-only, AVD</title>
-        <description>&lt;h2 id=&quot;note&quot;&gt;Note&lt;/h2&gt;
+        <description>&lt;h2 id=&quot;note-since-2025-azure-files-can-handle-cloud-only-identities-nativly-in-the-same-tenant-this-post-is-still-interesting-if-you-are-looking-for-a-workaround-to-work-with-external-cloud-identities&quot;&gt;Note: &lt;strong&gt;Since 2025 Azure Files can handle cloud-only identities nativly (in the same tenant). This post is still interesting if you are looking for a workaround to work with external cloud identities.&lt;/strong&gt;&lt;/h2&gt;
 
-&lt;p&gt;&lt;strong&gt;Since 2025 Azure Files can handle cloud-only identities nativly (in the same tenant). This post is still interesting if you are looking for a workaround to work with external cloud identities.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://techcommunity.microsoft.com/blog/azurestorageblog/cloud-native-identity-with-azure-files-entra-only-secure-access-for-the-modern-e/4469778&quot;&gt;Microsoft Post&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href=&quot;https://techcommunity.microsoft.com/blog/azurestorageblog/cloud-native-identity-with-azure-files-entra-only-secure-access-for-the-modern-e/4469778&quot;&gt;Read more from Microsoft&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;With AAD-Kerberos, you can use AAD-only joined session hosts with FSLogix. This is a great approach to working more cloud-native. With AAD-Kerberos, the session hosts don&amp;#39;t need to have network line-of-sight to the domain controller. &lt;/p&gt;
 
