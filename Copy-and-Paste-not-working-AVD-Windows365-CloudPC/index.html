@@ -6,27 +6,27 @@
 
 <link rel="icon" href="/assets/images/logos/icon.png">
 
-<title>Working with the OneDrive PowerShell Module | ITProCloud Blog</title>
+<title>Why Copy & Paste seems to be broken on new Windows 365 CloudPCs and AVD Deployments (And How to Fix It) | ITProCloud Blog</title>
 
 <!-- Begin Jekyll SEO tag v2.8.0 -->
-<title>Working with the OneDrive PowerShell Module | ITProCloud Blog</title>
+<title>Why Copy &amp; Paste seems to be broken on new Windows 365 CloudPCs and AVD Deployments (And How to Fix It) | ITProCloud Blog</title>
 <meta name="generator" content="Jekyll v3.10.0" />
-<meta property="og:title" content="Working with the OneDrive PowerShell Module" />
+<meta property="og:title" content="Why Copy &amp; Paste seems to be broken on new Windows 365 CloudPCs and AVD Deployments (And How to Fix It)" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Recently I got some questions on how to work with my PowerShell module for OneDrive. Therefore, I put together some examples." />
-<meta property="og:description" content="Recently I got some questions on how to work with my PowerShell module for OneDrive. Therefore, I put together some examples." />
-<link rel="canonical" href="https://blog.itprocloud.de/Working-with-the-OneDrive-PowerShell-Module/" />
-<meta property="og:url" content="https://blog.itprocloud.de/Working-with-the-OneDrive-PowerShell-Module/" />
+<meta name="description" content="If you recently deployed Windows 365 Cloud PCs or Azure Virtual Desktop (AVD) and suddenly noticed that copy and paste no longer works, you are not alone. In many environments, clipboard redirection and other client redirections worked perfectly in the past—but appear to be broken on newer deployments." />
+<meta property="og:description" content="If you recently deployed Windows 365 Cloud PCs or Azure Virtual Desktop (AVD) and suddenly noticed that copy and paste no longer works, you are not alone. In many environments, clipboard redirection and other client redirections worked perfectly in the past—but appear to be broken on newer deployments." />
+<link rel="canonical" href="https://blog.itprocloud.de/Copy-and-Paste-not-working-AVD-Windows365-CloudPC/" />
+<meta property="og:url" content="https://blog.itprocloud.de/Copy-and-Paste-not-working-AVD-Windows365-CloudPC/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
-<meta property="og:image" content="https://blog.itprocloud.de/wp-content/uploads/2018/09/OD-00001.png" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets/images/CopyPaste-Image-01.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2018-09-29T00:00:00+02:00" />
+<meta property="article:published_time" content="2026-01-30T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta property="twitter:image" content="https://blog.itprocloud.de/wp-content/uploads/2018/09/OD-00001.png" />
-<meta property="twitter:title" content="Working with the OneDrive PowerShell Module" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/CopyPaste-Image-01.png" />
+<meta property="twitter:title" content="Why Copy &amp; Paste seems to be broken on new Windows 365 CloudPCs and AVD Deployments (And How to Fix It)" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2018-09-29T00:00:00+02:00","datePublished":"2018-09-29T00:00:00+02:00","description":"Recently I got some questions on how to work with my PowerShell module for OneDrive. Therefore, I put together some examples.","headline":"Working with the OneDrive PowerShell Module","image":"https://blog.itprocloud.de/wp-content/uploads/2018/09/OD-00001.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Working-with-the-OneDrive-PowerShell-Module/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Working-with-the-OneDrive-PowerShell-Module/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2026-01-30T00:00:00+01:00","datePublished":"2026-01-30T00:00:00+01:00","description":"If you recently deployed Windows 365 Cloud PCs or Azure Virtual Desktop (AVD) and suddenly noticed that copy and paste no longer works, you are not alone. In many environments, clipboard redirection and other client redirections worked perfectly in the past—but appear to be broken on newer deployments.","headline":"Why Copy &amp; Paste seems to be broken on new Windows 365 CloudPCs and AVD Deployments (And How to Fix It)","image":"https://blog.itprocloud.de/assets/images/CopyPaste-Image-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Copy-and-Paste-not-working-AVD-Windows365-CloudPC/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Copy-and-Paste-not-working-AVD-Windows365-CloudPC/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -404,19 +404,19 @@
     </p>
     <ul>
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://twitter.com/intent/tweet?text=Working with the OneDrive PowerShell Module&url=https://blog.itprocloud.de/Working-with-the-OneDrive-PowerShell-Module/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Why Copy & Paste seems to be broken on new Windows 365 CloudPCs and AVD Deployments (And How to Fix It)&url=https://blog.itprocloud.de/Copy-and-Paste-not-working-AVD-Windows365-CloudPC/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
                 <i class="fab fa-twitter"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Working-with-the-OneDrive-PowerShell-Module/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Copy-and-Paste-not-working-AVD-Windows365-CloudPC/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
                 <i class="fab fa-facebook-f"></i>
             </a>
         </li>
 
         <li class="ml-1 mr-1">
-            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Working-with-the-OneDrive-PowerShell-Module/&title=Working with the OneDrive PowerShell Module" onclick="window.open(this.href, 'width=550,height=435');return false;">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Copy-and-Paste-not-working-AVD-Windows365-CloudPC/&title=Why Copy & Paste seems to be broken on new Windows 365 CloudPCs and AVD Deployments (And How to Fix It)" onclick="window.open(this.href, 'width=550,height=435');return false;">
                 <i class="fab fa-linkedin-in"></i>
             </a>
         </li>
@@ -456,7 +456,7 @@
                 
 
                 <!-- Post Title -->
-                <h1 class="posttitle">Working with the OneDrive PowerShell Module</h1>
+                <h1 class="posttitle">Why Copy & Paste seems to be broken on new Windows 365 CloudPCs and AVD Deployments (And How to Fix It)</h1>
 
             </div>
 
@@ -468,7 +468,7 @@
             
 
             
-            <img class="featured-image img-fluid" src="/wp-content/uploads/2018/09/OD-00001.png" alt="Working with the OneDrive PowerShell Module">
+            <img class="featured-image img-fluid" src="/assets/images/CopyPaste-Image-01.png" alt="Why Copy & Paste seems to be broken on new Windows 365 CloudPCs and AVD Deployments (And How to Fix It)">
             
 
             
@@ -479,46 +479,139 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>Recently I got some questions on how to work with my PowerShell module for OneDrive. Therefore, I put together some examples.</p>
+                <p>If you recently deployed <strong>Windows 365 Cloud PCs</strong> or <strong>Azure Virtual Desktop (AVD)</strong> and suddenly noticed that <strong>copy and paste no longer works</strong>, you are not alone. In many environments, clipboard redirection and other client redirections worked perfectly in the past—but appear to be broken on newer deployments.</p>
 
-<p>Remember: The OneDrive module is for OneDrive personal and doesn’t work with OneDrive business / Sharepoint.</p>
+<p>This blog post explains <strong>what is happening</strong>, <strong>why it changed</strong>, and <strong>how to fix it</strong> for both AVD and Windows 365.</p>
 
-<p><strong>First:</strong> Register an app (authentication) for OneDrive: <a href="https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/">https://www.sepago.de/blog/onedrive-powershell-module-new-version-with-improved-authentication/</a></p>
+<hr>
 
-<h3 id="authenticate-to-onedrive">Authenticate to OneDrive</h3>
-<div class="highlight"><pre><code class="language-" data-lang="">
-$Authentication=Get-ODAuthentication -ClientID "xxxxxxxxxxxxxxxxxxxxxxx" -AppKey "yyyyyyyyyyyyyyyy" -RedirectURI "http://localhost/login"
-$at=$Authentication.access_token
+<h2 id="the-issue">The Issue</h2>
 
-</code></pre></div>
-<p><img src="/wp-content/uploads/2018/09/OD-00001.png" alt="img"></p>
+<p>On newer <strong>Windows 365 Cloud PCs</strong> and <strong>AVD session hosts</strong>, the following features may not work:</p>
 
-<h3 id="show-files-and-folders">Show files and folders</h3>
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Get-ODChildItems</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-path</span><span class="w"> </span><span class="s2">"/"</span><span class="w">
-</span></code></pre></div>
-<p><img src="/wp-content/uploads/2018/09/OD-00002-1-1024x611.png" alt="img"></p>
+<ul>
+<li>Copy &amp; Paste (clipboard redirection)</li>
+<li>Drive redirection</li>
+<li>Printer redirection</li>
+<li>Other RDP client redirections</li>
+</ul>
 
-<p>Create a new folder in OneDrive</p>
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">New-ODFolder</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-FolderName</span><span class="w"> </span><span class="s2">"Images"</span><span class="w">
-</span></code></pre></div>
-<p><img src="/wp-content/uploads/2018/09/OD-00003-1024x611.png" alt="img"></p>
+<p>What makes this confusing is that:</p>
 
-<p>Copy files from local to OneDrive</p>
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Add-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-LocalFile</span><span class="w"> </span><span class="s2">".\LA-02.jpg"</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Images"</span><span class="w"> 
-</span></code></pre></div>
-<p><img src="/wp-content/uploads/2018/09/OD-00004-1024x611.png" alt="img">
-Copy file from OneDrive to local disk</p>
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Get-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Images/LA-02.jpg"</span><span class="w"> </span><span class="nt">-LocalPath</span><span class="w"> </span><span class="s2">"D:\Local\downloads"</span><span class="w">
-</span><span class="n">Get-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Images/LA-02.jpg"</span><span class="w"> </span><span class="nt">-LocalPath</span><span class="w"> </span><span class="s2">"D:\Local\downloads"</span><span class="w"> </span><span class="nt">-LocalFileName</span><span class="w"> </span><span class="s2">"Copy from OneDrive.jpg"</span><span class="w">
-</span></code></pre></div>
-<p><img src="/wp-content/uploads/2018/09/OD-00005-1024x611.png" alt="img"></p>
+<ul>
+<li>Older host pools and Cloud PCs often work without any changes</li>
+<li>The issue only affects <strong>newer deployments</strong></li>
+<li>Nothing appears to be misconfigured at first glance</li>
+</ul>
 
-<p>Delete file in OneDrive</p>
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Remove-ODItem</span><span class="w"> </span><span class="nt">-AccessToken</span><span class="w"> </span><span class="nv">$at</span><span class="w"> </span><span class="nt">-Path</span><span class="w"> </span><span class="s2">"/Images/LA-02.jpg"</span><span class="w">
-</span></code></pre></div>
-<p><img src="/wp-content/uploads/2018/09/OD-00006-1024x611.png" alt="img"></p>
+<p>This leads many admins to believe something is broken—when in fact, this behavior is now <strong>by design</strong>.</p>
 
-<p>First published on: <a href="https://www.sepago.de/blog/working-with-the-onedrive-powershell-module/">https://www.sepago.de/blog/working-with-the-onedrive-powershell-module/</a></p>
+<hr>
+
+<h2 id="the-root-cause">The Root Cause</h2>
+
+<p>Microsoft introduced a <strong>new default configuration</strong> for <strong>AVD host pools</strong>.</p>
+
+<p>Because <strong>Windows 365 is internally built on Azure Virtual Desktop</strong>, this change also affects:</p>
+
+<ul>
+<li>New AVD host pools</li>
+<li>New Windows 365 provisioning policies</li>
+</ul>
+
+<h3 id="what-changed">What Changed?</h3>
+
+<p>With the new default configuration:</p>
+
+<ul>
+<li><strong>Client redirections are disabled by default</strong></li>
+<li>This includes <strong>clipboard (copy &amp; paste)</strong> and other common RDP redirections</li>
+</ul>
+
+<p>As a result:</p>
+
+<ul>
+<li>Older host pools (created before the change) still work as expected</li>
+<li>New host pools and new Windows 365 Cloud PCs inherit the new, more restrictive defaults</li>
+</ul>
+
+<p>Microsoft’s intention is to provide a <strong>more secure baseline configuration</strong>, but this change is not always obvious—especially when comparing old and new environments.</p>
+
+<hr>
+
+<h2 id="the-solution">The Solution</h2>
+
+<p>The good news: <strong>nothing is broken</strong>, and the fix is straightforward.</p>
+
+<p>You simply need to <strong>explicitly enable the required redirections</strong>.</p>
+
+<hr>
+
+<h3 id="solution-for-azure-virtual-desktop-avd">Solution for Azure Virtual Desktop (AVD)</h3>
+
+<p>For AVD, client redirections are controlled via the <strong>RDP Properties</strong> on the host pool.</p>
+
+<p><strong>Steps:</strong></p>
+
+<ol>
+<li>Go to the <strong>Azure Portal</strong></li>
+<li>Navigate to <strong>Azure Virtual Desktop</strong> → <strong>Host pools</strong></li>
+<li>Select your host pool</li>
+<li>Open <strong>RDP Properties</strong></li>
+<li>Enable the required redirections, such as:
+
+<ul>
+<li>Clipboard redirection</li>
+<li>Drive redirection</li>
+<li>Printer redirection</li>
+</ul></li>
+<li>Save the changes</li>
+</ol>
+
+<p>After refreshing the Windows App, users can immediately use <strong>copy and paste</strong> and other redirections again.</p>
+
+<hr>
+
+<h3 id="solution-for-windows-365">Solution for Windows 365</h3>
+
+<p>Windows 365 does not expose RDP properties in the same way as AVD. Instead, redirections are controlled differently on the Cloud PC.</p>
+
+<p>You can configure this in multiple ways:</p>
+
+<h4 id="local-group-policy">Local Group Policy</h4>
+
+<p>Enable the required policies locally on the Cloud PC (for example, clipboard and device redirection policies). Note: Disable the disable to enable ;-)</p>
+
+<p><img src="../assets/images/CopyPaste-Image-01.png" alt=""></p>
+
+<h4 id="microsoft-intune-recommended">Microsoft Intune (Recommended)</h4>
+
+<p>For scalable and consistent management, use <strong>Microsoft Intune</strong>:</p>
+
+<ul>
+<li>Create a <strong>Settings Catalog</strong> or <strong>Administrative Templates</strong> policy</li>
+<li>Enable the desired RDP and redirection-related settings</li>
+<li>Assign the policy to your Windows 365 devices</li>
+</ul>
+
+<p>After the policy is applied, <strong>copy &amp; paste and other redirections work again</strong>.</p>
+
+<h4 id="others">Others</h4>
+
+<p>You can modify the registry by using scripts.</p>
+
+<hr>
+
+<h2 id="key-takeaways">Key Takeaways</h2>
+
+<ul>
+<li>Copy &amp; Paste issues on Windows 365 and AVD are usually <strong>not a bug</strong></li>
+<li>Microsoft changed the <strong>default host pool configuration</strong></li>
+<li>New deployments have <strong>client redirections disabled by default</strong></li>
+<li>Explicitly enabling redirections resolves the issue</li>
+</ul>
+
+<p>If you are rolling out new Cloud PCs or host pools, make sure to <strong>review and adjust the redirection settings early</strong> to avoid confusion for end users.</p>
 
             </div>
 
@@ -528,7 +621,7 @@ Copy file from OneDrive to local disk</p>
             <!-- Post Date -->
             <p>
             <small>
-                <span class="post-date"><time class="post-date" datetime="2018-09-29">29 Sep 2018</time></span>           
+                <span class="post-date"><time class="post-date" datetime="2026-01-30">30 Jan 2026</time></span>           
                 
                 </small>
             </p>
@@ -539,15 +632,15 @@ Copy file from OneDrive to local disk</p>
                     
                     
                     <li>
-                        <a class="smoothscroll" href="/categories#Azure-AD">Azure AD</a>
+                        <a class="smoothscroll" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop</a>
                     </li>
                     
                     <li>
-                        <a class="smoothscroll" href="/categories#OneDrive">OneDrive</a>
+                        <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
                     </li>
                     
                     <li>
-                        <a class="smoothscroll" href="/categories#PowerShell">PowerShell</a>
+                        <a class="smoothscroll" href="/categories#Windows365">Windows365</a>
                     </li>
                     
                 </ul>
@@ -566,10 +659,8 @@ Copy file from OneDrive to local disk</p>
             <!-- Prev/Next -->
             <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
             
-            <a class="prev d-block col-md-6" href="/Adding-Guest-Users-to-Azure-AD-from-Excel-with-PowerShell/"> &laquo; Adding Guest Users to Azure AD from Excel with PowerShell</a>
+            <a class="prev d-block col-md-6" href="/Windows-Virtual-Desktop-Admin/"> &laquo; WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</a>
             
-            
-            <a class="next d-block col-md-6 text-lg-right" href="/OneDrive-PowerShell-Module-Added-support-for-OneDrive-for-Business/">OneDrive PowerShell Module - Added support for OneDrive for Business &raquo; </a>
             
             <div class="clearfix"></div>
             </div>

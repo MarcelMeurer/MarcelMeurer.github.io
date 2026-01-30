@@ -5,9 +5,158 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 23 Jan 2026 09:23:24 +0100</pubDate>
-    <lastBuildDate>Fri, 23 Jan 2026 09:23:24 +0100</lastBuildDate>
+    <pubDate>Fri, 30 Jan 2026 09:25:53 +0100</pubDate>
+    <lastBuildDate>Fri, 30 Jan 2026 09:25:53 +0100</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
+    
+      <item>
+        <title>Why Copy &amp; Paste seems to be broken on new Windows 365 CloudPCs and AVD Deployments (And How to Fix It)</title>
+        <description>&lt;p&gt;If you recently deployed &lt;strong&gt;Windows 365 Cloud PCs&lt;/strong&gt; or &lt;strong&gt;Azure Virtual Desktop (AVD)&lt;/strong&gt; and suddenly noticed that &lt;strong&gt;copy and paste no longer works&lt;/strong&gt;, you are not alone. In many environments, clipboard redirection and other client redirections worked perfectly in the past—but appear to be broken on newer deployments.&lt;/p&gt;
+
+&lt;p&gt;This blog post explains &lt;strong&gt;what is happening&lt;/strong&gt;, &lt;strong&gt;why it changed&lt;/strong&gt;, and &lt;strong&gt;how to fix it&lt;/strong&gt; for both AVD and Windows 365.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;the-issue&quot;&gt;The Issue&lt;/h2&gt;
+
+&lt;p&gt;On newer &lt;strong&gt;Windows 365 Cloud PCs&lt;/strong&gt; and &lt;strong&gt;AVD session hosts&lt;/strong&gt;, the following features may not work:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Copy &amp;amp; Paste (clipboard redirection)&lt;/li&gt;
+&lt;li&gt;Drive redirection&lt;/li&gt;
+&lt;li&gt;Printer redirection&lt;/li&gt;
+&lt;li&gt;Other RDP client redirections&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;What makes this confusing is that:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Older host pools and Cloud PCs often work without any changes&lt;/li&gt;
+&lt;li&gt;The issue only affects &lt;strong&gt;newer deployments&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Nothing appears to be misconfigured at first glance&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This leads many admins to believe something is broken—when in fact, this behavior is now &lt;strong&gt;by design&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;the-root-cause&quot;&gt;The Root Cause&lt;/h2&gt;
+
+&lt;p&gt;Microsoft introduced a &lt;strong&gt;new default configuration&lt;/strong&gt; for &lt;strong&gt;AVD host pools&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Because &lt;strong&gt;Windows 365 is internally built on Azure Virtual Desktop&lt;/strong&gt;, this change also affects:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;New AVD host pools&lt;/li&gt;
+&lt;li&gt;New Windows 365 provisioning policies&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;what-changed&quot;&gt;What Changed?&lt;/h3&gt;
+
+&lt;p&gt;With the new default configuration:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Client redirections are disabled by default&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;This includes &lt;strong&gt;clipboard (copy &amp;amp; paste)&lt;/strong&gt; and other common RDP redirections&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As a result:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Older host pools (created before the change) still work as expected&lt;/li&gt;
+&lt;li&gt;New host pools and new Windows 365 Cloud PCs inherit the new, more restrictive defaults&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Microsoft’s intention is to provide a &lt;strong&gt;more secure baseline configuration&lt;/strong&gt;, but this change is not always obvious—especially when comparing old and new environments.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
+
+&lt;p&gt;The good news: &lt;strong&gt;nothing is broken&lt;/strong&gt;, and the fix is straightforward.&lt;/p&gt;
+
+&lt;p&gt;You simply need to &lt;strong&gt;explicitly enable the required redirections&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;solution-for-azure-virtual-desktop-avd&quot;&gt;Solution for Azure Virtual Desktop (AVD)&lt;/h3&gt;
+
+&lt;p&gt;For AVD, client redirections are controlled via the &lt;strong&gt;RDP Properties&lt;/strong&gt; on the host pool.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Steps:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Go to the &lt;strong&gt;Azure Portal&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Navigate to &lt;strong&gt;Azure Virtual Desktop&lt;/strong&gt; → &lt;strong&gt;Host pools&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Select your host pool&lt;/li&gt;
+&lt;li&gt;Open &lt;strong&gt;RDP Properties&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Enable the required redirections, such as:
+
+&lt;ul&gt;
+&lt;li&gt;Clipboard redirection&lt;/li&gt;
+&lt;li&gt;Drive redirection&lt;/li&gt;
+&lt;li&gt;Printer redirection&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Save the changes&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;After refreshing the Windows App, users can immediately use &lt;strong&gt;copy and paste&lt;/strong&gt; and other redirections again.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;solution-for-windows-365&quot;&gt;Solution for Windows 365&lt;/h3&gt;
+
+&lt;p&gt;Windows 365 does not expose RDP properties in the same way as AVD. Instead, redirections are controlled differently on the Cloud PC.&lt;/p&gt;
+
+&lt;p&gt;You can configure this in multiple ways:&lt;/p&gt;
+
+&lt;h4 id=&quot;local-group-policy&quot;&gt;Local Group Policy&lt;/h4&gt;
+
+&lt;p&gt;Enable the required policies locally on the Cloud PC (for example, clipboard and device redirection policies). Note: Disable the disable to enable ;-)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/CopyPaste-Image-01.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;microsoft-intune-recommended&quot;&gt;Microsoft Intune (Recommended)&lt;/h4&gt;
+
+&lt;p&gt;For scalable and consistent management, use &lt;strong&gt;Microsoft Intune&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Create a &lt;strong&gt;Settings Catalog&lt;/strong&gt; or &lt;strong&gt;Administrative Templates&lt;/strong&gt; policy&lt;/li&gt;
+&lt;li&gt;Enable the desired RDP and redirection-related settings&lt;/li&gt;
+&lt;li&gt;Assign the policy to your Windows 365 devices&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;After the policy is applied, &lt;strong&gt;copy &amp;amp; paste and other redirections work again&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;others&quot;&gt;Others&lt;/h4&gt;
+
+&lt;p&gt;You can modify the registry by using scripts.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;key-takeaways&quot;&gt;Key Takeaways&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Copy &amp;amp; Paste issues on Windows 365 and AVD are usually &lt;strong&gt;not a bug&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Microsoft changed the &lt;strong&gt;default host pool configuration&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;New deployments have &lt;strong&gt;client redirections disabled by default&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Explicitly enabling redirections resolves the issue&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you are rolling out new Cloud PCs or host pools, make sure to &lt;strong&gt;review and adjust the redirection settings early&lt;/strong&gt; to avoid confusion for end users.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 30 Jan 2026 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/Copy-and-Paste-not-working-AVD-Windows365-CloudPC/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Copy-and-Paste-not-working-AVD-Windows365-CloudPC/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Windows365</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -2428,72 +2577,6 @@ Also good to know: You can use gallery definitions to migrate existing VMs. In t
         <category>Azure Virtual Desktop</category>
         
         <category>Entra</category>
-        
-      </item>
-    
-      <item>
-        <title>AVD Need Assistance - NAT shape is Undetermined when probing turn:20.202.248.2:3478?Udp TURN relay health check failed ...</title>
-        <description>&lt;h1 id=&quot;current-issues-avd-agent-reports-an-issue-and-brings-the-hosts-into-need-assistance&quot;&gt;Current issues: AVD agent reports an issue and brings the hosts into &lt;strong&gt;&amp;quot;Need Assistance&amp;quot;&lt;/strong&gt;&lt;/h1&gt;
-
-&lt;p&gt;In the last September week, I got a lot of emails and team messages. Customers are seeing the following error message on session hosts in the Azure Portal and in Hydra:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;NAT shape is Undetermined when probing [turn:20.202.248.2:3478?Udp] TURN relay health check failed for server [turn:20.202.248.2:3478?Udp] - One or more errors occurred.-&amp;gt;Timed out waiting for Receive to complete - Code: -2147467259 - 2024-09-26T07:39:15.704086Z&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;The session hosts are also going into the &lt;strong&gt;&amp;quot;Need Assistance&amp;quot;&lt;/strong&gt; mode - even if users can still log in and continue working. It&amp;#39;s also reported, that the time stamp of the error message stays.&lt;/p&gt;
-
-&lt;p&gt;The issue is related to the AVD agent testing a UDP connection to the given (Microsoft) IP. This is a normal behaviour and can fail if customers are not allowing this connection through the firewall. If that is not working, connections are made via TCP. So far - so good. Unfortunately, the AVD agent shows this as an error, bringing the host into the &lt;strong&gt;&amp;quot;Need Assistance&amp;quot;&lt;/strong&gt; mode.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Important: Session hosts in this state do not count on the capacity of a pool in Hydra. It also can break autoscaling if you run Hydra version 1.0.8.7 or less. Also hosts in this state are **not&lt;/strong&gt; deallocated automatically - they stay running until the error disappears.**&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/NA-Hydra.png&quot; alt=&quot;Download&quot;&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;what-can-we-do&quot;&gt;What can we do?&lt;/h2&gt;
-
-&lt;h3 id=&quot;allowing-udp-communication-to-specific-ports-preferred&quot;&gt;Allowing UDP communication to specific ports (preferred)&lt;/h3&gt;
-
-&lt;p&gt;You can configure the firewall to allow communication to the mentioned ports if that is an option for your environment/company. In short, the following communication from the hosts to the internet must be possible:
-- Target: 20.202.0.0/16, Port 3478 UDP
-- Target: 20.202.0.0/16, Port 443 TCP
-- &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/rdp-shortpath?tabs=public-networks&quot;&gt;Link to the blog post&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;You can test the connection with the tool &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-desktop/troubleshoot-rdp-shortpath&quot;&gt;avdnettest.exe&lt;/a&gt; from Microsoft:
-&lt;img src=&quot;../assets/images/NA-avdnettest.png&quot; alt=&quot;Download&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;update-hydra-also-preferred&quot;&gt;Update Hydra (also preferred)&lt;/h3&gt;
-
-&lt;p&gt;There is a new release of Hydra available from 09/30/2024 (v1.0.8.7) containing a hotfix to handle failed hosts. This will not remove the error message but should show the correct sessions and handle autoscaling also for hosts in the &lt;strong&gt;&amp;quot;Need Assistance&amp;quot;&lt;/strong&gt; mode. Please monitor your environment after update/hotfix: &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra?tab=readme-ov-file#updates-and-releases&quot;&gt;How to update Hydra&lt;/a&gt;
-&lt;br/&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;disabling-udp-temporary-workaround&quot;&gt;Disabling UDP temporary (workaround)&lt;/h3&gt;
-
-&lt;p&gt;If option one is not possible, or the error messages are not disappearing, we can disable the use of UDP &lt;a href=&quot;https://admx.help/?Category=Windows_10_2016&amp;Policy=Microsoft.Policies.TerminalServer::TS_SELECT_TRANSPORT&quot;&gt;via GPO&lt;/a&gt; or reg keys. The following script disables UDP, and it should also remove the error message. You can &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra/blob/main/README.md#scripts-and-script-collections&quot;&gt;create the script in Hydra&lt;/a&gt; and run it on the hosts (test it with one host first):&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;New-ItemProperty -Path &quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services&quot; -Name &quot;SelectTransport&quot; -Value 1 -force # default: 0
-
-# Reset old failure state
-if (Test-Path -Path &quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckReport&quot;) {
-    Remove-ItemProperty -Path &quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckReport&quot; -Name &quot;AgentHealthCheckReport&quot; -ErrorAction SilentlyContinue
-    Remove-ItemProperty -Path &quot;HKLM:\SOFTWARE\Microsoft\RDInfraAgent\HealthCheckReport&quot; -Name &quot;AgentHealthCheckTimestamp&quot; -ErrorAction SilentlyContinue
-}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If you rollout a new host, make sure to reapply this settings. That can be done in Hydra -&amp;gt; Host Pool -&amp;gt; New Session Host Rollout -&amp;gt; Run script or script collection after deployment
-&lt;br/&gt;&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;p&gt;It&amp;#39;s also a good idea to open a ticket to let Microsoft fix this issue with the service/AVD agent.&lt;/p&gt;
-</description>
-        <pubDate>Thu, 26 Sep 2024 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/AVD-Need-Assistance-NAT-shape-is-Undetermined-when-probing-TURN-relay-health-check-failed/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-Need-Assistance-NAT-shape-is-Undetermined-when-probing-TURN-relay-health-check-failed/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
         
       </item>
     
