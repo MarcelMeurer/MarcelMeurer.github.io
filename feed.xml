@@ -5,158 +5,9 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 30 Jan 2026 09:25:53 +0100</pubDate>
-    <lastBuildDate>Fri, 30 Jan 2026 09:25:53 +0100</lastBuildDate>
+    <pubDate>Fri, 06 Feb 2026 15:30:31 +0100</pubDate>
+    <lastBuildDate>Fri, 06 Feb 2026 15:30:31 +0100</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
-    
-      <item>
-        <title>Why Copy &amp; Paste seems to be broken on new Windows 365 CloudPCs and AVD Deployments (And How to Fix It)</title>
-        <description>&lt;p&gt;If you recently deployed &lt;strong&gt;Windows 365 Cloud PCs&lt;/strong&gt; or &lt;strong&gt;Azure Virtual Desktop (AVD)&lt;/strong&gt; and suddenly noticed that &lt;strong&gt;copy and paste no longer works&lt;/strong&gt;, you are not alone. In many environments, clipboard redirection and other client redirections worked perfectly in the past—but appear to be broken on newer deployments.&lt;/p&gt;
-
-&lt;p&gt;This blog post explains &lt;strong&gt;what is happening&lt;/strong&gt;, &lt;strong&gt;why it changed&lt;/strong&gt;, and &lt;strong&gt;how to fix it&lt;/strong&gt; for both AVD and Windows 365.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;the-issue&quot;&gt;The Issue&lt;/h2&gt;
-
-&lt;p&gt;On newer &lt;strong&gt;Windows 365 Cloud PCs&lt;/strong&gt; and &lt;strong&gt;AVD session hosts&lt;/strong&gt;, the following features may not work:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Copy &amp;amp; Paste (clipboard redirection)&lt;/li&gt;
-&lt;li&gt;Drive redirection&lt;/li&gt;
-&lt;li&gt;Printer redirection&lt;/li&gt;
-&lt;li&gt;Other RDP client redirections&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;What makes this confusing is that:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Older host pools and Cloud PCs often work without any changes&lt;/li&gt;
-&lt;li&gt;The issue only affects &lt;strong&gt;newer deployments&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Nothing appears to be misconfigured at first glance&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;This leads many admins to believe something is broken—when in fact, this behavior is now &lt;strong&gt;by design&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;the-root-cause&quot;&gt;The Root Cause&lt;/h2&gt;
-
-&lt;p&gt;Microsoft introduced a &lt;strong&gt;new default configuration&lt;/strong&gt; for &lt;strong&gt;AVD host pools&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;Because &lt;strong&gt;Windows 365 is internally built on Azure Virtual Desktop&lt;/strong&gt;, this change also affects:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;New AVD host pools&lt;/li&gt;
-&lt;li&gt;New Windows 365 provisioning policies&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;what-changed&quot;&gt;What Changed?&lt;/h3&gt;
-
-&lt;p&gt;With the new default configuration:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Client redirections are disabled by default&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;This includes &lt;strong&gt;clipboard (copy &amp;amp; paste)&lt;/strong&gt; and other common RDP redirections&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;As a result:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Older host pools (created before the change) still work as expected&lt;/li&gt;
-&lt;li&gt;New host pools and new Windows 365 Cloud PCs inherit the new, more restrictive defaults&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Microsoft’s intention is to provide a &lt;strong&gt;more secure baseline configuration&lt;/strong&gt;, but this change is not always obvious—especially when comparing old and new environments.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
-
-&lt;p&gt;The good news: &lt;strong&gt;nothing is broken&lt;/strong&gt;, and the fix is straightforward.&lt;/p&gt;
-
-&lt;p&gt;You simply need to &lt;strong&gt;explicitly enable the required redirections&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;solution-for-azure-virtual-desktop-avd&quot;&gt;Solution for Azure Virtual Desktop (AVD)&lt;/h3&gt;
-
-&lt;p&gt;For AVD, client redirections are controlled via the &lt;strong&gt;RDP Properties&lt;/strong&gt; on the host pool.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Steps:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Go to the &lt;strong&gt;Azure Portal&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Navigate to &lt;strong&gt;Azure Virtual Desktop&lt;/strong&gt; → &lt;strong&gt;Host pools&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Select your host pool&lt;/li&gt;
-&lt;li&gt;Open &lt;strong&gt;RDP Properties&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Enable the required redirections, such as:
-
-&lt;ul&gt;
-&lt;li&gt;Clipboard redirection&lt;/li&gt;
-&lt;li&gt;Drive redirection&lt;/li&gt;
-&lt;li&gt;Printer redirection&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Save the changes&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;After refreshing the Windows App, users can immediately use &lt;strong&gt;copy and paste&lt;/strong&gt; and other redirections again.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;solution-for-windows-365&quot;&gt;Solution for Windows 365&lt;/h3&gt;
-
-&lt;p&gt;Windows 365 does not expose RDP properties in the same way as AVD. Instead, redirections are controlled differently on the Cloud PC.&lt;/p&gt;
-
-&lt;p&gt;You can configure this in multiple ways:&lt;/p&gt;
-
-&lt;h4 id=&quot;local-group-policy&quot;&gt;Local Group Policy&lt;/h4&gt;
-
-&lt;p&gt;Enable the required policies locally on the Cloud PC (for example, clipboard and device redirection policies). Note: Disable the disable to enable ;-)&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/CopyPaste-Image-01.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;h4 id=&quot;microsoft-intune-recommended&quot;&gt;Microsoft Intune (Recommended)&lt;/h4&gt;
-
-&lt;p&gt;For scalable and consistent management, use &lt;strong&gt;Microsoft Intune&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Create a &lt;strong&gt;Settings Catalog&lt;/strong&gt; or &lt;strong&gt;Administrative Templates&lt;/strong&gt; policy&lt;/li&gt;
-&lt;li&gt;Enable the desired RDP and redirection-related settings&lt;/li&gt;
-&lt;li&gt;Assign the policy to your Windows 365 devices&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;After the policy is applied, &lt;strong&gt;copy &amp;amp; paste and other redirections work again&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;h4 id=&quot;others&quot;&gt;Others&lt;/h4&gt;
-
-&lt;p&gt;You can modify the registry by using scripts.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;key-takeaways&quot;&gt;Key Takeaways&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Copy &amp;amp; Paste issues on Windows 365 and AVD are usually &lt;strong&gt;not a bug&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Microsoft changed the &lt;strong&gt;default host pool configuration&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;New deployments have &lt;strong&gt;client redirections disabled by default&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Explicitly enabling redirections resolves the issue&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;If you are rolling out new Cloud PCs or host pools, make sure to &lt;strong&gt;review and adjust the redirection settings early&lt;/strong&gt; to avoid confusion for end users.&lt;/p&gt;
-</description>
-        <pubDate>Fri, 30 Jan 2026 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/Copy-and-Paste-not-working-AVD-Windows365-CloudPC/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Copy-and-Paste-not-working-AVD-Windows365-CloudPC/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-        <category>Windows365</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -166,7 +17,7 @@
 
 &lt;p&gt;Are you interested in the new &amp;quot;Hydra for Azure Virtual Desktop&amp;quot; solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 01/23/2026&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 02/06/2026&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 
@@ -254,7 +105,7 @@
 
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 01/23/2026&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 02/06/2026&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;details&gt;&lt;summary&gt;I&amp;#39;m continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;&lt;/p&gt;
@@ -266,6 +117,11 @@
 &lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;2.1.07.0&lt;/td&gt;
+&lt;td&gt;2026-02-06&lt;/td&gt;
+&lt;td&gt;Add: Added multiple v7 VM sizes&lt;/td&gt;
+&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;2.1.06.0&lt;/td&gt;
 &lt;td&gt;2026-01-23&lt;/td&gt;
@@ -1463,9 +1319,9 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 01/23/2026&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 02/06/2026&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Fri, 23 Jan 2026 00:00:00 +0100</pubDate>
+        <pubDate>Fri, 06 Feb 2026 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
         
@@ -1473,6 +1329,155 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
         <category>Windows Virtual Desktop</category>
         
         <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Why Copy &amp; Paste seems to be broken on new Windows 365 CloudPCs and AVD Deployments (And How to Fix It)</title>
+        <description>&lt;p&gt;If you recently deployed &lt;strong&gt;Windows 365 Cloud PCs&lt;/strong&gt; or &lt;strong&gt;Azure Virtual Desktop (AVD)&lt;/strong&gt; and suddenly noticed that &lt;strong&gt;copy and paste no longer works&lt;/strong&gt;, you are not alone. In many environments, clipboard redirection and other client redirections worked perfectly in the past—but appear to be broken on newer deployments.&lt;/p&gt;
+
+&lt;p&gt;This blog post explains &lt;strong&gt;what is happening&lt;/strong&gt;, &lt;strong&gt;why it changed&lt;/strong&gt;, and &lt;strong&gt;how to fix it&lt;/strong&gt; for both AVD and Windows 365.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;the-issue&quot;&gt;The Issue&lt;/h2&gt;
+
+&lt;p&gt;On newer &lt;strong&gt;Windows 365 Cloud PCs&lt;/strong&gt; and &lt;strong&gt;AVD session hosts&lt;/strong&gt;, the following features may not work:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Copy &amp;amp; Paste (clipboard redirection)&lt;/li&gt;
+&lt;li&gt;Drive redirection&lt;/li&gt;
+&lt;li&gt;Printer redirection&lt;/li&gt;
+&lt;li&gt;Other RDP client redirections&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;What makes this confusing is that:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Older host pools and Cloud PCs often work without any changes&lt;/li&gt;
+&lt;li&gt;The issue only affects &lt;strong&gt;newer deployments&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Nothing appears to be misconfigured at first glance&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This leads many admins to believe something is broken—when in fact, this behavior is now &lt;strong&gt;by design&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;the-root-cause&quot;&gt;The Root Cause&lt;/h2&gt;
+
+&lt;p&gt;Microsoft introduced a &lt;strong&gt;new default configuration&lt;/strong&gt; for &lt;strong&gt;AVD host pools&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Because &lt;strong&gt;Windows 365 is internally built on Azure Virtual Desktop&lt;/strong&gt;, this change also affects:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;New AVD host pools&lt;/li&gt;
+&lt;li&gt;New Windows 365 provisioning policies&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;what-changed&quot;&gt;What Changed?&lt;/h3&gt;
+
+&lt;p&gt;With the new default configuration:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Client redirections are disabled by default&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;This includes &lt;strong&gt;clipboard (copy &amp;amp; paste)&lt;/strong&gt; and other common RDP redirections&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;As a result:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Older host pools (created before the change) still work as expected&lt;/li&gt;
+&lt;li&gt;New host pools and new Windows 365 Cloud PCs inherit the new, more restrictive defaults&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Microsoft’s intention is to provide a &lt;strong&gt;more secure baseline configuration&lt;/strong&gt;, but this change is not always obvious—especially when comparing old and new environments.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
+
+&lt;p&gt;The good news: &lt;strong&gt;nothing is broken&lt;/strong&gt;, and the fix is straightforward.&lt;/p&gt;
+
+&lt;p&gt;You simply need to &lt;strong&gt;explicitly enable the required redirections&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;solution-for-azure-virtual-desktop-avd&quot;&gt;Solution for Azure Virtual Desktop (AVD)&lt;/h3&gt;
+
+&lt;p&gt;For AVD, client redirections are controlled via the &lt;strong&gt;RDP Properties&lt;/strong&gt; on the host pool.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Steps:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Go to the &lt;strong&gt;Azure Portal&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Navigate to &lt;strong&gt;Azure Virtual Desktop&lt;/strong&gt; → &lt;strong&gt;Host pools&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Select your host pool&lt;/li&gt;
+&lt;li&gt;Open &lt;strong&gt;RDP Properties&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Enable the required redirections, such as:
+
+&lt;ul&gt;
+&lt;li&gt;Clipboard redirection&lt;/li&gt;
+&lt;li&gt;Drive redirection&lt;/li&gt;
+&lt;li&gt;Printer redirection&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Save the changes&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;After refreshing the Windows App, users can immediately use &lt;strong&gt;copy and paste&lt;/strong&gt; and other redirections again.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;solution-for-windows-365&quot;&gt;Solution for Windows 365&lt;/h3&gt;
+
+&lt;p&gt;Windows 365 does not expose RDP properties in the same way as AVD. Instead, redirections are controlled differently on the Cloud PC.&lt;/p&gt;
+
+&lt;p&gt;You can configure this in multiple ways:&lt;/p&gt;
+
+&lt;h4 id=&quot;local-group-policy&quot;&gt;Local Group Policy&lt;/h4&gt;
+
+&lt;p&gt;Enable the required policies locally on the Cloud PC (for example, clipboard and device redirection policies). Note: Disable the disable to enable ;-)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/CopyPaste-Image-01.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;microsoft-intune-recommended&quot;&gt;Microsoft Intune (Recommended)&lt;/h4&gt;
+
+&lt;p&gt;For scalable and consistent management, use &lt;strong&gt;Microsoft Intune&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Create a &lt;strong&gt;Settings Catalog&lt;/strong&gt; or &lt;strong&gt;Administrative Templates&lt;/strong&gt; policy&lt;/li&gt;
+&lt;li&gt;Enable the desired RDP and redirection-related settings&lt;/li&gt;
+&lt;li&gt;Assign the policy to your Windows 365 devices&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;After the policy is applied, &lt;strong&gt;copy &amp;amp; paste and other redirections work again&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h4 id=&quot;others&quot;&gt;Others&lt;/h4&gt;
+
+&lt;p&gt;You can modify the registry by using scripts.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;key-takeaways&quot;&gt;Key Takeaways&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Copy &amp;amp; Paste issues on Windows 365 and AVD are usually &lt;strong&gt;not a bug&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Microsoft changed the &lt;strong&gt;default host pool configuration&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;New deployments have &lt;strong&gt;client redirections disabled by default&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Explicitly enabling redirections resolves the issue&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you are rolling out new Cloud PCs or host pools, make sure to &lt;strong&gt;review and adjust the redirection settings early&lt;/strong&gt; to avoid confusion for end users.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 30 Jan 2026 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/Copy-and-Paste-not-working-AVD-Windows365-CloudPC/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Copy-and-Paste-not-working-AVD-Windows365-CloudPC/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+        <category>Windows365</category>
         
       </item>
     
