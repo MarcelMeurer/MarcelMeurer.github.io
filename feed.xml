@@ -5,9 +5,174 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 06 Feb 2026 15:30:31 +0100</pubDate>
-    <lastBuildDate>Fri, 06 Feb 2026 15:30:31 +0100</lastBuildDate>
+    <pubDate>Fri, 20 Feb 2026 15:00:30 +0100</pubDate>
+    <lastBuildDate>Fri, 20 Feb 2026 15:00:30 +0100</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
+    
+      <item>
+        <title>OneDrive Clean-Up for Azure Virtual Desktop</title>
+        <description>&lt;p&gt;Running OneDrive with Azure Virtual Desktop is a common scenario and enables users to work in a modern way with Teams and SharePoint. If FSLogix is used, there is a challenge in combination with OneDrive: Users can download OneDrive files to the host, and the data are stored in the profile. The profile size increases heavily and causes some extra costs on the storage account. &lt;/p&gt;
+
+&lt;p&gt;Having so many OneDrive files stored in the profile may make no sense in every case - if a user access a file, the file is downloaded automatically (on demand). And it&amp;#39;s mostly fine to &amp;quot;unpin&amp;quot; the file later if the file is no longer needed. The files are downloaded fast, while AVD and OneDrive are in the Microsoft cloud. &lt;/p&gt;
+
+&lt;h3 id=&quot;background&quot;&gt;Background:&lt;/h3&gt;
+
+&lt;p&gt;OneDrive files can have three different states:
+- &lt;strong&gt;Cloud:&lt;/strong&gt;
+  The file content is in the cloud only. The file system simulates that the file exists. While the content is not on the disk, the files don&amp;#39;t need storage on the device. If a user opens such a file, the content is downloaded, and the file state change to On-Device.&lt;br&gt;
+- &lt;strong&gt;On-Device:&lt;/strong&gt;
+  The file content is also on the local disk, and the files are using local storage.
+- &lt;strong&gt;Always:&lt;/strong&gt;
+  The file content is also on the local disk, and the files are using local storage. OneDrive wouldn&amp;#39;t change the state to &amp;quot;Cloud&amp;quot;. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/ODClaenUp-02.png&quot; alt=&quot;&quot;&gt;
+&lt;br/&gt;&lt;/p&gt;
+
+&lt;p&gt;OneDrive can change the state to &amp;quot;Cloud&amp;quot; on normal Windows 10/11 devices using storage sense. Based on the implementation of storage sense, this is not working for Azure Virtual Desktop (Multi-Session) with FSLogix profiles.&lt;/p&gt;
+
+&lt;p&gt;A solution to avoid profile blotting in combination with FSLogix is changing the state of OneDrive files to &amp;quot;Cloud&amp;quot; (unpin files). If files are unpinned, they are no longer using local storage, and the &amp;quot;Disk Compaction&amp;quot; of FSLogix would reduce the profile automatically over time (or have more space left for user data).&lt;/p&gt;
+
+&lt;p&gt;I built a small tool to solve this challenge (I didn&amp;#39;t find a native solution). The tool is called OneDrive CleanUp. OneDrive CleanUp can run in two ways:
+- Started automatically with the login of the user (after the installation, it creates a link in the start-up folder of the start menu). It directly starts in the background and validates and maybe unpin OneDrive files. This process is repeated every 30 minutes and during the logoff of the user.
+- Start the program with the parameter /RunOnce during the logoff using a (group) policy.&lt;/p&gt;
+
+&lt;p&gt;I prefer the first method to ensure that OneDrive has time to react to the unpinning of files.&lt;/p&gt;
+
+&lt;p&gt;Example for method 2:
+&lt;img src=&quot;../assets/images/ODClaenUp-03.png&quot; alt=&quot;&quot;&gt;
+&lt;br/&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
+
+&lt;p&gt;In my test, my profile grew to 8 GByte while I pinned some files in OneDrive, and after logoff, the profile went back to 800 MByte while the tool unpinned the OneDrive files.&lt;/p&gt;
+
+&lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
+
+&lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\OneDriveCleanUp&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Key&lt;/th&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;th&gt;Default value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Enabled&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;If false, the application will not check the files&lt;/td&gt;
+&lt;td&gt;1=true&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RunEachMinutes&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Check OneDrive files each minutes&lt;/td&gt;
+&lt;td&gt;30&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AlwaysUnpinFilesOlderThenDays&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Unpin files older then days (0: disabled )&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;AllowMbytesOnDisk&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Allow the configured value in MByte on the local disk&lt;/td&gt;
+&lt;td&gt;5120&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;IgnoreFilesContaining&lt;/td&gt;
+&lt;td&gt;Reg_SZ&lt;/td&gt;
+&lt;td&gt;String with separated values (;). If the path of a file contains one of the values, the file is ignored&lt;/td&gt;
+&lt;td&gt;Empty&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;RunAtLogoff&lt;/td&gt;
+&lt;td&gt;Reg_DWORD&lt;/td&gt;
+&lt;td&gt;Run a last check while the user log off (can delay the logoff)&lt;/td&gt;
+&lt;td&gt;0=false&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;&lt;br/&gt;
+OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. &lt;/p&gt;
+
+&lt;p&gt;Example: 
+&lt;img src=&quot;../assets/images/ODClaenUp-01.png&quot; alt=&quot;&quot;&gt;
+&lt;br/&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
+
+&lt;p&gt;OneDrive CleanUp regularly checks all OneDrive paths and calculates the size of the disk. If the size is larger than the configured maximum size (AllowMbytesOnDisk), it unpins files to go under the configured size. It starts from the oldest to the newest file based on the LastAccessTime property.&lt;/p&gt;
+
+&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;release-notes&quot;&gt;Release notes&lt;/h3&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Release&lt;/th&gt;
+&lt;th&gt;Date&lt;/th&gt;
+&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.4&lt;/td&gt;
+&lt;td&gt;2023-05-04&lt;/td&gt;
+&lt;td&gt;Initial&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.5&lt;/td&gt;
+&lt;td&gt;2023-07-13&lt;/td&gt;
+&lt;td&gt;Fix: Files larger than 2 GByte were counted wrong&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.6&lt;/td&gt;
+&lt;td&gt;2023-10-17&lt;/td&gt;
+&lt;td&gt;Fix: Files larger than 4 GByte were counted wrong&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.7&lt;/td&gt;
+&lt;td&gt;2024-10-03&lt;/td&gt;
+&lt;td&gt;Add: Feature: RunAtLogoff with a default value of 0&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.8&lt;/td&gt;
+&lt;td&gt;2025-12-12&lt;/td&gt;
+&lt;td&gt;Fix: Calculation of file size&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.0.9&lt;/td&gt;
+&lt;td&gt;2026-01-21&lt;/td&gt;
+&lt;td&gt;Fix: Create logfile in AppData&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;1.1.0&lt;/td&gt;
+&lt;td&gt;2026-02-20&lt;/td&gt;
+&lt;td&gt;Fix: In some cases, already unpinned files are unpinned again&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;../assets/files/OneDriveCleanUp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 02/20/2026&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 20 Feb 2026 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -1478,166 +1643,6 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
         <category>Azure Virtual Desktop</category>
         
         <category>Windows365</category>
-        
-      </item>
-    
-      <item>
-        <title>OneDrive Clean-Up for Azure Virtual Desktop</title>
-        <description>&lt;p&gt;Running OneDrive with Azure Virtual Desktop is a common scenario and enables users to work in a modern way with Teams and SharePoint. If FSLogix is used, there is a challenge in combination with OneDrive: Users can download OneDrive files to the host, and the data are stored in the profile. The profile size increases heavily and causes some extra costs on the storage account. &lt;/p&gt;
-
-&lt;p&gt;Having so many OneDrive files stored in the profile may make no sense in every case - if a user access a file, the file is downloaded automatically (on demand). And it&amp;#39;s mostly fine to &amp;quot;unpin&amp;quot; the file later if the file is no longer needed. The files are downloaded fast, while AVD and OneDrive are in the Microsoft cloud. &lt;/p&gt;
-
-&lt;h3 id=&quot;background&quot;&gt;Background:&lt;/h3&gt;
-
-&lt;p&gt;OneDrive files can have three different states:
-- &lt;strong&gt;Cloud:&lt;/strong&gt;
-  The file content is in the cloud only. The file system simulates that the file exists. While the content is not on the disk, the files don&amp;#39;t need storage on the device. If a user opens such a file, the content is downloaded, and the file state change to On-Device.&lt;br&gt;
-- &lt;strong&gt;On-Device:&lt;/strong&gt;
-  The file content is also on the local disk, and the files are using local storage.
-- &lt;strong&gt;Always:&lt;/strong&gt;
-  The file content is also on the local disk, and the files are using local storage. OneDrive wouldn&amp;#39;t change the state to &amp;quot;Cloud&amp;quot;. &lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/ODClaenUp-02.png&quot; alt=&quot;&quot;&gt;
-&lt;br/&gt;&lt;/p&gt;
-
-&lt;p&gt;OneDrive can change the state to &amp;quot;Cloud&amp;quot; on normal Windows 10/11 devices using storage sense. Based on the implementation of storage sense, this is not working for Azure Virtual Desktop (Multi-Session) with FSLogix profiles.&lt;/p&gt;
-
-&lt;p&gt;A solution to avoid profile blotting in combination with FSLogix is changing the state of OneDrive files to &amp;quot;Cloud&amp;quot; (unpin files). If files are unpinned, they are no longer using local storage, and the &amp;quot;Disk Compaction&amp;quot; of FSLogix would reduce the profile automatically over time (or have more space left for user data).&lt;/p&gt;
-
-&lt;p&gt;I built a small tool to solve this challenge (I didn&amp;#39;t find a native solution). The tool is called OneDrive CleanUp. OneDrive CleanUp can run in two ways:
-- Started automatically with the login of the user (after the installation, it creates a link in the start-up folder of the start menu). It directly starts in the background and validates and maybe unpin OneDrive files. This process is repeated every 30 minutes and during the logoff of the user.
-- Start the program with the parameter /RunOnce during the logoff using a (group) policy.&lt;/p&gt;
-
-&lt;p&gt;I prefer the first method to ensure that OneDrive has time to react to the unpinning of files.&lt;/p&gt;
-
-&lt;p&gt;Example for method 2:
-&lt;img src=&quot;../assets/images/ODClaenUp-03.png&quot; alt=&quot;&quot;&gt;
-&lt;br/&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;result&quot;&gt;Result&lt;/h3&gt;
-
-&lt;p&gt;In my test, my profile grew to 8 GByte while I pinned some files in OneDrive, and after logoff, the profile went back to 800 MByte while the tool unpinned the OneDrive files.&lt;/p&gt;
-
-&lt;h3 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h3&gt;
-
-&lt;p&gt;The default configuration can be changed by setting the following values to the registry HKLM:\SOFTWARE\ITProCloud\OneDriveCleanUp&lt;/p&gt;
-
-&lt;table&gt;&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Key&lt;/th&gt;
-&lt;th&gt;Type&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;th&gt;Default value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Enabled&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;If false, the application will not check the files&lt;/td&gt;
-&lt;td&gt;1=true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;RunEachMinutes&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Check OneDrive files each minutes&lt;/td&gt;
-&lt;td&gt;30&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;AlwaysUnpinFilesOlderThenDays&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Unpin files older then days (0: disabled )&lt;/td&gt;
-&lt;td&gt;0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;AllowMbytesOnDisk&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Allow the configured value in MByte on the local disk&lt;/td&gt;
-&lt;td&gt;5120&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;IgnoreFilesContaining&lt;/td&gt;
-&lt;td&gt;Reg_SZ&lt;/td&gt;
-&lt;td&gt;String with separated values (;). If the path of a file contains one of the values, the file is ignored&lt;/td&gt;
-&lt;td&gt;Empty&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;RunAtLogoff&lt;/td&gt;
-&lt;td&gt;Reg_DWORD&lt;/td&gt;
-&lt;td&gt;Run a last check while the user log off (can delay the logoff)&lt;/td&gt;
-&lt;td&gt;0=false&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;&lt;br/&gt;
-OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. &lt;/p&gt;
-
-&lt;p&gt;Example: 
-&lt;img src=&quot;../assets/images/ODClaenUp-01.png&quot; alt=&quot;&quot;&gt;
-&lt;br/&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
-
-&lt;p&gt;OneDrive CleanUp regularly checks all OneDrive paths and calculates the size of the disk. If the size is larger than the configured maximum size (AllowMbytesOnDisk), it unpins files to go under the configured size. It starts from the oldest to the newest file based on the LastAccessTime property.&lt;/p&gt;
-
-&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;release-notes&quot;&gt;Release notes&lt;/h3&gt;
-
-&lt;table&gt;&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Release&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.4&lt;/td&gt;
-&lt;td&gt;2023-05-04&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.5&lt;/td&gt;
-&lt;td&gt;2023-07-13&lt;/td&gt;
-&lt;td&gt;Fix: Files larger than 2 GByte were counted wrong&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.6&lt;/td&gt;
-&lt;td&gt;2023-10-17&lt;/td&gt;
-&lt;td&gt;Fix: Files larger than 4 GByte were counted wrong&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.7&lt;/td&gt;
-&lt;td&gt;2024-10-03&lt;/td&gt;
-&lt;td&gt;Add: Feature: RunAtLogoff with a default value of 0&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.8&lt;/td&gt;
-&lt;td&gt;2025-12-12&lt;/td&gt;
-&lt;td&gt;Fix: Calculation of file size&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.0.9&lt;/td&gt;
-&lt;td&gt;2026-01-21&lt;/td&gt;
-&lt;td&gt;Fix: Create logfile in AppData&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;download&quot;&gt;Download&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;../assets/files/OneDriveCleanUp.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 01/21/2026&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 21 Jan 2026 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/OneDrive-Clean-Up-For-Azure-Virtual-Desktop-AVD-agains-Profile-Blotting/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
         
       </item>
     
