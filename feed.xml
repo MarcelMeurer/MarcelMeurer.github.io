@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 10 Mar 2026 13:49:44 +0100</pubDate>
-    <lastBuildDate>Tue, 10 Mar 2026 13:49:44 +0100</lastBuildDate>
+    <pubDate>Tue, 10 Mar 2026 13:53:38 +0100</pubDate>
+    <lastBuildDate>Tue, 10 Mar 2026 13:53:38 +0100</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
     
       <item>
@@ -50,6 +50,10 @@
 &lt;p&gt;&lt;strong&gt;.\WarmUp.ps1 -Mode Install&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;This copies the script to C:\windows\WarmUp.ps1 and creates a scheduled task to start the script automatically with the computer.&lt;/p&gt;
+
+&lt;h2 id=&quot;download-the-script&quot;&gt;Download the script&lt;/h2&gt;
+
+&lt;p&gt;The script is available &lt;a href=&quot;https://gist.github.com/MarcelMeurer/1044690ed2619c145305e8cc335948a5&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 </description>
         <pubDate>Tue, 10 Mar 2026 00:00:00 +0100</pubDate>
         <link>https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</link>
