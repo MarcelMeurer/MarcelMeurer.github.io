@@ -14,19 +14,19 @@
 <meta property="og:title" content="Shadow a WVD/AVD user with least privileges" />
 <meta name="author" content="mm" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="WVD allows local administrators to shadow user sessions. You can do this easily with WVDAdmin or using the command-line like this:" />
-<meta property="og:description" content="WVD allows local administrators to shadow user sessions. You can do this easily with WVDAdmin or using the command-line like this:" />
+<meta name="description" content="This post was updated to use modern PS commandlets instead of wmic" />
+<meta property="og:description" content="This post was updated to use modern PS commandlets instead of wmic" />
 <link rel="canonical" href="https://blog.itprocloud.de/Shadow-a-WVD-user-with-least-privileges/" />
 <meta property="og:url" content="https://blog.itprocloud.de/Shadow-a-WVD-user-with-least-privileges/" />
 <meta property="og:site_name" content="ITProCloud Blog" />
 <meta property="og:image" content="https://blog.itprocloud.de/assets/images/WVD%20request%20shadowing.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2020-08-24T00:00:00+02:00" />
+<meta property="article:published_time" content="2026-03-06T00:00:00+01:00" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta property="twitter:image" content="https://blog.itprocloud.de/assets/images/WVD%20request%20shadowing.png" />
 <meta property="twitter:title" content="Shadow a WVD/AVD user with least privileges" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2020-08-24T00:00:00+02:00","datePublished":"2020-08-24T00:00:00+02:00","description":"WVD allows local administrators to shadow user sessions. You can do this easily with WVDAdmin or using the command-line like this:","headline":"Shadow a WVD/AVD user with least privileges","image":"https://blog.itprocloud.de/assets/images/WVD%20request%20shadowing.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Shadow-a-WVD-user-with-least-privileges/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Shadow-a-WVD-user-with-least-privileges/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2026-03-06T00:00:00+01:00","datePublished":"2026-03-06T00:00:00+01:00","description":"This post was updated to use modern PS commandlets instead of wmic","headline":"Shadow a WVD/AVD user with least privileges","image":"https://blog.itprocloud.de/assets/images/WVD%20request%20shadowing.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Shadow-a-WVD-user-with-least-privileges/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Shadow-a-WVD-user-with-least-privileges/"}</script>
 <!-- End Jekyll SEO tag -->
 
 
@@ -479,11 +479,13 @@
                 <!-- Toc if any -->
                 
                 <!-- End Toc -->
-                <p>WVD allows local administrators to shadow user sessions. You can do this  easily with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> or using the command-line like this:</p>
+                <p>This post was updated to use modern PS commandlets instead of wmic</p>
+
+<p>AVD allows local administrators to shadow user sessions. You can do this  easily with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> or using the command-line like this:</p>
 <div class="highlight"><pre><code class="language-cmd" data-lang="cmd">mstsc /v:WVD-DESIGN-404 /control /shadow:2 /prompt
 </code></pre></div>
 <p>In most companies, a help desk agent supports users using applications. For that, local admin privileges are not necessary and not recommended. To allow help desk agents shadowing users in WVD, you have to give these users (or better: a user group) only the needed permission. To do this, execute the following command in an administrative cmd:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL AddAccount 'ITPROCLOUD\ADM_WVD-Shadowing',2
+<div class="highlight"><pre><code class="language-" data-lang="">(Get-CimInstance -Namespace "root\CIMV2\TerminalServices" -ClassName Win32_TSPermissionsSetting -Filter "TerminalName like 'RDP-sxs%'") | Invoke-CimMethod -MethodName AddAccount -Arguments @{AccountName="SPORTSKI\AVD-Remote-Shadowing"; PermissionPreSet=2}
 </code></pre></div>
 <p>Please also configure the local or group policy: Computer -&gt; Administrative Templates -&gt; Windows Components -&gt; Remote Desktop Services -&gt; Remote Desktop Session Hosts -&gt; Connections -&gt; Set riles for remote control ... to &quot;2&quot; (Allow control with user consent)</p>
 
@@ -492,7 +494,7 @@
 <p>Run this configuration after the deployment and installation of the AVD agent and ensure to run it maybe again, if the RDP-SXS stack is updated.</p>
 
 <p>Hint: You can reset this setting with:</p>
-<div class="highlight"><pre><code class="language-" data-lang="">wmic /namespace:\\root\CIMV2\TerminalServices PATH Win32_TSPermissionsSetting WHERE (TerminalName like 'RDP-sxs%') CALL RestoreDefaults
+<div class="highlight"><pre><code class="language-" data-lang="">(Get-CimInstance -Namespace "root\CIMV2\TerminalServices" -ClassName Win32_TSPermissionsSetting -Filter "TerminalName like 'RDP-sxs%'") | Invoke-CimMethod -MethodName RestoreDefaults
 </code></pre></div>
 <p>Take a look how shadowing a user session with <a href="https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/">WVDAdmin</a> looks like: <a href="https://twitter.com/i/status/1229472041423732736">https://twitter.com/i/status/1229472041423732736</a></p>
 
@@ -504,7 +506,7 @@
             <!-- Post Date -->
             <p>
             <small>
-                <span class="post-date"><time class="post-date" datetime="2020-08-24">24 Aug 2020</time></span>           
+                <span class="post-date"><time class="post-date" datetime="2026-03-06">06 Mar 2026</time></span>           
                 
                 </small>
             </p>
@@ -538,10 +540,10 @@
             <!-- Prev/Next -->
             <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
             
-            <a class="prev d-block col-md-6" href="/Sysprep-and-WVD-and-UWP/"> &laquo; What's wrong with Windows 10 and UWP and Sysprep?</a>
+            <a class="prev d-block col-md-6" href="/Windows-Virtual-Desktop-Admin/"> &laquo; WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</a>
             
             
-            <a class="next d-block col-md-6 text-lg-right" href="/Least-privileges-with-custom-roles-for-Windows-Virtual-Desktop-(WVD)/">Least privileges with custom roles for Azure Windows Virtual Desktop (WVD) &raquo; </a>
+            <a class="next d-block col-md-6 text-lg-right" href="/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/">Improve AVD User Experience: Warm-Up to decreas User login time &raquo; </a>
             
             <div class="clearfix"></div>
             </div>
