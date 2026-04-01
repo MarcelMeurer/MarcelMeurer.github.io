@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logos/icon.png">
+
+<title>Azure Boost VMs (v6/v7): Workaround for Missing NVMe Temp Disk and Pagefile Placement - Azure Virtual Desktop | ITProCloud Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Azure Boost VMs (v6/v7): Workaround for Missing NVMe Temp Disk and Pagefile Placement - Azure Virtual Desktop | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Azure Boost VMs (v6/v7): Workaround for Missing NVMe Temp Disk and Pagefile Placement - Azure Virtual Desktop" />
+<meta name="author" content="mm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="While working with newer Azure VM generations, specifically v6 and v7 Azure Boost VMs, I ran into an interesting challenge related to local NVMe storage." />
+<meta property="og:description" content="While working with newer Azure VM generations, specifically v6 and v7 Azure Boost VMs, I ran into an interesting challenge related to local NVMe storage." />
+<link rel="canonical" href="https://blog.itprocloud.de/Azure-Boost-VMs-v6-v7-Workaround-for-Missing-NVMe-Temp-Disk-and-Pagefile-Placement/" />
+<meta property="og:url" content="https://blog.itprocloud.de/Azure-Boost-VMs-v6-v7-Workaround-for-Missing-NVMe-Temp-Disk-and-Pagefile-Placement/" />
+<meta property="og:site_name" content="ITProCloud Blog" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets%5Cimages%5CBoost-NVME-01.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-04-01T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets%5Cimages%5CBoost-NVME-01.png" />
+<meta property="twitter:title" content="Azure Boost VMs (v6/v7): Workaround for Missing NVMe Temp Disk and Pagefile Placement - Azure Virtual Desktop" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2026-04-01T00:00:00+02:00","datePublished":"2026-04-01T00:00:00+02:00","description":"While working with newer Azure VM generations, specifically v6 and v7 Azure Boost VMs, I ran into an interesting challenge related to local NVMe storage.","headline":"Azure Boost VMs (v6/v7): Workaround for Missing NVMe Temp Disk and Pagefile Placement - Azure Virtual Desktop","image":"https://blog.itprocloud.de/assets%5Cimages%5CBoost-NVME-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Azure-Boost-VMs-v6-v7-Workaround-for-Missing-NVMe-Temp-Disk-and-Pagefile-Placement/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Azure-Boost-VMs-v6-v7-Workaround-for-Missing-NVMe-Temp-Disk-and-Pagefile-Placement/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<!--- cookie banner --->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-post">
+	<!-- defer loading of font and font awesome -->
+	<!-- <noscript id="deferred-styles"> -->
+		<link rel="stylesheet" href="/assets/fa/css/all.css" crossorigin="anonymous"> 
+	<!-- </noscript> -->
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logos/itpc-logo-bottom-text.png" alt="ITProCloud Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/tools"><b>Tools</b></a>
+                </li>
+				
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
+                </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (73)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (72)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (12)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+	
+				<!-- Original tag list (unsorted) 
+				
+				
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-VM">Azure VM (2)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (9)</a>
+						</li>
+						
+					
+				
+				-->
+								
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://twitter.com/MarcelMeurer"><i class="fab fa-twitter"></i>
+				 <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">Link to X</span>
+				</a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/marcel-meurer-15b46b98"><i class="fab fa-linkedin"></i>
+								 <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">Link to LinkedIn</span>
+				</a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://github.com/MarcelMeurer"><i class="fab fa-github"></i>
+								 <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">Link GitHub</span>
+				</a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="mailto:marcel.meurer@itprocloud.com?subject=Request%20from%20ITProCloud.de"><i class="far fa-envelope"></i>
+								 <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">Write me a mail</span>
+				</a>
+                </li>
+
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+<label for="lunrsearch" style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;">
+  Search field
+</label>
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">ITProCloud Blog</h1>
+    <p class="lead">
+        Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <!-- Begin Article
+================================================== -->
+<div class="container">
+    <div class="row">
+
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Azure Boost VMs (v6/v7): Workaround for Missing NVMe Temp Disk and Pagefile Placement - Azure Virtual Desktop&url=https://blog.itprocloud.de/Azure-Boost-VMs-v6-v7-Workaround-for-Missing-NVMe-Temp-Disk-and-Pagefile-Placement/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Azure-Boost-VMs-v6-v7-Workaround-for-Missing-NVMe-Temp-Disk-and-Pagefile-Placement/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Azure-Boost-VMs-v6-v7-Workaround-for-Missing-NVMe-Temp-Disk-and-Pagefile-Placement/&title=Azure Boost VMs (v6/v7): Workaround for Missing NVMe Temp Disk and Pagefile Placement - Azure Virtual Desktop" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+    </ul>
+    
+    <div class="sep">
+    </div>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
+    
+</div>
+
+        </div>
+
+        <!-- Post -->
+        
+
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
+
+                <!-- Author Box -->
+                
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                        
+                        <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
+                        
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href="https://blog.itprocloud.de">Marcel</a><a target="_blank" href="https://twitter.com/MarcelMeurer" class="btn follow">Follow</a>
+                        <span class="author-description">That's me: Marcel</span>
+                    </div>
+                </div>
+                
+
+                <!-- Post Title -->
+                <h1 class="posttitle">Azure Boost VMs (v6/v7): Workaround for Missing NVMe Temp Disk and Pagefile Placement - Azure Virtual Desktop</h1>
+
+            </div>
+
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
+
+            <!-- Post Featured Image -->
+            
+
+            
+            <img class="featured-image img-fluid" src="/assets\images\Boost-NVME-01.png" alt="Azure Boost VMs (v6/v7): Workaround for Missing NVMe Temp Disk and Pagefile Placement - Azure Virtual Desktop">
+            
+
+            
+            <!-- End Featured Image -->
+
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <p>While working with newer Azure VM generations, specifically <strong>v6 and v7 Azure Boost VMs</strong>, I ran into an interesting challenge related to local NVMe storage.</p>
+
+<p>Some of these VM types provide a <strong>fast, local disk on the hypervisor</strong>, which is ideal for performance-sensitive workloads such as pagefile placement. However, there is a catch.</p>
+
+<hr>
+
+<h3 id="the-problem">The Problem</h3>
+
+<p>After <strong>deallocating and starting</strong> a VM, the secondary local NVMe disk is not automatically available inside the operating system.</p>
+
+<p><strong>Why does this happen?</strong></p>
+
+<ul>
+<li>The internal disk identifier changes after each <strong>deallocate/allocate cycle</strong></li>
+<li>Windows does not recognize the disk as the previously configured volume</li>
+<li>As a result, the disk is not mounted (e.g., no <code>D:</code> drive)</li>
+</ul>
+
+<p><img src="../assets/images/Boost-NVME-02.png" alt="CMD Windows showing a randum ID of the 2nd disk"></p>
+
+<p>👉 Important distinction:<br/>
+- A <strong>normal in-guest reboot</strong> → disk remains available<br/>
+- A <strong>deallocate/start cycle</strong> → disk mapping is lost<br/></p>
+
+<hr>
+
+<h3 id="impact">Impact</h3>
+
+<p>This behavior leads to a practical issue:</p>
+
+<ul>
+<li>The <strong>pagefile is no longer located on the fast NVMe disk</strong></li>
+<li>Instead, it falls back to the OS disk (slower)</li>
+<li>This can negatively impact performance, especially in <strong>Azure Virtual Desktop (AVD)</strong> environments</li>
+</ul>
+
+<hr>
+
+<h3 id="the-workaround">The Workaround</h3>
+
+<p>To address this, I built a <strong>PowerShell-based workaround</strong> that automatically restores the expected configuration.</p>
+
+<h4 id="what-the-script-does">What the script does:</h4>
+
+<ol>
+<li><strong>Checks if the expected drive (D:) exists</strong></li>
+<li>If not:
+
+<ul>
+<li>Detects the available NVMe disk</li>
+<li>Initializes and formats it</li>
+<li>Assigns the correct drive letter</li>
+</ul></li>
+<li>Configures the <strong>pagefile</strong> to use this disk</li>
+<li>Triggers a <strong>Windows restart</strong></li>
+</ol>
+
+<hr>
+
+<h3 id="handling-user-logins-avd-consideration">Handling User Logins (AVD Consideration)</h3>
+
+<p>One key challenge was avoiding user logins during this reconfiguration phase.</p>
+
+<p>To handle this, the script:</p>
+
+<ul>
+<li>Temporarily <strong>disables selected services</strong></li>
+<li>Prevents users from logging in (e.g., AVD sessions)</li>
+<li>Re-enables the services <strong>after reboot and configuration</strong></li>
+</ul>
+
+<p>This ensures a consistent and safe state during the process.</p>
+
+<hr>
+
+<h3 id="trade-offs">Trade-Offs</h3>
+
+<p>This solution works reliably, but it comes with a downside:</p>
+
+<ul>
+<li>⚠️ <strong>Longer startup time</strong> after VM allocation</li>
+<li>⚠️ Don&#39;t install it on a template VM and don&#39;t capture an image from perepared VMs (imaging will fail)</li>
+</ul>
+
+<p>The additional steps (disk detection, formatting, pagefile setup, restart) add noticeable delay to the boot process.</p>
+
+<hr>
+
+<h3 id="important-limitation">Important Limitation</h3>
+
+<blockquote>
+<p><strong>Do not use these VMs as Golden Images after applying this workaround.</strong></p>
+</blockquote>
+
+<p>Due to the internal reboot behavior and disk handling, this can lead to <strong>broken images</strong>. I am currently investigating improvements here.</p>
+
+<hr>
+
+<h3 id="integration-with-hydra">Integration with Hydra</h3>
+
+<p>The workaround can be integrated into automated deployment workflows using Hydra.</p>
+
+<h4 id="step-1-create-the-script">Step 1: Create the Script</h4>
+
+<p>Use the following script:
+<a href="https://gist.github.com/MarcelMeurer/fc4b8d14ae0a469c83cdc0511fc07607">https://gist.github.com/MarcelMeurer/fc4b8d14ae0a469c83cdc0511fc07607</a></p>
+
+<hr>
+
+<h4 id="step-2-create-a-script-collection">Step 2: Create a Script Collection</h4>
+
+<p>Create a collection with two steps:</p>
+
+<ol>
+<li><strong>Run Script</strong></li>
+<li><strong>Restart Host</strong></li>
+</ol>
+
+<p>Use the following parameters:
+<code>-Mode installandrun -DoNotRestart $true</code></p>
+
+<p><img src="../assets/images/Boost-NVME-03.png" alt="Create a script in Hydra">
+<img src="../assets/images/Boost-NVME-03.png" alt="Configure the script collection in Hydra"></p>
+
+<hr>
+
+<h4 id="step-3-execute">Step 3: Execute</h4>
+
+<ul>
+<li>Run the <strong>script collection (not the script directly)</strong><br></li>
+<li>Integrate it into your <strong>rollout configuration</strong>, or<br></li>
+<li>Execute it <strong>on demand for testing</strong></li>
+</ul>
+
+<hr>
+
+<h3 id="testing-and-recommendations">Testing and Recommendations</h3>
+
+<ul>
+<li>Always test in a <strong>non-production environment first</strong></li>
+<li>Validate:
+
+<ul>
+<li>Disk mapping (<code>D:</code> drive exists)</li>
+<li>Pagefile placement</li>
+<li>Login behavior after restart</li>
+</ul></li>
+</ul>
+
+<hr>
+
+<h3 id="final-thoughts">Final Thoughts</h3>
+
+<p>This is clearly a <strong>workaround, not a final solution</strong>.</p>
+
+<p>Ideally, Microsoft will address this behavior directly in Azure for Boost VMs with local NVMe disks. Until then, this approach ensures that:</p>
+
+<ul>
+<li>The <strong>pagefile is placed on the fast local disk</strong></li>
+<li>Performance characteristics remain consistent</li>
+<li>The environment behaves predictably after redeployment</li>
+</ul>
+
+<hr>
+
+<p>If you want to try it out, feel free to use and adapt the script—but keep the limitations in mind.</p>
+
+            </div>
+
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2026-04-01">01 Apr 2026</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            <a class="prev d-block col-md-6" href="/Azure-Virtual-Desktop-Prepare-for-Secure-Boot-Certificate-Changes-by-June-2026/"> &laquo; Azure Virtual Desktop - Prepare for Secure Boot Certificate Changes by June 2026</a>
+            
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
+        </div>
+        <!-- End Post -->
+
+    </div>
+</div>
+<!-- End Article
+================================================== -->
+
+<!-- Begin Comments
+================================================== -->
+
+<!--End Comments
+================================================== -->
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div id="allTags" class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore by tags <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-VM">Azure VM (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (9)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (12)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (9)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-AD">Azure AD (4)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#OneDrive">OneDrive (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-IoT">Azure IoT (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Functions">Azure Functions (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Marketplace">Azure Marketplace (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (8)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (73)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (72)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Webapp">Azure Webapp (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#ADConnect">ADConnect (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Stack-HCI">Azure Stack HCI (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Entra">Entra (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Windows365">Windows365 (1)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 text-center text-lg-left">
+                Copyright © 2026 ITProCloud Blog 
+            </div>
+            <div class="col-md-4 col-sm-4 text-center text-lg-left">
+                <a href="/Impressum">Impressum</a>/<a href="/ImpressumEn">Imprint</a> - 
+                <a href="/privacyDe">Datenschutz</a> - 
+				<a href="/privacyEn">Privacy</a> - 
+				<a href="#" id="open_preferences_center">Update cookies preferences</a>
+            </div>
+            <div class="col-md-3 col-sm-3 text-center text-lg-right">    
+                <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+<script id="dsq-count-scr" src="//.disqus.com/count.js"></script>
+
+
+<!-- Cookie Consent by TermsFeed https://www.TermsFeed.com created on https://www.cookieconsent.com/ -->
+<script type="text/javascript" src="https://www.termsfeed.com/public/cookie-consent/4.1.0/cookie-consent.js" charset="UTF-8"></script>
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({"notice_banner_type":"simple","consent_type":"express","palette":"light","language":"en","page_load_consent_levels":["strictly-necessary"],"notice_banner_reject_button_hide":false,"preferences_center_close_button_hide":false,"page_refresh_confirmation_buttons":false,"website_name":"blog.ITProCloud.de","website_privacy_policy_url":"https://blog.itprocloud.de/privacyEn/"});
+});
+</script>
+
+<!-- Google Analytics -->
+<!-- Google tag (gtag.js) -->
+<script type="text/plain" data-cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=G-LPJZ1BMG3V">
+</script>
+<script type="text/plain" data-cookie-consent="tracking">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LPJZ1BMG3V');
+</script>
+<!-- end of Google Analytics-->
+
+<noscript>Free cookie consent management tool by <a href="https://www.termsfeed.com/">TermsFeed</a></noscript>
+<!-- End Cookie Consent by TermsFeed https://www.TermsFeed.com -->
+
+</body>
+</html>

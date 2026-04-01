@@ -5,9 +5,301 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 10 Mar 2026 13:53:38 +0100</pubDate>
-    <lastBuildDate>Tue, 10 Mar 2026 13:53:38 +0100</lastBuildDate>
+    <pubDate>Wed, 01 Apr 2026 12:21:56 +0200</pubDate>
+    <lastBuildDate>Wed, 01 Apr 2026 12:21:56 +0200</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
+    
+      <item>
+        <title>Azure Boost VMs (v6/v7): Workaround for Missing NVMe Temp Disk and Pagefile Placement - Azure Virtual Desktop</title>
+        <description>&lt;p&gt;While working with newer Azure VM generations, specifically &lt;strong&gt;v6 and v7 Azure Boost VMs&lt;/strong&gt;, I ran into an interesting challenge related to local NVMe storage.&lt;/p&gt;
+
+&lt;p&gt;Some of these VM types provide a &lt;strong&gt;fast, local disk on the hypervisor&lt;/strong&gt;, which is ideal for performance-sensitive workloads such as pagefile placement. However, there is a catch.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;the-problem&quot;&gt;The Problem&lt;/h3&gt;
+
+&lt;p&gt;After &lt;strong&gt;deallocating and starting&lt;/strong&gt; a VM, the secondary local NVMe disk is not automatically available inside the operating system.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Why does this happen?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The internal disk identifier changes after each &lt;strong&gt;deallocate/allocate cycle&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Windows does not recognize the disk as the previously configured volume&lt;/li&gt;
+&lt;li&gt;As a result, the disk is not mounted (e.g., no &lt;code&gt;D:&lt;/code&gt; drive)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Boost-NVME-02.png&quot; alt=&quot;CMD Windows showing a randum ID of the 2nd disk&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;👉 Important distinction:&lt;br/&gt;
+- A &lt;strong&gt;normal in-guest reboot&lt;/strong&gt; → disk remains available&lt;br/&gt;
+- A &lt;strong&gt;deallocate/start cycle&lt;/strong&gt; → disk mapping is lost&lt;br/&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;impact&quot;&gt;Impact&lt;/h3&gt;
+
+&lt;p&gt;This behavior leads to a practical issue:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The &lt;strong&gt;pagefile is no longer located on the fast NVMe disk&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Instead, it falls back to the OS disk (slower)&lt;/li&gt;
+&lt;li&gt;This can negatively impact performance, especially in &lt;strong&gt;Azure Virtual Desktop (AVD)&lt;/strong&gt; environments&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;the-workaround&quot;&gt;The Workaround&lt;/h3&gt;
+
+&lt;p&gt;To address this, I built a &lt;strong&gt;PowerShell-based workaround&lt;/strong&gt; that automatically restores the expected configuration.&lt;/p&gt;
+
+&lt;h4 id=&quot;what-the-script-does&quot;&gt;What the script does:&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Checks if the expected drive (D:) exists&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;If not:
+
+&lt;ul&gt;
+&lt;li&gt;Detects the available NVMe disk&lt;/li&gt;
+&lt;li&gt;Initializes and formats it&lt;/li&gt;
+&lt;li&gt;Assigns the correct drive letter&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Configures the &lt;strong&gt;pagefile&lt;/strong&gt; to use this disk&lt;/li&gt;
+&lt;li&gt;Triggers a &lt;strong&gt;Windows restart&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;handling-user-logins-avd-consideration&quot;&gt;Handling User Logins (AVD Consideration)&lt;/h3&gt;
+
+&lt;p&gt;One key challenge was avoiding user logins during this reconfiguration phase.&lt;/p&gt;
+
+&lt;p&gt;To handle this, the script:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Temporarily &lt;strong&gt;disables selected services&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Prevents users from logging in (e.g., AVD sessions)&lt;/li&gt;
+&lt;li&gt;Re-enables the services &lt;strong&gt;after reboot and configuration&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This ensures a consistent and safe state during the process.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;trade-offs&quot;&gt;Trade-Offs&lt;/h3&gt;
+
+&lt;p&gt;This solution works reliably, but it comes with a downside:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;⚠️ &lt;strong&gt;Longer startup time&lt;/strong&gt; after VM allocation&lt;/li&gt;
+&lt;li&gt;⚠️ Don&amp;#39;t install it on a template VM and don&amp;#39;t capture an image from perepared VMs (imaging will fail)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The additional steps (disk detection, formatting, pagefile setup, restart) add noticeable delay to the boot process.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;important-limitation&quot;&gt;Important Limitation&lt;/h3&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Do not use these VMs as Golden Images after applying this workaround.&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Due to the internal reboot behavior and disk handling, this can lead to &lt;strong&gt;broken images&lt;/strong&gt;. I am currently investigating improvements here.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;integration-with-hydra&quot;&gt;Integration with Hydra&lt;/h3&gt;
+
+&lt;p&gt;The workaround can be integrated into automated deployment workflows using Hydra.&lt;/p&gt;
+
+&lt;h4 id=&quot;step-1-create-the-script&quot;&gt;Step 1: Create the Script&lt;/h4&gt;
+
+&lt;p&gt;Use the following script:
+&lt;a href=&quot;https://gist.github.com/MarcelMeurer/fc4b8d14ae0a469c83cdc0511fc07607&quot;&gt;https://gist.github.com/MarcelMeurer/fc4b8d14ae0a469c83cdc0511fc07607&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h4 id=&quot;step-2-create-a-script-collection&quot;&gt;Step 2: Create a Script Collection&lt;/h4&gt;
+
+&lt;p&gt;Create a collection with two steps:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Run Script&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Restart Host&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Use the following parameters:
+&lt;code&gt;-Mode installandrun -DoNotRestart $true&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Boost-NVME-03.png&quot; alt=&quot;Create a script in Hydra&quot;&gt;
+&lt;img src=&quot;../assets/images/Boost-NVME-03.png&quot; alt=&quot;Configure the script collection in Hydra&quot;&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h4 id=&quot;step-3-execute&quot;&gt;Step 3: Execute&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Run the &lt;strong&gt;script collection (not the script directly)&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Integrate it into your &lt;strong&gt;rollout configuration&lt;/strong&gt;, or&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Execute it &lt;strong&gt;on demand for testing&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;testing-and-recommendations&quot;&gt;Testing and Recommendations&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Always test in a &lt;strong&gt;non-production environment first&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Validate:
+
+&lt;ul&gt;
+&lt;li&gt;Disk mapping (&lt;code&gt;D:&lt;/code&gt; drive exists)&lt;/li&gt;
+&lt;li&gt;Pagefile placement&lt;/li&gt;
+&lt;li&gt;Login behavior after restart&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;final-thoughts&quot;&gt;Final Thoughts&lt;/h3&gt;
+
+&lt;p&gt;This is clearly a &lt;strong&gt;workaround, not a final solution&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Ideally, Microsoft will address this behavior directly in Azure for Boost VMs with local NVMe disks. Until then, this approach ensures that:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The &lt;strong&gt;pagefile is placed on the fast local disk&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Performance characteristics remain consistent&lt;/li&gt;
+&lt;li&gt;The environment behaves predictably after redeployment&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;If you want to try it out, feel free to use and adapt the script—but keep the limitations in mind.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 01 Apr 2026 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Azure-Boost-VMs-v6-v7-Workaround-for-Missing-NVMe-Temp-Disk-and-Pagefile-Placement/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Boost-VMs-v6-v7-Workaround-for-Missing-NVMe-Temp-Disk-and-Pagefile-Placement/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Azure Virtual Desktop - Prepare for Secure Boot Certificate Changes by June 2026</title>
+        <description>&lt;p&gt;Microsoft has started notifying customers using Azure Virtual Desktop about an important upcoming change:&lt;br&gt;
+&lt;strong&gt;Secure Boot 2011 certificates will begin to expire in June 2026.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;While that might sound far away, environments using older images may already require attention today.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;what-s-changing&quot;&gt;What’s Changing?&lt;/h3&gt;
+
+&lt;p&gt;Secure Boot plays a critical role in protecting the early boot process from tampering and low-level threats. As part of ongoing security improvements, Microsoft is transitioning from the &lt;strong&gt;2011 certificates&lt;/strong&gt; to the newer &lt;strong&gt;Secure Boot 2023 certificates&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Once the old certificates expire, systems that haven’t been updated may:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Lose protection against newer boot-level threats&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Encounter boot or validation issues (depending on configuration)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt;&lt;br&gt;
+Only systems with &lt;strong&gt;Secure Boot enabled&lt;/strong&gt; are affected. Environments without Secure Boot or without Trusted Launch VMs do not require action.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;who-should-care&quot;&gt;Who Should Care?&lt;/h3&gt;
+
+&lt;p&gt;This is especially relevant if your organization:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Uses Azure Virtual Desktop&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Maintains &lt;strong&gt;custom images or golden images&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Runs &lt;strong&gt;long-lived VM templates&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In many cases, these images were created years ago and still contain outdated Secure Boot certificates.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;microsoft-s-recommendation&quot;&gt;Microsoft’s Recommendation&lt;/h3&gt;
+
+&lt;p&gt;Microsoft advises customers to:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Identify affected deployments&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Update images and session hosts&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Transition to Secure Boot 2023 certificates before June 2026&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Key takeaway:&lt;/strong&gt;&lt;br&gt;
+If you are using older images, you should validate them now rather than later.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;simplifying-the-process-with-automation&quot;&gt;Simplifying the Process with Automation&lt;/h3&gt;
+
+&lt;p&gt;To streamline this process, I created a small PowerShell script that helps:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;✔️ Check whether an update is required&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;✔️ Apply the update if needed&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Execution requirements:&lt;/strong&gt;
+- Run in an &lt;strong&gt;elevated (Administrator) PowerShell session&lt;/strong&gt;&lt;br&gt;
+- &lt;strong&gt;Reboot&lt;/strong&gt; the system after applying changes  &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;You can find the script here:&lt;br&gt;
+&lt;a href=&quot;https://gist.github.com/MarcelMeurer/01db5590b2af52cc630c7bd29befaf63&quot;&gt;https://gist.github.com/MarcelMeurer/01db5590b2af52cc630c7bd29befaf63&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;pro-tip-integrate-it-in-hydra&quot;&gt;Pro Tip: Integrate it in Hydra&lt;/h3&gt;
+
+&lt;p&gt;Instead of treating this as a one-time fix, consider embedding the check/update into your image lifecycle.&lt;/p&gt;
+
+&lt;p&gt;For example, you can use it as a &lt;strong&gt;pre-configuration script&lt;/strong&gt; when building images with Hydra (Optional.: Run a Script or Collection on the Master first).&lt;/p&gt;
+
+&lt;p&gt;This ensures that:
+- New images are always compliant&lt;br&gt;
+- Manual validation steps are reduced&lt;br&gt;
+- Future certificate rotations become easier to handle  &lt;/p&gt;
+
+&lt;h3 id=&quot;final-thoughts&quot;&gt;Final Thoughts&lt;/h3&gt;
+
+&lt;p&gt;June 2026 may seem distant, but certificate-related changes tend to surface at the worst possible time—during deployments or recovery scenarios.&lt;/p&gt;
+
+&lt;p&gt;Taking a proactive approach now will:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Reduce operational risk&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Avoid last-minute remediation efforts&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Keep your Azure Virtual Desktop environment secure and compliant&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Action:&lt;/strong&gt; check your images early, automate where possible, and stay ahead of the deadline.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 31 Mar 2026 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-Prepare-for-Secure-Boot-Certificate-Changes-by-June-2026/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-Prepare-for-Secure-Boot-Certificate-Changes-by-June-2026/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>Improve AVD User Experience: Warm-Up to decreas User login time</title>
@@ -2430,184 +2722,6 @@ OutputWriter(&quot;The script has finished.&quot;)
         <category>Azure Monitor</category>
         
         <category>Log Analytics</category>
-        
-      </item>
-    
-      <item>
-        <title>Creating a Windows Azure VM Generation V2 from a V1 VM</title>
-        <description>&lt;p&gt;Update 2025.02: Microsoft has provided an additional way to upgrade existing VMs: &lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch-existing-vm-gen-1&quot;&gt;https://learn.microsoft.com/en-us/azure/virtual-machines/trusted-launch-existing-vm-gen-1&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Microsoft has provided different VM sizes over the last years and also introduced the VM Generation V2 at the end of 2019. V2 VMs are different from V1 VMs and have the following advantages:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;UEFI&lt;/strong&gt; based (no longer bios-based)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Enhanced OS support&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Faster boot and disk support&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Advanced Security Features&lt;/strong&gt;, like Secure Boot, which ensures the integrity of the boot process, and BitLocker encryption, which enhances data protection&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Today, I expect that the most deployed VMs are V2, but I still see older V1 versions - including in my own environment. For example, I have several Golden Masters for Azure Virtual Desktop running Windows 10 22/h2 Multi-User. We still see V1 types because of the missing simple migration path. There is no native way in the Azure Portal to do this.&lt;/p&gt;
-
-&lt;p&gt;While I wanted to upgrade my Windows 10 Golden Masters to Windows 11, I came to the point of discovering that Windows 11 needs a V2 generation VM (for upgrading, trusted launch, vTPM, and secure boot must also be enabled). &lt;/p&gt;
-
-&lt;p&gt;After some research, I figured out that this is really not simple. I found a good blog post from &lt;a href=&quot;https://charbelnemnom.com/migrate-gen1-to-gen2-vms-on-azure/&quot;&gt;Charbel Nemnom&lt;/a&gt;, who provides a step-by-step solution. The solution is still complex, so I decided to write a PowerShell script to handle this complex process more easily.&lt;/p&gt;
-
-&lt;h3 id=&quot;how-does-it-work&quot;&gt;How does it work&lt;/h3&gt;
-
-&lt;p&gt;We have our V1 virtual machine we want to convert. Instead of converting, we are building a new virtual machine (V2) with the converted OS disk of our V1 VM. So, in the end, we have two identical VMs: The original V1 VM and the V2 VM. If anything doesn&amp;#39;t work, we still have our original VM.&lt;/p&gt;
-
-&lt;p&gt;But takes some time, and the full process takes hours (for the script).&lt;/p&gt;
-
-&lt;p&gt;After configuring the script, the script enters the following steps:
-- Deallocates the V1 VM
-- Creates the new V2 VM with the same size in the same network, optional with trusted launch, secure boot, and vTPM
-- Makes a snapshot of the V1 OS disk and, from the snapshot, a cloned OS disk (still V1)
-- Creates an empty V2 disk with the same size and type as the V1 OS disk(this disk is supposed to be our converted OS disk)
-- Attaches the empty V2 disk and the cloned V1 OS disk to the new V2 VM
-- The script runs itself on the V2 VM
-  - Preparing the partitions of the attached disks
-  - Formatting the partitions
-  - Capturing the cloned V1 OS partition using DISM (that takes some time; in my last conversion, it took nearly 4 hours)
-  - Apply the captured image to the prepared partition of the empty V2 disk 
-  - Write the UEFI partition of the formerly empty V2 disk
-- Deallocates the V2 VM
-- Detach the attached disks
-- Swap the OS disk with the no longer empty V2 disk (the now converted OS disk of the V1 VM)
-- Starting the V2 VM
-- Doing some cleanup: Deleting the snapshot, the old V2 OS disk, the cloned V1 OS disk
-- &lt;strong&gt;Done&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/V1-V2-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;how-to-use-the-script&quot;&gt;How to use the script&lt;/h3&gt;
-
-&lt;p&gt;Open the script in a PowerShell editor like ISE (or VS Code). Connect to your Azure subscription using &lt;em&gt;Connect-AzAccount&lt;/em&gt;&lt;/p&gt;
-
-&lt;p&gt;Modify the script to match your:
-- Your subscription Id
-- Your source V1 VM (name and resource group)
-- Your new V2 VM (name and resource group - ensure to have a different name or resource group; another name of the VM doesn&amp;#39;t reflect the computer name after the process)
-- Set $enabledTrustedLaunch = $true to also create your V2 VM trusted launch enabled, incl. secure boot and vTPM
-- The tempDiskSizeGb must be large enough to contain the temporary OS (Server 2022) and the content of the OS disk of the V1 VM (512 should be fine if the disk of the V1 VM is 128 GByte)&lt;/p&gt;
-
-&lt;p&gt;That&amp;#39;s all. You can run the script and come back after some hours to see the result.&lt;/p&gt;
-
-&lt;h3 id=&quot;hints&quot;&gt;Hints&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;If the VM size doesn&amp;#39;t support V2, modify the target VM size in the script&lt;/li&gt;
-&lt;li&gt;If something fails: Cleanup the temporarily created resources manually (snapshot, empty V2 disk, cloned V1 disk, and V2 VM)&lt;/li&gt;
-&lt;li&gt;Upgrading to Windows 11 multi-user: Check-out this video&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;where-is-the-script&quot;&gt;Where is the script&lt;/h3&gt;
-
-&lt;p&gt;You can find the script on github: &lt;a href=&quot;https://gist.github.com/MarcelMeurer/aab2ef8f36d7c634beebea771f54bf30&quot;&gt;Create-V2-From-V1-VM.ps1&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Or use the update script, which has much better error handling, clean-up, and handling of common DISM errors. The script was created by &lt;a href=&quot;https://x.com/PJ_Marcum&quot;&gt;John Marcum&lt;/a&gt;. Thanks a lot, John, for providing this awesome development to the public 👍
-&lt;a href=&quot;https://gist.github.com/MarcelMeurer/1c0aa1f7ea5736095f1a4ccbd592b794&quot;&gt;Convert-AzVmGen1ToGen2.ps1&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Tue, 30 Sep 2025 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Migrate-Azure-V1-VM-to-Azure-V2-VM-In-A-Safe-Way/</guid>
-        
-        
-        <category>Azure</category>
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>From SCSI to NVMe in Azure Virtual Desktop - Reuse your current golden master VM - or convert it</title>
-        <description>&lt;h2 id=&quot;why-nvme-matters&quot;&gt;Why NVMe Matters&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;NVMe&lt;/strong&gt; (Non-Volatile Memory Express) is a modern storage protocol designed for non-volatile flash memory. Compared to legacy SCSI, it delivers significantly higher &lt;strong&gt;IOPS&lt;/strong&gt; and &lt;strong&gt;throughput&lt;/strong&gt;. For I/O-intensive workloads, the performance gain is substantial (&lt;a href=&quot;https://learn.microsoft.com/en-us/azure/virtual-machines/nvme-overview?utm_source=chatgpt.com&quot;&gt;Microsoft Docs: NVMe overview&lt;/a&gt;).&lt;/li&gt;
-&lt;li&gt;With the &lt;strong&gt;v6 VM families&lt;/strong&gt; (e.g., Dlsv6, Dldsv6), NVMe-backed local storage is now widely available. Benefits include:
-
-&lt;ul&gt;
-&lt;li&gt;Up to &lt;strong&gt;5× more CPU cache&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Up to &lt;strong&gt;54 Gbps networking&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Up to &lt;strong&gt;400k remote disk IOPS&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Up to &lt;strong&gt;12 GB/s remote throughput via Azure Boost&lt;/strong&gt;&lt;br&gt;
-(&lt;a href=&quot;https://techcommunity.microsoft.com/discussions/compute/boosting-performance-with-the-latest-generations-of-virtual-machines-in-azure/4381896?utm_source=chatgpt.com&quot;&gt;Microsoft Tech Community&lt;/a&gt;)&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Support for &lt;strong&gt;ephemeral OS disks with local NVMe storage&lt;/strong&gt; is now GA, offering:
-
-&lt;ul&gt;
-&lt;li&gt;Up to &lt;strong&gt;10× faster OS disk performance&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Ultra-low latency&lt;/li&gt;
-&lt;li&gt;Modern processor architeture in comparision to the older ephemeral VM sizes&lt;/li&gt;
-&lt;li&gt;Very fast reimaging&lt;br&gt;
-Perfect for stateless scaling scenarios like &lt;strong&gt;Azure Virtual Desktop (AVD)&lt;/strong&gt;&lt;br&gt;
-(&lt;a href=&quot;https://techcommunity.microsoft.com/blog/azurecompute/announcing-general-availability-ephemeral-os-disk-support-for-v6-azure-vms/4415163?utm_source=chatgpt.com&quot;&gt;Microsoft Tech Community&lt;/a&gt;).&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;the-challenge&quot;&gt;The Challenge&lt;/h2&gt;
-
-&lt;p&gt;It could be so easy to enjoy the new VM sizes — with either &lt;strong&gt;network disks&lt;/strong&gt; or &lt;strong&gt;ephemeral disks&lt;/strong&gt;. However, if you already maintain &lt;strong&gt;images and golden masters for Azure Virtual Desktop (AVD)&lt;/strong&gt;, you’ll quickly realize that you cannot simply reuse them.  &lt;/p&gt;
-
-&lt;p&gt;Why? Because the &lt;strong&gt;disk architecture changes&lt;/strong&gt; between your older images and the new NVMe-based VM families.  &lt;/p&gt;
-
-&lt;p&gt;That leaves you with two main options:&lt;br&gt;
-- &lt;strong&gt;Create new golden masters&lt;/strong&gt; directly on NVMe VM sizes, or&lt;br&gt;
-- &lt;strong&gt;Create new images&lt;/strong&gt; of your existing golden masters and store them in an &lt;strong&gt;NVMe-enabled Azure Compute Gallery definition&lt;/strong&gt;  &lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;prepare-an-azure-compute-gallery-definition&quot;&gt;Prepare an Azure Compute Gallery Definition&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Navigate to your &lt;strong&gt;Azure Compute Gallery&lt;/strong&gt; (create a new one if necessary)&lt;/li&gt;
-&lt;li&gt;At the top, select &lt;strong&gt;Add -&amp;gt; VM Image definition&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Configure the definition and ensure you select:&lt;br&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Higher storage performance with NVMe&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;For secure boot masters and hosts: &lt;strong&gt;Trusted Launch&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;The following screenshot shows a secure boot + NVMe-enabled definition.&lt;br&gt;
-&lt;img src=&quot;../assets/images/NVME-Image-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;Finally:&lt;br&gt;
-- Click &lt;strong&gt;Review and Create&lt;/strong&gt; -&amp;gt; &lt;strong&gt;Create&lt;/strong&gt;.  &lt;/p&gt;
-
-&lt;p&gt;If you are using &lt;strong&gt;Hydra&lt;/strong&gt; for Azure Virtual Desktop, you can directly capture your &lt;strong&gt;existing golden master&lt;/strong&gt; into this new compute gallery definition. Hydra will capture the image &lt;strong&gt;without destroying the golden master&lt;/strong&gt;, so you can safely reuse your existing setup.
-&lt;img src=&quot;../assets/images/NVME-Image-03.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;From here, you can use the &lt;strong&gt;gallery definition version&lt;/strong&gt; to roll out &lt;strong&gt;new NVMe-based session hosts or virtual machines&lt;/strong&gt; — with or without ephemeral disks.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;notes-from-the-field&quot;&gt;Notes from the Field&lt;/h2&gt;
-
-&lt;p&gt;During my tests, some rollouts failed with a bluescreen (both with custom images and with Microsoft marketplace images). After a while, the rollout worked again. This suggests that there may occasionally be stability issues with the new v6 Boost VMs. It&amp;#39;s good to have this in mind.
-Also good to know: You can use gallery definitions to migrate existing VMs. In this case use a &amp;quot;Spezialized&amp;quot; gallery definition. Please remember that maybe not any Windows version comes with the right drivers.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;what-s-next&quot;&gt;What’s Next&lt;/h2&gt;
-
-&lt;p&gt;Follow me if you want to learn more about:&lt;br&gt;
-- How to &lt;strong&gt;increase performance in AVD with NVMe&lt;/strong&gt;, and&lt;br&gt;
-- How to manage the &lt;strong&gt;Windows swapfile&lt;/strong&gt; in a smarter way for even greater efficiency. 🚀+&lt;/p&gt;
-</description>
-        <pubDate>Wed, 27 Aug 2025 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Use-v6-session-hosts-in-AVD-and-simple-migrate-to-NVME/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
         
       </item>
     
