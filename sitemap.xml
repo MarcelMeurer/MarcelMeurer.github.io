@@ -357,10 +357,6 @@
 <lastmod>2026-02-20T00:00:00+01:00</lastmod>
 </url>
 <url>
-<loc>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</loc>
-<lastmod>2026-03-04T00:00:00+01:00</lastmod>
-</url>
-<url>
 <loc>https://blog.itprocloud.de/Shadow-a-WVD-user-with-least-privileges/</loc>
 <lastmod>2026-03-06T00:00:00+01:00</lastmod>
 </url>
@@ -379,6 +375,10 @@
 <url>
 <loc>https://blog.itprocloud.de/Action-Requiered-For-Early-AVD-Azure-Virtual-Desktop-RC4-FSLogix-Deprecation/</loc>
 <lastmod>2026-04-10T00:00:00+02:00</lastmod>
+</url>
+<url>
+<loc>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</loc>
+<lastmod>2026-05-03T00:00:00+02:00</lastmod>
 </url>
 <url>
 <loc>https://blog.itprocloud.de/about</loc>

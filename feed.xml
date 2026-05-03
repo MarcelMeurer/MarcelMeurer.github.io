@@ -5,541 +5,9 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 30 Apr 2026 11:37:42 +0200</pubDate>
-    <lastBuildDate>Thu, 30 Apr 2026 11:37:42 +0200</lastBuildDate>
+    <pubDate>Sun, 03 May 2026 15:25:10 +0200</pubDate>
+    <lastBuildDate>Sun, 03 May 2026 15:25:10 +0200</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
-    
-      <item>
-        <title>Action Required for Early Azure Virtual Desktop Deployments - RC4 Azure Files for FSLogix will stop working</title>
-        <description>&lt;p&gt;Early adopters of &lt;strong&gt;Azure Virtual Desktop (AVD)&lt;/strong&gt; are facing an important security-related change that should not be ignored.&lt;/p&gt;
-
-&lt;p&gt;If you are using &lt;strong&gt;FSLogix profiles on Azure Files with Active Directory authentication&lt;/strong&gt;- especially from early AVD deployments- this likely applies to you.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;background-what-s-the-issue&quot;&gt;🔍 Background: What’s the issue?&lt;/h2&gt;
-
-&lt;p&gt;Using Azure Files with FSLogix with on-premises Active Directory required complex PowerShell scripts (yes, those painful ones 😉). Early setups relied on &lt;strong&gt;RC4 encryption&lt;/strong&gt; in a Kerberos context.&lt;/p&gt;
-
-&lt;p&gt;👉 The problem: RC4 is now considered &lt;strong&gt;outdated and insecure&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;Microsoft is taking action and notifying customers:&lt;/p&gt;
-
-&lt;p&gt;❗ &lt;strong&gt;Starting July 2026, RC4 will be disabled by default in Windows&lt;/strong&gt;
-&lt;img src=&quot;../assets/images/ADFS1.png&quot; alt=&quot;Microsoft mail about deprecation&quot;&gt;&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;what-are-the-risks&quot;&gt;⚠️ What are the risks?&lt;/h2&gt;
-
-&lt;p&gt;If your environment still relies on RC4, you may experience:
-- ❌ Azure Files shares failing to mount&lt;br&gt;
-- ❌ AVD users unable to log in&lt;br&gt;
-- ❌ Authentication failures across your environment  &lt;/p&gt;
-
-&lt;p&gt;👉 Worst case: &lt;strong&gt;A complete outage of your AVD environment while users cannot login or only with temporary profiles&lt;/strong&gt;&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;who-is-affected&quot;&gt;👥 Who is affected?&lt;/h2&gt;
-
-&lt;p&gt;You should review your setup if:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;You use &lt;strong&gt;Azure Files with SMB + on-prem AD DS&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;Your storage accounts were created during &lt;strong&gt;early AVD/WVD deployments&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;why-this-matters&quot;&gt;💡 Why this matters&lt;/h2&gt;
-
-&lt;p&gt;This change is not theoretical- it has a defined timeline.&lt;/p&gt;
-
-&lt;p&gt;👉 &lt;strong&gt;Recommended deadline:&lt;/strong&gt; June 2026&lt;/p&gt;
-
-&lt;p&gt;If no action is taken:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;After Windows updates → &lt;strong&gt;Users may not be able to log in&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;FSLogix profiles → &lt;strong&gt;May become inaccessible&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;remediation-steps&quot;&gt;🛠️ Remediation Steps&lt;/h2&gt;
-
-&lt;p&gt;Prerequisites:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;A domain-joined machine&lt;/li&gt;
-&lt;li&gt;Administrative privileges&lt;/li&gt;
-&lt;li&gt;PowerShell access&lt;/li&gt;
-&lt;li&gt;Required modules installed&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;1-install-rsat-tools-if-needed&quot;&gt;1. Install RSAT tools (if needed)&lt;/h3&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;n&quot;&gt;Add-WindowsCapability&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;–&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;online&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;–&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;hr&gt;
-
-&lt;h3 id=&quot;2-identify-affected-objects&quot;&gt;2. Identify affected objects&lt;/h3&gt;
-
-&lt;p&gt;Run the following command with access to AD:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;n&quot;&gt;Get-ADObject&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-LDAPFilter&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;(&amp;amp;(servicePrincipalName=*.file.core.windows.net)(!(msDS-SupportedEncryptionTypes=*)))&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Properties&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;servicePrincipalName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;msDS-SupportedEncryptionTypes&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Select-Object&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ObjectClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;servicePrincipalName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;msDS-SupportedEncryptionTypes&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;👉 Result interpretation:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;✅ &lt;strong&gt;Empty result&lt;/strong&gt; → You’re good&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;⚠️ &lt;strong&gt;Entries found&lt;/strong&gt; → Action required&lt;br&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;3-install-azfileshybrid-module&quot;&gt;3. Install AzFilesHybrid module&lt;/h3&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;n&quot;&gt;Install-Module&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;AzFilesHybrid&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;hr&gt;
-
-&lt;h3 id=&quot;4-connect-to-azure&quot;&gt;4. Connect to Azure&lt;/h3&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;n&quot;&gt;Connect-AzAccount&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;hr&gt;
-
-&lt;h3 id=&quot;5-update-encryption-to-aes256&quot;&gt;5. Update encryption to AES256&lt;/h3&gt;
-
-&lt;p&gt;Run for each affected storage account (use your resource group name and storage account name):&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;n&quot;&gt;Update-AzStorageAccountAuthForAES256&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ResourceGroupName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;SharedServices&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-StorageAccountName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;wvduserdata&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;👉 Adjust parameters to match your environment.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;6-verify-remediation&quot;&gt;6. Verify remediation&lt;/h3&gt;
-
-&lt;p&gt;Run the query again:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;n&quot;&gt;Get-ADObject&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-LDAPFilter&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;(&amp;amp;(servicePrincipalName=*.file.core.windows.net)(!(msDS-SupportedEncryptionTypes=*)))&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Properties&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;servicePrincipalName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;msDS-SupportedEncryptionTypes&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Select-Object&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ObjectClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;servicePrincipalName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;msDS-SupportedEncryptionTypes&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;👉 Goal:&lt;br&gt;
-&lt;strong&gt;No results = successfully remediated ✅&lt;/strong&gt;&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;further-reading&quot;&gt;🔗 Further Reading&lt;/h2&gt;
-
-&lt;p&gt;Microsoft documentation:&lt;br&gt;
-&lt;a href=&quot;https://learn.microsoft.com/en-us/troubleshoot/azure/azure-storage/files/security/files-troubleshoot-smb-authentication?tabs=azure-portal#azure-files-on-premises-ad-ds-authentication-support-for-aes-256-kerberos-encryption&quot;&gt;https://learn.microsoft.com/en-us/troubleshoot/azure/azure-storage/files/security/files-troubleshoot-smb-authentication?tabs=azure-portal#azure-files-on-premises-ad-ds-authentication-support-for-aes-256-kerberos-encryption&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h2 id=&quot;conclusion&quot;&gt;🚀 Conclusion&lt;/h2&gt;
-
-&lt;p&gt;This is not a “nice to have” fix-it is &lt;strong&gt;critical for the future stability and security of your AVD environment&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;👉 Taking action early means:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Avoiding outages&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;Staying compliant&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;Reducing last-minute pressure before the deadline&lt;br&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/ADFS2.png&quot; alt=&quot;Process of validating and fixing the issue&quot;&gt;&lt;/p&gt;
-</description>
-        <pubDate>Fri, 10 Apr 2026 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Action-Requiered-For-Early-AVD-Azure-Virtual-Desktop-RC4-FSLogix-Deprecation/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Action-Requiered-For-Early-AVD-Azure-Virtual-Desktop-RC4-FSLogix-Deprecation/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Azure Boost VMs (v6/v7): Workaround for Missing NVMe Temp Disk and Pagefile Placement - Azure Virtual Desktop</title>
-        <description>&lt;p&gt;While working with newer Azure VM generations, specifically &lt;strong&gt;v6 and v7 Azure Boost VMs&lt;/strong&gt;, I ran into an interesting challenge related to local NVMe storage.&lt;/p&gt;
-
-&lt;p&gt;Some of these VM types provide a &lt;strong&gt;fast, local disk on the hypervisor&lt;/strong&gt;, which is ideal for performance-sensitive workloads such as pagefile placement. However, there is a catch.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;the-problem&quot;&gt;The Problem&lt;/h3&gt;
-
-&lt;p&gt;After &lt;strong&gt;deallocating and starting&lt;/strong&gt; a VM, the secondary local NVMe disk is not automatically available inside the operating system.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Why does this happen?&lt;/strong&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The internal disk identifier changes after each &lt;strong&gt;deallocate/allocate cycle&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Windows does not recognize the disk as the previously configured volume&lt;/li&gt;
-&lt;li&gt;As a result, the disk is not mounted (e.g., no &lt;code&gt;D:&lt;/code&gt; drive)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/Boost-NVME-02.png&quot; alt=&quot;CMD Windows showing a randum ID of the 2nd disk&quot;&gt;&lt;/p&gt;
-
-&lt;p&gt;👉 Important distinction:&lt;br/&gt;
-- A &lt;strong&gt;normal in-guest reboot&lt;/strong&gt; → disk remains available&lt;br/&gt;
-- A &lt;strong&gt;deallocate/start cycle&lt;/strong&gt; → disk mapping is lost&lt;br/&gt;&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;impact&quot;&gt;Impact&lt;/h3&gt;
-
-&lt;p&gt;This behavior leads to a practical issue:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The &lt;strong&gt;pagefile is no longer located on the fast NVMe disk&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Instead, it falls back to the OS disk (slower)&lt;/li&gt;
-&lt;li&gt;This can negatively impact performance, especially in &lt;strong&gt;Azure Virtual Desktop (AVD)&lt;/strong&gt; environments&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;the-workaround&quot;&gt;The Workaround&lt;/h3&gt;
-
-&lt;p&gt;To address this, I built a &lt;strong&gt;PowerShell-based workaround&lt;/strong&gt; that automatically restores the expected configuration.&lt;/p&gt;
-
-&lt;h4 id=&quot;what-the-script-does&quot;&gt;What the script does:&lt;/h4&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Checks if the expected drive (D:) exists&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;If not:
-
-&lt;ul&gt;
-&lt;li&gt;Detects the available NVMe disk&lt;/li&gt;
-&lt;li&gt;Initializes and formats it&lt;/li&gt;
-&lt;li&gt;Assigns the correct drive letter&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Configures the &lt;strong&gt;pagefile&lt;/strong&gt; to use this disk&lt;/li&gt;
-&lt;li&gt;Triggers a &lt;strong&gt;Windows restart&lt;/strong&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;handling-user-logins-avd-consideration&quot;&gt;Handling User Logins (AVD Consideration)&lt;/h3&gt;
-
-&lt;p&gt;One key challenge was avoiding user logins during this reconfiguration phase.&lt;/p&gt;
-
-&lt;p&gt;To handle this, the script:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Temporarily &lt;strong&gt;disables selected services&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Prevents users from logging in (e.g., AVD sessions)&lt;/li&gt;
-&lt;li&gt;Re-enables the services &lt;strong&gt;after reboot and configuration&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;This ensures a consistent and safe state during the process.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;trade-offs&quot;&gt;Trade-Offs&lt;/h3&gt;
-
-&lt;p&gt;This solution works reliably, but it comes with a downside:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;⚠️ &lt;strong&gt;Longer startup time&lt;/strong&gt; after VM allocation&lt;/li&gt;
-&lt;li&gt;⚠️ Don&amp;#39;t install it on a template VM and don&amp;#39;t capture an image from perepared VMs (imaging will fail)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The additional steps (disk detection, formatting, pagefile setup, restart) add noticeable delay to the boot process.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;important-limitation&quot;&gt;Important Limitation&lt;/h3&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;Do not use these VMs as Golden Images after applying this workaround.&lt;/strong&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Due to the internal reboot behavior and disk handling, this can lead to &lt;strong&gt;broken images&lt;/strong&gt;. I am currently investigating improvements here.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;integration-with-hydra&quot;&gt;Integration with Hydra&lt;/h3&gt;
-
-&lt;p&gt;The workaround can be integrated into automated deployment workflows using Hydra.&lt;/p&gt;
-
-&lt;h4 id=&quot;step-1-create-the-script&quot;&gt;Step 1: Create the Script&lt;/h4&gt;
-
-&lt;p&gt;Use the following script:
-&lt;a href=&quot;https://gist.github.com/MarcelMeurer/fc4b8d14ae0a469c83cdc0511fc07607&quot;&gt;https://gist.github.com/MarcelMeurer/fc4b8d14ae0a469c83cdc0511fc07607&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h4 id=&quot;step-2-create-a-script-collection&quot;&gt;Step 2: Create a Script Collection&lt;/h4&gt;
-
-&lt;p&gt;Create a collection with two steps:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Run Script&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Restart Host&lt;/strong&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Use the following parameters:
-&lt;code&gt;-Mode installandrun -DoNotRestart $true&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/Boost-NVME-03.png&quot; alt=&quot;Create a script in Hydra&quot;&gt;
-&lt;img src=&quot;../assets/images/Boost-NVME-03.png&quot; alt=&quot;Configure the script collection in Hydra&quot;&gt;&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h4 id=&quot;step-3-execute&quot;&gt;Step 3: Execute&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Run the &lt;strong&gt;script collection (not the script directly)&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;Integrate it into your &lt;strong&gt;rollout configuration&lt;/strong&gt;, or&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;Execute it &lt;strong&gt;on demand for testing&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;testing-and-recommendations&quot;&gt;Testing and Recommendations&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Always test in a &lt;strong&gt;non-production environment first&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Validate:
-
-&lt;ul&gt;
-&lt;li&gt;Disk mapping (&lt;code&gt;D:&lt;/code&gt; drive exists)&lt;/li&gt;
-&lt;li&gt;Pagefile placement&lt;/li&gt;
-&lt;li&gt;Login behavior after restart&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;final-thoughts&quot;&gt;Final Thoughts&lt;/h3&gt;
-
-&lt;p&gt;This is clearly a &lt;strong&gt;workaround, not a final solution&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;Ideally, Microsoft will address this behavior directly in Azure for Boost VMs with local NVMe disks. Until then, this approach ensures that:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;The &lt;strong&gt;pagefile is placed on the fast local disk&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Performance characteristics remain consistent&lt;/li&gt;
-&lt;li&gt;The environment behaves predictably after redeployment&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr&gt;
-
-&lt;p&gt;If you want to try it out, feel free to use and adapt the script—but keep the limitations in mind.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 01 Apr 2026 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Azure-Boost-VMs-v6-v7-Workaround-for-Missing-NVMe-Temp-Disk-and-Pagefile-Placement/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Boost-VMs-v6-v7-Workaround-for-Missing-NVMe-Temp-Disk-and-Pagefile-Placement/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Azure Virtual Desktop - Prepare for Secure Boot Certificate Changes by June 2026</title>
-        <description>&lt;p&gt;Microsoft has started notifying customers using Azure Virtual Desktop about an important upcoming change:&lt;br&gt;
-&lt;strong&gt;Secure Boot 2011 certificates will begin to expire in June 2026.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;While that might sound far away, environments using older images may already require attention today.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;what-s-changing&quot;&gt;What’s Changing?&lt;/h3&gt;
-
-&lt;p&gt;Secure Boot plays a critical role in protecting the early boot process from tampering and low-level threats. As part of ongoing security improvements, Microsoft is transitioning from the &lt;strong&gt;2011 certificates&lt;/strong&gt; to the newer &lt;strong&gt;Secure Boot 2023 certificates&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;Once the old certificates expire, systems that haven’t been updated may:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Lose protection against newer boot-level threats&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;Encounter boot or validation issues (depending on configuration)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt;&lt;br&gt;
-Only systems with &lt;strong&gt;Secure Boot enabled&lt;/strong&gt; are affected. Environments without Secure Boot or without Trusted Launch VMs do not require action.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;who-should-care&quot;&gt;Who Should Care?&lt;/h3&gt;
-
-&lt;p&gt;This is especially relevant if your organization:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Uses Azure Virtual Desktop&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;Maintains &lt;strong&gt;custom images or golden images&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;Runs &lt;strong&gt;long-lived VM templates&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;In many cases, these images were created years ago and still contain outdated Secure Boot certificates.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;microsoft-s-recommendation&quot;&gt;Microsoft’s Recommendation&lt;/h3&gt;
-
-&lt;p&gt;Microsoft advises customers to:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Identify affected deployments&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Update images and session hosts&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Transition to Secure Boot 2023 certificates before June 2026&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Key takeaway:&lt;/strong&gt;&lt;br&gt;
-If you are using older images, you should validate them now rather than later.&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;simplifying-the-process-with-automation&quot;&gt;Simplifying the Process with Automation&lt;/h3&gt;
-
-&lt;p&gt;To streamline this process, I created a small PowerShell script that helps:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;✔️ Check whether an update is required&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;✔️ Apply the update if needed&lt;br&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;&lt;strong&gt;Execution requirements:&lt;/strong&gt;
-- Run in an &lt;strong&gt;elevated (Administrator) PowerShell session&lt;/strong&gt;&lt;br&gt;
-- &lt;strong&gt;Reboot&lt;/strong&gt; the system after applying changes  &lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;You can find the script here:&lt;br&gt;
-&lt;a href=&quot;https://gist.github.com/MarcelMeurer/01db5590b2af52cc630c7bd29befaf63&quot;&gt;https://gist.github.com/MarcelMeurer/01db5590b2af52cc630c7bd29befaf63&lt;/a&gt;&lt;/p&gt;
-
-&lt;hr&gt;
-
-&lt;h3 id=&quot;pro-tip-integrate-it-in-hydra&quot;&gt;Pro Tip: Integrate it in Hydra&lt;/h3&gt;
-
-&lt;p&gt;Instead of treating this as a one-time fix, consider embedding the check/update into your image lifecycle.&lt;/p&gt;
-
-&lt;p&gt;For example, you can use it as a &lt;strong&gt;pre-configuration script&lt;/strong&gt; when building images with Hydra (Optional.: Run a Script or Collection on the Master first).&lt;/p&gt;
-
-&lt;p&gt;This ensures that:
-- New images are always compliant&lt;br&gt;
-- Manual validation steps are reduced&lt;br&gt;
-- Future certificate rotations become easier to handle  &lt;/p&gt;
-
-&lt;h3 id=&quot;final-thoughts&quot;&gt;Final Thoughts&lt;/h3&gt;
-
-&lt;p&gt;June 2026 may seem distant, but certificate-related changes tend to surface at the worst possible time—during deployments or recovery scenarios.&lt;/p&gt;
-
-&lt;p&gt;Taking a proactive approach now will:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Reduce operational risk&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;Avoid last-minute remediation efforts&lt;br&gt;&lt;/li&gt;
-&lt;li&gt;Keep your Azure Virtual Desktop environment secure and compliant&lt;br&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;Action:&lt;/strong&gt; check your images early, automate where possible, and stay ahead of the deadline.&lt;/p&gt;
-</description>
-        <pubDate>Tue, 31 Mar 2026 00:00:00 +0200</pubDate>
-        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-Prepare-for-Secure-Boot-Certificate-Changes-by-June-2026/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-Prepare-for-Secure-Boot-Certificate-Changes-by-June-2026/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Improve AVD User Experience: Warm-Up to decreas User login time</title>
-        <description>&lt;p&gt;&lt;em&gt;Note:&lt;/em&gt; This post and the scripts was updated to run after some changes coming with a Windows Update in February 2026&lt;/p&gt;
-
-&lt;p&gt;If you are running Azure Virtual Desktop with FSLogix, the first login to a host takes longer than the following logins. I also wrote about this effect (I call is Cold vs. Warm start) a few weeks ago here: &lt;a href=&quot;https://lnkd.in/eEQHP5gA&quot;&gt;https://lnkd.in/eEQHP5gA&lt;/a&gt; and &lt;a href=&quot;https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM&quot;&gt;https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;In short, If a VM is started in Azure, the first login of a user takes much longer than the login of the following users to this VM. And: It makes no difference if the first user logs in one or 30 minutes after starting the VM. I did a lot of tests by running &lt;em&gt;ProcMon, FileActivityWatch, and RegistryChangesView&lt;/em&gt; in the system context to capture events during the first login 🤓. I can clearly see dependencies to AppX packages on the VM. In my tests, processing of AppX packages for the first user took 120 seconds, and for the next user, only a few seconds. Right now, I cannot reproduce the first AppX processing without a user logging into the host (but I&amp;#39;m working on that). The first user will also see a black screen during the login.&lt;/p&gt;
-
-&lt;p&gt;Therefore, I did another test: Create a temporary local user on the VM directly after the start and make a login (autogenerated passwords and direct deletion of the users after the login).&lt;/p&gt;
-
-&lt;p&gt;The result is as expected: After the start of the VM, the warmup user triggers the AppX processing and other &amp;quot;initializations.&amp;quot; The next - regular - user experiences a much faster login while that is technically the second login for the VM.&lt;/p&gt;
-
-&lt;p&gt;I wrote a script to automate a local logon after each VM/host&amp;#39;s start. That may not be the best way to handle this solution, but it is a workaround until I find a more pragmatic solution without a warm-up user.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-UX-WarmUp-01.png&quot; alt=&quot;&quot;&gt;
-&lt;img src=&quot;../assets/images/AVD-UX-WarmUp-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;how-does-it-work&quot;&gt;How does it work?&lt;/h2&gt;
-
-&lt;p&gt;The script is started directly after the start of a VM/host and runs in the context of the computer. The following steps happen:
-- Temporarily, allow RDS logon without validation computer certificates (only for the system account)
-- Generate a local user (warm-up user) with a random password. The account automatically expires after 10 minutes
-- Add the user to the Remote Desktop User Group
-- Configure the sign-on via RDS to localhost
-- The warm-up user connects via RDS to localhost (the first user logon)
-- Wait 5 minutes
-- Logoff the user
-- Remove the user account
-- Remove the user profile from disk&lt;/p&gt;
-
-&lt;p&gt;There are some additional error-handling routines in the script. &lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Pro tip:&lt;/strong&gt; If you ever search for a way to get session information with PowerShell without parsing qwinsta.exe or quser.exe, check the script. It also contains a PowerShell method to log off a specific session.&lt;/p&gt;
-
-&lt;h2 id=&quot;install-the-warm-up-user-script&quot;&gt;Install the warm-up user script&lt;/h2&gt;
-
-&lt;p&gt;You can install the script on an existing host or on your Golden Master / Template VM (which you hopefully capture loss-less with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt; or &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;). Copy the script to the VM and run the following command in an administrative PowerShell:&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;.\WarmUp.ps1 -Mode Install&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;This copies the script to C:\windows\WarmUp.ps1 and creates a scheduled task to start the script automatically with the computer.&lt;/p&gt;
-
-&lt;h2 id=&quot;download-the-script&quot;&gt;Download the script&lt;/h2&gt;
-
-&lt;p&gt;The script is available &lt;a href=&quot;https://gist.github.com/MarcelMeurer/1044690ed2619c145305e8cc335948a5&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Tue, 10 Mar 2026 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
-    
-      <item>
-        <title>Shadow a WVD/AVD user with least privileges</title>
-        <description>&lt;p&gt;This post was updated to use modern PS commandlets instead of wmic&lt;/p&gt;
-
-&lt;p&gt;AVD allows local administrators to shadow user sessions. You can do this  easily with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; or using the command-line like this:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-cmd&quot; data-lang=&quot;cmd&quot;&gt;mstsc /v:WVD-DESIGN-404 /control /shadow:2 /prompt
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In most companies, a help desk agent supports users using applications. For that, local admin privileges are not necessary and not recommended. To allow help desk agents shadowing users in WVD, you have to give these users (or better: a user group) only the needed permission. To do this, execute the following command in an administrative cmd:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;(Get-CimInstance -Namespace &quot;root\CIMV2\TerminalServices&quot; -ClassName Win32_TSPermissionsSetting -Filter &quot;TerminalName like &apos;RDP-sxs%&apos;&quot;) | Invoke-CimMethod -MethodName AddAccount -Arguments @{AccountName=&quot;SPORTSKI\AVD-Remote-Shadowing&quot;; PermissionPreSet=2}
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Please also configure the local or group policy: Computer -&amp;gt; Administrative Templates -&amp;gt; Windows Components -&amp;gt; Remote Desktop Services -&amp;gt; Remote Desktop Session Hosts -&amp;gt; Connections -&amp;gt; Set riles for remote control ... to &amp;quot;2&amp;quot; (Allow control with user consent)&lt;/p&gt;
-
-&lt;p&gt;This gives the users of the group &lt;strong&gt;ITPROCLOUD\ADM_WVD-Shadowing&lt;/strong&gt; the needed permission directly on the RDP-SXS stack (you need to reboot the session host).&lt;/p&gt;
-
-&lt;p&gt;Run this configuration after the deployment and installation of the AVD agent and ensure to run it maybe again, if the RDP-SXS stack is updated.&lt;/p&gt;
-
-&lt;p&gt;Hint: You can reset this setting with:&lt;/p&gt;
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;(Get-CimInstance -Namespace &quot;root\CIMV2\TerminalServices&quot; -ClassName Win32_TSPermissionsSetting -Filter &quot;TerminalName like &apos;RDP-sxs%&apos;&quot;) | Invoke-CimMethod -MethodName RestoreDefaults
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Take a look how shadowing a user session with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; looks like: &lt;a href=&quot;https://twitter.com/i/status/1229472041423732736&quot;&gt;https://twitter.com/i/status/1229472041423732736&lt;/a&gt;&lt;/p&gt;
-</description>
-        <pubDate>Fri, 06 Mar 2026 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/Shadow-a-WVD-user-with-least-privileges/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/Shadow-a-WVD-user-with-least-privileges/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
-        
-      </item>
     
       <item>
         <title>WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</title>
@@ -549,7 +17,7 @@ If you are using older images, you should validate them now rather than later.&l
 
 &lt;p&gt;Are you interested in the new &amp;quot;Hydra for Azure Virtual Desktop&amp;quot; solution to manage AVD even better with a lot of automation? &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Check it out here.&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 03/04/2026&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 05/03/2026&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 
@@ -637,7 +105,7 @@ If you are using older images, you should validate them now rather than later.&l
 
 &lt;h2 id=&quot;release-history&quot;&gt;Release History&lt;/h2&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 03/04/2026&lt;/strong&gt;&lt;/a&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 05/03/2026&lt;/strong&gt;&lt;/a&gt;
 &lt;a href=&quot;https://youtu.be/fH1_FzNyJf0&quot;&gt;Check out the Youtube video to install and configure WVDAdmin in four steps&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;details&gt;&lt;summary&gt;I&amp;#39;m continuously updating WVDAdmin to make it easier to administrate and deploy WVD, users, and session hosts. Click to see the change history.&lt;/summary&gt;&lt;/p&gt;
@@ -650,12 +118,12 @@ If you are using older images, you should validate them now rather than later.&l
 &lt;/tr&gt;
 &lt;/thead&gt;&lt;tbody&gt;
 &lt;tr&gt;
-&lt;td&gt;2.1.08.0&lt;/td&gt;
-&lt;td&gt;2026-02-06&lt;/td&gt;
-&lt;td&gt;Add: Added multiple v7 VM sizes&lt;/td&gt;
+&lt;td&gt;2.1.09.0&lt;/td&gt;
+&lt;td&gt;2026-05-04&lt;/td&gt;
+&lt;td&gt;Change: Remove the rollout script for sepago Monitor; Fix: Improvement of the rollout process&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
-&lt;td&gt;2.1.07.0&lt;/td&gt;
+&lt;td&gt;2.1.08.0&lt;/td&gt;
 &lt;td&gt;2026-02-06&lt;/td&gt;
 &lt;td&gt;Add: Added multiple v7 VM sizes&lt;/td&gt;
 &lt;/tr&gt;
@@ -1856,11 +1324,543 @@ Keep in mind to use availability sets for each rollout to use this feature.&lt;/
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 03/04/2026&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;../assets/files/WVDAdmin.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 05/03/2026&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
-        <pubDate>Wed, 04 Mar 2026 00:00:00 +0100</pubDate>
+        <pubDate>Sun, 03 May 2026 00:00:00 +0200</pubDate>
         <link>https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</link>
         <guid isPermaLink="true">https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Action Required for Early Azure Virtual Desktop Deployments - RC4 Azure Files for FSLogix will stop working</title>
+        <description>&lt;p&gt;Early adopters of &lt;strong&gt;Azure Virtual Desktop (AVD)&lt;/strong&gt; are facing an important security-related change that should not be ignored.&lt;/p&gt;
+
+&lt;p&gt;If you are using &lt;strong&gt;FSLogix profiles on Azure Files with Active Directory authentication&lt;/strong&gt;- especially from early AVD deployments- this likely applies to you.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;background-what-s-the-issue&quot;&gt;🔍 Background: What’s the issue?&lt;/h2&gt;
+
+&lt;p&gt;Using Azure Files with FSLogix with on-premises Active Directory required complex PowerShell scripts (yes, those painful ones 😉). Early setups relied on &lt;strong&gt;RC4 encryption&lt;/strong&gt; in a Kerberos context.&lt;/p&gt;
+
+&lt;p&gt;👉 The problem: RC4 is now considered &lt;strong&gt;outdated and insecure&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Microsoft is taking action and notifying customers:&lt;/p&gt;
+
+&lt;p&gt;❗ &lt;strong&gt;Starting July 2026, RC4 will be disabled by default in Windows&lt;/strong&gt;
+&lt;img src=&quot;../assets/images/ADFS1.png&quot; alt=&quot;Microsoft mail about deprecation&quot;&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;what-are-the-risks&quot;&gt;⚠️ What are the risks?&lt;/h2&gt;
+
+&lt;p&gt;If your environment still relies on RC4, you may experience:
+- ❌ Azure Files shares failing to mount&lt;br&gt;
+- ❌ AVD users unable to log in&lt;br&gt;
+- ❌ Authentication failures across your environment  &lt;/p&gt;
+
+&lt;p&gt;👉 Worst case: &lt;strong&gt;A complete outage of your AVD environment while users cannot login or only with temporary profiles&lt;/strong&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;who-is-affected&quot;&gt;👥 Who is affected?&lt;/h2&gt;
+
+&lt;p&gt;You should review your setup if:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;You use &lt;strong&gt;Azure Files with SMB + on-prem AD DS&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Your storage accounts were created during &lt;strong&gt;early AVD/WVD deployments&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;why-this-matters&quot;&gt;💡 Why this matters&lt;/h2&gt;
+
+&lt;p&gt;This change is not theoretical- it has a defined timeline.&lt;/p&gt;
+
+&lt;p&gt;👉 &lt;strong&gt;Recommended deadline:&lt;/strong&gt; June 2026&lt;/p&gt;
+
+&lt;p&gt;If no action is taken:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;After Windows updates → &lt;strong&gt;Users may not be able to log in&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;FSLogix profiles → &lt;strong&gt;May become inaccessible&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;remediation-steps&quot;&gt;🛠️ Remediation Steps&lt;/h2&gt;
+
+&lt;p&gt;Prerequisites:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;A domain-joined machine&lt;/li&gt;
+&lt;li&gt;Administrative privileges&lt;/li&gt;
+&lt;li&gt;PowerShell access&lt;/li&gt;
+&lt;li&gt;Required modules installed&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;1-install-rsat-tools-if-needed&quot;&gt;1. Install RSAT tools (if needed)&lt;/h3&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;n&quot;&gt;Add-WindowsCapability&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;–&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;online&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;–&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Rsat.ActiveDirectory.DS-LDS.Tools~~~~0.0.1.0&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;hr&gt;
+
+&lt;h3 id=&quot;2-identify-affected-objects&quot;&gt;2. Identify affected objects&lt;/h3&gt;
+
+&lt;p&gt;Run the following command with access to AD:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;n&quot;&gt;Get-ADObject&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-LDAPFilter&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;(&amp;amp;(servicePrincipalName=*.file.core.windows.net)(!(msDS-SupportedEncryptionTypes=*)))&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Properties&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;servicePrincipalName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;msDS-SupportedEncryptionTypes&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Select-Object&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ObjectClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;servicePrincipalName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;msDS-SupportedEncryptionTypes&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;👉 Result interpretation:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;✅ &lt;strong&gt;Empty result&lt;/strong&gt; → You’re good&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;⚠️ &lt;strong&gt;Entries found&lt;/strong&gt; → Action required&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;3-install-azfileshybrid-module&quot;&gt;3. Install AzFilesHybrid module&lt;/h3&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;n&quot;&gt;Install-Module&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Name&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;AzFilesHybrid&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;hr&gt;
+
+&lt;h3 id=&quot;4-connect-to-azure&quot;&gt;4. Connect to Azure&lt;/h3&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;n&quot;&gt;Connect-AzAccount&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;hr&gt;
+
+&lt;h3 id=&quot;5-update-encryption-to-aes256&quot;&gt;5. Update encryption to AES256&lt;/h3&gt;
+
+&lt;p&gt;Run for each affected storage account (use your resource group name and storage account name):&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;n&quot;&gt;Update-AzStorageAccountAuthForAES256&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-ResourceGroupName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;SharedServices&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-StorageAccountName&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;wvduserdata&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;👉 Adjust parameters to match your environment.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;6-verify-remediation&quot;&gt;6. Verify remediation&lt;/h3&gt;
+
+&lt;p&gt;Run the query again:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;n&quot;&gt;Get-ADObject&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-LDAPFilter&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;(&amp;amp;(servicePrincipalName=*.file.core.windows.net)(!(msDS-SupportedEncryptionTypes=*)))&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Properties&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;servicePrincipalName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;msDS-SupportedEncryptionTypes&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Select-Object&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;ObjectClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;servicePrincipalName&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;msDS-SupportedEncryptionTypes&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;👉 Goal:&lt;br&gt;
+&lt;strong&gt;No results = successfully remediated ✅&lt;/strong&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;further-reading&quot;&gt;🔗 Further Reading&lt;/h2&gt;
+
+&lt;p&gt;Microsoft documentation:&lt;br&gt;
+&lt;a href=&quot;https://learn.microsoft.com/en-us/troubleshoot/azure/azure-storage/files/security/files-troubleshoot-smb-authentication?tabs=azure-portal#azure-files-on-premises-ad-ds-authentication-support-for-aes-256-kerberos-encryption&quot;&gt;https://learn.microsoft.com/en-us/troubleshoot/azure/azure-storage/files/security/files-troubleshoot-smb-authentication?tabs=azure-portal#azure-files-on-premises-ad-ds-authentication-support-for-aes-256-kerberos-encryption&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;🚀 Conclusion&lt;/h2&gt;
+
+&lt;p&gt;This is not a “nice to have” fix-it is &lt;strong&gt;critical for the future stability and security of your AVD environment&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;👉 Taking action early means:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Avoiding outages&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Staying compliant&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Reducing last-minute pressure before the deadline&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/ADFS2.png&quot; alt=&quot;Process of validating and fixing the issue&quot;&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 10 Apr 2026 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Action-Requiered-For-Early-AVD-Azure-Virtual-Desktop-RC4-FSLogix-Deprecation/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Action-Requiered-For-Early-AVD-Azure-Virtual-Desktop-RC4-FSLogix-Deprecation/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Azure Boost VMs (v6/v7): Workaround for Missing NVMe Temp Disk and Pagefile Placement - Azure Virtual Desktop</title>
+        <description>&lt;p&gt;While working with newer Azure VM generations, specifically &lt;strong&gt;v6 and v7 Azure Boost VMs&lt;/strong&gt;, I ran into an interesting challenge related to local NVMe storage.&lt;/p&gt;
+
+&lt;p&gt;Some of these VM types provide a &lt;strong&gt;fast, local disk on the hypervisor&lt;/strong&gt;, which is ideal for performance-sensitive workloads such as pagefile placement. However, there is a catch.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;the-problem&quot;&gt;The Problem&lt;/h3&gt;
+
+&lt;p&gt;After &lt;strong&gt;deallocating and starting&lt;/strong&gt; a VM, the secondary local NVMe disk is not automatically available inside the operating system.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Why does this happen?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The internal disk identifier changes after each &lt;strong&gt;deallocate/allocate cycle&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Windows does not recognize the disk as the previously configured volume&lt;/li&gt;
+&lt;li&gt;As a result, the disk is not mounted (e.g., no &lt;code&gt;D:&lt;/code&gt; drive)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Boost-NVME-02.png&quot; alt=&quot;CMD Windows showing a randum ID of the 2nd disk&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;👉 Important distinction:&lt;br/&gt;
+- A &lt;strong&gt;normal in-guest reboot&lt;/strong&gt; → disk remains available&lt;br/&gt;
+- A &lt;strong&gt;deallocate/start cycle&lt;/strong&gt; → disk mapping is lost&lt;br/&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;impact&quot;&gt;Impact&lt;/h3&gt;
+
+&lt;p&gt;This behavior leads to a practical issue:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The &lt;strong&gt;pagefile is no longer located on the fast NVMe disk&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Instead, it falls back to the OS disk (slower)&lt;/li&gt;
+&lt;li&gt;This can negatively impact performance, especially in &lt;strong&gt;Azure Virtual Desktop (AVD)&lt;/strong&gt; environments&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;the-workaround&quot;&gt;The Workaround&lt;/h3&gt;
+
+&lt;p&gt;To address this, I built a &lt;strong&gt;PowerShell-based workaround&lt;/strong&gt; that automatically restores the expected configuration.&lt;/p&gt;
+
+&lt;h4 id=&quot;what-the-script-does&quot;&gt;What the script does:&lt;/h4&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Checks if the expected drive (D:) exists&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;If not:
+
+&lt;ul&gt;
+&lt;li&gt;Detects the available NVMe disk&lt;/li&gt;
+&lt;li&gt;Initializes and formats it&lt;/li&gt;
+&lt;li&gt;Assigns the correct drive letter&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Configures the &lt;strong&gt;pagefile&lt;/strong&gt; to use this disk&lt;/li&gt;
+&lt;li&gt;Triggers a &lt;strong&gt;Windows restart&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;handling-user-logins-avd-consideration&quot;&gt;Handling User Logins (AVD Consideration)&lt;/h3&gt;
+
+&lt;p&gt;One key challenge was avoiding user logins during this reconfiguration phase.&lt;/p&gt;
+
+&lt;p&gt;To handle this, the script:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Temporarily &lt;strong&gt;disables selected services&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Prevents users from logging in (e.g., AVD sessions)&lt;/li&gt;
+&lt;li&gt;Re-enables the services &lt;strong&gt;after reboot and configuration&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This ensures a consistent and safe state during the process.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;trade-offs&quot;&gt;Trade-Offs&lt;/h3&gt;
+
+&lt;p&gt;This solution works reliably, but it comes with a downside:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;⚠️ &lt;strong&gt;Longer startup time&lt;/strong&gt; after VM allocation&lt;/li&gt;
+&lt;li&gt;⚠️ Don&amp;#39;t install it on a template VM and don&amp;#39;t capture an image from perepared VMs (imaging will fail)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The additional steps (disk detection, formatting, pagefile setup, restart) add noticeable delay to the boot process.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;important-limitation&quot;&gt;Important Limitation&lt;/h3&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Do not use these VMs as Golden Images after applying this workaround.&lt;/strong&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Due to the internal reboot behavior and disk handling, this can lead to &lt;strong&gt;broken images&lt;/strong&gt;. I am currently investigating improvements here.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;integration-with-hydra&quot;&gt;Integration with Hydra&lt;/h3&gt;
+
+&lt;p&gt;The workaround can be integrated into automated deployment workflows using Hydra.&lt;/p&gt;
+
+&lt;h4 id=&quot;step-1-create-the-script&quot;&gt;Step 1: Create the Script&lt;/h4&gt;
+
+&lt;p&gt;Use the following script:
+&lt;a href=&quot;https://gist.github.com/MarcelMeurer/fc4b8d14ae0a469c83cdc0511fc07607&quot;&gt;https://gist.github.com/MarcelMeurer/fc4b8d14ae0a469c83cdc0511fc07607&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h4 id=&quot;step-2-create-a-script-collection&quot;&gt;Step 2: Create a Script Collection&lt;/h4&gt;
+
+&lt;p&gt;Create a collection with two steps:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Run Script&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Restart Host&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Use the following parameters:
+&lt;code&gt;-Mode installandrun -DoNotRestart $true&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Boost-NVME-03.png&quot; alt=&quot;Create a script in Hydra&quot;&gt;
+&lt;img src=&quot;../assets/images/Boost-NVME-03.png&quot; alt=&quot;Configure the script collection in Hydra&quot;&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h4 id=&quot;step-3-execute&quot;&gt;Step 3: Execute&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Run the &lt;strong&gt;script collection (not the script directly)&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Integrate it into your &lt;strong&gt;rollout configuration&lt;/strong&gt;, or&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Execute it &lt;strong&gt;on demand for testing&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;testing-and-recommendations&quot;&gt;Testing and Recommendations&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Always test in a &lt;strong&gt;non-production environment first&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Validate:
+
+&lt;ul&gt;
+&lt;li&gt;Disk mapping (&lt;code&gt;D:&lt;/code&gt; drive exists)&lt;/li&gt;
+&lt;li&gt;Pagefile placement&lt;/li&gt;
+&lt;li&gt;Login behavior after restart&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;final-thoughts&quot;&gt;Final Thoughts&lt;/h3&gt;
+
+&lt;p&gt;This is clearly a &lt;strong&gt;workaround, not a final solution&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Ideally, Microsoft will address this behavior directly in Azure for Boost VMs with local NVMe disks. Until then, this approach ensures that:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The &lt;strong&gt;pagefile is placed on the fast local disk&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Performance characteristics remain consistent&lt;/li&gt;
+&lt;li&gt;The environment behaves predictably after redeployment&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr&gt;
+
+&lt;p&gt;If you want to try it out, feel free to use and adapt the script—but keep the limitations in mind.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 01 Apr 2026 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Azure-Boost-VMs-v6-v7-Workaround-for-Missing-NVMe-Temp-Disk-and-Pagefile-Placement/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Boost-VMs-v6-v7-Workaround-for-Missing-NVMe-Temp-Disk-and-Pagefile-Placement/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Azure Virtual Desktop - Prepare for Secure Boot Certificate Changes by June 2026</title>
+        <description>&lt;p&gt;Microsoft has started notifying customers using Azure Virtual Desktop about an important upcoming change:&lt;br&gt;
+&lt;strong&gt;Secure Boot 2011 certificates will begin to expire in June 2026.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;While that might sound far away, environments using older images may already require attention today.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;what-s-changing&quot;&gt;What’s Changing?&lt;/h3&gt;
+
+&lt;p&gt;Secure Boot plays a critical role in protecting the early boot process from tampering and low-level threats. As part of ongoing security improvements, Microsoft is transitioning from the &lt;strong&gt;2011 certificates&lt;/strong&gt; to the newer &lt;strong&gt;Secure Boot 2023 certificates&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Once the old certificates expire, systems that haven’t been updated may:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Lose protection against newer boot-level threats&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Encounter boot or validation issues (depending on configuration)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt;&lt;br&gt;
+Only systems with &lt;strong&gt;Secure Boot enabled&lt;/strong&gt; are affected. Environments without Secure Boot or without Trusted Launch VMs do not require action.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;who-should-care&quot;&gt;Who Should Care?&lt;/h3&gt;
+
+&lt;p&gt;This is especially relevant if your organization:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Uses Azure Virtual Desktop&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Maintains &lt;strong&gt;custom images or golden images&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Runs &lt;strong&gt;long-lived VM templates&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In many cases, these images were created years ago and still contain outdated Secure Boot certificates.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;microsoft-s-recommendation&quot;&gt;Microsoft’s Recommendation&lt;/h3&gt;
+
+&lt;p&gt;Microsoft advises customers to:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Identify affected deployments&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Update images and session hosts&lt;/strong&gt;&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Transition to Secure Boot 2023 certificates before June 2026&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Key takeaway:&lt;/strong&gt;&lt;br&gt;
+If you are using older images, you should validate them now rather than later.&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;simplifying-the-process-with-automation&quot;&gt;Simplifying the Process with Automation&lt;/h3&gt;
+
+&lt;p&gt;To streamline this process, I created a small PowerShell script that helps:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;✔️ Check whether an update is required&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;✔️ Apply the update if needed&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Execution requirements:&lt;/strong&gt;
+- Run in an &lt;strong&gt;elevated (Administrator) PowerShell session&lt;/strong&gt;&lt;br&gt;
+- &lt;strong&gt;Reboot&lt;/strong&gt; the system after applying changes  &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;You can find the script here:&lt;br&gt;
+&lt;a href=&quot;https://gist.github.com/MarcelMeurer/01db5590b2af52cc630c7bd29befaf63&quot;&gt;https://gist.github.com/MarcelMeurer/01db5590b2af52cc630c7bd29befaf63&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr&gt;
+
+&lt;h3 id=&quot;pro-tip-integrate-it-in-hydra&quot;&gt;Pro Tip: Integrate it in Hydra&lt;/h3&gt;
+
+&lt;p&gt;Instead of treating this as a one-time fix, consider embedding the check/update into your image lifecycle.&lt;/p&gt;
+
+&lt;p&gt;For example, you can use it as a &lt;strong&gt;pre-configuration script&lt;/strong&gt; when building images with Hydra (Optional.: Run a Script or Collection on the Master first).&lt;/p&gt;
+
+&lt;p&gt;This ensures that:
+- New images are always compliant&lt;br&gt;
+- Manual validation steps are reduced&lt;br&gt;
+- Future certificate rotations become easier to handle  &lt;/p&gt;
+
+&lt;h3 id=&quot;final-thoughts&quot;&gt;Final Thoughts&lt;/h3&gt;
+
+&lt;p&gt;June 2026 may seem distant, but certificate-related changes tend to surface at the worst possible time—during deployments or recovery scenarios.&lt;/p&gt;
+
+&lt;p&gt;Taking a proactive approach now will:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Reduce operational risk&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Avoid last-minute remediation efforts&lt;br&gt;&lt;/li&gt;
+&lt;li&gt;Keep your Azure Virtual Desktop environment secure and compliant&lt;br&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Action:&lt;/strong&gt; check your images early, automate where possible, and stay ahead of the deadline.&lt;/p&gt;
+</description>
+        <pubDate>Tue, 31 Mar 2026 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/Azure-Virtual-Desktop-Prepare-for-Secure-Boot-Certificate-Changes-by-June-2026/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Azure-Virtual-Desktop-Prepare-for-Secure-Boot-Certificate-Changes-by-June-2026/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Improve AVD User Experience: Warm-Up to decreas User login time</title>
+        <description>&lt;p&gt;&lt;em&gt;Note:&lt;/em&gt; This post and the scripts was updated to run after some changes coming with a Windows Update in February 2026&lt;/p&gt;
+
+&lt;p&gt;If you are running Azure Virtual Desktop with FSLogix, the first login to a host takes longer than the following logins. I also wrote about this effect (I call is Cold vs. Warm start) a few weeks ago here: &lt;a href=&quot;https://lnkd.in/eEQHP5gA&quot;&gt;https://lnkd.in/eEQHP5gA&lt;/a&gt; and &lt;a href=&quot;https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM&quot;&gt;https://www.linkedin.com/posts/marcelmeurer_azurevirtualdesktop-coldstart-warmstart-activity-7227298731124019200--nsM&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;In short, If a VM is started in Azure, the first login of a user takes much longer than the login of the following users to this VM. And: It makes no difference if the first user logs in one or 30 minutes after starting the VM. I did a lot of tests by running &lt;em&gt;ProcMon, FileActivityWatch, and RegistryChangesView&lt;/em&gt; in the system context to capture events during the first login 🤓. I can clearly see dependencies to AppX packages on the VM. In my tests, processing of AppX packages for the first user took 120 seconds, and for the next user, only a few seconds. Right now, I cannot reproduce the first AppX processing without a user logging into the host (but I&amp;#39;m working on that). The first user will also see a black screen during the login.&lt;/p&gt;
+
+&lt;p&gt;Therefore, I did another test: Create a temporary local user on the VM directly after the start and make a login (autogenerated passwords and direct deletion of the users after the login).&lt;/p&gt;
+
+&lt;p&gt;The result is as expected: After the start of the VM, the warmup user triggers the AppX processing and other &amp;quot;initializations.&amp;quot; The next - regular - user experiences a much faster login while that is technically the second login for the VM.&lt;/p&gt;
+
+&lt;p&gt;I wrote a script to automate a local logon after each VM/host&amp;#39;s start. That may not be the best way to handle this solution, but it is a workaround until I find a more pragmatic solution without a warm-up user.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/AVD-UX-WarmUp-01.png&quot; alt=&quot;&quot;&gt;
+&lt;img src=&quot;../assets/images/AVD-UX-WarmUp-02.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;how-does-it-work&quot;&gt;How does it work?&lt;/h2&gt;
+
+&lt;p&gt;The script is started directly after the start of a VM/host and runs in the context of the computer. The following steps happen:
+- Temporarily, allow RDS logon without validation computer certificates (only for the system account)
+- Generate a local user (warm-up user) with a random password. The account automatically expires after 10 minutes
+- Add the user to the Remote Desktop User Group
+- Configure the sign-on via RDS to localhost
+- The warm-up user connects via RDS to localhost (the first user logon)
+- Wait 5 minutes
+- Logoff the user
+- Remove the user account
+- Remove the user profile from disk&lt;/p&gt;
+
+&lt;p&gt;There are some additional error-handling routines in the script. &lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Pro tip:&lt;/strong&gt; If you ever search for a way to get session information with PowerShell without parsing qwinsta.exe or quser.exe, check the script. It also contains a PowerShell method to log off a specific session.&lt;/p&gt;
+
+&lt;h2 id=&quot;install-the-warm-up-user-script&quot;&gt;Install the warm-up user script&lt;/h2&gt;
+
+&lt;p&gt;You can install the script on an existing host or on your Golden Master / Template VM (which you hopefully capture loss-less with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin&quot;&gt;WVDAdmin&lt;/a&gt; or &lt;a href=&quot;https://github.com/MarcelMeurer/WVD-Hydra&quot;&gt;Hydra for Azure Virtual Desktop&lt;/a&gt;). Copy the script to the VM and run the following command in an administrative PowerShell:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;.\WarmUp.ps1 -Mode Install&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;This copies the script to C:\windows\WarmUp.ps1 and creates a scheduled task to start the script automatically with the computer.&lt;/p&gt;
+
+&lt;h2 id=&quot;download-the-script&quot;&gt;Download the script&lt;/h2&gt;
+
+&lt;p&gt;The script is available &lt;a href=&quot;https://gist.github.com/MarcelMeurer/1044690ed2619c145305e8cc335948a5&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Tue, 10 Mar 2026 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/AVD-User-Experience-WarmUp-Script-To-Improve-User-Login-Logon-Time/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
+    
+      <item>
+        <title>Shadow a WVD/AVD user with least privileges</title>
+        <description>&lt;p&gt;This post was updated to use modern PS commandlets instead of wmic&lt;/p&gt;
+
+&lt;p&gt;AVD allows local administrators to shadow user sessions. You can do this  easily with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; or using the command-line like this:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-cmd&quot; data-lang=&quot;cmd&quot;&gt;mstsc /v:WVD-DESIGN-404 /control /shadow:2 /prompt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In most companies, a help desk agent supports users using applications. For that, local admin privileges are not necessary and not recommended. To allow help desk agents shadowing users in WVD, you have to give these users (or better: a user group) only the needed permission. To do this, execute the following command in an administrative cmd:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;(Get-CimInstance -Namespace &quot;root\CIMV2\TerminalServices&quot; -ClassName Win32_TSPermissionsSetting -Filter &quot;TerminalName like &apos;RDP-sxs%&apos;&quot;) | Invoke-CimMethod -MethodName AddAccount -Arguments @{AccountName=&quot;SPORTSKI\AVD-Remote-Shadowing&quot;; PermissionPreSet=2}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Please also configure the local or group policy: Computer -&amp;gt; Administrative Templates -&amp;gt; Windows Components -&amp;gt; Remote Desktop Services -&amp;gt; Remote Desktop Session Hosts -&amp;gt; Connections -&amp;gt; Set riles for remote control ... to &amp;quot;2&amp;quot; (Allow control with user consent)&lt;/p&gt;
+
+&lt;p&gt;This gives the users of the group &lt;strong&gt;ITPROCLOUD\ADM_WVD-Shadowing&lt;/strong&gt; the needed permission directly on the RDP-SXS stack (you need to reboot the session host).&lt;/p&gt;
+
+&lt;p&gt;Run this configuration after the deployment and installation of the AVD agent and ensure to run it maybe again, if the RDP-SXS stack is updated.&lt;/p&gt;
+
+&lt;p&gt;Hint: You can reset this setting with:&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-&quot; data-lang=&quot;&quot;&gt;(Get-CimInstance -Namespace &quot;root\CIMV2\TerminalServices&quot; -ClassName Win32_TSPermissionsSetting -Filter &quot;TerminalName like &apos;RDP-sxs%&apos;&quot;) | Invoke-CimMethod -MethodName RestoreDefaults
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Take a look how shadowing a user session with &lt;a href=&quot;https://blog.itprocloud.de/Windows-Virtual-Desktop-Admin/&quot;&gt;WVDAdmin&lt;/a&gt; looks like: &lt;a href=&quot;https://twitter.com/i/status/1229472041423732736&quot;&gt;https://twitter.com/i/status/1229472041423732736&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Fri, 06 Mar 2026 00:00:00 +0100</pubDate>
+        <link>https://blog.itprocloud.de/Shadow-a-WVD-user-with-least-privileges/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/Shadow-a-WVD-user-with-least-privileges/</guid>
         
         
         <category>Windows Virtual Desktop</category>
