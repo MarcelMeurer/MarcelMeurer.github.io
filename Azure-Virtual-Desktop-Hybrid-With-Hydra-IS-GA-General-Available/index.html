@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<link rel="icon" href="/assets/images/logos/icon.png">
+
+<title>Azure Virtual Destkop Hybrid mit Hydra is General Available | ITProCloud Blog</title>
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Azure Virtual Destkop Hybrid mit Hydra is General Available | ITProCloud Blog</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Azure Virtual Destkop Hybrid mit Hydra is General Available" />
+<meta name="author" content="mm" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Azure Virtual Desktop Hybrid Is Here: Bringing AVD to Your Datacenter" />
+<meta property="og:description" content="Azure Virtual Desktop Hybrid Is Here: Bringing AVD to Your Datacenter" />
+<link rel="canonical" href="https://blog.itprocloud.de/Azure-Virtual-Desktop-Hybrid-With-Hydra-IS-GA-General-Available/" />
+<meta property="og:url" content="https://blog.itprocloud.de/Azure-Virtual-Desktop-Hybrid-With-Hydra-IS-GA-General-Available/" />
+<meta property="og:site_name" content="ITProCloud Blog" />
+<meta property="og:image" content="https://blog.itprocloud.de/assets%5Cimages%5CHydraProxy-01.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-09-02T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://blog.itprocloud.de/assets%5Cimages%5CHydraProxy-01.png" />
+<meta property="twitter:title" content="Azure Virtual Destkop Hybrid mit Hydra is General Available" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"mm"},"dateModified":"2026-09-02T00:00:00+02:00","datePublished":"2026-09-02T00:00:00+02:00","description":"Azure Virtual Desktop Hybrid Is Here: Bringing AVD to Your Datacenter","headline":"Azure Virtual Destkop Hybrid mit Hydra is General Available","image":"https://blog.itprocloud.de/assets%5Cimages%5CHydraProxy-01.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://blog.itprocloud.de/Azure-Virtual-Desktop-Hybrid-With-Hydra-IS-GA-General-Available/"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://blog.itprocloud.de/assets/images/logos/itpc-logo-bottom-text.png"},"name":"mm"},"url":"https://blog.itprocloud.de/Azure-Virtual-Desktop-Hybrid-With-Hydra-IS-GA-General-Available/"}</script>
+<!-- End Jekyll SEO tag -->
+
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+<!--- cookie banner --->
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />
+
+<link href="/assets/css/screen.css" rel="stylesheet">
+
+<link href="/assets/css/main.css" rel="stylesheet">
+
+<script src="/assets/js/jquery.min.js"></script>
+
+</head>
+
+
+
+
+<body class="layout-post">
+	<!-- defer loading of font and font awesome -->
+	<!-- <noscript id="deferred-styles"> -->
+		<link rel="stylesheet" href="/assets/fa/css/all.css" crossorigin="anonymous"> 
+	<!-- </noscript> -->
+
+
+<!-- Begin Menu Navigation
+================================================== -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top mediumnavigation nav-down">
+
+    <div class="container pr-0">
+
+    <!-- Begin Logo -->
+    <a class="navbar-brand" href="/">
+    <img src="/assets/images/logos/itpc-logo-bottom-text.png" alt="ITProCloud Blog">
+    </a>
+    <!-- End Logo -->
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarMediumish" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarMediumish">
+
+        <!-- Begin Menu -->
+
+            <ul class="navbar-nav ml-auto">
+
+                
+                <li class="nav-item">
+                
+                <a class="nav-link" href="/index.html">Home</a>
+                </li>
+
+                <li class="nav-item">
+                <a class="nav-link" href="/tools"><b>Tools</b></a>
+                </li>
+				
+                <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+                </li>
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="#allTags">Show all tags</a>
+                </li>
+				
+				<!-- Sorted tag list from https://stackoverflow.com/questions/47135736/jekyll-sort-collections-by-size -->
+				<!-- Create a comma-separated string of all the sizes of the collections -->
+				
+				<!-- Remove last comma of string -->
+				
+				
+				<!-- Split string into array, sort DESC, and remove duplicate elements -->
+				
+				<!-- Iterate through sizes, and for each size print those collections that have this size -->
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (74)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (73)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-Monitor">Azure Monitor (12)</a>
+						</li>
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+					
+					
+				  
+				
+	
+				<!-- Original tag list (unsorted) 
+				
+				
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#Azure-VM">Azure VM (2)</a>
+						</li>
+						
+					
+						<li class="nav-item">
+						<a class="nav-link" href="/categories#PowerShell">PowerShell (9)</a>
+						</li>
+						
+					
+				
+				-->
+								
+
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://twitter.com/MarcelMeurer"><i class="fab fa-twitter"></i>
+				 <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">Link to X</span>
+				</a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://www.linkedin.com/in/marcel-meurer-15b46b98"><i class="fab fa-linkedin"></i>
+								 <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">Link to LinkedIn</span>
+				</a>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="https://github.com/MarcelMeurer"><i class="fab fa-github"></i>
+								 <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">Link GitHub</span>
+				</a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <a target="_blank" class="nav-link" href="mailto:marcel.meurer@itprocloud.com?subject=Request%20from%20ITProCloud.de"><i class="far fa-envelope"></i>
+								 <span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;">Write me a mail</span>
+				</a>
+                </li>
+
+
+                <script src="/assets/js/lunr.js"></script>
+
+
+<style>
+    .lunrsearchresult .title {color: #d9230f;}
+    .lunrsearchresult .url {color: silver;}
+    .lunrsearchresult a {display: block; color: #777;}
+    .lunrsearchresult a:hover, .lunrsearchresult a:focus {text-decoration: none;}
+    .lunrsearchresult a:hover .title {text-decoration: underline;}
+</style>
+
+
+<form class="bd-search" onSubmit="return lunr_search(document.getElementById('lunrsearch').value);">
+<label for="lunrsearch" style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); border:0;">
+  Search field
+</label>
+    <input type="text" class="form-control text-small launch-modal-search" id="lunrsearch" name="q" maxlength="255" value="" placeholder="Type and enter..."/>
+</form>
+
+<div id="lunrsearchresults">
+    <ul></ul>
+</div>
+
+<script src="/assets/js/lunrsearchengine.js"></script>
+
+            </ul>
+
+        <!-- End Menu -->
+
+    </div>
+
+    </div>
+</nav>
+<!-- End Navigation
+================================================== -->
+
+<div class="site-content">
+
+<div class="container">
+
+<!-- Site Title
+================================================== -->
+<div class="mainheading">
+    <h1 class="sitetitle">ITProCloud Blog</h1>
+    <p class="lead">
+        Welcome to my blog. I'm writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.
+    </p>
+</div>
+
+<!-- Content
+================================================== -->
+<div class="main-content">
+    <!-- Begin Article
+================================================== -->
+<div class="container">
+    <div class="row">
+
+        <!-- Post Share -->
+        <div class="col-md-2 pl-0">
+            <div class="share sticky-top sticky-top-offset">
+    <p>
+        Share
+    </p>
+    <ul>
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://twitter.com/intent/tweet?text=Azure Virtual Destkop Hybrid mit Hydra is General Available&url=https://blog.itprocloud.de/Azure-Virtual-Desktop-Hybrid-With-Hydra-IS-GA-General-Available/" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                <i class="fab fa-twitter"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://facebook.com/sharer.php?u=https://blog.itprocloud.de/Azure-Virtual-Desktop-Hybrid-With-Hydra-IS-GA-General-Available/" onclick="window.open(this.href, 'facebook-share', 'width=550,height=435');return false;">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+        </li>
+
+        <li class="ml-1 mr-1">
+            <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url=https://blog.itprocloud.de/Azure-Virtual-Desktop-Hybrid-With-Hydra-IS-GA-General-Available/&title=Azure Virtual Destkop Hybrid mit Hydra is General Available" onclick="window.open(this.href, 'width=550,height=435');return false;">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </li>
+    </ul>
+    
+    <div class="sep">
+    </div>
+    <ul>
+        <li>
+        <a class="small smoothscroll" href="#disqus_thread"></a>
+        </li>
+    </ul>
+    
+</div>
+
+        </div>
+
+        <!-- Post -->
+        
+
+        <div class="col-md-9 flex-first flex-md-unordered">
+            <div class="mainheading">
+
+                <!-- Author Box -->
+                
+                <div class="row post-top-meta">
+                    <div class="col-xs-12 col-md-3 col-lg-2 text-center text-md-left mb-4 mb-md-0">
+                        
+                        <img class="author-thumb" src="/assets/images/avatar-mm.png" alt="Marcel">
+                        
+                    </div>
+                    <div class="col-xs-12 col-md-9 col-lg-10 text-center text-md-left">
+                        <a target="_blank" class="link-dark" href="https://blog.itprocloud.de">Marcel</a><a target="_blank" href="https://twitter.com/MarcelMeurer" class="btn follow">Follow</a>
+                        <span class="author-description">That's me: Marcel</span>
+                    </div>
+                </div>
+                
+
+                <!-- Post Title -->
+                <h1 class="posttitle">Azure Virtual Destkop Hybrid mit Hydra is General Available</h1>
+
+            </div>
+
+            <!-- Adsense if enabled from _config.yml (change your pub id and slot) -->
+            
+            <!-- End Adsense -->
+
+            <!-- Post Featured Image -->
+            
+
+            
+            <img class="featured-image img-fluid" src="/assets\images\HydraProxy-01.png" alt="Azure Virtual Destkop Hybrid mit Hydra is General Available">
+            
+
+            
+            <!-- End Featured Image -->
+
+            <!-- Post Content -->
+            <div class="article-post">
+                <!-- Toc if any -->
+                
+                <!-- End Toc -->
+                <h1 id="azure-virtual-desktop-hybrid-is-here-bringing-avd-to-your-datacenter">Azure Virtual Desktop Hybrid Is Here: Bringing AVD to Your Datacenter</h1>
+
+<p>Azure Virtual Desktop (AVD) is central to Microsoft’s End User Computing (EUC) strategy. Until now, however, organizations evaluating AVD faced a fundamental architectural constraint: <strong>What if desktop workloads cannot, or should not, run directly in Azure regions?</strong></p>
+
+<p>With the General Availability (GA) of Azure Virtual Desktop Hybrid, that constraint disappears. </p>
+
+<p>AVD Hybrid extends the AVD control plane beyond native Azure infrastructure, enabling session hosts to run on nearly any infrastructure within your own datacenter. For EUC architects, this means leveraging Azure’s cloud-managed control plane, broker, and user experience while keeping compute and data local. </p>
+
+<p>AVD no longer mandates moving your desktop workloads to an Azure data center.</p>
+
+<hr>
+
+<h2 id="the-architecture-control-plane-in-azure-workloads-on-premises">The Architecture: Control Plane in Azure, Workloads on-Premises</h2>
+
+<p>The core architectural principle of AVD Hybrid is straightforward: <strong>decouple management from compute.</strong></p>
+
+<ul>
+<li><p><strong>Microsoft Responsibility (Azure Cloud):</strong>
+Microsoft manages the centralized <strong>Azure Virtual Desktop Control Plane</strong> hosted in Azure public regions. This layer handles:</p>
+
+<ul>
+<li><strong>Connection Brokering &amp; User Access:</strong> Managing user authentication, workspace presentation, and session routing via the Windows App / Remote Desktop client.</li>
+<li><strong>Load Balancing:</strong> Distributing incoming user connections across available session hosts according to pool policies.</li>
+<li><strong>Azure Arc Connection Management:</strong> Maintaining secure, outbound-only control-plane orchestration with your local infrastructure.</li>
+</ul></li>
+<li><p><strong>Customer Responsibility (On-Premises Datacenter):</strong>
+The customer maintains full operational ownership of the physical and virtual resources running in their datacenter. This layer encompasses:</p>
+
+<ul>
+<li><strong>Virtual Machines &amp; Compute:</strong> Provisioning, sizing, and maintaining the session host VMs on supported local hypervisors (e.g., Hyper-V, VMware, etc.).</li>
+<li><strong>Lifecycle Management:</strong> Host deployment, patching, image maintenance, drain modes, and decommission processes.</li>
+<li><strong>Infrastructure &amp; Network:</strong> Operating the underlying host hardware, storage, active directory/identity integrations, and local network connectivity to backend systems.</li>
+</ul></li>
+</ul>
+
+<p><em>(Operational management of these customer-managed tasks can be further streamlined using dedicated automation tools like Hydra, discussed later in this post.)</em></p>
+
+<p>This separation allows enterprise teams to modernize their EUC management model and leverage cloud-native control without undergoing a forced, full-scale datacenter workload migration.</p>
+
+<hr>
+
+<h2 id="why-avd-hybrid-matters-for-euc-architects">Why AVD Hybrid Matters for EUC Architects</h2>
+
+<p>Running desktops in Azure while accessing legacy on-premises backend data introduces latency, extra dependencies, and egress costs. AVD Hybrid places the compute layer next to your data.</p>
+
+<ul>
+<li><strong>Low-Latency App Access</strong> - Near-zero latency to local DBs and backend services</li>
+<li><strong>Regulatory Compliance</strong> - Guarantees data residency &amp; strict on-prem isolation</li>
+<li><strong>Infrastructure Continuity</strong> - Maximizes existing virtualization investments (Hyper-V, VMware, etc.)</li>
+<li><strong>Incremental Migration</strong> - Avoids risky, all-or-nothing cloud shifts</li>
+</ul>
+
+<h3 id="but-why-not-just-use-azure-local">But Why Not Just Use Azure Local?</h3>
+
+<p>That is a valid question. If your strategy and hardware alignment allow for it, <strong>Azure Local</strong> is a strong target architecture. However, if your goal is to leverage existing hardware and hypervisor investments (since Azure Local mandates specific certified hardware) <strong>AVD Hybrid</strong> becomes the far more practical choice. This also applies when organizations simply lack the timeline or bandwidth to execute a full Azure Local infrastructure project before modernizing their desktop layer.</p>
+
+<p>This naturally leads to a broader question: <strong>Is AVD Hybrid just a transition technology?</strong></p>
+
+<p>I would argue that this is a fair assumption, but that doesn&#39;t make it the wrong choice. In fact, I distinctly recall discussing EUC itself as a &quot;transition technology&quot; back in the 2000s, yet here we are two decades later. Transition technologies often provide the bridge that enables real-world modernization at a manageable pace 😊.</p>
+
+<h2 id="avd-deployment-matrix-comparing-options">AVD Deployment Matrix: Comparing Options</h2>
+
+<p>Selecting the right target host platform depends heavily on your existing operational dependencies and workload profiles:</p>
+
+<table><thead>
+<tr>
+<th style="text-align: left">Dimension</th>
+<th style="text-align: left">AVD in Azure</th>
+<th style="text-align: left">AVD on Azure Local</th>
+<th style="text-align: left">AVD Hybrid</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: left"><strong>Control Plane</strong></td>
+<td style="text-align: left">Azure Managed</td>
+<td style="text-align: left">Azure Managed</td>
+<td style="text-align: left">Azure Managed</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Compute Location</strong></td>
+<td style="text-align: left">Azure Public Cloud</td>
+<td style="text-align: left">On-Premises Azure Local Clusters</td>
+<td style="text-align: left">Existing On-Premises infrastructure</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Prerequisite</strong></td>
+<td style="text-align: left">Azure Subscription</td>
+<td style="text-align: left">Azure Local Hardware</td>
+<td style="text-align: left">Azure Arc</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>OS Support</strong></td>
+<td style="text-align: left">Windows 10/11 Enterpise + Multi-Session, Windows Server</td>
+<td style="text-align: left">Windows 10/11 Enterpise + Multi-Session, Windows Server</td>
+<td style="text-align: left">Windows 10/11 Enterpise, Windows Server</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Best For</strong></td>
+<td style="text-align: left">Full cloud migration</td>
+<td style="text-align: left">Cloud migration</td>
+<td style="text-align: left">Leveraging existing hypervisors</td>
+</tr>
+</tbody></table>
+
+<blockquote>
+<p><strong>OS Limitation Note:</strong> Unlike native Azure or Azure Local deployments, AVD Hybrid does not support Windows 10/11 Enterprise multi-session. Deployments rely on Windows Server (for multi-session published apps/desktops) or standard single-session Enterprise client OS instances.</p>
+</blockquote>
+
+<hr>
+
+<h2 id="technical-details-how-avd-hybrid-works-under-the-hood">Technical Details: How AVD Hybrid Works Under the Hood</h2>
+
+<p>How does AVD Hybrid actually function from a technical perspective? </p>
+
+<p>As highlighted earlier, the entire control plane remains hosted and managed by Microsoft in Azure. This introduces a major operational simplification: <strong>unlike a traditional Remote Desktop Services (RDS) environment, you no longer need to deploy, or maintain local Remote Desktop Web Access, Remote Desktop Gateway, or Remote Desktop Broker roles.</strong></p>
+
+<h3 id="the-provisioning-process">The Provisioning Process</h3>
+
+<p>From a deployment standpoint, the mechanism is straightforward:</p>
+
+<ol>
+<li><strong>Azure Arc Onboarding:</strong> The base operating system (Windows Server or single-session Windows 10/11) is onboarded to Azure Arc by installing the <strong>Azure Connected Machine Agent</strong>.</li>
+<li><strong>AVD Agent Deployment:</strong> Once Arc-enabled, the <strong>Azure Virtual Desktop Agent</strong> and <strong>AVD Bootloader</strong> are installed on the machine. This step can be triggered directly as an Azure Arc Extension from the Azure Portal or via infrastructure-as-code scripts.</li>
+<li><strong>Host Pool Registration:</strong> The agent registers the local machine with its designated AVD host pool in Azure using an enrollment token.</li>
+</ol>
+
+<h3 id="streamlining-deployment-with-hydra">Streamlining Deployment with Hydra</h3>
+
+<p>While manual or script-based extension deployment works for small environments, scale requires end-to-end automation. </p>
+
+<p>Through <strong>Hydra for Azure Virtual Desktop</strong> (a management and automation platform I actively co-develop), this entire provisioning workflow is fully automated. Hydra can build session host VMs unattended directly on Hyper-V or vSphere from a golden image, automatically executing OS customization, Azure Arc onboarding, and AVD agent registration in a single seamless pipeline.</p>
+
+<h3 id="the-rds-evolution-advantage">The RDS Evolution Advantage</h3>
+
+<p>Compared to a legacy native RDS environment, moving to AVD Hybrid immediately unlocks modern connection capabilities:</p>
+
+<ul>
+<li><strong>Modern Protocol Stack &amp; Performance:</strong> Benefit from continuous protocol innovations, including <strong>RDP Shortpath</strong> (UDP-based direct transport) for reduced connection latency.</li>
+<li><strong>Forced Innovation:</strong> Instead of relying on static, version-bound RDS features tied to Windows Server release cycles, your connection architecture continuously leverages cloud-driven feature updates from Microsoft.</li>
+</ul>
+
+<h2 id="licensing-operational-realities">Licensing &amp; Operational Realities</h2>
+
+<h3 id="licensing-alignment">Licensing Alignment</h3>
+
+<p>AVD Hybrid introduces specific licensing considerations that must be factored into your total cost of ownership (TCO) evaluation:</p>
+
+<ul>
+<li><strong>AVD Hybrid Service Fee (Microsoft):</strong> Per user fee, $X USD / user / month (not listed yet on  <a href="aka.ms/AVDPricingPage">aka.ms/AVDPricingPage</a>).
+
+<ul>
+<li><em>Note:</em> Azure Local, AVD Hybrid pricing does <strong>not</strong> use a time-dependent, per-core infrastructure consumption model like Azure Local. It is licensed on a per-user basis.</li>
+</ul></li>
+<li><strong>Windows Server Workloads:</strong> Supported via existing Remote Desktop Services (RDS) CALs with Software Assurance or RDS User Subscription Licenses.</li>
+<li><strong>Client OS Workloads:</strong> Microsoft 365 E3/E5, A3/A5/Student Use Benefits, F3, Business Premium, Windows 11 E3/E5, Windows 11 A3/A5, or Windows 11 VDA E3/E5.</li>
+<li><strong>Recommend:</strong> A good and affordable manamgement solution (see below)</li>
+</ul>
+
+<p>Instead of introducing a brand-new licensing stack, architects can build a unified TCO comparison combining existing hypervisor, RDS, and Azure management components.</p>
+
+<hr>
+
+<h2 id="closing-the-management-gap-with-hydra">Closing the Management Gap with Hydra</h2>
+
+<p>Because Microsoft does not manage on-premises power management, image distribution, or host lifecycle, enterprise environments require dedicated automation.</p>
+
+<p>This is where <strong>Hydra for Azure Virtual Desktop</strong> provides immediate value.</p>
+
+<table><thead>
+<tr>
+<th style="text-align: left">Layer</th>
+<th style="text-align: left">Architecture Scope</th>
+<th style="text-align: left">Key Functions</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: left"><strong>Layer 1: Service Plane</strong></td>
+<td style="text-align: left">Microsoft Managed (Azure Cloud)</td>
+<td style="text-align: left">User Access, Brokering, Load-Balancing, Connection Gateway</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Layer 2: Automation Plane</strong></td>
+<td style="text-align: left">Hydra Management Layer</td>
+<td style="text-align: left">Automated Provisioning, Image Deployment, Autoscaling (if needed), Host Self-Service, Other Automations like Lifecycle-Management</td>
+</tr>
+<tr>
+<td style="text-align: left"><strong>Layer 3: Infrastructure Plane</strong></td>
+<td style="text-align: left">Customer Managed (Datacenter)</td>
+<td style="text-align: left">Hyper-V / VMware Hypervisors, Azure Arc Connected VMs, Storage &amp; Local Network</td>
+</tr>
+</tbody></table>
+
+<p>Hydra sits side-by-side with the Azure management plane and your local infrastructure layer to automate:</p>
+
+<ul>
+<li><strong>Host Provisioning &amp; Image Management:</strong> Standardizing local golden image deployment.</li>
+<li><strong>Advanced Autoscaling:</strong> Scaling compute based on active user demand to minimize local host resource consumption.</li>
+<li><strong>Session Host Lifecycle:</strong> Start, stop, delete, create, and patch cycles on-premises.</li>
+<li><strong>Management:</strong> One UI to manage Azure Virtual Desktop in any environments.</li>
+<li><strong>User Management:</strong> First-choice platform for the helpdesk.</li>
+<li><strong>Self-Service:</strong> For end users</li>
+<li><strong>And much more...</strong></li>
+</ul>
+
+<p>With Hydra’s GA support for AVD Hybrid on Hyper-V, vSphere (and expanding supported platforms), architects get end-to-end automation across both cloud and local AVD host pools from a single management layer.</p>
+
+<hr>
+
+<h2 id="final-takeaway-separation-of-control-and-compute">Final Takeaway: Separation of Control and Compute</h2>
+
+<p>AVD Hybrid fundamentally changes the EUC evaluation matrix. It separates two critical architectural decisions:</p>
+
+<ol>
+<li><strong>Which EUC control plane do we standardize on?</strong> (Azure Virtual Desktop)</li>
+<li><strong>Where should individual desktop workloads execute?</strong> (Azure, Azure Local, or Existing Datacenter)</li>
+</ol>
+
+<p>By decoupling these decisions, Microsoft gives EUC architects unprecedented freedom to modernize management platforms at their own pace without stranding legacy infrastructure investments.</p>
+
+<hr>
+
+<h2 id="key-references-related-links">Key References &amp; Related Links</h2>
+
+<ul>
+<li><p><strong>Microsoft Documentation &amp; Announcements:</strong></p>
+
+<ul>
+<li><a href="https://techcommunity.microsoft.com/blog/azurevirtualdesktopblog/microsoft-azure-virtual-desktop-hybrid-is-now-generally-available/4550523">Azure Virtual Desktop Hybrid Announcement</a> – Official Announcement from September, 1st 2026.</li>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-desktop/overview">Azure Virtual Desktop Overview</a> – Official Microsoft Learn portal for Azure Virtual Desktop.</li>
+<li><a href="https://learn.microsoft.com/en-us/azure/azure-arc/overview">Azure Arc Documentation</a> – Overview of managing hybrid and multicloud infrastructure with Azure Arc.</li>
+<li><a href="https://learn.microsoft.com/en-us/azure/virtual-desktop/prerequisites">Azure Virtual Desktop Prerequisites &amp; Supported OS</a> – Detailed operating system and architecture requirements.</li>
+<li><a href="https://aka.ms/AVDPricingPage">Azure Virtual Desktop Licensing</a> – Details on AVD pricings.</li>
+</ul></li>
+<li><p><strong>Login VSI &amp; Hydra Resources:</strong></p>
+
+<ul>
+<li><a href="https://www.loginvsi.com/platform/hydra">Hydra for Azure Virtual Desktop</a> – Product overview for automated management, image deployment, and autoscaling.</li>
+<li><a href="https://www.loginvsi.com">Login VSI Official Website</a> – End-to-end EUC performance validation, management, and automation solutions.</li>
+</ul></li>
+</ul>
+
+<hr>
+
+<p><em>AI Disclosure: This article was drafted with the assistance of Artificial Intelligence tools for linguistic refinement, structure, and text clarity in accordance with EU AI Act disclosure guidelines. All technical concepts, architectural evaluations, factual insights, and core content were independently curated and authored by the human author.</em></p>
+
+            </div>
+
+            <!-- Rating -->
+            
+
+            <!-- Post Date -->
+            <p>
+            <small>
+                <span class="post-date"><time class="post-date" datetime="2026-09-02">02 Sep 2026</time></span>           
+                
+                </small>
+            </p>
+
+            <!-- Post Categories -->
+            <div class="after-post-cats">
+                <ul class="tags mb-4">
+                    
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop</a>
+                    </li>
+                    
+                    <li>
+                        <a class="smoothscroll" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop</a>
+                    </li>
+                    
+                </ul>
+            </div>
+            <!-- End Categories -->
+
+            <!-- Post Tags -->
+            <div class="after-post-tags">
+                <ul class="tags">
+                    
+                    
+                </ul>
+            </div>
+            <!-- End Tags -->
+
+            <!-- Prev/Next -->
+            <div class="row PageNavigation d-flex justify-content-between font-weight-bold">
+            
+            <a class="prev d-block col-md-6" href="/Windows-Virtual-Desktop-Admin/"> &laquo; WVDAdmin - A native administration Gui for Azure Virtual Desktop (AVD) / Windows Virtual Desktop (WVD)</a>
+            
+            
+            <div class="clearfix"></div>
+            </div>
+            <!-- End Categories -->
+
+        </div>
+        <!-- End Post -->
+
+    </div>
+</div>
+<!-- End Article
+================================================== -->
+
+<!-- Begin Comments
+================================================== -->
+
+<!--End Comments
+================================================== -->
+
+<!-- Review with LD-JSON, adapt it for your needs if you like, but make sure you test the generated HTML source code first: 
+https://search.google.com/structured-data/testing-tool/u/0/
+================================================== -->
+
+</div>
+
+
+    
+</div>
+
+<!-- Categories Jumbotron
+================================================== -->
+<div id="allTags" class="jumbotron fortags">
+	<div class="d-md-flex h-100">
+		<div class="col-md-4 transpdark align-self-center text-center h-100">
+            <div class="d-md-flex align-items-center justify-content-center h-100">
+                <h2 class="d-md-block align-self-center py-1 font-weight-light">Explore by tags <span class="d-none d-md-inline">→</span></h2>
+            </div>
+		</div>
+		<div class="col-md-8 p-5 align-self-center text-center">
+            
+            
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-WebApp">Azure WebApp (3)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-VM">Azure VM (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#PowerShell">PowerShell (9)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Monitor">Azure Monitor (12)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Log-Analytics">Log Analytics (9)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-AD">Azure AD (4)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#OneDrive">OneDrive (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-IoT">Azure IoT (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Functions">Azure Functions (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Marketplace">Azure Marketplace (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure">Azure (8)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Windows-Virtual-Desktop">Windows Virtual Desktop (74)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Events">Events (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Virtual-Desktop">Azure Virtual Desktop (73)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Webapp">Azure Webapp (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#ADConnect">ADConnect (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Azure-Stack-HCI">Azure Stack HCI (1)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Entra">Entra (2)</a>
+                
+                    <a class="mt-1 mb-1" href="/categories#Windows365">Windows365 (1)</a>
+                
+            
+            
+		</div>
+	</div>
+</div>
+
+<!-- Begin Footer
+================================================== -->
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 col-sm-5 text-center text-lg-left">
+                Copyright © 2026 ITProCloud Blog 
+            </div>
+            <div class="col-md-4 col-sm-4 text-center text-lg-left">
+                <a href="/Impressum">Impressum</a>/<a href="/ImpressumEn">Imprint</a> - 
+                <a href="/privacyDe">Datenschutz</a> - 
+				<a href="/privacyEn">Privacy</a> - 
+				<a href="#" id="open_preferences_center">Update cookies preferences</a>
+            </div>
+            <div class="col-md-3 col-sm-3 text-center text-lg-right">    
+                <a target="_blank" href="https://www.wowthemes.net/mediumish-free-jekyll-template/">Mediumish Jekyll Theme</a> by WowThemes.net
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- End Footer
+================================================== -->
+
+</div> <!-- /.site-content -->
+
+<!-- Scripts
+================================================== -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+
+<script src="/assets/js/mediumish.js"></script>
+
+
+
+<script src="/assets/js/ie10-viewport-bug-workaround.js"></script> 
+
+
+<script id="dsq-count-scr" src="//.disqus.com/count.js"></script>
+
+
+<!-- Cookie Consent by TermsFeed https://www.TermsFeed.com created on https://www.cookieconsent.com/ -->
+<script type="text/javascript" src="https://www.termsfeed.com/public/cookie-consent/4.1.0/cookie-consent.js" charset="UTF-8"></script>
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({"notice_banner_type":"simple","consent_type":"express","palette":"light","language":"en","page_load_consent_levels":["strictly-necessary"],"notice_banner_reject_button_hide":false,"preferences_center_close_button_hide":false,"page_refresh_confirmation_buttons":false,"website_name":"blog.ITProCloud.de","website_privacy_policy_url":"https://blog.itprocloud.de/privacyEn/"});
+});
+</script>
+
+<!-- Google Analytics -->
+<!-- Google tag (gtag.js) -->
+<script type="text/plain" data-cookie-consent="tracking" async src="https://www.googletagmanager.com/gtag/js?id=G-LPJZ1BMG3V">
+</script>
+<script type="text/plain" data-cookie-consent="tracking">
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LPJZ1BMG3V');
+</script>
+<!-- end of Google Analytics-->
+
+<noscript>Free cookie consent management tool by <a href="https://www.termsfeed.com/">TermsFeed</a></noscript>
+<!-- End Cookie Consent by TermsFeed https://www.TermsFeed.com -->
+
+</body>
+</html>
