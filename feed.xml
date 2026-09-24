@@ -5,8 +5,8 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 24 Sep 2026 11:54:05 +0200</pubDate>
-    <lastBuildDate>Thu, 24 Sep 2026 11:54:05 +0200</lastBuildDate>
+    <pubDate>Thu, 24 Sep 2026 12:01:08 +0200</pubDate>
+    <lastBuildDate>Thu, 24 Sep 2026 12:01:08 +0200</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
     
       <item>
@@ -37,6 +37,8 @@
 &lt;p&gt;I did some research on hibernation and found that Cloud PC&amp;#39;s hibernation works similarly to Azure Virtual Desktop: the &lt;strong&gt;AzureHibernateExtension&lt;/strong&gt; handles it.&lt;/p&gt;
 
 &lt;p&gt;From an architectural and resource perspective, this automated pausing is highly logical. It ensures that compute resources in a managed cloud environment are not consumed needlessly when idle, reducing overall infrastructure strain and optimizing backend efficiency. &lt;/p&gt;
+
+&lt;p&gt;Please note, that this is also expected: &lt;a href=&quot;https://learn.microsoft.com/en-us/office365/servicedescriptions/windows-365-service-description/windows-365-service-description#service-responsibility&quot;&gt;Service Responsibility&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;testing-the-boundaries&quot;&gt;Testing the Boundaries&lt;/h2&gt;
 
