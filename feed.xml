@@ -5,9 +5,188 @@
     <description>Welcome to my blog. I&apos;m writing this blog to share my experiences mainly in IT focused on Microsoft Azure. The blog is part of the ITProCloud GmbH.</description>
     <link>https://blog.itprocloud.de/</link>
     <atom:link href="https://blog.itprocloud.de/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 02 Sep 2026 10:55:13 +0200</pubDate>
-    <lastBuildDate>Wed, 02 Sep 2026 10:55:13 +0200</lastBuildDate>
+    <pubDate>Thu, 24 Sep 2026 11:54:05 +0200</pubDate>
+    <lastBuildDate>Thu, 24 Sep 2026 11:54:05 +0200</lastBuildDate>
     <generator>Jekyll v3.10.0</generator>
+    
+      <item>
+        <title>The Secret of my Windows 365 Cloud PC Hibernation</title>
+        <description>&lt;h1 id=&quot;understanding-windows-365-cloud-pc-hibernation-behavior&quot;&gt;Understanding Windows 365 Cloud PC Hibernation Behavior&lt;/h1&gt;
+
+&lt;p&gt;When I log in to my Windows 365 Cloud PCs, I work, and sometimes I start a task and let it run while I disconnect (e.g., over the weekend). If I reconnect on Monday, I can see the result. That works well, but sometimes I reconnect and my Cloud PC wakes up first - so it was hibernated, and my tasks didn&amp;#39;t run to completion, even while my session was disconnected. &lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Note:&lt;/em&gt; I&amp;#39;m unsure if that is a general behaviour or based on my license, region, usage, etc. I also heard that other users are not seeing this.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Hiber-cloud_pc_cycle.png&quot; alt=&quot;Average Cloud PC Activity &amp;amp; Hibernation Cycle&quot;&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;tracking-the-hibernation-schedule&quot;&gt;Tracking the Hibernation Schedule&lt;/h2&gt;
+
+&lt;p&gt;This behaviour is driven by background power management. By reviewing the Windows System Event Log and filtering for &lt;strong&gt;Event 1 (Source: System - PowerShooter)&lt;/strong&gt;, you can exactly figure out when a specific Cloud PC enters and exits this state.&lt;/p&gt;
+
+&lt;p&gt;These intervals are different from CPC to CPC and may be based on typical usage. For my specific Cloud PC, the event logs revealed a consistent daily routine:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Enters Hibernation:&lt;/strong&gt; ~11:15 PM&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Automated Wake-up:&lt;/strong&gt; ~10:50 AM&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This results in an automated hibernation window of roughly 11.5 hours whenever the user session remains completely disconnected. PS: I never saw my CPC go to sleep while I&amp;#39;m connected ;-)&lt;/p&gt;
+
+&lt;h2 id=&quot;the-role-of-the-azurehibernateextension&quot;&gt;The Role of the AzureHibernateExtension&lt;/h2&gt;
+
+&lt;p&gt;I did some research on hibernation and found that Cloud PC&amp;#39;s hibernation works similarly to Azure Virtual Desktop: the &lt;strong&gt;AzureHibernateExtension&lt;/strong&gt; handles it.&lt;/p&gt;
+
+&lt;p&gt;From an architectural and resource perspective, this automated pausing is highly logical. It ensures that compute resources in a managed cloud environment are not consumed needlessly when idle, reducing overall infrastructure strain and optimizing backend efficiency. &lt;/p&gt;
+
+&lt;h2 id=&quot;testing-the-boundaries&quot;&gt;Testing the Boundaries&lt;/h2&gt;
+
+&lt;p&gt;So, I tried a trick and uninstalled the extension to test it. That worked, but only for a few days. The extension was installed again. I also successfully tried another hack to prevent my CPC from hibernating. But I wouldn&amp;#39;t recommend this, while pausing resources in a managed cloud environment makes sense.&lt;/p&gt;
+
+&lt;h1 id=&quot;analytics&quot;&gt;Analytics&lt;/h1&gt;
+
+&lt;p&gt;I exported &lt;strong&gt;my&lt;/strong&gt; the filtered System event log and did some summarization using Excel and an AI tool. Here are my results:&lt;/p&gt;
+
+&lt;h2 id=&quot;cloud-pc-sleep-rhythm&quot;&gt;Cloud PC Sleep Rhythm&lt;/h2&gt;
+
+&lt;p&gt;&lt;em&gt;Microsoft-Windows-Power-Troubleshooter · Event ID 1&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;Parsed from &lt;strong&gt;95 hibernate/resume cycles&lt;/strong&gt; between &lt;strong&gt;May 8, 2026&lt;/strong&gt; and &lt;strong&gt;Sep 1, 2026&lt;/strong&gt;, read from the Power-Troubleshooter event log of this Windows 365 Cloud PC. All clock times below are local (Europe/Berlin, UTC+2), converted from the log&amp;#39;s UTC &lt;code&gt;Sleep Time&lt;/code&gt; / &lt;code&gt;Wake Time&lt;/code&gt; fields.&lt;/p&gt;
+
+&lt;h3 id=&quot;summary&quot;&gt;Summary&lt;/h3&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Metric&lt;/th&gt;
+&lt;th&gt;Value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Nights logged&lt;/td&gt;
+&lt;td&gt;95 cycles (May 8 – Sep 1, 2026)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Average sleep time&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;23:15&lt;/strong&gt; local — hibernation triggered&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Average wake time&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;10:50&lt;/strong&gt; local — resumed from low power&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Average duration&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;11h 35m&lt;/strong&gt; asleep&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Median duration&lt;/td&gt;
+&lt;td&gt;11h 27m&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Duration range&lt;/td&gt;
+&lt;td&gt;5h 25m – 22h 23m&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;sleep-wake-rhythm-night-by-night&quot;&gt;Sleep &amp;amp; wake rhythm, night by night&lt;/h3&gt;
+
+&lt;p&gt;Clock time of each hibernation and each resume, plotted across the full date range. A steady line means a steady rhythm; jumps mark the nights that broke it - most visibly two multi-day gaps in mid/late June and a scattering of very late &amp;quot;sleeps&amp;quot; (past midnight) in early August. The missing data end of August are the result of my test to avoid the hibernation.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Hiber-fig1-rhythm.png&quot; alt=&quot;Sleep &amp;amp; wake rhythm chart, orange dots for sleep time and blue dots for wake time across May to September 2026&quot;&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;hibernation-duration&quot;&gt;Hibernation duration&lt;/h3&gt;
+
+&lt;p&gt;Hours between sleep and the next resume, per night. The tall spikes (up to 22h 23m) are nights and weekends the Cloud PC sat hibernated most of the day before being resumed; the short dips down to ~5–6h in early August are same-day back-to-back sessions.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;../assets/images/Hiber-fig2-duration.png&quot; alt=&quot;Hibernation duration chart, blue line and area showing hours asleep per night with a dashed average line at 11h 35m&quot;&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;by-day-of-week&quot;&gt;By day of week&lt;/h3&gt;
+
+&lt;p&gt;Average sleep time, wake time and hibernation duration, grouped by the weekday the sleep cycle started on (local time). Let me mentioned, that I&amp;#39;m not using my CPC on a daily-base. So, I&amp;#39;m not starting my work late 😉.&lt;/p&gt;
+
+&lt;table&gt;&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Day&lt;/th&gt;
+&lt;th&gt;Avg. sleep time&lt;/th&gt;
+&lt;th&gt;Avg. wake time&lt;/th&gt;
+&lt;th&gt;Avg. duration&lt;/th&gt;
+&lt;th&gt;Nights&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Monday&lt;/td&gt;
+&lt;td&gt;22:16&lt;/td&gt;
+&lt;td&gt;09:07&lt;/td&gt;
+&lt;td&gt;10h 50m&lt;/td&gt;
+&lt;td&gt;13&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Tuesday&lt;/td&gt;
+&lt;td&gt;22:50&lt;/td&gt;
+&lt;td&gt;09:43&lt;/td&gt;
+&lt;td&gt;10h 53m&lt;/td&gt;
+&lt;td&gt;13&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Wednesday&lt;/td&gt;
+&lt;td&gt;23:13&lt;/td&gt;
+&lt;td&gt;09:57&lt;/td&gt;
+&lt;td&gt;10h 45m&lt;/td&gt;
+&lt;td&gt;13&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Thursday&lt;/td&gt;
+&lt;td&gt;23:17&lt;/td&gt;
+&lt;td&gt;10:59&lt;/td&gt;
+&lt;td&gt;11h 42m&lt;/td&gt;
+&lt;td&gt;14&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Friday&lt;/td&gt;
+&lt;td&gt;23:19&lt;/td&gt;
+&lt;td&gt;12:08&lt;/td&gt;
+&lt;td&gt;12h 50m&lt;/td&gt;
+&lt;td&gt;15&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Saturday&lt;/td&gt;
+&lt;td&gt;23:30&lt;/td&gt;
+&lt;td&gt;10:54&lt;/td&gt;
+&lt;td&gt;11h 23m&lt;/td&gt;
+&lt;td&gt;12&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Sunday&lt;/td&gt;
+&lt;td&gt;00:14&lt;/td&gt;
+&lt;td&gt;12:35&lt;/td&gt;
+&lt;td&gt;12h 21m&lt;/td&gt;
+&lt;td&gt;15&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;&lt;/table&gt;
+
+&lt;p&gt;Sleep time drifts later and wake time drifts later across the week, peaking on Friday/weekend nights — the Cloud PC is put to sleep latest and resumed latest heading into the weekend, and hibernation runs longest (12h 21m–12h 50m) on Friday and Sunday nights.&lt;/p&gt;
+
+&lt;h3 id=&quot;analytics-notes&quot;&gt;Analytics Notes&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Source file: &lt;code&gt;CPC-Hibernate.csv&lt;/code&gt; (Windows Event Viewer export, Power-Troubleshooter event ID 1) - exported from my CPC eventlog.&lt;/li&gt;
+&lt;li&gt;&amp;quot;Sleep&amp;quot; is the low-power transition recorded as &lt;code&gt;Sleep Time&lt;/code&gt;; &amp;quot;Wake&amp;quot; is the matching &lt;code&gt;Wake Time&lt;/code&gt; in the same event record.&lt;/li&gt;
+&lt;li&gt;Timestamps were converted from UTC to Europe/Berlin summer time (UTC+2), which covers this entire date range (no DST transition falls within it).&lt;/li&gt;
+&lt;li&gt;Sleep times after midnight (e.g. 00:24, 01:08) are counted as belonging to the previous evening&amp;#39;s rhythm, so the averages reflect the actual bedtime pattern rather than being skewed by the day boundary.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;em&gt;AI Disclosure: This article was drafted with the assistance of Artificial Intelligence tools for linguistic refinement, structure, and text clarity in accordance with EU AI Act disclosure guidelines. All technical concepts, architectural evaluations, factual insights, and core content were independently curated and authored by the human author.&lt;/em&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 24 Sep 2026 00:00:00 +0200</pubDate>
+        <link>https://blog.itprocloud.de/The-secret-of-the-hibernation-of-windows-365-cloud-pc/</link>
+        <guid isPermaLink="true">https://blog.itprocloud.de/The-secret-of-the-hibernation-of-windows-365-cloud-pc/</guid>
+        
+        
+        <category>Windows Virtual Desktop</category>
+        
+        <category>Azure Virtual Desktop</category>
+        
+      </item>
     
       <item>
         <title>Azure Virtual Destkop Hybrid mit Hydra is General Available</title>
@@ -2448,168 +2627,6 @@ OneDrive CleanUp writes a log file to %AppData%\ITProCloud\OneDriveCleanUp.log. 
         <category>Azure Virtual Desktop</category>
         
         <category>Windows365</category>
-        
-      </item>
-    
-      <item>
-        <title>CountrySwitch - First Logon Experience and language selector and an app starter for remote apps on network paths for AVD</title>
-        <description>&lt;h2 id=&quot;first-logon-experience-and-language-selector-and-an-app-starter-for-remote-apps-on-network-paths&quot;&gt;First Logon Experience and language selector and an app starter for remote apps on network paths&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 01/21/2026&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;select-the-language-users&quot;&gt;Select the language (users)&lt;/h2&gt;
-
-&lt;p&gt;In some environments, customers are running Azure on Windows 10/11 with multiple language packs installed. After the first login, users have to choose their language to customize the environment - that is not so easy, while users have to open the language settings and select the language. The first steps are outside the user&amp;#39;s language and are not easy to do for everyone.&lt;/p&gt;
-
-&lt;p&gt;I built a tool that makes it easier for users to select their language by clicking on the right flag. Currently, the following features are available:&lt;/p&gt;
-
-&lt;p&gt;Feature regarding the language selection:
-- The tool shows the installed language packages by a flag of the countries.
-- A welcome message in the present language welcomes the users.
-- The user selects the language settings with a click on the flag.
-- Hovering the mouse over a flag shows the country and language name.
-- The app configures the language settings (and does one logoff to apply the setting).
-- The PowerShell script CountrySwitch-User.ps1 in the program files folder is started to do some optional customizing (language code is in $languageTag)&lt;/p&gt;
-
-&lt;p&gt;CountrySwitch is linked in all users&amp;#39; start menu:
-- Startup: With parameter /RunOnce - Starts CountrySwitch at logon. The user will see the language selector only if the user is new and didn&amp;#39;t select a language once (HKCU:\SOFTWARE\ITProCloud\CountrySwitch\Completed is set to 1 )
-- Direct: Without parameters - Users can star CountrySwitch manually to select the language&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Note on Remote Apps&lt;/strong&gt;: Remote apps are ignoring the autostart folder. To have CountrySwitch enabled for remote app, please configure a local Startup script (local policy for users) with the following parameters:
-Name of script: &amp;quot;C:\Program Files\ITProCloud.de\CountrySwitch\CountrySwitch.exe&amp;quot;
-Parameters: \/runonce&lt;/p&gt;
-
-&lt;h2 id=&quot;app-starter-for-remote-apps&quot;&gt;App Starter for remote apps&lt;/h2&gt;
-
-&lt;p&gt;CountrySwitch can also start a local or an application on a file share (which normally does not work directly with AVD). Publish CountrySwitch as a remote app with the following parameters:
-- &lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;&amp;lt;path to executable with parameters&amp;gt;&amp;quot; &amp;quot;&amp;lt;Working directory&amp;gt;&amp;quot;&lt;/code&gt;
-- &lt;code&gt;CountrySwitch.exe /remoteapp &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot; &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;If a remote app is started with CountrySwitch, CountrySwitch first starts the PowerShell script CountrySwitch-App.ps1 in the program files folder to do some optional customization. The following parameters are set in the script:&lt;/p&gt;
-
-&lt;p&gt;Example:
-&lt;code&gt;
-$languageTag = &amp;quot;unknown&amp;quot;,
-$appCommandline = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;\finance.exe /db=vm1&amp;quot;,
-$appWorkingDir = &amp;quot;\\&amp;lt;path&amp;gt;\&amp;lt;share&amp;gt;&amp;quot;,
-$appParameter = &amp;quot;/db=vm1&amp;quot;,
-$appExecutable = &amp;quot;finance.exe&amp;quot;
-&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;The application starts after the PowerShell script finishes (CountrySwitch will run hidden and terminates after the start of the application (e.g., finance.exe).&lt;/p&gt;
-
-&lt;h2 id=&quot;logging-and-configuration&quot;&gt;Logging and configuration&lt;/h2&gt;
-
-&lt;p&gt;CountrySwitch logs into %AppData%\ITProCloud&lt;/p&gt;
-
-&lt;p&gt;There are the following reg keys to optionally configure CountrySwitch (set the keys and value to modify the default settings):&lt;/p&gt;
-
-&lt;p&gt;HKLM:\SOFTWARE\Policies\ITProCloud\CountrySwitch (alls values are dword - 1 is true; 0 is false)&lt;/p&gt;
-
-&lt;table&gt;&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Key&lt;/th&gt;
-&lt;th&gt;Value&lt;/th&gt;
-&lt;th&gt;Default value&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;Enabled&lt;/td&gt;
-&lt;td&gt;If false, the application will not show up (except for /remoteapp (App starter mode))&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;ExitOnRunOnceCompleted&lt;/td&gt;
-&lt;td&gt;If the app is started with /runonce and the user has already completed the process, the application will not show up&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;ExitOnSingleLanguage&lt;/td&gt;
-&lt;td&gt;If only one language is installed, don&amp;#39;t show up&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;LogoffUserAfterSelectingNewLanguage&lt;/td&gt;
-&lt;td&gt;Logoff user after selecting a new language&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;LogoffUserAfterSelectingSameLanguage&lt;/td&gt;
-&lt;td&gt;Logoff user after selecting the same language as the user is still using&lt;/td&gt;
-&lt;td&gt;false&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;RunUserScriptAfterSelectingLanguage&lt;/td&gt;
-&lt;td&gt;Runs the ps script CountrySwitch-User.ps1 -languageTag {xx-YY} after the user selects a language&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;DisableUserScriptForAppStarterMode&lt;/td&gt;
-&lt;td&gt;If true, the app starter mode for a remote app will no longer trigger CountrySwitch-App before starting the application&lt;/td&gt;
-&lt;td&gt;true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;&lt;br/&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;release-notes&quot;&gt;Release notes&lt;/h2&gt;
-
-&lt;table&gt;&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;Release&lt;/th&gt;
-&lt;th&gt;Date&lt;/th&gt;
-&lt;th&gt;Changes &amp;amp; Notes&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1.3&lt;/td&gt;
-&lt;td&gt;2023-05-04&lt;/td&gt;
-&lt;td&gt;Initial&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1.4&lt;/td&gt;
-&lt;td&gt;2023-05-10&lt;/td&gt;
-&lt;td&gt;Update: CountrySwitch-User.ps1 had a typo&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1.7&lt;/td&gt;
-&lt;td&gt;2023-05-11&lt;/td&gt;
-&lt;td&gt;Fix: Avoid showing MSI installation screen for users if package unaccessible&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.1.9&lt;/td&gt;
-&lt;td&gt;2024-09-16&lt;/td&gt;
-&lt;td&gt;Fix: Prevents that the logoff message is shown multiple times if the user multiple clicks on a flag&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.2.0&lt;/td&gt;
-&lt;td&gt;2025-11-19&lt;/td&gt;
-&lt;td&gt;Add: Sets languages in the control panel (needed for Teams)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.3.0&lt;/td&gt;
-&lt;td&gt;2025-12-12&lt;/td&gt;
-&lt;td&gt;Fix: Sets languages in the control panel (needed for Teams)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;1.3.1&lt;/td&gt;
-&lt;td&gt;2026-01-21&lt;/td&gt;
-&lt;td&gt;Fix: Write LogFile to AppData&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;&lt;/table&gt;
-
-&lt;p&gt;&lt;a href=&quot;../assets/files/CountrySwitch.msi&quot;&gt;&lt;img src=&quot;../assets/icons/download.png&quot; alt=&quot;Download&quot;&gt; &lt;strong&gt;Download the latest release from 01/21/2026&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Please feel free to send me ideas for improvements.&lt;/p&gt;
-</description>
-        <pubDate>Wed, 21 Jan 2026 00:00:00 +0100</pubDate>
-        <link>https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</link>
-        <guid isPermaLink="true">https://blog.itprocloud.de/CountrySwitch-Select-Language-on-first-start-and-an-appstarter-for-remoteapps/</guid>
-        
-        
-        <category>Windows Virtual Desktop</category>
-        
-        <category>Azure Virtual Desktop</category>
         
       </item>
     
